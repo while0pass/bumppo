@@ -1,0 +1,114 @@
+$bmppBorderColor: rgba(34, 36, 38, .15);
+
+.bmpp-curtains {
+  background-color: white;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.bmpp-uiLayout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.bmpp-sidePane {
+  order: 0;
+  width: 14vw;
+  min-width: 13rem;
+  border-left: 1px solid $bmppBorderColor;
+  border-right: 1px solid $bmppBorderColor;
+  overflow-y: hidden;
+
+  &_menuItem {
+    padding: 1em !important;
+    border-bottom: 1px solid $bmppBorderColor;
+    cursor: pointer;
+  }
+  &_menuItem-noPadding {
+    padding: 0 !important;
+  }
+  &_searchButton {
+    margin-left: 0.3em !important;
+  }
+}
+
+.bmpp-queryMap {
+  margin: -1em 0 0 !important;
+  width: 100%;
+  height: 15em;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==');
+  background-repeat: repeat;
+}
+
+.bmpp-main {
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-y: scroll;
+  padding-bottom: 3em;
+}
+
+.bmpp-subcorpusPane {
+  width: 55em;
+  margin: 3em auto auto 6em !important;
+}
+
+.bmpp-resultsOptionsPane {
+  width: 55em;
+  margin: 3em auto auto 6em !important;
+}
+
+.bmpp-nearLabelIcon {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: .2em;
+  top: .8em;
+}
+
+.bmpp-resultsPane {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &_video {
+    border-bottom: 1px solid $bmppBorderColor;
+    background-color: #eee;
+  }
+  &_results {
+    overflow-y: scroll;
+  }
+}
+
+.bmpp-videoChoices {
+}
+
+.bmpp-queryPane {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.bmpp-query {
+  max-width: 70em;
+  padding: 3em 1em 0 0;
+  flex: 1 0 auto;
+  order: 1;
+}
+
+.bmpp-queryTree {
+  order: 0;
+  width: 9em;
+}
+
+.bmpp-queryElement {
+  min-height: 10em;
+}
+.bmpp-queryDistance {
+  min-height: 4em;
+}

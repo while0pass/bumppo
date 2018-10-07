@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Поиск по мультиканальному корпусу</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+    <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
+  </head>
+  <body>
+
+<div class="bmpp-uiLayout">
+  <div class="bmpp-sidePane">
+    <div class="bmpp-sidePane_menuItem ui vertical segment"
+      data-bind="click: switchOnSubcorpusPane">
+      <i class="caret right icon"></i>
+      Задать подкорпус
+    </div>
+    <div class="bmpp-sidePane_menuItem bmpp-sidePane_menuItem-noPadding
+      ui vertical segment" data-bind="click: switchOnQueryPane">
+      <div class="ui basic segment">
+        <i class="dropdown icon"></i>
+        Карта запроса
+      </div>
+      <div class="bmpp-queryMap"></div>
+    </div>
+    <div class="bmpp-sidePane_menuItem ui vertical segment"
+      data-bind="click: switchOnResultsOptionsPane">
+      <i class="caret right icon"></i>
+      Настройки выдачи
+    </div>
+    <div class="bmpp-sidePane_menuItem ui vertical segment"
+      data-bind="click: switchOnResultsPane">
+      <i class="caret right icon"></i>
+      Результаты
+    </div>
+    <div class="bmpp-sidePane_menuItem ui basic vertical segment">
+      <button class="bmpp-sidePane_searchButton ui button">
+        Искать
+      </button>
+    </div>
+  </div>
+  <div class="bmpp-main">
+
+    <div class="bmpp-queryPane" data-bind="visible: isQueryPaneOn">
+      <div id="bmpp-queryTree" class="bmpp-queryTree">
+      </div>
+      <div class="bmpp-query">
+        <div class="n1 bmpp-queryElement ui segment"></div>
+        <div class="bmpp-queryDistance ui secondary segment"></div>
+        <div class="n2 bmpp-queryElement ui segment"></div>
+        <div class="bmpp-queryDistance ui secondary segment"></div>
+        <div class="n3 bmpp-queryElement ui segment"></div>
+        <div class="bmpp-queryDistance ui secondary segment"></div>
+        <div class="n4 bmpp-queryElement ui segment"></div>
+        <div class="bmpp-queryDistance ui secondary segment"></div>
+        <div class="n5 bmpp-queryElement ui segment"></div>
+      </div>
+    </div>
+
+    <div class="bmpp-subcorpusPane"
+      data-bind="visible: isSubcorpusPaneOn">
+      <h1 class="ui header">Редактирование подкорпуса</h1>
+      <div class="ui grid">
+        <div class="ten wide column">
+          <div class="ui padded segment">
+            <div class="ui top attached large label">
+              Записи
+              <i class="disabled question circle outline icon
+                        bmpp-nearLabelIcon"></i>
+            </div>
+
+            <form class="ui form" style="column-count: 2">
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="0" class="hidden">
+                  <label>Pears 04</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="1" class="hidden">
+                  <label>Pears 22</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="2" class="hidden">
+                  <label>Pears 23</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="3" class="hidden">
+                  <label>Pears 35</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="4" class="hidden">
+                  <label>Pears 37</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="5" class="hidden">
+                  <label>Pears 39</label>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="six wide column">
+          <div class="ui padded segment">
+            <div class="ui top attached large label">
+              Этапы записей
+              <i class="disabled question circle outline icon
+                        bmpp-nearLabelIcon"></i>
+            </div>
+            <form class="ui form">
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="6" class="hidden">
+                  <label>Рассказ</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="7" class="hidden">
+                  <label>Разговор</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" tabindex="8" class="hidden">
+                  <label>Пересказ</label>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+        <div class="sixteen wide column">
+          <button class="ui button">ОК</button>
+          <button class="ui button">Очистить</button>
+          <button class="ui button">Отмена</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bmpp-resultsPane" data-bind="visible: isResultsPaneOn">
+      <div class="bmpp-resultsPane_video">
+        <video id="bmpp-videoPlayer" class="video-js"
+          preload="auto" height="354"
+          controls data-setup='{
+            "techOrder": ["youtube"],
+            "sources": [{
+              "type": "video/youtube",
+              "src": "https://www.youtube.com/watch?v=BlacvxT1Xdk"
+            }]
+          }'>
+        </video>
+        <!--
+        <div class="bmpp-videoChoices">
+          <div>N-eyf</div>
+          <div>N-vi</div>
+          <div>N-ey</div>
+          <div>C-vi</div>
+          <div>R-vi</div>
+          <div>R-ey</div>
+          <div>W-vi</div>
+        </div>
+        -->
+      </div>
+      <div class="bmpp-resultsPane_results ui basic segment">
+      <!-- ko foreach: results -->
+        <p data-bind="click: $parent.playVideo.bind($data)"
+          class="ui vertical segment" style="cursor: pointer">
+          <i class="disabled film icon"></i>
+          <span style="color: green" data-bind="text: edu"></span>
+          <span data-bind="text: transcription"></span>
+        </p>
+      <!-- /ko -->
+      </div>
+    </div>
+
+    <div class="bmpp-resultsOptionsPane"
+      data-bind="visible: isResultsOptionsPaneOn">
+
+      <h1 class="ui header">Настройки поисковой выдачи</h1>
+
+      <p>Люди общаются между собой, используя слова, интонацию, жесты, мимику,
+      движения глаз. Все эти коммуникативные каналы используются одновременно
+      и в связке. Поэтому обычная человеческая коммуникация является
+      мультиканальным процессом. Мы погружены в эту коммуникацию в течение всей
+      жизни, и тем не менее она остается малоисследованным явлением. Этому есть
+      по крайней мере две причины. Во-первых, процесс мультиканальной
+      коммуникации эфемерен и протекает, не оставляя материальных следов.
+      Во-вторых, содержание разных коммуникативных каналов традиционно
+      относится к ведению разных наук, слабо связанных между собой. Так,
+      вербальный компонент исследуется лингвистами, а жесты и движения глаз,
+      прежде всего, психологами. Исследовательская группа, базирующаяся
+      в Институте языкознания РАН, поставила своей задачей комплексное изучение
+      мультиканального дискурса на основе единого теоретического
+      и методологического подхода. В настоящее время (середина 2018 года)
+      в рамках этого подхода сформирован ресурс «Рассказы и разговоры
+      о грушах», включающий серию записей естественной коммуникации между
+      несколькими участниками, в совокупности с вокальной и кинетической
+      аннотацией этих записей. Записи были выполнены при помощи оригинальных
+      технических решений, включающих высококачественную аудиозапись
+      и видеозапись, а также регистрацию движений глаз. Используемая нами
+      вокальная аннотация следует принципам, ранее разработанным для устной
+      речи, см. spokencorpora.ru. Для целей данного проекта были выработаны
+      принципы аннотации кинетического поведения. С результатами исследований
+      на основе корпуса «Рассказы и разговоры о грушаx» можно ознакомиться
+      в наших публикациях и докладах.</p>
+
+      <p>Мультиканальный (мультимодальный) корпус — это сочетание двух
+      компонентов. Во-первых, это совокупность медиафайлов, фиксирующих
+      коммуникацию между людьми. Во-вторых, это аннотация коммуникативных
+      событий, содержащихся в медифайлах. Мультиканальные корпуса различаются
+      по ряду параметров, включая степень естественности материала (от
+      экспериментальных материалов до ничем не ограниченной коммуникации),
+      количество собеседников (два, три и больше) и характер среды (от
+      специально созданной до произвольной). Создаваемый нашей группой корпус
+      «Рассказы и разговоры о грушах» по этим параметрам может быть
+      охарактеризован следующим образом: отчасти структурированный материал
+      с фиксированными ролями коммуникантов, но довольно свободным характером
+      коммуникации; четыре собеседника; специально подготовленная среда.</p>
+
+      <p>Корпус состоит из отдельных коммуникативных эпизодов (так называемых
+      записей), в каждом из которых участвует четыре человека — Рассказчик
+      (Narrator), Комментатор (Commentator), Пересказчик (Reteller) и Слушатель
+      (Listener). Название корпуса обусловлено тем, что двое из участников
+      вначале смотрят известный в лингвистике стимульный материал
+      — шестиминутный фильм, так называемый «Фильм о грушах», созданный
+      в 1970-е гг. в Беркли исследовательской группой под руководством У. Чейфа
+      (см. http://www.linguistics.ucsb.edu/faculty/chafe/pearfilm.htm). В этом
+      фильме, не включающем никаких речевых действий персонажей, показана
+      история о взаимодействии ряда лиц, в том числе садовника, собирающего
+      груши, мальчика, крадущего корзину с грушами, и еще нескольких. Фильм
+      представляет собой хорошо продуманную цепь физических и социальных
+      событий и давно зарекомендовал себя как превосходный способ получать
+      компактные и сравнимые между собой пересказы.</p>
+
+      <p>Фильм просматривается участниками коммуникации, которые в дальнейшем
+      выполняют роли Рассказчика и Комментатора. На рисунке можно видеть общий
+      дизайн ситуации, в которой происходит коммуникация.</p>
+
+      <p>Рассказчик рассказывает Пересказчику содержание фильма в режиме
+      монолога. Затем наступает интерактивный этап, в течение которого
+      Комментатор дополняет или уточняет рассказ, а Пересказчик задает вопросы
+      обоим собеседникам, видевшим фильм. После этого появляется Слушатель,
+      и Пересказчик пересказывает ему фильм, опять в режиме монолога. В конце
+      Слушатель должен письменно записать еще один, вторичный, пересказ фильма.
+      Два последних этапа необходимы для того, чтобы мотивировать всех
+      участников к полноценной и осмысленной коммуникации.</p>
+
+      <p>Корпус «Рассказы и разговоры о грушах» состоит из двух частей. Первая
+      часть была собрана летом 2015 г.; она включает 24 записи общей
+      длительностью около 9 часов, средней длительностью одной записи 23 минуты
+      с разбросом от 12 до 38 минут и объемом около 100 тыс. словоупотреблений;
+      в записях в общей сложности приняли участие 96 человек от 18 до 36 лет,
+      включая 34 мужчины и 62 женщины. Вторая часть корпуса была собрана летом
+      2017 г.; она включает 16 записей общей длительностью около 6 часов,
+      средней длительностью одной записи 21 минута с разбросом от 8 до 41 минут
+      и объемом около 60 тыс. словоупотреблений; в записях в общей сложности
+      приняли участие 64 человека от 18 до 36 лет, включая 16 мужчин и 48
+      женщин.</p>
+
+    </div>
+
+  </div>
+</div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="semantic/semantic.min.js" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"
+      crossorigin="anonymous"></script>
+    <script src="https://vjs.zencdn.net/7.2.3/video.js"></script>
+    <script src="js/libs/videojs-youtube.min.js"></script>
+    <script src="js/libs/svg.min.js"></script>
+    <script src="js/spa.js"></script>
+  </body>
+</html>

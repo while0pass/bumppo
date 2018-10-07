@@ -1,0 +1,8 @@
+build/**
+!build/index.html
+
+node_modules
+semantic
+
+npm-debug.log
+yarn-error.log
