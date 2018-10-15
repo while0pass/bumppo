@@ -46,21 +46,8 @@
   </div>
   <div class="bmpp-main">
 
-    <div class="bmpp-queryPane" data-bind="visible: isQueryPaneOn">
-      <div id="bmpp-queryTree" class="bmpp-queryTree">
-      </div>
-      <div class="bmpp-query">
-        <div class="n1 bmpp-queryElement ui segment"></div>
-        <div class="bmpp-queryDistance ui secondary segment"></div>
-        <div class="n2 bmpp-queryElement ui segment"></div>
-        <div class="bmpp-queryDistance ui secondary segment"></div>
-        <div class="n3 bmpp-queryElement ui segment"></div>
-        <div class="bmpp-queryDistance ui secondary segment"></div>
-        <div class="n4 bmpp-queryElement ui segment"></div>
-        <div class="bmpp-queryDistance ui secondary segment"></div>
-        <div class="n5 bmpp-queryElement ui segment"></div>
-      </div>
-    </div>
+    <query-pane params="queryTree: queryTree"
+      data-bind="visible: isQueryPaneOn"></query-pane>
 
     <div class="bmpp-subcorpusPane"
       data-bind="visible: isSubcorpusPaneOn">
@@ -162,7 +149,7 @@
             "techOrder": ["youtube"],
             "sources": [{
               "type": "video/youtube",
-              "src": "https://www.youtube.com/watch?v=BlacvxT1Xdk"
+              "src": "https://www.youtube.com/embed/BlacvxT1Xdk?rel=0&modestbranding=1"
             }]
           }'>
         </video>

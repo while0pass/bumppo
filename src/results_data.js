@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default [
   {"start": 2.2, "end": 3.74, "edu": "N-vE002", "transcription": "Годов \семидесятых я думаю.", "comment": ""},
   {"start": 6.01, "end": 8.49, "edu": "N-vE005", "transcription": "(ˀ 0.06) (ɐ 0.53) Мы видим˗м сельский /–пейзаж,,,", "comment": ""},
