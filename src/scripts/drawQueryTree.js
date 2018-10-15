@@ -62,7 +62,10 @@ export class RelationLine {
         b1 = r * 0.5,
         b2 = relationsElementHeight,
         s = r * 1,
-        l = r * 1.3,
+        m1 = r * 1.3,
+        m2 = r * 0.5,
+        l1 = (level < 3) ? level : 2,
+        l2 = (level < 3) ? 0 : level - 2,
         c = r * 3,
         d = r * 4.5,
         path;
@@ -74,10 +77,10 @@ export class RelationLine {
       path = `M ${s1.cx()} ${s1.cy()+r}
               V ${s1.cy()+r+b1}
               C ${s1.cx()} ${s1.cy()+r+b1+c}
-                ${s1.cx()-s-l*level} ${s1.cy()+r+b1+d-c}
-                ${s1.cx()-s-l*level} ${s1.cy()+r+b1+d}
+                ${s1.cx()-s-m1*l1-m2*l2} ${s1.cy()+r+b1+d-c}
+                ${s1.cx()-s-m1*l1-m2*l2} ${s1.cy()+r+b1+d}
               V ${s2.cy()-r-b2-d}
-              C ${s2.cx()-s-l*level} ${s2.cy()-r-b2-d+c}
+              C ${s2.cx()-s-m1*l1-m2*l2} ${s2.cy()-r-b2-d+c}
                 ${s2.cx()} ${s2.cy()-r-b2-c}
                 ${s2.cx()} ${s2.cy()-r-b2}
               V ${s2.cy()-r}`;
