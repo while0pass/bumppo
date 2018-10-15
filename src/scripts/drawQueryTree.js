@@ -55,12 +55,12 @@ export class RelationLine {
     }
   }
 
-  static calculatePath(slug1, slug2, level) {
+  static calculatePath(slug1, slug2, level, relationsElementHeight) {
     let s1 = slug1.svg,
         s2 = slug2.svg,
         r = circRadius,
         b1 = r * 0.5,
-        b2 = r * 4,
+        b2 = relationsElementHeight,
         s = r * 1,
         l = r * 1.3,
         c = r * 3,
@@ -88,9 +88,10 @@ export class RelationLine {
   redrawLine() {
     let slug1 = this.n1 && this.n1.svgSlug,
         slug2 = this.n2 && this.n2.svgSlug,
-        level = this.n2 && this.n2.level;
+        level = this.n2 && this.n2.level,
+        rh = this.element.height();
     if (slug1 && slug2 && level) {
-      let path = RelationLine.calculatePath(slug1, slug2, level());
+      let path = RelationLine.calculatePath(slug1, slug2, level(), rh);
       this.svg.plot(path);
     }
   }
