@@ -96,7 +96,7 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
 
 .bmpp-query {
   max-width: 70em;
-  padding: 3em 1em 0 0;
+  padding: 3em 7em 0 0;
   flex: 1 0 auto;
   order: 1;
 }
@@ -109,6 +109,28 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
 .bmpp-queryElement {
   min-height: 10em;
 }
+
+.bmpp-queryTreeHandles {
+  position: absolute;
+  right: auto;
+  left: 100%;
+  width: 6em;
+  padding-left: 1em;
+
+  & .ui.icon {
+    cursor: pointer;
+  }
+}
+
+.bmpp-queryDistances {
+  margin: 1em auto !important;
+
+  &--toOtherElement {
+    margin-top: 3em !important;
+  }
+}
+
 .bmpp-queryDistance {
   min-height: 4em;
 }
+

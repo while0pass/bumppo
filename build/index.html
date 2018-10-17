@@ -46,8 +46,9 @@
   </div>
   <div class="bmpp-main">
 
-    <query-pane params="queryTree: queryTree"
-      data-bind="visible: isQueryPaneOn"></query-pane>
+    <!-- ko if: isQueryPaneOn -->
+    <query-pane params="queryTree: queryTree"></query-pane>
+    <!-- /ko -->
 
     <div class="bmpp-subcorpusPane"
       data-bind="visible: isSubcorpusPaneOn">

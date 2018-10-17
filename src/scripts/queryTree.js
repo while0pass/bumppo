@@ -6,16 +6,13 @@ export class treeNode {
     this.childNodes = ko.observableArray([]);
     this.relationsToParentNode = ko.observableArray([]);
 
-    if (parentNode !== null) {
-      this.addRelation();
-    }
-
-    this.depth = ko.observable(parentNode && parentNode.depth() + 1 || 0);
+    this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
     this.serialNumber = ko.observable(0);
 
-    this.svgSlug = null;
-    this.svgRelationLine = null;
+    if (parentNode !== null) {
+      this.addRelation();
+    }
   }
   addChild() {
     var child = new treeNode(this);
@@ -24,6 +21,9 @@ export class treeNode {
   addRelation() {
     this.relationsToParentNode.push(new nodesRelation(this.parentNode, this));
   }
+  removeRelation(relation) {
+    this.relationsToParentNode.remove(relation);
+  }
   seppuku() {
     for (let childNode of this.childNodes()) {
       childNode.seppuku();
@@ -31,17 +31,6 @@ export class treeNode {
     this.relationsToParentNode.removeAll();
     this.childNodes.removeAll();
     this.parentNode.childNodes.remove(this);
-  }
-  redraw() {
-    if (this.svgSlug) {
-      this.svgSlug.position();
-    }
-    for (let childNode of this.childNodes()) {
-      childNode.redraw();
-    }
-    if (this.svgRelationLine) {
-      this.svgRelationLine.redrawLine();
-    }
   }
 }
 

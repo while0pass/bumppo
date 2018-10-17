@@ -45,7 +45,6 @@ function viewModel() {
     var activePane = this.activePane();
     if (activePane) {
       page(`/${Symbol.keyFor(activePane)}`);
-      this.queryTree.redraw();
       videoPlayer.pause();
     }
   });
@@ -66,6 +65,8 @@ function viewModel() {
   tree.childNodes()[1].addChild();
   tree.childNodes()[1].addChild();
   tree.childNodes()[1].addRelation();
+  tree.childNodes()[3].addRelation();
+  tree.childNodes()[3].addRelation();
 
   this.queryTree = tree;
 }
@@ -74,6 +75,7 @@ const vM = new viewModel();
 ko.components.register('query-pane', koQueryPaneComponent);
 ko.components.register('query-node', koQueryNodeComponent);
 ko.components.register('query-node-relations', koQueryNodeRelationsComponent);
+ko.options.deferUpdates = true;
 ko.applyBindings(vM);
 
 // Настройка клиентской маршрутизации
@@ -83,15 +85,7 @@ const queryURL = Symbol.keyFor(vM.queryPane),
       resultsOptionsURL = Symbol.keyFor(vM.resultsOptionsPane);
 
 page.base('/bumppo-ghpages');
-page('/', () => {
-  vM.activePane(vM.queryPane);
-  /*
-  if (!vM.queryTreeInited) {
-    vM.queryTreeInited = true;
-    initializeQueryTree();
-  }
-  */
-});
+page('/', () => { vM.activePane(vM.queryPane); });
 page(`/${queryURL}`, () => { vM.activePane(vM.queryPane); });
 page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
 page(`/${resultsURL}`, () => { vM.activePane(vM.resultsPane); });

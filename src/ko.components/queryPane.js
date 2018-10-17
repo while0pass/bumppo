@@ -1,3 +1,4 @@
+import ko from 'knockout';
 import SVG from 'svg.js';
 import linearizeTree from '../scripts/linearizeTree.js';
 
@@ -8,10 +9,13 @@ const svgDrawElementId = 'svgQueryTree',
     <div class="bmpp-queryTree" id="${ svgDrawElementId }">
     </div>
     <div class="bmpp-query" data-bind="foreach: linearizedQueryTree">
-      <query-node-relations params="node: $data, draw: $parent.svgDraw"
+
+      <query-node-relations params="node: $data, draw: $component.svgDraw"
         data-bind="visible: $data.parentNode">
       </query-node-relations>
-      <query-node params="node: $data, draw: $parent.svgDraw"></query-node>
+
+      <query-node params="node: $data, draw: $component.svgDraw"></query-node>
+
     </div>
   </div>
 
@@ -19,11 +23,47 @@ const svgDrawElementId = 'svgQueryTree',
 
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  var viewModel = {
-    queryTree: params.queryTree,
-    linearizedQueryTree: linearizeTree(params.queryTree, []),
+
+  var redrawTree = (linearizedTree) => {
+    for (let treeNode of linearizedTree) {
+      if (treeNode.svgSlug) {
+        treeNode.svgSlug.position();
+      }
+    }
+    for (let treeNode of linearizedTree.slice(1)) {
+      if (treeNode.svgRelationLine) {
+        treeNode.svgRelationLine.redrawLine();
+      }
+    }
+  };
+
+  var linearizedQueryTree = ko.computed(() => {
+    let tree = linearizeTree(params.queryTree, []);
+    for (let node of tree) {
+      node.childNodes();
+    }
+    return tree;
+  });
+  linearizedQueryTree.subscribe(redrawTree);
+
+  var domObserver = new MutationObserver(function() {
+    if (redrawTree.timeoutID !== undefined) {
+      clearTimeout(redrawTree.timeoutID);
+    }
+    redrawTree.timeoutID = setTimeout(() => {
+      redrawTree(linearizedQueryTree());
+    }, 30);
+    return true;
+  });
+  domObserver.observe(componentInfo.element, { childList: true, subtree: true,
+    attributes: false, characterData: false, attributeOldValue: false,
+    characterDataOldValue: false });
+
+  let viewModel = {
+    linearizedQueryTree: linearizedQueryTree,
     svgDraw: SVG(svgDrawElementId).size('100%', '100%')
   };
+
   return viewModel;
 };
 
