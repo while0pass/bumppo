@@ -106,12 +106,11 @@ export class RelationLine {
     return path;
   }
   drawLine(draw, treeNode) {
+    let path = '';
     if (treeNode.parentNode) {
       let parentSlug = treeNode.parentNode.svgSlug.svg;
-      var path = `M ${parentSlug.cx()} ${parentSlug.cy()+circRadius}
-                  L ${parentSlug.cx()} ${parentSlug.cy()+circRadius}`;
-    } else {
-      var path = '';
+      path = `M ${parentSlug.cx()} ${parentSlug.cy()+circRadius}
+              L ${parentSlug.cx()} ${parentSlug.cy()+circRadius}`;
     }
     return draw.path(path).fill('none').stroke({ color: '#aaa', width: 1 });
   }
