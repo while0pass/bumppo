@@ -84,7 +84,7 @@ const queryURL = Symbol.keyFor(vM.queryPane),
       resultsURL = Symbol.keyFor(vM.resultsPane),
       resultsOptionsURL = Symbol.keyFor(vM.resultsOptionsPane);
 
-page.base('/bumppo-ghpages');
+page.base('/bumppo-ghpages/2');
 page('/', () => { vM.activePane(vM.queryPane); });
 page(`/${queryURL}`, () => { vM.activePane(vM.queryPane); });
 page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
