@@ -31,9 +31,16 @@ function checkboxForm(props) {
       self[prop](!self[prop]());
     }
   };
+  this.clearSelection = () => {
+    for (let prop of props) {
+      self[prop](false);
+    }
+  };
 }
 
 function viewModel() {
+  let self = this;
+
   this.queryPane = Symbol.for('query'),
   this.subcorpusPane = Symbol.for('subcorpus'),
   this.resultsPane = Symbol.for('results'),
@@ -44,23 +51,23 @@ function viewModel() {
   this.activePane = ko.observable();
   this.queryTreeInited = false;
 
-  this.switchOnQueryPane = () => { this.activePane(this.queryPane); };
-  this.switchOnSubcorpusPane = () => { this.activePane(this.subcorpusPane); };
-  this.switchOnResultsPane = () => { this.activePane(this.resultsPane); };
+  this.switchOnQueryPane = () => { self.activePane(self.queryPane); };
+  this.switchOnSubcorpusPane = () => { self.activePane(self.subcorpusPane); };
+  this.switchOnResultsPane = () => { self.activePane(self.resultsPane); };
   this.switchOnResultsOptionsPane = () => {
-    this.activePane(this.resultsOptionsPane); };
+    self.activePane(self.resultsOptionsPane); };
 
   this.isQueryPaneOn = ko.computed(
-    () => this.activePane() === this.queryPane);
+    () => this.activePane() === self.queryPane);
   this.isSubcorpusPaneOn = ko.computed(
-    () => this.activePane() === this.subcorpusPane);
+    () => this.activePane() === self.subcorpusPane);
   this.isResultsPaneOn = ko.computed(
-    () => this.activePane() === this.resultsPane);
+    () => this.activePane() === self.resultsPane);
   this.isResultsOptionsPaneOn = ko.computed(
-    () => this.activePane() === this.resultsOptionsPane);
+    () => this.activePane() === self.resultsOptionsPane);
 
   ko.computed(() => {
-    var activePane = this.activePane();
+    var activePane = self.activePane();
     if (activePane) {
       page(`/${Symbol.keyFor(activePane)}`);
       videoPlayer.pause();
@@ -91,6 +98,10 @@ function viewModel() {
   this.subcorpus = {
     records: new checkboxForm(records),
     recordPhases: new checkboxForm(recordPhases)
+  };
+  this.subcorpusClearSelection = () => {
+    self.subcorpus.records.clearSelection();
+    self.subcorpus.recordPhases.clearSelection();
   };
 }
 const vM = new viewModel();
