@@ -11,16 +11,16 @@ const template = `
 `;
 
 var viewModelFactory = (params, componentInfo) => {
-  let element = $(componentInfo.element);
+  let element = $(componentInfo.element),
+      value = params.value;
   element.checkbox({
-    onChecked: () => { params.value(true); },
-    onUnchecked: () => { params.value(false); }
+    onChange: () => { value(!value()); },
   });
   return {
     element: element,
     label: params.label,
     tabindex: params.tabindex,
-    value: params.value
+    value: value
   };
 };
 
