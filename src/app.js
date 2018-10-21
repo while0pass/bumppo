@@ -10,10 +10,28 @@ import { treeNode } from './scripts/queryTree.js';
 import koQueryPaneComponent from './ko.components/queryPane.js';
 import koQueryNodeComponent from './ko.components/queryNode.js';
 import koQueryNodeRelationsComponent from './ko.components/queryNodeRelations.js';
+import koCheckboxComponent from './ko.components/checkbox.js';
 
 import resultsData from './results_data.js';
 
 var videoPlayer = videojs('bmpp-videoPlayer');
+var records = ['pears04', 'pears22', 'pears23',
+               'pears35', 'pears37', 'pears39'];
+var recordPhases = ['narration', 'dialogue', 'retelling'];
+
+function checkboxForm(props) {
+  let self = this;
+
+  for (let prop of props) {
+    this[prop] = ko.observable(false);
+  }
+
+  this.invertSelection = () => {
+    for (let prop of props) {
+      self[prop](!self[prop]());
+    }
+  };
+}
 
 function viewModel() {
   this.queryPane = Symbol.for('query'),
@@ -69,9 +87,15 @@ function viewModel() {
   tree.childNodes()[3].addRelation();
 
   this.queryTree = tree;
+
+  this.subcorpus = {
+    records: new checkboxForm(records),
+    recordPhases: new checkboxForm(recordPhases)
+  };
 }
 const vM = new viewModel();
 
+ko.components.register('bmpp-checkbox', koCheckboxComponent);
 ko.components.register('query-pane', koQueryPaneComponent);
 ko.components.register('query-node', koQueryNodeComponent);
 ko.components.register('query-node-relations', koQueryNodeRelationsComponent);
@@ -93,7 +117,8 @@ page(`/${resultsOptionsURL}`, () => { vM.activePane(vM.resultsOptionsPane); });
 page({ hashbang: true });
 
 
-$('.ui.checkbox').checkbox();
+$('.icon').popup({ inline: true });
+
 videoPlayer.ready(function () {
   var volume = videoPlayer.volume();
   videoPlayer.volume(0);

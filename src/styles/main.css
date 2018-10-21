@@ -134,3 +134,15 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
   min-height: 4em;
 }
 
+.bmpp-subcorpusForm {
+  height: 12em;
+
+  & header {
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+.ui.popup {
+  min-width: 15em !important;
+}

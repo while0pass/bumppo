@@ -54,50 +54,46 @@
       data-bind="visible: isSubcorpusPaneOn">
       <h1 class="ui header">Редактирование подкорпуса</h1>
       <div class="ui grid">
-        <div class="ten wide column">
-          <div class="ui padded segment">
+        <div class="ten wide column" data-bind="with: subcorpus.records">
+          <div class="ui padded segment bmpp-subcorpusForm">
             <div class="ui top attached large label">
-              Записи
+              <header data-bind="click: invertSelection">Записи</header>
               <i class="disabled question circle outline icon
                         bmpp-nearLabelIcon"></i>
+              <div class="ui basic popup hidden">
+                <p>При выборе одного или нескольких вариантов поиск будет
+                вестись только по указанным записям. В&nbsp;настоящий момент
+                для поиска доступны 3 из 6 записей.</p>
+                <!--
+                <button class="ui mini right floated primary button">ОК</button>
+                -->
+              </div>
             </div>
 
             <form class="ui form" style="column-count: 2">
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="0" class="hidden">
-                  <label>Pears 04</label>
-                </div>
+                <bmpp-checkbox params="value: pears04, label: 'Pears 04',
+                  tabindex: 0"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="1" class="hidden">
-                  <label>Pears 22</label>
-                </div>
+                <bmpp-checkbox params="value: pears22, label: 'Pears 22',
+                  tabindex: 1"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="2" class="hidden">
-                  <label>Pears 23</label>
-                </div>
+                <bmpp-checkbox params="value: pears23, label: 'Pears 23',
+                  tabindex: 2"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="3" class="hidden">
-                  <label>Pears 35</label>
-                </div>
+                <bmpp-checkbox params="value: pears35, label: 'Pears 35',
+                  tabindex: 3"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="4" class="hidden">
-                  <label>Pears 37</label>
-                </div>
+                <bmpp-checkbox params="value: pears37, label: 'Pears 37',
+                  tabindex: 4"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="5" class="hidden">
-                  <label>Pears 39</label>
-                </div>
+                <bmpp-checkbox params="value: pears39, label: 'Pears 39',
+                  tabindex: 5"></bmpp-checkbox>
               </div>
             </form>
 
@@ -105,40 +101,49 @@
         </div>
 
         <div class="six wide column">
-          <div class="ui padded segment">
+          <div class="ui padded segment bmpp-subcorpusForm"
+              data-bind="with: subcorpus.recordPhases">
             <div class="ui top attached large label">
-              Этапы записей
+              <header data-bind="click: invertSelection">
+                Этапы записей
+              </header>
               <i class="disabled question circle outline icon
-                        bmpp-nearLabelIcon"></i>
+                 bmpp-nearLabelIcon"></i>
+              <div class="ui basic popup hidden">
+                <p>
+                При выборе одного или нескольких вариантов поиск будет вестись
+                только по указанным этапам: рассказу, разговору или пересказу
+                (подробнее см. вкладку «Корпус»).
+                </p>
+                <!--
+                <button class="ui mini right floated primary button">ОК</button>
+                -->
+              </div>
             </div>
             <form class="ui form">
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="6" class="hidden">
-                  <label>Рассказ</label>
-                </div>
+                <bmpp-checkbox params="value: narration, label: 'Рассказ',
+                  tabindex: 6"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="7" class="hidden">
-                  <label>Разговор</label>
-                </div>
+                <bmpp-checkbox params="value: dialogue, label: 'Разговор',
+                  tabindex: 7"></bmpp-checkbox>
               </div>
               <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="8" class="hidden">
-                  <label>Пересказ</label>
-                </div>
+                <bmpp-checkbox params="value: retelling, label: 'Пересказ',
+                  tabindex: 8"></bmpp-checkbox>
               </div>
             </form>
 
           </div>
         </div>
-        <div class="sixteen wide column">
-          <button class="ui button">ОК</button>
-          <button class="ui button">Очистить</button>
-          <button class="ui button">Отмена</button>
+
+        <div>
+          <button class="ui small button two wide column">ОК</button>
+          <button class="ui small button three wide column">Очистить</button>
+          <button class="ui small button three wide column">Отмена</button>
         </div>
+
       </div>
     </div>
 
