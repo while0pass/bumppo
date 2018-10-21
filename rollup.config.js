@@ -58,9 +58,10 @@ export default {
         'node_modules/**',
         'src/semantic/**',
       ],
-      ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+      BUMPPO_ENV: JSON.stringify(process.env.BUMPPO_ENV || 'development'),
+      BUMPPO_VERSION: process.env.BUMPPO_VERSION || '',
     }),
-    (process.env.NODE_ENV === 'production' && terser()),
+    (process.env.BUMPPO_ENV === 'production' && terser()),
     copy({
       'node_modules/videojs-youtube/dist/Youtube.min.js':
       'build/js/libs/videojs-youtube.min.js',

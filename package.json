@@ -1,6 +1,6 @@
 {
   "name": "Bumppo",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
@@ -8,11 +8,14 @@
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint",
-    "lintall": "find src/ -name '*.js' | xargs eslint",
-    "liverebuild": "rollup -c --watch",
+    "lint-all": "find src/ -name '*.js' | xargs eslint",
+    "lint-watch": "find src/ -name '*.js' | entr yarn run lint-all",
+    "live-rebuild": "rollup -c --watch",
+    "production": "test -n \"$BUMPPO_VERSION\" && BUMPPO_ENV=production rollup -c || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
+    "rsync": "test -n \"$BUMPPO_VERSION\" && rsync -av build/ ../bumppo-ghpages/$BUMPPO_VERSION || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
     "serve": "lite-server -c lite-server.config.json",
     "test": "echo 'Error: no test specified' && exit 1",
-    "watch": "npm-run-all --parallel liverebuild serve"
+    "watch": "npm-run-all --parallel live-rebuild serve"
   },
   "dependencies": {
     "debug": "^4.0.1",
