@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { Slug } from '../scripts/drawQueryTree.js';
 
 const template = `
@@ -20,8 +21,21 @@ const template = `
 
     </div>
 
-    <a class="ui top attached basic red label"
-      data-bind="visible: node.negative">НЕТ</a>
+    <div class="ui top attached basic red label"
+      data-bind="visible: node.negative">
+      НЕТ
+      <i class="disabled grey question circle outline icon
+        bmpp-nearLabelIcon"></i>
+      <div class="ui basic popup hidden">
+        <header class="ui header">Отрицательное условие</header>
+        <p>При отрицательном условии ищутся контексты, в которых
+        <strong>нет</strong> единиц, обладающих указанными свойствами,
+        и располагающихся на указанном расстоянии. Отрицательное условие всегда
+        является терминальным: к ветке запроса, заканчивающейся этой единицей,
+        нельзя добавить еще одну единицу.</p>
+      </div>
+    </div>
+
   </div>
 
 `;
@@ -29,6 +43,7 @@ const template = `
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node;
   new Slug(params.draw, componentInfo.element, node);
+  $(componentInfo.element).find('.icon').popup({ inline: true });
   return { node: node };
 };
 
