@@ -114,6 +114,7 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
   position: absolute;
   right: auto;
   left: 100%;
+  top: 0.45em;
   width: 6em;
   padding-left: 1em;
 

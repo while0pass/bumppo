@@ -153,8 +153,11 @@
         <video id="bmpp-videoPlayer" class="video-js"
           preload="auto" height="354"
           controls data-setup='{
-            "techOrder": ["youtube"],
+            "techOrder": ["html5", "youtube"],
             "sources": [{
+              "type": "video/mp4",
+              "src": "/Pears04N-vi-lite.mp4"
+            }, {
               "type": "video/youtube",
               "src": "https://www.youtube.com/embed/BlacvxT1Xdk?rel=0&modestbranding=1"
             }]

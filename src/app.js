@@ -85,6 +85,7 @@ function viewModel() {
   tree.addChild();
   tree.addChild();
   tree.addChild();
+  tree.childNodes()[0].addChild(true);
   tree.childNodes()[1].addChild();
   tree.childNodes()[1].addChild();
   tree.childNodes()[1].addChild();

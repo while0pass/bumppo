@@ -3,19 +3,25 @@ import { Slug } from '../scripts/drawQueryTree.js';
 const template = `
 
   <div class="bmpp-queryElement ui segment">
+
     <div class="bmpp-queryTreeHandles">
 
       <i class="ui disabled green down arrow icon"
-        data-bind="click: node.addChild.bind(node)"></i>
+        data-bind="click: node.addChild.bind(node, false),
+          visible: !node.negative()"></i>
 
       <i class="ui disabled red down arrow icon"
-        data-bind="click: node.addChild.bind(node)"></i>
+        data-bind="click: node.addChild.bind(node, true),
+          visible: !node.negative()"></i>
 
       <i class="ui disabled grey close icon"
         data-bind="visible: node.depth() > 0,
           click: node.seppuku.bind(node)"></i>
 
     </div>
+
+    <a class="ui top attached basic red label"
+      data-bind="visible: node.negative">НЕТ</a>
   </div>
 
 `;

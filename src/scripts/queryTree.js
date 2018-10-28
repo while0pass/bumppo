@@ -1,7 +1,7 @@
 import ko from 'knockout';
 
 export class treeNode {
-  constructor(parentNode=null) {
+  constructor(parentNode=null, negative=false) {
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
     this.relationsToParentNode = ko.observableArray([]);
@@ -9,13 +9,14 @@ export class treeNode {
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
     this.serialNumber = ko.observable(0);
+    this.negative = ko.observable(negative);
 
     if (parentNode !== null) {
       this.addRelation();
     }
   }
-  addChild() {
-    var child = new treeNode(this);
+  addChild(negative=false) {
+    var child = new treeNode(this, negative=negative);
     this.childNodes.push(child);
   }
   addRelation() {
