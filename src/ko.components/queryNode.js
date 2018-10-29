@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import jQuery from 'jquery';
 import { Slug } from '../scripts/drawQueryTree.js';
 
 const template = `
@@ -28,11 +28,13 @@ const template = `
         bmpp-nearLabelIcon"></i>
       <div class="ui basic popup hidden">
         <header class="ui header">Отрицательное условие</header>
+
         <p>При отрицательном условии ищутся контексты, в которых
         <strong>нет</strong> единиц, обладающих указанными свойствами,
-        и располагающихся на указанном расстоянии. Отрицательное условие всегда
-        является терминальным: к ветке запроса, заканчивающейся этой единицей,
-        нельзя добавить еще одну единицу.</p>
+        и располагающихся на указанном расстоянии.</p>
+
+        <p>Отрицательное условие всегда является терминальным: к ветке запроса,
+        заканчивающейся этой единицей, нельзя добавить еще одну единицу.</p>
       </div>
     </div>
 
@@ -43,7 +45,9 @@ const template = `
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node;
   new Slug(params.draw, componentInfo.element, node);
-  $(componentInfo.element).find('.icon').popup({ inline: true });
+  jQuery(document).ready(() => {
+    jQuery(componentInfo.element).find('.icon').popup({ inline: true });
+  });
   return { node: node };
 };
 

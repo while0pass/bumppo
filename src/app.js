@@ -129,7 +129,7 @@ page(`/${resultsOptionsURL}`, () => { vM.activePane(vM.resultsOptionsPane); });
 page({ hashbang: true });
 
 
-$('.icon').popup({ inline: true });
+$('.question.icon').popup({ inline: true });
 
 videoPlayer.ready(function () {
   var volume = videoPlayer.volume();

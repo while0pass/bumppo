@@ -16,7 +16,7 @@ export class treeNode {
     }
   }
   addChild(negative=false) {
-    var child = new treeNode(this, negative=negative);
+    var child = new treeNode(this, negative);
     this.childNodes.push(child);
   }
   addRelation() {

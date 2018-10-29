@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import jQuery from 'jquery';
 import ko from 'knockout';
 
 const circRadius = 15,
@@ -42,8 +42,8 @@ export class Slug {
   }
   position() {
     let x = circLeftOffset,
-        y1 = $(this.element).offset().top,
-        y2 = $(this.element).parent().offset().top,
+        y1 = jQuery(this.element).offset().top,
+        y2 = jQuery(this.element).parent().offset().top,
         y = Math.abs(y1 - y2) + circTopOffset;
     this.svg.x(x).y(y);
   }
@@ -118,7 +118,7 @@ export class RelationLine {
     let slug1 = this.treeNode.parentNode && this.treeNode.parentNode.svgSlug,
         slug2 = this.treeNode.svgSlug,
         level = this.treeNode.level,
-        rh = $(this.element).height();
+        rh = jQuery(this.element).height();
     if (slug1 && slug2 && level) {
       let path = RelationLine.calculatePath(slug1, slug2, level(), rh);
       this.svg.plot(path);

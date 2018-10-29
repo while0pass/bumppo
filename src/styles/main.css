@@ -121,18 +121,61 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
   & .ui.icon {
     cursor: pointer;
   }
+  &.bmpp-queryTreeHandles2 {
+    left: calc(100% + 1em);
+  }
 }
 
 .bmpp-queryDistances {
   margin: 1em auto !important;
+  position: relative;
 
   &--toOtherElement {
     margin-top: 3em !important;
   }
-}
 
-.bmpp-queryDistance {
-  min-height: 4em;
+  .bmpp-queryDistance {
+    min-height: 4em;
+
+    & .ui.form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+
+      & .field {
+        margin-right: 1em;
+        &.bmpp-number {
+          min-width: 8em !important;
+          max-width: 9em !important;
+        }
+        &.bmpp-units {
+          width: 8em !important;
+        }
+        &.bmpp-points {
+          width: 14em !important;
+        }
+      }
+
+      & .bmpp-units .text {
+        border-bottom: 1px grey dashed !important;
+      }
+
+      & input[type="number"] {
+        width: 6em !important;
+      }
+
+      & .ui.selection.dropdown {
+        height: 2em !important;
+        padding-top: .5em !important;
+      }
+    }
+  }
+
+  .bmpp-queryDistanceHelp {
+    position: absolute;
+    top: 1em !important;
+    right: .5em !important;
+  }
 }
 
 .bmpp-subcorpusForm {
@@ -145,5 +188,5 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
 }
 
 .ui.popup {
-  min-width: 15em !important;
+  min-width: 20em !important;
 }
