@@ -105,8 +105,6 @@ var activateUI = (element) => {
   jQuery(document).ready(() => {
     jQuery(element)
       .find('.ui.dropdown').dropdown();
-    jQuery(element)
-      .find('.question.icon').popup({ inline: true });
   });
 };
 

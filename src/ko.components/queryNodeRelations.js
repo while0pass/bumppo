@@ -44,6 +44,10 @@ var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
       element = componentInfo.element;
   new RelationLine(params.draw, element, node);
+  jQuery(document).ready(() => {
+    jQuery(element)
+      .find('.question.icon').popup({ inline: true });
+  });
   return { relations: node.relationsToParentNode, node: node };
 };
 
