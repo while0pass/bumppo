@@ -81,21 +81,7 @@ function viewModel() {
     videoPlayer.play();
   };
 
-  let tree = new treeNode();
-  tree.addChild();
-  tree.addChild();
-  tree.addChild();
-  tree.addChild();
-  tree.childNodes()[0].addChild(true);
-  tree.childNodes()[1].addChild();
-  tree.childNodes()[1].addChild();
-  tree.childNodes()[1].addChild();
-  tree.childNodes()[1].addChild();
-  tree.childNodes()[1].addRelation();
-  tree.childNodes()[3].addRelation();
-  tree.childNodes()[3].addRelation();
-
-  this.queryTree = tree;
+  this.queryTree = new treeNode();
 
   this.subcorpus = {
     records: new checkboxForm(records),
