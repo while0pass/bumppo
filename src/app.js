@@ -16,25 +16,46 @@ import koCheckboxComponent from './ko.components/checkbox.js';
 import resultsData from './results_data.js';
 
 var videoPlayer = videojs('bmpp-videoPlayer');
-var records = ['pears04', 'pears22', 'pears23',
-               'pears35', 'pears37', 'pears39'];
-var recordPhases = ['narration', 'dialogue', 'retelling'];
+var records = [
+  { id: 'pears04',
+    label: 'Pears 04' },
+  { id: 'pears22',
+    label: 'Pears 22' },
+  { id: 'pears23',
+    label: 'Pears 23' },
+  { id: 'pears35',
+    label: 'Pears 35' }];
 
-function checkboxForm(props) {
+var recordPhases = [
+  { id: 'narration',
+    label: 'Рассказ' },
+  { id: 'dialogue',
+    label: 'Разговор' },
+  { id: 'retelling',
+    label: 'Пересказ' }];
+
+function CheckboxField(field) {
+  this.value = ko.observable(false);
+  this.id = field.id;
+  this.label = field.label;
+}
+
+function CheckboxForm(fields) {
   let self = this;
+  this.fields = [];
 
-  for (let prop of props) {
-    this[prop] = ko.observable(false);
+  for (let field of fields) {
+    this.fields.push(new CheckboxField(field));
   }
 
   this.invertSelection = () => {
-    for (let prop of props) {
-      self[prop](!self[prop]());
+    for (let field of self.fields) {
+      field.value(!field.value());
     }
   };
   this.clearSelection = () => {
-    for (let prop of props) {
-      self[prop](false);
+    for (let field of self.fields) {
+      field.value(false);
     }
   };
 }
@@ -84,8 +105,8 @@ function viewModel() {
   this.queryTree = new treeNode();
 
   this.subcorpus = {
-    records: new checkboxForm(records),
-    recordPhases: new checkboxForm(recordPhases)
+    records: new CheckboxForm(records),
+    recordPhases: new CheckboxForm(recordPhases)
   };
   this.subcorpusClearSelection = () => {
     self.subcorpus.records.clearSelection();

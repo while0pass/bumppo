@@ -57,7 +57,9 @@
         <div class="ten wide column" data-bind="with: subcorpus.records">
           <div class="ui padded segment bmpp-subcorpusForm">
             <div class="ui top attached large label">
-              <header data-bind="click: invertSelection">Записи</header>
+              <header data-bind="click: invertSelection">
+                Записи
+              </header>
               <i class="disabled question circle outline icon
                         bmpp-nearLabelIcon"></i>
               <div class="ui basic popup hidden">
@@ -70,39 +72,21 @@
               </div>
             </div>
 
-            <form class="ui form" style="column-count: 2">
+            <form class="ui form" style="column-count: 2; column-fill: auto;
+              top: 1.5em; bottom: 1em; left: 1.5em; right: 1em;
+              position: absolute;"
+              data-bind="foreach: fields">
               <div class="field">
-                <bmpp-checkbox params="value: pears04, label: 'Pears 04',
-                  tabindex: 0"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: pears22, label: 'Pears 22',
-                  tabindex: 1"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: pears23, label: 'Pears 23',
-                  tabindex: 2"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: pears35, label: 'Pears 35',
-                  tabindex: 3"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: pears37, label: 'Pears 37',
-                  tabindex: 4"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: pears39, label: 'Pears 39',
-                  tabindex: 5"></bmpp-checkbox>
+                <bmpp-checkbox params="value: value, label: label,
+                  tabindex: $index"></bmpp-checkbox>
               </div>
             </form>
 
           </div>
         </div>
 
-        <div class="six wide column">
-          <div class="ui padded segment bmpp-subcorpusForm"
-              data-bind="with: subcorpus.recordPhases">
+        <div class="six wide column" data-bind="with: subcorpus.recordPhases">
+          <div class="ui padded segment bmpp-subcorpusForm">
             <div class="ui top attached large label">
               <header data-bind="click: invertSelection">
                 Этапы записей
@@ -120,18 +104,11 @@
                 -->
               </div>
             </div>
-            <form class="ui form">
+            <form class="ui form" data-bind="foreach: fields">
               <div class="field">
-                <bmpp-checkbox params="value: narration, label: 'Рассказ',
-                  tabindex: 6"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: dialogue, label: 'Разговор',
-                  tabindex: 7"></bmpp-checkbox>
-              </div>
-              <div class="field">
-                <bmpp-checkbox params="value: retelling, label: 'Пересказ',
-                  tabindex: 8"></bmpp-checkbox>
+                <bmpp-checkbox params="value: value, label: label,
+                  tabindex: $index() + $root.subcorpus.records.fields.length">
+                </bmpp-checkbox>
               </div>
             </form>
 
