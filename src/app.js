@@ -24,7 +24,13 @@ var records = [
   { id: 'pears23',
     label: 'Pears 23' },
   { id: 'pears35',
-    label: 'Pears 35' }];
+    label: 'Pears 35' },
+  { id: 'pears37',
+    label: 'Pears 37',
+    disabled: true },
+  { id: 'pears39',
+    label: 'Pears 39',
+    disabled: true }];
 
 var recordPhases = [
   { id: 'narration',
@@ -38,6 +44,7 @@ function CheckboxField(field) {
   this.value = ko.observable(false);
   this.id = field.id;
   this.label = field.label;
+  this.disabled = field.disabled;
 }
 
 function CheckboxForm(fields) {
@@ -50,12 +57,12 @@ function CheckboxForm(fields) {
 
   this.invertSelection = () => {
     for (let field of self.fields) {
-      field.value(!field.value());
+      if (!field.disabled) field.value(!field.value());
     }
   };
   this.clearSelection = () => {
     for (let field of self.fields) {
-      field.value(false);
+      if (!field.disabled) field.value(false);
     }
   };
 }

@@ -1,4 +1,5 @@
 $bmppBorderColor: rgba(34, 36, 38, .15);
+$green: #21ba45;
 
 .bmpp-curtains {
   background-color: white;
@@ -25,24 +26,26 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
   overflow-y: hidden;
 
   &_menuItem {
-    padding: 1em !important;
+    user-select: none;
+    padding: 1em 1.5em!important;
     border-bottom: 1px solid $bmppBorderColor;
     cursor: pointer;
-  }
-  &_menuItem-noPadding {
-    padding: 0 !important;
+    &--current {
+      border-right: 0.3em solid $green!important;
+      color: $green;
+      font-weight: bold;
+    }
+    & .icon {
+      position: absolute;
+      right: 1em;
+    }
+    &.disabled {
+      cursor: auto;
+    }
   }
   &_searchButton {
     margin-left: 0.3em !important;
   }
-}
-
-.bmpp-queryMap {
-  margin: -1em 0 0 !important;
-  width: 100%;
-  height: 15em;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==');
-  background-repeat: repeat;
 }
 
 .bmpp-main {
