@@ -18,6 +18,11 @@ var viewModelFactory = (params, componentInfo) => {
     element.checkbox({
       onChange: () => { value(!value()); }
     });
+  } else {
+    if (params.disabledTooltip) {
+      element.attr('data-tooltip', params.disabledTooltip);
+      element.attr('data-position', 'right center');
+    }
   }
   return {
     label: params.label,

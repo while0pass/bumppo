@@ -68,7 +68,8 @@
               data-bind="foreach: fields">
               <div class="field">
                 <bmpp-checkbox params="value: value, label: label,
-                  disabled: disabled, tabindex: $index"></bmpp-checkbox>
+                  disabled: disabled, tabindex: $index,
+                  disabledTooltip: 'Запись пока не готова'"></bmpp-checkbox>
               </div>
             </form>
 
@@ -84,11 +85,9 @@
               <i class="disabled question circle outline icon
                  bmpp-nearLabelIcon"></i>
               <div class="ui basic popup hidden">
-                <p>
-                При выборе одного или нескольких вариантов поиск будет вестись
-                только по указанным этапам: рассказу, разговору или пересказу
-                (подробнее см. вкладку «Корпус»).
-                </p>
+                <p>При выборе одного или нескольких вариантов поиск будет
+                вестись только по указанным этапам: рассказу, разговору или
+                пересказу.</p>
               </div>
             </div>
             <form class="ui form" data-bind="foreach: fields">
