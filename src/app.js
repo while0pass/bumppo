@@ -68,7 +68,7 @@ function viewModel() {
   };
 }
 const vM = new viewModel();
-ko = initKnockout(ko, vM);
+initKnockout(ko, vM);
 
 // Настройка клиентской маршрутизации
 const queryURL = Symbol.keyFor(vM.queryPane),

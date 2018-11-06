@@ -10,6 +10,7 @@ export class treeNode {
     this.level = ko.observable(0);
     this.serialNumber = ko.observable(0);
     this.negative = ko.observable(negative);
+    this.unitType = ko.observable(null);
 
     if (parentNode !== null) {
       this.addRelation();

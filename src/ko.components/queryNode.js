@@ -5,20 +5,23 @@ const template = `
 
   <div class="bmpp-queryElement ui segment">
 
-    <div class="bmpp-queryTreeHandles">
+    <div class="bmpp-queryTreeHandles"
+      data-bind="visible: node.unitType() !== null">
 
       <i class="ui disabled green down arrow icon"
+        title="Добавить единицу поиска"
         data-bind="click: node.addChild.bind(node, false),
           visible: !node.negative()"></i>
 
       <i class="ui disabled red down arrow icon"
+        title="Добавить отрицательную единицу поиска"
         data-bind="click: node.addChild.bind(node, true),
           visible: !node.negative()"></i>
 
       <i class="ui disabled grey close icon"
+        title="Удалить единицу поиска со всеми зависимостями"
         data-bind="visible: node.depth() > 0,
           click: node.seppuku.bind(node)"></i>
-
     </div>
 
     <div class="ui top attached basic red label"
@@ -37,6 +40,8 @@ const template = `
         заканчивающейся этой единицей, нельзя добавить еще одну единицу.</p>
       </div>
     </div>
+
+    <search-unit-choice params="node: node"></search-unit-choice>
 
   </div>
 
