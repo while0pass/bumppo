@@ -1,6 +1,7 @@
 var data = [
   { id: 'voc',
-    name: 'Вокальный канал',
+    name: 'Вокальные действия',
+    unitsHeader: 'Вокальные единицы',
     color: 'red',
     types: [
       { name: 'Верхний уровень сегментации',
@@ -26,7 +27,8 @@ var data = [
     ]},
 
   { id: 'ocul',
-    name: 'Окуломоторный канал',
+    name: 'Направление взора',
+    unitsHeader: 'Единицы окуломоторного канала',
     color: 'orange',
     types: [
       { name: 'Фиксация', id: 'u_oFixation' },
@@ -34,12 +36,14 @@ var data = [
 
   { id: 'facial',
     name: 'Мимика',
+    unitsHeader: 'Единицы канала мимики',
     color: 'yellow',
     disabled: true,
     types: []},
 
   { id: 'ceph',
     name: 'Жесты головы',
+    unitsHeader: 'Единицы канала мимики',
     color: 'green',
     types: [
       { name: 'Базовый уровень сегментации',
@@ -57,6 +61,7 @@ var data = [
 
   { id: 'manu',
     name: 'Жесты рук',
+    unitsHeader: 'Единицы мануальной жестикуляции',
     color: 'teal',
     types: [
       { name: 'Первый уровень сегментации',
@@ -81,12 +86,14 @@ var data = [
 
   { id: 'torso',
     name: 'Движения тела',
+    unitsHeader: 'Единицы жестикуляции тела',
     color: 'blue',
     disabled: true,
     types: []},
 
   { id: 'prox',
     name: 'Проксемика',
+    unitsHeader: 'Единицы проксемики',
     color: 'violet',
     disabled: true,
     types: []},
@@ -119,8 +126,11 @@ class UnitGroup {
 class Channel {
   constructor(data) {
     this.id = data.id;
-    this.name = data.name;
+    this.name = data.name || '';
+    this.unitsHeader = data.unitsHeader || '';
     this.color = data.color;
+    this.disabled = data.disabled;
+
     this.groups = [];
     this.units = [];
 
