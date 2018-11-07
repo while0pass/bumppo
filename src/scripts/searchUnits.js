@@ -133,6 +133,14 @@ class Channel {
     this.color = data.color;
     this.disabled = data.disabled;
 
+    this.tooltip = (() => {
+      if (this.disabled) {
+        return `${this.name}\nАннотация пока не готова`;
+      } else {
+        return this.name;
+      }
+    })();
+
     this.groups = [];
     this.units = [];
 
@@ -149,11 +157,10 @@ class Channel {
   }
 }
 
-let disabledChannelTooltip = 'Аннотация пока не готова',
-    channels = [];
+let channels = [];
 
 for (let x of data) {
   channels.push(new Channel(x));
 }
 
-export { channels, disabledChannelTooltip };
+export { channels };

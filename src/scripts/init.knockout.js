@@ -12,7 +12,6 @@ export default function init(ko, viewModel) {
   ko.components.register('query-node-relations', QueryNodeRelations);
   ko.components.register('query-node-relation', QueryNodeRelation);
   ko.components.register('search-unit-choice', SearchUnitChoice);
-  ko.options.deferUpdates = true;
   ko.applyBindings(viewModel);
   return ko;
 }
