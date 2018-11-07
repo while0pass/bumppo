@@ -91,8 +91,10 @@ const template = `
 
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
-      activeChannel = ko.observable(null),
-      editChannel = ko.observable(true);
+      prechoosenUnit = node.unitType(),
+      prechoosenChannel = prechoosenUnit && prechoosenUnit.channel,
+      activeChannel = ko.observable(prechoosenChannel || null),
+      editChannel = ko.observable(prechoosenUnit ? false : true);
 
   jQuery(document).ready(() => {
     jQuery(componentInfo.element).find('.icon').popup({ inline: true });
