@@ -16,7 +16,6 @@ const template = `
 
     <i class="ui disabled grey question circle outline icon
               bmpp-queryDistanceHelp"></i>
-
     <div class="ui basic popup hidden">
       <header class="ui header">Условие на расстояние</header>
 

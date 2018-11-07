@@ -2,10 +2,10 @@ import jQuery from 'jquery';
 import ko from 'knockout';
 import { channels, disabledChannelTooltip } from '../scripts/searchUnits.js';
 
-const units_template = `
+const unitsTemplate = `
 
   <ul class="bmpp-units" data-bind="foreach: units">
-    <li data-bind="click: function() { $component.node.unitType($data); },
+    <li data-bind="click: $component.chooseUnit.bind($data),
                    css: { active: $component.node.unitType() &&
                                   $component.node.unitType().id === id }">
       <span class="unitSelectionContainer">
@@ -16,25 +16,27 @@ const units_template = `
 
 `;
 
-const template = `
+const unitChoiceTemplate = `
 
-  <i class="disabled grey question circle outline icon bmpp-nearLabelIcon"></i>
-  <div class="ui basic popup hidden">
-    <header class="ui header">Единицы поиска</header>
-    <p>Чтобы выбрать единицу поиска, сначала укажите область разметки
-    в верхнем меню, а затем нажмите на нужный вам тип единицы.</p>
-  </div>
-
-  <div data-bind="foreach: channels">
-    <button class="ui button" style="width: 6em!important"
+  <div>
+    <!-- ko foreach: channels -->
+    <button class="ui button bmpp-channelSlug"
       data-bind="css: buttonCSS, text: id,
         attr: { title: tooltip }, event: { click: activate,
         mouseover: onMouseOver, mouseout: onMouseOut }">
     </button>
+    <!-- /ko -->
+
+    <i class="disabled grey question circle outline icon"></i>
+    <div class="ui basic popup hidden">
+      <header class="ui header">Единицы поиска</header>
+      <p>Чтобы выбрать единицу поиска, сначала укажите область разметки
+      в верхнем меню, а затем нажмите на нужный вам тип единицы.</p>
+    </div>
   </div>
 
   <!-- ko if: activeChannel -->
-  <div data-bind="with: activeChannel" style="margin-top: 1em">
+  <div data-bind="with: activeChannel" style="margin-top: 2em">
     <header class="ui tiny header"
       data-bind="text: unitsHeader"></header>
     <div style="column-count: 2">
@@ -43,13 +45,13 @@ const template = `
       <ul class="bmpp-unitGroups" data-bind="foreach: groups">
         <li>
           <header data-bind="text: name"></header>
-          ${units_template}
+          ${unitsTemplate}
         </li>
       </ul>
       <!-- /ko -->
 
       <!-- ko if: units -->
-      ${units_template}
+      ${unitsTemplate}
       <!-- /ko -->
 
     </div>
@@ -58,9 +60,39 @@ const template = `
 
 `;
 
+const chosenUnitTemplate = `
+  <div>
+    <!-- ko with: activeChannel -->
+    <button class="ui button bmpp-channelSlug"
+      data-bind="css: buttonCSS, text: id,
+        attr: { title: tooltip }, event: { click: activate,
+        mouseover: onMouseOver, mouseout: onMouseOut }">
+    </button>
+    <!-- /ko -->
+    <span style="padding-left: .5em">Тип единицы:</span>
+    <!-- ko with: node.unitType -->
+      <strong data-bind="text: hasAbbr ? abbr : name"
+        style="padding-left: .5em"></strong>
+    <!-- /ko -->
+  </div>
+`;
+
+const template = `
+
+  <!-- ko if: editChannel -->
+  ${unitChoiceTemplate}
+  <!-- /ko -->
+
+  <!-- ko if: !editChannel() -->
+  ${chosenUnitTemplate}
+  <!-- /ko -->
+
+`;
+
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
-      activeChannel = ko.observable(null);
+      activeChannel = ko.observable(null),
+      editChannel = ko.observable(true);
 
   jQuery(document).ready(() => {
     jQuery(componentInfo.element).find('.icon').popup({ inline: true });
@@ -103,10 +135,17 @@ var viewModelFactory = (params, componentInfo) => {
 
   }
 
+  function chooseUnit() {
+    node.unitType(this);
+    editChannel(false);
+  }
+
   return {
     node: node,
     channels: channels,
-    activeChannel: activeChannel
+    activeChannel: activeChannel,
+    editChannel: editChannel,
+    chooseUnit: chooseUnit
   };
 };
 

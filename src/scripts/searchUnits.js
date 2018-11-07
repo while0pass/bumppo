@@ -6,7 +6,7 @@ var data = [
     types: [
       { name: 'Верхний уровень сегментации',
         types: [
-          { name: 'Элементарная дискурсивная единица (ЭДЕ)', id: 'u_vEDU' },
+          { name: 'Элементарная дискурсивная единица (ЭДЕ)', abbr: 'ЭДЕ', id: 'u_vEDU' },
           { name: 'Изолированный смех', id: 'u_vLaughLine'},
           { name: 'Изолированный кластер заполненных пауз', id: 'u_vFilledLine' },
           { name: 'Самостоятельное неречевое вокальное явление', id: 'u_vNonVerbalLine' },
@@ -105,6 +105,8 @@ class Unit {
     this.name = data.name;
     this.channel = channel;
     this.group = group;
+    this.hasAbbr = Boolean(data.abbr);
+    this.abbr = data.abbr || '';
   }
 }
 
