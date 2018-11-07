@@ -2,6 +2,16 @@ import jQuery from 'jquery';
 import ko from 'knockout';
 import { channels, disabledChannelTooltip } from '../scripts/searchUnits.js';
 
+const units_template = `
+
+  <ul class="bmpp-units" data-bind="foreach: units">
+    <li data-bind="click: function() { $component.node.unitType($data); }">
+      <span data-bind="text: name"></span>
+    </li>
+  </ul>
+
+`;
+
 const template = `
 
   <i class="disabled grey question circle outline icon bmpp-nearLabelIcon"></i>
@@ -13,11 +23,34 @@ const template = `
 
   <div data-bind="foreach: channels">
     <button class="ui button" style="width: 6em!important"
-      data-bind="css: buttonCSS, text: id, attr: { title: name },
-        event: { click: activate,
-                 mouseover: onMouseOver, mouseout: onMouseOut }">
+      data-bind="css: buttonCSS, text: id,
+        attr: { title: tooltip }, event: { click: activate,
+        mouseover: onMouseOver, mouseout: onMouseOut }">
     </button>
   </div>
+
+  <!-- ko if: activeChannel -->
+  <div data-bind="with: activeChannel" style="margin-top: 1em">
+    <header class="ui tiny header"
+      data-bind="text: unitsHeader"></header>
+    <div style="column-count: 2">
+
+      <!-- ko if: groups -->
+      <ul class="bmpp-unitGroups" data-bind="foreach: groups">
+        <li>
+          <header data-bind="text: name"></header>
+          ${units_template}
+        </li>
+      </ul>
+      <!-- /ko -->
+
+      <!-- ko if: units -->
+      ${units_template}
+      <!-- /ko -->
+
+    </div>
+  </div>
+  <!-- /ko -->
 
 `;
 
@@ -30,8 +63,14 @@ var viewModelFactory = (params, componentInfo) => {
   });
 
   for (let channel of channels) {
+    if (channel.disabled) {
+      channel.tooltip = `${channel.name}\n${disabledChannelTooltip}`;
+    } else {
+      channel.tooltip = channel.name;
+    }
     channel.isActive = ko.computed(function() {
-      return this.id === activeChannel();
+      let aC = activeChannel();
+      return aC && this.id === aC.id;
     }, channel);
     channel.isMouseOver = ko.observable(false);
     channel.onMouseOver = function() {
@@ -41,7 +80,7 @@ var viewModelFactory = (params, componentInfo) => {
       this.isMouseOver(false);
     }.bind(channel);
     channel.activate = function() {
-      activeChannel(this.id);
+      activeChannel(this);
     }.bind(channel);
 
     channel.buttonCSS = ko.computed(function() {

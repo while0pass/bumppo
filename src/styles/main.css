@@ -1,5 +1,6 @@
 $bmppBorderColor: rgba(34, 36, 38, .15);
 $green: #21ba45;
+$blue: #2185d0;
 
 .bmpp-curtains {
   background-color: white;
@@ -192,4 +193,32 @@ $green: #21ba45;
 
 .ui.popup {
   min-width: 20em !important;
+}
+
+.bmpp-unitGroups {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  & li {
+    font-style: italic;
+    margin: 0;
+    break-inside: avoid;
+  }
+}
+
+.bmpp-units {
+  list-style: none;
+  margin: 0.5em 0 1.5em 0.5em;
+  padding: 0;
+  & li {
+    font-style: normal;
+    line-height: 1.5em;
+    cursor: pointer;
+
+    & span {
+      border-bottom: 1px dotted $blue;
+      color: $blue;
+    }
+  }
 }
