@@ -244,3 +244,7 @@ $black: #1c1b1d;
   color: $blue;
   cursor: pointer;
 }
+
+.bmpp-negativeNode {
+  padding-top: 3.4em!important;
+}

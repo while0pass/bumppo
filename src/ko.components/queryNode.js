@@ -3,7 +3,8 @@ import { Slug } from '../scripts/drawQueryTree.js';
 
 const template = `
 
-  <div class="bmpp-queryElement ui segment">
+  <div class="bmpp-queryElement ui segment"
+    data-bind="css: { 'bmpp-negativeNode': node.negative }">
 
     <div class="bmpp-queryTreeHandles">
 
