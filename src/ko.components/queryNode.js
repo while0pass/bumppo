@@ -5,18 +5,17 @@ const template = `
 
   <div class="bmpp-queryElement ui segment">
 
-    <div class="bmpp-queryTreeHandles"
-      data-bind="visible: node.unitType() !== null">
+    <div class="bmpp-queryTreeHandles">
 
       <i class="ui disabled green down arrow icon"
         title="Добавить единицу поиска"
         data-bind="click: node.addChild.bind(node, false),
-          visible: !node.negative()"></i>
+          visible: !node.negative() && node.unitType() !== null"></i>
 
       <i class="ui disabled red down arrow icon"
         title="Добавить отрицательную единицу поиска"
         data-bind="click: node.addChild.bind(node, true),
-          visible: !node.negative()"></i>
+          visible: !node.negative() && node.unitType() !== null"></i>
 
       <i class="ui disabled grey close icon"
         title="Удалить единицу поиска со всеми зависимостями"
