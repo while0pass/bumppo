@@ -209,16 +209,26 @@ $blue: #2185d0;
 
 .bmpp-units {
   list-style: none;
-  margin: 0.5em 0 1.5em 0.5em;
+  margin: 0.5em 0 1.5em;
   padding: 0;
   & li {
     font-style: normal;
     line-height: 1.5em;
     cursor: pointer;
 
-    & span {
+    & .unit {
       border-bottom: 1px dotted $blue;
       color: $blue;
+    }
+    & .unitSelectionContainer {
+      padding: 0 0.5em 0.2em;
+    }
+    &.active .unit {
+      border-bottom: none;
+      color: white;
+    }
+    &.active .unitSelectionContainer {
+      background-color: $blue;
     }
   }
 }

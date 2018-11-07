@@ -5,8 +5,12 @@ import { channels, disabledChannelTooltip } from '../scripts/searchUnits.js';
 const units_template = `
 
   <ul class="bmpp-units" data-bind="foreach: units">
-    <li data-bind="click: function() { $component.node.unitType($data); }">
-      <span data-bind="text: name"></span>
+    <li data-bind="click: function() { $component.node.unitType($data); },
+                   css: { active: $component.node.unitType() &&
+                                  $component.node.unitType().id === id }">
+      <span class="unitSelectionContainer">
+        <span class="unit" data-bind="text: name"></span>
+      </span>
     </li>
   </ul>
 
