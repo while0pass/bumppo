@@ -74,6 +74,12 @@ const chosenUnitTemplate = `
       <strong data-bind="text: hasAbbr ? abbr : name"
         style="padding-left: .5em"></strong>
     <!-- /ko -->
+    <div style="margin-top: 4em">
+      <span data-bind="click: function(){ editChannel(true); }"
+          class="bmpp-editUrl">
+        Изменить тип единицы
+      </span>
+    </div>
   </div>
 `;
 

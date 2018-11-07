@@ -236,3 +236,10 @@ $blue: #2185d0;
 .bmpp-channelSlug {
   width: 6em!important;
 }
+
+.bmpp-editUrl {
+  font-size: smaller;
+  border-bottom: 1px dotted $blue;
+  color: $blue;
+  cursor: pointer;
+}
