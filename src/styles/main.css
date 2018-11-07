@@ -1,6 +1,8 @@
 $bmppBorderColor: rgba(34, 36, 38, .15);
 $green: #21ba45;
 $blue: #2185d0;
+$grey: #767676;
+$black: #1c1b1d;
 
 .bmpp-curtains {
   background-color: white;
@@ -32,9 +34,8 @@ $blue: #2185d0;
     border-bottom: 1px solid $bmppBorderColor;
     cursor: pointer;
     &--current {
-      border-right: 0.3em solid $green!important;
-      color: $green;
-      font-weight: bold;
+      border-right: 0.3em solid $grey!important;
+      background-color: rgba(250, 250, 250, .75) !important;
     }
     & .icon {
       position: absolute;

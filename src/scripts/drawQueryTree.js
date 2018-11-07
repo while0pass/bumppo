@@ -2,7 +2,7 @@ import jQuery from 'jquery';
 import ko from 'knockout';
 
 const circRadius = 15,
-      circTopOffset = 13,
+      circTopOffset = 18,
       circLeftOffset = 83,
       color = '#aaa';
 
