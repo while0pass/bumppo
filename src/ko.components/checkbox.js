@@ -31,7 +31,7 @@ var viewModelFactory = (params, componentInfo) => {
           let hide = function (popupTarget) {
             jQuery(popupTarget).popup('hide');
           };
-          setTimeout(hide.bind(this, popupTarget), 2000);
+          setTimeout(hide.bind(this, popupTarget), 1700);
         }
       };
 

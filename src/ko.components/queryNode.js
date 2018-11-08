@@ -8,13 +8,11 @@ const template = `
 
     <div class="bmpp-queryTreeHandles">
 
-      <i class="ui disabled green down arrow icon"
-        title="Добавить единицу поиска"
+      <i class="ui disabled green down arrow icon bmpp-addPositiveUnit"
         data-bind="click: node.addChild.bind(node, false),
           visible: !node.negative() && node.unitType() !== null"></i>
 
-      <i class="ui disabled red down arrow icon"
-        title="Добавить отрицательную единицу поиска"
+      <i class="ui disabled red down arrow icon bmpp-addNegativeUnit"
         data-bind="click: node.addChild.bind(node, true),
           visible: !node.negative() && node.unitType() !== null"></i>
 
@@ -28,7 +26,7 @@ const template = `
       data-bind="visible: node.negative">
       НЕТ
       <i class="disabled grey question circle outline icon
-        bmpp-nearLabelIcon"></i>
+        bmpp-nearLabelIcon bmpp-negativeUnitHelp"></i>
       <div class="ui basic popup hidden">
         <header class="ui header">Отрицательное условие</header>
 
@@ -48,10 +46,33 @@ const template = `
 `;
 
 var viewModelFactory = (params, componentInfo) => {
-  let node = params.node;
+  let node = params.node,
+      addUnitPopupOpts = {
+        variation: 'basic',
+        position: 'bottom right',
+        transition: 'fade',
+        delay: {
+          show: 1000,
+          hide: 0
+        },
+        duration: 400,
+        onVisible: function lazyHide(popupTarget) {
+          let hide = function (popupTarget) {
+            jQuery(popupTarget).popup('hide');
+          };
+          setTimeout(hide.bind(this, popupTarget), 1700);
+        }
+      };
+
   new Slug(params.draw, componentInfo.element, node);
+
   jQuery(document).ready(() => {
-    jQuery(componentInfo.element).find('.icon').popup({ inline: true });
+    let x = jQuery(componentInfo.element);
+    addUnitPopupOpts.content = 'Добавить единицу поиска';
+    x.find('.bmpp-addPositiveUnit').popup(addUnitPopupOpts);
+    addUnitPopupOpts.content = 'Добавить отрицательную единицу поиска';
+    x.find('.bmpp-addNegativeUnit').popup(addUnitPopupOpts);
+    x.find('.bmpp-negativeUnitHelp').popup({ inline: true });
   });
   return { node: node };
 };
