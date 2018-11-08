@@ -8,6 +8,7 @@ import videojs from 'video.js';
 
 import initKnockout from './scripts/init.knockout.js';
 import { treeNode } from './scripts/queryTree.js';
+import getQueryJSON from './scripts/queryJSON.js';
 
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import resultsData from './results_data.js';
@@ -26,6 +27,25 @@ function viewModel() {
 
   this.activePane = ko.observable();
   this.canSearch = ko.observable(false);
+  this.isSearchInProgress = ko.observable(false);
+  this.search = () => {
+    if (self.canSearch()) {
+      self.isSearchInProgress(true);
+      setTimeout(function () {
+        self.isSearchInProgress(false);
+        self.canSearch(false);
+        self.switchOnResultsPane();
+      }, 1000);
+    }
+  };
+
+  this.lastQueryJSON = '';
+  this.queryJSON = ko.computed(function () {
+    if (self.canSearch()) {
+      self.lastQueryJSON = getQueryJSON(self);
+    }
+    return self.lastQueryJSON;
+  }).extend({ rateLimit: 500 });
 
   this.switchOnQueryPane = () => { self.activePane(self.queryPane); };
   this.switchOnSubcorpusPane = () => { self.activePane(self.subcorpusPane); };

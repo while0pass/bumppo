@@ -29,7 +29,7 @@
       Настройки выдачи
     </div>
     <div class="bmpp-sidePane_menuItem ui vertical segment"
-         data-bind="css: { disabled: !canSearch() }">
+      data-bind="css: { disabled: !canSearch() }, click: search">
       Искать
       <i class="ui search icon"></i>
     </div>
@@ -41,7 +41,11 @@
     </div>
   </div>
 
-  <div class="bmpp-main">
+  <div class="bmpp-main" style="position: relative">
+
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+      data-bind="visible: isSearchInProgress" class="ui loading basic segment">
+    </div>
 
     <!-- ko if: isQueryPaneOn -->
     <query-pane params="queryTree: queryTree"></query-pane>
@@ -52,7 +56,13 @@
         recordPhases: subcorpus.recordPhases"></subcorpus-pane>
     </div>
 
-    <div class="bmpp-resultsPane" data-bind="visible: isResultsPaneOn">
+    <div data-bind="visible: isResultsPaneOn"
+      style="width: 55em; margin: 3em auto auto 6em !important">
+      <header class="ui header">JSON запроса</header>
+      <code><pre data-bind="text: queryJSON"></pre></code>
+    </div>
+
+    <div class="bmpp-resultsPane" style="display: none">
       <div class="bmpp-resultsPane_video">
         <video id="bmpp-videoPlayer" class="video-js"
           preload="auto" height="354"
