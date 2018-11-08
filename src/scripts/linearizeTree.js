@@ -1,4 +1,4 @@
-export default function linearizeTree(node, treeLinearForm, isFirstChild=true) {
+export default function linearizeTree(node, treeLinearForm=[], isFirstChild=true) {
   var depth = node.depth(),
       levels = linearizeTree.levels;
   if (depth == 0) {
