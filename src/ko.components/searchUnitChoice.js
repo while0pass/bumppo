@@ -21,7 +21,7 @@ const disabledChannelHTML = `
 
 const unitTemplate = `
 
-  <li data-bind="click: $component.chooseUnit.bind($data),
+  <li data-bind="click: $component.chooseUnitType.bind($data),
                  css: { active: $component.node.unitType() &&
                                 $component.node.unitType().id === id }">
     <span class="unitSelectionContainer">
@@ -91,7 +91,7 @@ const chosenUnitTemplate = `
         style="padding-left: .5em"></strong>
     <!-- /ko -->
     <div style="margin-top: 4em">
-      <span data-bind="click: function(){ editChannel(true); }"
+      <span data-bind="click: function(){ editUnitType(true); }"
           class="bmpp-editUrl">
         Изменить тип единицы
       </span>
@@ -101,18 +101,18 @@ const chosenUnitTemplate = `
 
 const template = `
 
-  <!-- ko if: editChannel -->
+  <!-- ko if: editUnitType -->
   ${unitChoiceTemplate}
   <!-- /ko -->
 
-  <!-- ko if: !editChannel() -->
+  <!-- ko ifnot: editUnitType -->
   ${chosenUnitTemplate}
   <!-- /ko -->
 
 `;
 
 class channelViewModel {
-  constructor(channel, activeChannel, chooseUnit) {
+  constructor(channel, activeChannel, chooseUnitType) {
     let self = this;
     this.channel = channel;
     this.isActive = ko.computed(function() {
@@ -126,10 +126,11 @@ class channelViewModel {
                      self.channel.totalNumberOfUnits === 0);
     this.onClick = () => {
       if (self.disabled) {
-        // popup
+        // Показать popup. NOTE: Это действие реализовано через свойство
+        // popupAdditionalShowOnClick пользовательского нокаут-байндинга popup.
       } else if (self.channel.totalNumberOfUnits === 1) {
         activeChannel(self);
-        chooseUnit.call(self.channel.getSingleUnit());
+        chooseUnitType.call(self.channel.getSingleUnit());
       } else {
         activeChannel(self);
       }
@@ -175,8 +176,11 @@ function viewModel(params) {
       prechoosenUnit = node.unitType(),
       prechoosenChannel = prechoosenUnit && prechoosenUnit.channel,
       activeChannel = ko.observable(null),
-      editChannel = ko.observable(prechoosenUnit ? false : true),
-      chooseUnit = function () { node.unitType(this); editChannel(false); },
+      editUnitType = ko.observable(prechoosenUnit ? false : true),
+      chooseUnitType = function () {
+        node.unitType(this);
+        editUnitType(false);
+      },
       channelViewModels = [],
       channelHelpPopupOpts = {
         variation: 'basic',
@@ -184,8 +188,17 @@ function viewModel(params) {
         duration: 400,
       };
 
+  ko.computed(function () {
+    params.canSearch(!editUnitType());
+  });
+  params.canSearch.subscribe(function (value) {
+    if (editUnitType() && !value) {
+      editUnitType.valueHasMutated();
+    }
+  });
+
   for (let channel of channels) {
-    let cVM = new channelViewModel(channel, activeChannel, chooseUnit);
+    let cVM = new channelViewModel(channel, activeChannel, chooseUnitType);
     channelViewModels.push(cVM);
     if (prechoosenChannel && prechoosenChannel.id === channel.id) {
       activeChannel(cVM);
@@ -196,8 +209,8 @@ function viewModel(params) {
   this.channelViewModels = channelViewModels;
   this.channelsHelp = { html: channelsHelp, opts: channelHelpPopupOpts };
   this.activeChannel = activeChannel;
-  this.editChannel = editChannel;
-  this.chooseUnit = chooseUnit;
+  this.editUnitType = editUnitType;
+  this.chooseUnitType = chooseUnitType;
 }
 
 export default {

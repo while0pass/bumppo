@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
-    <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
+    <link href="https://vjs.zencdn.net/7.3.0/video-js.css" rel="stylesheet">
   </head>
   <body>
 
@@ -28,7 +28,8 @@
     <div class="bmpp-sidePane_menuItem ui vertical disabled segment">
       Настройки выдачи
     </div>
-    <div class="bmpp-sidePane_menuItem ui vertical disabled segment">
+    <div class="bmpp-sidePane_menuItem ui vertical segment"
+         data-bind="css: { disabled: !canSearch() }">
       Искать
       <i class="ui search icon"></i>
     </div>
@@ -39,6 +40,7 @@
       Результаты
     </div>
   </div>
+
   <div class="bmpp-main">
 
     <!-- ko if: isQueryPaneOn -->

@@ -39,7 +39,8 @@ const template = `
       </div>
     </div>
 
-    <search-unit-choice params="node: node"></search-unit-choice>
+    <search-unit-choice params="node: node, canSearch: $root.canSearch">
+    </search-unit-choice>
 
   </div>
 

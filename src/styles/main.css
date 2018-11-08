@@ -29,12 +29,19 @@ $black: #1c1b1d;
   overflow-y: hidden;
 
   &_menuItem {
+    $borderWidth: 0.3em;
     user-select: none;
     padding: 1em 1.5em!important;
     border-bottom: 1px solid $bmppBorderColor;
+    border-right: $borderWidth solid transparent!important;
     cursor: pointer;
     &--current {
-      border-right: 0.3em solid $grey!important;
+      border-right: $borderWidth solid $bmppBorderColor!important;
+      background-color: rgba(250, 250, 250, .75) !important;
+    }
+    &--hover,
+    &--hover&--current {
+      border-right: $borderWidth solid $grey!important;
       background-color: rgba(250, 250, 250, .75) !important;
     }
     & .icon {

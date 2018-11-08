@@ -1,6 +1,7 @@
 import './styles/main.css';
 import './scripts/log.js';
 
+import jQuery from 'jquery';
 import ko from 'knockout';
 import page from 'page';
 import videojs from 'video.js';
@@ -24,7 +25,7 @@ function viewModel() {
                 this.resultsOptionsPane];
 
   this.activePane = ko.observable();
-  this.queryTreeInited = false;
+  this.canSearch = ko.observable(false);
 
   this.switchOnQueryPane = () => { self.activePane(self.queryPane); };
   this.switchOnSubcorpusPane = () => { self.activePane(self.subcorpusPane); };
@@ -56,9 +57,6 @@ function viewModel() {
   };
 
   this.queryTree = new treeNode();
-  this.queryTree.addChild();
-  this.queryTree.childNodes()[0].addChild();
-  this.queryTree.childNodes()[0].addRelation();
 
   this.subcorpus = {
     records: new CheckboxForm(records),
@@ -81,6 +79,15 @@ page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
 page(`/${resultsURL}`, () => { vM.activePane(vM.resultsPane); });
 page(`/${resultsOptionsURL}`, () => { vM.activePane(vM.resultsOptionsPane); });
 page({ hashbang: true });
+
+jQuery('.bmpp-sidePane_menuItem').mouseover(function () {
+  if (!jQuery(this).hasClass('disabled')) {
+    jQuery(this).addClass('bmpp-sidePane_menuItem--hover');
+  }
+});
+jQuery('.bmpp-sidePane_menuItem').mouseout(function () {
+  jQuery(this).removeClass('bmpp-sidePane_menuItem--hover');
+});
 
 videoPlayer.ready(function () {
   var volume = videoPlayer.volume();
