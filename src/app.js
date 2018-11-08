@@ -65,10 +65,6 @@ function viewModel() {
     records: new CheckboxForm(records),
     recordPhases: new CheckboxForm(recordPhases)
   };
-  this.subcorpusClearSelection = () => {
-    self.subcorpus.records.clearSelection();
-    self.subcorpus.recordPhases.clearSelection();
-  };
 }
 const vM = new viewModel();
 initKnockout(ko, vM);
@@ -86,9 +82,6 @@ page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
 page(`/${resultsURL}`, () => { vM.activePane(vM.resultsPane); });
 page(`/${resultsOptionsURL}`, () => { vM.activePane(vM.resultsOptionsPane); });
 page({ hashbang: true });
-
-
-$('.question.icon').popup({ inline: true });
 
 videoPlayer.ready(function () {
   var volume = videoPlayer.volume();

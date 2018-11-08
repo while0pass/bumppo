@@ -1,0 +1,102 @@
+import jQuery from 'jquery';
+
+const recordsHelp = `
+
+  <div class="ui basic popup hidden">
+    <p>При выборе одного или нескольких вариантов поиск будет
+    вестись только по указанным записям. В&nbsp;настоящий момент
+    для поиска доступны 4 из 6 записей.</p>
+  </div>
+
+`;
+
+const recordsPhasesHelp = `
+
+  <div class="ui basic popup hidden">
+    <p>При выборе одного или нескольких вариантов поиск будет
+    вестись только по указанным этапам: рассказу, разговору или
+    пересказу.</p>
+  </div>
+
+`;
+
+const template = `
+
+  <h1 class="ui header">Область поиска</h1>
+  <div class="ui grid">
+    <div class="ten wide column" data-bind="with: records">
+      <div class="ui padded segment bmpp-subcorpusForm">
+        <div class="ui top attached large label">
+          <header data-bind="click: invertSelection">
+            Записи
+          </header>
+          <i class="disabled question circle outline icon
+                    bmpp-nearLabelIcon"></i>${recordsHelp}
+        </div>
+
+        <form class="ui form" style="column-count: 2; column-fill: auto;"
+          data-bind="foreach: fields">
+          <div class="field">
+            <bmpp-checkbox params="value: value, label: label,
+              disabled: disabled, tabindex: $index,
+              disabledTooltip: 'Запись пока не готова'"></bmpp-checkbox>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <div class="six wide column" data-bind="with: recordPhases">
+      <div class="ui padded segment bmpp-subcorpusForm">
+        <div class="ui top attached large label">
+          <header data-bind="click: invertSelection">
+            Этапы записей
+          </header>
+          <i class="disabled question circle outline icon
+             bmpp-nearLabelIcon"></i>${recordsPhasesHelp}
+        </div>
+        <form class="ui form" data-bind="foreach: fields">
+          <div class="field">
+            <bmpp-checkbox params="value: value, label: label,
+              tabindex: $index() + $root.subcorpus.records.fields.length">
+            </bmpp-checkbox>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <div>
+      <button class="ui small button three wide column"
+        data-bind="click: subcorpusClearSelection">Очистить</button>
+      <button class="ui small button three wide column">Отмена</button>
+    </div>
+
+  </div>
+
+`;
+
+var viewModelFactory = (params, componentInfo) => {
+  let records = params.records,
+      recordPhases = params.recordPhases,
+      subcorpusClearSelection = () => {
+        records.clearSelection();
+        recordPhases.clearSelection();
+      },
+      popupOpts = {
+        inline: true
+      };
+
+  jQuery(componentInfo.element).find('.question.icon').popup(popupOpts);
+
+  return {
+    records: records,
+    recordPhases: recordPhases,
+    subcorpusClearSelection: subcorpusClearSelection
+  };
+};
+
+export default {
+  viewModel: { createViewModel: viewModelFactory },
+  template: template
+};
