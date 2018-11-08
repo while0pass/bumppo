@@ -11,23 +11,40 @@ const template = `
 `;
 
 var viewModelFactory = (params, componentInfo) => {
-  let element = jQuery(componentInfo.element),
+  let element = componentInfo.element,
       value = params.value,
-      disabled = params.disabled;
-  if (!disabled) {
-    element.checkbox({
-      onChange: () => { value(!value()); }
-    });
+      disabled = params.disabled,
+      checkboxOpts = {
+        onChange: () => { value(!value()); }
+      },
+      popupOpts = {
+        content: params.disabledTooltip,
+        variation: 'basic',
+        position: 'right center',
+        transition: 'fade',
+        delay: {
+          show: 500,
+          hide: 0
+        },
+        duration: 400,
+        onVisible: function lazyHide(popupTarget) {
+          let hide = function (popupTarget) {
+            jQuery(popupTarget).popup('hide');
+          };
+          setTimeout(hide.bind(this, popupTarget), 2000);
+        }
+      };
+
+  if (disabled) {
+    jQuery(element).popup(popupOpts);
   } else {
-    if (params.disabledTooltip) {
-      element.attr('data-tooltip', params.disabledTooltip);
-      element.attr('data-position', 'right center');
-    }
+    jQuery(element).checkbox(checkboxOpts);
   }
+
   return {
+    disabled: disabled,
     label: params.label,
     tabindex: params.tabindex,
-    disabled: disabled,
     value: value
   };
 };

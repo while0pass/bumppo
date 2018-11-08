@@ -192,10 +192,6 @@ $black: #1c1b1d;
   }
 }
 
-.ui.popup {
-  min-width: 20em !important;
-}
-
 .bmpp-unitGroups {
   list-style: none;
   margin: 0;
