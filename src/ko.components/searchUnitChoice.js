@@ -44,7 +44,8 @@ const unitChoiceTemplate = `
     </button>
     <!-- /ko -->
 
-    <i class="disabled grey question circle outline icon bmpp-channelsHelp"></i>
+    <i class="disabled grey question circle outline icon bmpp-channelsHelp"
+      data-bind="popup: channelsHelp.html, popupOpts: channelsHelp.opts"></i>
   </div>
 
   <!-- ko if: activeChannel -->
@@ -176,7 +177,12 @@ function viewModel(params) {
       activeChannel = ko.observable(null),
       editChannel = ko.observable(prechoosenUnit ? false : true),
       chooseUnit = function () { node.unitType(this); editChannel(false); },
-      channelViewModels = [];
+      channelViewModels = [],
+      channelHelpPopupOpts = {
+        variation: 'basic',
+        delay: { show: 400, hide: 0 },
+        duration: 400,
+      };
 
   for (let channel of channels) {
     let cVM = new channelViewModel(channel, activeChannel, chooseUnit);
@@ -188,37 +194,13 @@ function viewModel(params) {
 
   this.node = node;
   this.channelViewModels = channelViewModels;
+  this.channelsHelp = { html: channelsHelp, opts: channelHelpPopupOpts };
   this.activeChannel = activeChannel;
   this.editChannel = editChannel;
   this.chooseUnit = chooseUnit;
 }
 
-var viewModelFactory = (params, componentInfo) => {
-  let helpPopupOpts = {
-    html: channelsHelp,
-    variation: 'basic',
-    delay: { show: 400, hide: 0 },
-    duration: 400,
-  };
-  jQuery.initialize('.bmpp-channelsHelp', function () {
-    // HACK: Действие обязательно должно быть отложенным. И ловить элемент
-    // нужно по сложному пути, а не просто jQuery(this). Времени меньше
-    // секунды не хватает. Возможно при усложнении компоненета и секунды
-    // будет не хватать. Вероятно, тут надо использовать data-bind="event:
-    // { descendantsComplete: myAction() }" и возможно даже не на этом,
-    // а родительском компоненте. Событие descendantsComplete должно
-    // появиться в knockoutjs v3.5.
-    let popupInit = function () {
-      jQuery(componentInfo.element)
-        .find('.bmpp-channelsHelp').popup(helpPopupOpts);
-    };
-    setTimeout(popupInit, 1000);
-  }, { target: componentInfo.element });
-
-  return new viewModel(params);
-};
-
 export default {
-  viewModel: { createViewModel: viewModelFactory },
+  viewModel: viewModel,
   template: template
 };
