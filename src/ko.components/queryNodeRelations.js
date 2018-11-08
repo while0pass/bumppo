@@ -100,6 +100,25 @@ const relationTemplate = `
 
 `;
 
+const queryDistanceHelp = `
+
+  <header class="ui header">Условие на расстояние</header>
+
+  <p>В качестве условий можно по отдельности указывать интервалы расстояний
+  между началами (левыми границами) и концами (правыми границами) единиц.
+  Например, если задать условие «от&nbsp;−50 до&nbsp;100&nbsp;мс между началом
+  X и началом Y», будут найдены контексты, в которых левая граница
+  X располагается не левее, чем в&nbsp;50&nbsp;мс, и не правее, чем
+  в&nbsp;100&nbsp;мс, от левой границы Y.</p>
+
+  <p>Если для условия указано только одно значение, ограничения с другой
+  стороны не накладывается. Если не указано ни одно значение, это
+  интерпретируется как интервал «от&nbsp;0 до&nbsp;0». Значения задаются
+  в миллисекундах. Если X и Y являются единицам одного типа, между началом
+  X и концом Y можно задать расстояние в терминах единицы данного типа.</p>
+
+`;
+
 const template = `
 
   <div class="bmpp-queryDistances ui segments"
@@ -112,39 +131,33 @@ const template = `
 
     <i class="ui disabled grey question circle outline icon
               bmpp-queryDistanceHelp"></i>
-    <div class="ui basic popup hidden">
-      <header class="ui header">Условие на расстояние</header>
-
-      <p>В качестве условий можно по отдельности указывать интервалы
-      расстояний между началами (левыми границами) и концами (правыми
-      границами) единиц. Например, если задать условие «от&nbsp;−50
-      до&nbsp;100&nbsp;мс между началом X и началом Y», будут найдены
-      контексты, в которых левая граница X располагается не левее, чем
-      в&nbsp;50&nbsp;мс, и не правее, чем в&nbsp;100&nbsp;мс, от левой
-      границы Y.</p>
-
-      <p>Если для условия указано только одно значение, ограничения
-      с другой стороны не накладывается. Если не указано ни одно
-      значение, это интерпретируется как интервал «от 0 до 0».
-      Значения задаются в миллисекундах. Если X и Y являются единицам
-      одного типа, между началом X и концом Y можно задать расстояние
-      в терминах единицы данного типа.</p>
-    </div>
-
   </div>
 
 `;
 
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
-      element = componentInfo.element;
+      element = componentInfo.element,
+      popupOpts = {
+        html: queryDistanceHelp,
+        variation: 'basic fluid',
+        delay: { show: 400, hide: 0 },
+        duration: 400,
+        setFluidWidth: false,
+        lastResort: true,
+        onShow: function (targetElement) {
+          let popup = jQuery(targetElement).popup('get popup');
+          jQuery(popup).attr('style', 'width: 35em!important');
+        }
+      };
+
   new RelationLine(params.draw, element, node);
-  jQuery.initialize('.question.icon', function () {
-    jQuery(this).popup({ inline: true });
-  }, { target: element });
+
+  jQuery(element).find('.bmpp-queryDistanceHelp').popup(popupOpts);
   jQuery.initialize('.ui.dropdown', function () {
     jQuery(this).dropdown();
   }, { target: element });
+
   return { relations: node.relationsToParentNode, node: node };
 };
 
