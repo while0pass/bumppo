@@ -26,27 +26,6 @@ function viewModel() {
                 this.resultsOptionsPane];
 
   this.activePane = ko.observable();
-  this.canSearch = ko.observable(false);
-  this.isSearchInProgress = ko.observable(false);
-  this.search = () => {
-    if (self.canSearch()) {
-      self.isSearchInProgress(true);
-      setTimeout(function () {
-        self.isSearchInProgress(false);
-        self.canSearch(false);
-        self.switchOnResultsPane();
-      }, 1000);
-    }
-  };
-
-  this.lastQueryJSON = '';
-  this.queryJSON = ko.computed(function () {
-    if (self.canSearch()) {
-      self.lastQueryJSON = getQueryJSON(self);
-    }
-    return self.lastQueryJSON;
-  }).extend({ rateLimit: 500 });
-
   this.switchOnQueryPane = () => { self.activePane(self.queryPane); };
   this.switchOnSubcorpusPane = () => { self.activePane(self.subcorpusPane); };
   this.switchOnResultsPane = () => { self.activePane(self.resultsPane); };
@@ -70,18 +49,57 @@ function viewModel() {
     }
   });
 
+  this.isQueryReady = ko.observable(false);
+  this.isQueryNew = ko.observable(true);
+  this.isSubcorpusNew = ko.observable(false);
+
+  this.subcorpus = {
+    records: new CheckboxForm(records, this.isSubcorpusNew),
+    recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
+  };
+
+  this.queryTree = new treeNode();
+
+  this.canSearch = ko.computed(function () {
+    let isQueryReady = self.isQueryReady(),
+        isQueryNew = self.isQueryNew(),
+        isSubcorpusNew = self.isSubcorpusNew();
+    if (isQueryReady && (isQueryNew || isSubcorpusNew)) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  this.lastQueryJSON = '';
+  this.queryJSON = ko.computed(function () {
+    if (self.canSearch()) {
+      self.lastQueryJSON = getQueryJSON(self);
+    }
+    return self.lastQueryJSON;
+  }).extend({ rateLimit: 500 });
+
+  this.search = () => {
+    if (self.canSearch()) {
+      self.isSearchInProgress(true);
+      setTimeout(function () {
+        self.isSearchInProgress(false);
+        self.isQueryNew(false);
+        self.isSubcorpusNew(false);
+        self.canViewResults(true);
+        self.switchOnResultsPane();
+      }, 1000);
+    }
+  };
+  this.isSearchInProgress = ko.observable(false);
+
+  this.canViewResults = ko.observable(false);
   this.results = resultsData;
   this.playVideo = function (result) {
     videoPlayer.currentTime(result.start);
     videoPlayer.play();
   };
 
-  this.queryTree = new treeNode();
-
-  this.subcorpus = {
-    records: new CheckboxForm(records),
-    recordPhases: new CheckboxForm(recordPhases)
-  };
 }
 const vM = new viewModel();
 initKnockout(ko, vM);

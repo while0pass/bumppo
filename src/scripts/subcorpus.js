@@ -16,22 +16,26 @@ export var recordPhases = [
 ];
 
 class CheckboxField{
-  constructor(field) {
+  constructor(field, isSubcorpusNew) {
     this.value = ko.observable(false);
     this.id = field.id;
     this.label = field.label;
     this.disabled = Boolean(field.disabled);
     this.query = field.query;
+
+    this.value.subscribe(() => {
+      isSubcorpusNew(true);
+    });
   }
 }
 
 export class CheckboxForm{
-  constructor(fields) {
+  constructor(fields, isSubcorpusNew) {
     let self = this;
     this.fields = [];
 
     for (let field of fields) {
-      this.fields.push(new CheckboxField(field));
+      this.fields.push(new CheckboxField(field, isSubcorpusNew));
     }
 
     this.invertSelection = () => {

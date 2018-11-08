@@ -76,8 +76,12 @@ var viewModelFactory = (params, componentInfo) => {
   let records = params.records,
       recordPhases = params.recordPhases,
       subcorpusClearSelection = () => {
-        records.clearSelection();
-        recordPhases.clearSelection();
+        if (!records.areAllUnchecked()) {
+          records.clearSelection();
+        }
+        if (!recordPhases.areAllUnchecked()) {
+          recordPhases.clearSelection();
+        }
       },
       popupOpts = {
         variation: 'basic',

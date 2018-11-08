@@ -19,7 +19,10 @@ const template = `
       <i class="ui disabled grey close icon"
         title="Удалить единицу поиска со всеми зависимостями"
         data-bind="visible: node.depth() > 0,
-          click: node.seppuku.bind(node)"></i>
+          click: function () {
+                   node.seppuku();
+                   $root.isQueryNew(true);
+                 }"></i>
     </div>
 
     <div class="ui top attached basic red label"
@@ -39,7 +42,8 @@ const template = `
       </div>
     </div>
 
-    <search-unit-choice params="node: node, canSearch: $root.canSearch">
+    <search-unit-choice params="node: node,
+      isQueryReady: $root.isQueryReady, isQueryNew: $root.isQueryNew">
     </search-unit-choice>
 
   </div>

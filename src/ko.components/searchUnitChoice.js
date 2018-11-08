@@ -180,6 +180,7 @@ function viewModel(params) {
       chooseUnitType = function () {
         node.unitType(this);
         editUnitType(false);
+        params.isQueryNew(true);
       },
       channelViewModels = [],
       channelHelpPopupOpts = {
@@ -189,10 +190,10 @@ function viewModel(params) {
       };
 
   ko.computed(function () {
-    params.canSearch(!editUnitType());
+    params.isQueryReady(!editUnitType());
   });
-  params.canSearch.subscribe(function (value) {
-    if (editUnitType() && !value) {
+  params.isQueryReady.subscribe(function (isReady) {
+    if (isReady && editUnitType()) {
       editUnitType.valueHasMutated();
     }
   });

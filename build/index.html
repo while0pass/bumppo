@@ -35,7 +35,8 @@
     </div>
     <div class="bmpp-sidePane_menuItem ui vertical segment"
       data-bind="click: switchOnResultsPane,
-                 css: { 'bmpp-sidePane_menuItem--current': isResultsPaneOn }">
+                 css: { 'bmpp-sidePane_menuItem--current': isResultsPaneOn,
+                         disabled: !canViewResults() }">
       Результаты
     </div>
   </div>
