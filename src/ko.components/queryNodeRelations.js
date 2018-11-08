@@ -141,9 +141,9 @@ var viewModelFactory = (params, componentInfo) => {
       popupOpts = {
         html: queryDistanceHelp,
         variation: 'basic fluid',
+        setFluidWidth: false,
         delay: { show: 400, hide: 0 },
         duration: 400,
-        setFluidWidth: false,
         lastResort: true,
         onShow: function (targetElement) {
           let popup = jQuery(targetElement).popup('get popup');

@@ -14,6 +14,15 @@ const unitTemplate = `
 
 `;
 
+const channelsHelp = `
+
+  <header class="ui header">Единицы поиска</header>
+
+  <p>Чтобы выбрать единицу поиска, сначала укажите область разметки
+  в верхнем меню, а затем нажмите на нужный вам тип единицы.</p>
+
+`;
+
 const unitChoiceTemplate = `
 
   <div>
@@ -25,12 +34,7 @@ const unitChoiceTemplate = `
     </button>
     <!-- /ko -->
 
-    <i class="disabled grey question circle outline icon"></i>
-    <div class="ui basic popup hidden">
-      <header class="ui header">Единицы поиска</header>
-      <p>Чтобы выбрать единицу поиска, сначала укажите область разметки
-      в верхнем меню, а затем нажмите на нужный вам тип единицы.</p>
-    </div>
+    <i class="disabled grey question circle outline icon bmpp-channelsHelp"></i>
   </div>
 
   <!-- ko if: activeChannel -->
@@ -147,9 +151,28 @@ function viewModel(params) {
 }
 
 var viewModelFactory = (params, componentInfo) => {
-  jQuery(document).ready(() => {
-    jQuery(componentInfo.element).find('.icon').popup({ inline: true });
-  });
+  let popupHelpRebindTimeoutID = undefined,
+      popupOpts = {
+        html: channelsHelp,
+        variation: 'basic',
+        delay: { show: 400, hide: 0 },
+        duration: 400,
+      };
+  jQuery.initialize('.bmpp-channelsHelp', function () {
+    // HACK: Действие обязательно должно быть отложенным. И ловить элемент
+    // нужно по сложному пути, а не просто jQuery(this). Времени меньше
+    // секунды не хватает. Возможно при усложнении компоненета и секунды
+    // будет не хватать. Вероятно, тут надо использовать data-bind="event:
+    // { descendantsComplete: myAction() }" и возможно даже не на этом,
+    // а родительском компоненте. Событие descendantsComplete должно
+    // появиться в knockoutjs v3.5.
+    let popupInit = function () {
+      jQuery(componentInfo.element)
+        .find('.bmpp-channelsHelp').popup(popupOpts);
+    };
+    setTimeout(popupInit, 1000);
+  }, { target: componentInfo.element });
+
   return new viewModel(params);
 };
 

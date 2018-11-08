@@ -1,7 +1,6 @@
 import './styles/main.css';
 import './scripts/log.js';
 
-import $ from 'jquery';
 import ko from 'knockout';
 import page from 'page';
 import videojs from 'video.js';
