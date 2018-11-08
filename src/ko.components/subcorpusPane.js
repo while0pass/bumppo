@@ -2,21 +2,17 @@ import jQuery from 'jquery';
 
 const recordsHelp = `
 
-  <div class="ui basic popup hidden">
-    <p>При выборе одного или нескольких вариантов поиск будет
-    вестись только по указанным записям. В&nbsp;настоящий момент
-    для поиска доступны 4 из 6 записей.</p>
-  </div>
+  <p>При выборе одного или нескольких вариантов поиск будет
+  вестись только по указанным записям. В&nbsp;настоящий момент
+  для поиска доступны 4 из 6 записей.</p>
 
 `;
 
 const recordsPhasesHelp = `
 
-  <div class="ui basic popup hidden">
-    <p>При выборе одного или нескольких вариантов поиск будет
-    вестись только по указанным этапам: рассказу, разговору или
-    пересказу.</p>
-  </div>
+  <p>При выборе одного или нескольких вариантов поиск будет
+  вестись только по указанным этапам: рассказу, разговору или
+  пересказу.</p>
 
 `;
 
@@ -31,7 +27,7 @@ const template = `
             Записи
           </header>
           <i class="disabled question circle outline icon
-                    bmpp-nearLabelIcon"></i>${recordsHelp}
+                    bmpp-nearLabelIcon bmpp-recordsHelp"></i>
         </div>
 
         <form class="ui form" style="column-count: 2; column-fill: auto;"
@@ -53,7 +49,7 @@ const template = `
             Этапы записей
           </header>
           <i class="disabled question circle outline icon
-             bmpp-nearLabelIcon"></i>${recordsPhasesHelp}
+             bmpp-nearLabelIcon bmpp-recordsPhasesHelp"></i>
         </div>
         <form class="ui form" data-bind="foreach: fields">
           <div class="field">
@@ -84,10 +80,18 @@ var viewModelFactory = (params, componentInfo) => {
         recordPhases.clearSelection();
       },
       popupOpts = {
-        inline: true
+        variation: 'basic',
+        delay: { show: 400, hide: 0 },
+        duration: 400,
       };
 
-  jQuery(componentInfo.element).find('.question.icon').popup(popupOpts);
+  for (let { html, selector } of [
+    { html: recordsHelp, selector: '.bmpp-recordsHelp' },
+    { html: recordsPhasesHelp, selector: '.bmpp-recordsPhasesHelp' }
+  ]) {
+    popupOpts.html = html;
+    jQuery(componentInfo.element).find(selector).popup(popupOpts);
+  }
 
   return {
     records: records,
