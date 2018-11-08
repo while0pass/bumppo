@@ -67,6 +67,8 @@ export default {
       'build/js/libs/videojs-youtube.min.js',
       'node_modules/svg.js/dist/svg.min.js':
       'build/js/libs/svg.min.js',
+      'node_modules/jquery.initialize/jquery.initialize.min.js':
+      'build/js/libs/jquery.initialize.min.js',
     }),
   ],
 };

@@ -57,6 +57,9 @@ function viewModel() {
   };
 
   this.queryTree = new treeNode();
+  this.queryTree.addChild();
+  this.queryTree.childNodes()[0].addChild();
+  this.queryTree.childNodes()[0].addRelation();
 
   this.subcorpus = {
     records: new CheckboxForm(records),

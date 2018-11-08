@@ -1,6 +1,105 @@
 import jQuery from 'jquery';
 import { RelationLine } from '../scripts/drawQueryTree.js';
 
+const relationTemplate = `
+
+  <div class="bmpp-queryDistance ui secondary segment">
+
+    <div class="ui tiny header" data-bind="visible: $index() === 0">
+      на расстоянии:
+    </div>
+
+    <div class="ui form" style="margin-bottom: -1em;">
+      <div class="bmpp-queryTreeHandles bmpp-queryTreeHandles2">
+        <i class="ui small disabled grey plus icon"
+          data-bind="visible: $index() === $component.relations().length - 1,
+                     click: childNode.addRelation.bind(childNode)">
+        </i>
+
+        <i class="ui small icon"
+          data-bind="visible: $index() !== $component.relations().length - 1">
+        </i>
+
+        <i class="ui small disabled grey close icon"
+          data-bind="visible: $index() !== 0,
+                   click: childNode.removeRelation.bind(childNode, $data)"></i>
+      </div>
+
+      <div class="inline field bmpp-number">
+        <label>от</label>
+        <input type="number" step="50" min="0" placeholder="0">
+      </div>
+
+      <div class="inline field bmpp-number">
+        <label>до</label>
+        <input type="number" step="50" min="0" placeholder="0">
+      </div>
+
+      <div class="inline field bmpp-units">
+        <div class="ui inline dropdown">
+          <div class="default text">миллисекунд</div>
+          <div class="menu">
+            <div class="item" data-value="ms">миллисекунд</div>
+            <div class="item" data-value="u">единиц</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inline field bmpp-points">
+        <div class="ui selection dropdown">
+          <input type="hidden" name="pp">
+          <label>между</label>
+          <i class="dropdown icon"></i>
+          <div class="default text">
+            началом
+            <div class="ui circular label"
+              data-bind="text: childNode.serialNumber"></div>
+          </div>
+          <div class="menu">
+            <div class="item" data-value="s">
+              началом
+              <div class="ui circular label"
+                data-bind="text: childNode.serialNumber"></div>
+            </div>
+            <div class="item" data-value="e">
+              концом
+              <div class="ui circular label"
+                data-bind="text: childNode.serialNumber"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inline field bmpp-points">
+        <div class="ui selection dropdown">
+          <input type="hidden" name="cp">
+          <label>и</label>
+          <i class="dropdown icon"></i>
+          <div class="default text">
+            началом
+            <div class="ui circular label"
+              data-bind="text: parentNode.serialNumber"></div>
+          </div>
+          <div class="menu">
+            <div class="item" data-value="s">
+              началом
+              <div class="ui circular label"
+                data-bind="text: parentNode.serialNumber"></div>
+            </div>
+            <div class="item" data-value="e">
+              концом
+              <div class="ui circular label"
+                data-bind="text: parentNode.serialNumber"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+`;
+
 const template = `
 
   <div class="bmpp-queryDistances ui segments"
@@ -8,10 +107,7 @@ const template = `
                       $component.node.level() > 0 }">
 
     <!-- ko foreach: relations -->
-    <query-node-relation params="relation: $data,
-      isFirst: $index() === 0,
-      isLast: $index() === $component.relations().length - 1">
-    </query-node-relation>
+      ${relationTemplate}
     <!-- /ko -->
 
     <i class="ui disabled grey question circle outline icon
@@ -43,10 +139,12 @@ var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
       element = componentInfo.element;
   new RelationLine(params.draw, element, node);
-  jQuery(document).ready(() => {
-    jQuery(element)
-      .find('.question.icon').popup({ inline: true });
-  });
+  jQuery.initialize('.question.icon', function () {
+    jQuery(this).popup({ inline: true });
+  }, { target: element });
+  jQuery.initialize('.ui.dropdown', function () {
+    jQuery(this).dropdown();
+  }, { target: element });
   return { relations: node.relationsToParentNode, node: node };
 };
 
