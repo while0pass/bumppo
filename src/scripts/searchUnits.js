@@ -115,12 +115,14 @@ class UnitGroup {
     this.name = data.name;
     this.channel = channel;
     this.units = [];
+    this.totalNumberOfUnits = 0;
 
     this.populateUnits(data);
   }
   populateUnits(data) {
     for (let x of data.types) {
       this.units.push(new Unit(x, this.channel, this));
+      this.totalNumberOfUnits += 1;
     }
   }
 }
@@ -133,27 +135,31 @@ class Channel {
     this.color = data.color;
     this.disabled = data.disabled;
 
-    this.tooltip = (() => {
-      if (this.disabled) {
-        return `${this.name}\nАннотация пока не готова`;
-      } else {
-        return this.name;
-      }
-    })();
-
     this.groups = [];
     this.units = [];
+    this.totalNumberOfUnits = 0;
 
     this.populateGroupsAndUnits(data);
   }
   populateGroupsAndUnits(data) {
     for (let x of data.types) {
       if (x.types) {
-        this.groups.push(new UnitGroup(x, this));
+        let unitGroup = new UnitGroup(x, this);
+        this.groups.push(unitGroup);
+        this.totalNumberOfUnits += unitGroup.totalNumberOfUnits;
       } else {
         this.units.push(new Unit(x, this));
+        this.totalNumberOfUnits += 1;
       }
     }
+  }
+  getSingleUnit() {
+    if (this.totalNumberOfUnits === 1) {
+      let x = this.units.slice()
+        .concat(...this.groups.map(g => g.units.slice()));
+      if (x.length > 0) return x[0];
+    }
+    return null;
   }
 }
 

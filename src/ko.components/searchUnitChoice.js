@@ -2,6 +2,23 @@ import jQuery from 'jquery';
 import ko from 'knockout';
 import { channels } from '../scripts/searchUnits.js';
 
+const channelsHelp = `
+
+  <header class="ui header">Единицы поиска</header>
+
+  <p>Чтобы выбрать единицу поиска, сначала укажите область разметки
+  в верхнем меню, а затем нажмите на нужный вам тип единицы.</p>
+
+`;
+
+const disabledChannelHTML = `
+
+  <div style="font-size: smaller; font-style: italic">
+    Аннотация пока не готова.
+  </div>
+
+`;
+
 const unitTemplate = `
 
   <li data-bind="click: $component.chooseUnit.bind($data),
@@ -14,23 +31,16 @@ const unitTemplate = `
 
 `;
 
-const channelsHelp = `
-
-  <header class="ui header">Единицы поиска</header>
-
-  <p>Чтобы выбрать единицу поиска, сначала укажите область разметки
-  в верхнем меню, а затем нажмите на нужный вам тип единицы.</p>
-
-`;
-
 const unitChoiceTemplate = `
 
   <div>
     <!-- ko foreach: channelViewModels -->
     <button class="ui button bmpp-channelSlug"
       data-bind="css: buttonCSS, text: channel.id,
-        attr: { title: channel.tooltip }, event: { click: activate,
-        mouseover: onMouseOver, mouseout: onMouseOut }">
+        popup: tooltip, popupOpts: channelPopupOpts,
+        popupAdditionalShowOnClick: disabled,
+        event: { click: onClick, mouseover: onMouseOver,
+                 mouseout: onMouseOut }">
     </button>
     <!-- /ko -->
 
@@ -71,7 +81,7 @@ const chosenUnitTemplate = `
     <!-- ko with: activeChannel -->
     <button class="ui button bmpp-channelSlug"
       data-bind="css: channel.color, text: channel.id,
-        attr: { title: channel.tooltip }">
+        popup: tooltip, popupOpts: channelPopupOpts">
     </button>
     <!-- /ko -->
     <span style="padding-left: .5em">Тип единицы:</span>
@@ -100,32 +110,63 @@ const template = `
 
 `;
 
-function channelViewModel(channel, activeChannel) {
-  let self = this;
-  this.channel = channel;
-  this.isActive = ko.computed(function() {
-    let aC = activeChannel();
-    return aC && aC.channel && aC.channel.id === self.channel.id;
-  });
-  this.isMouseOver = ko.observable(false);
-  this.onMouseOver = () => { self.isMouseOver(true); };
-  this.onMouseOut = () => { self.isMouseOver(false); };
-  this.activate = () => { activeChannel(self); };
-  this.buttonCSS = ko.computed(function() {
-    let isActive = self.isActive(),
-        isMouseOver = self.isMouseOver(),
-        cssClasses;
-    if (activeChannel()) {
-      if (isActive || isMouseOver) {
-        cssClasses = self.channel.color;
+class channelViewModel {
+  constructor(channel, activeChannel, chooseUnit) {
+    let self = this;
+    this.channel = channel;
+    this.isActive = ko.computed(function() {
+      let aC = activeChannel();
+      return aC && aC.channel && aC.channel.id === self.channel.id;
+    });
+    this.isMouseOver = ko.observable(false);
+    this.onMouseOver = () => { self.isMouseOver(true); };
+    this.onMouseOut = () => { self.isMouseOver(false); };
+    this.disabled = (this.channel.disabled ||
+                     self.channel.totalNumberOfUnits === 0);
+    this.onClick = () => {
+      if (self.disabled) {
+        // popup
+      } else if (self.channel.totalNumberOfUnits === 1) {
+        activeChannel(self);
+        chooseUnit.call(self.channel.getSingleUnit());
       } else {
-        cssClasses = `${self.channel.color} basic`;
+        activeChannel(self);
       }
-    } else {
-      cssClasses = self.channel.color;
-    }
-    return cssClasses;
-  });
+    };
+    this.buttonCSS = ko.computed(function() {
+      let isActive = self.isActive(),
+          isMouseOver = self.isMouseOver(),
+          cssClasses;
+      if (activeChannel()) {
+        if (isActive || isMouseOver) {
+          cssClasses = self.channel.color;
+        } else {
+          cssClasses = `${self.channel.color} basic`;
+        }
+      } else {
+        cssClasses = self.channel.color;
+      }
+      return cssClasses;
+    });
+  }
+  get tooltip() {
+    if (this.disabled) return this.channel.name + disabledChannelHTML;
+    return this.channel.name;
+  }
+  get channelPopupOpts() {
+    return {
+      variation: 'basic',
+      delay: { show: 700, hide: 0 },
+      duration: 400,
+      transition: 'fade',
+      onVisible: function lazyHide(popupTarget) {
+        let hide = function (popupTarget) {
+          jQuery(popupTarget).popup('hide');
+        };
+        setTimeout(hide.bind(this, popupTarget), 1700);
+      }
+    };
+  }
 }
 
 function viewModel(params) {
@@ -136,13 +177,15 @@ function viewModel(params) {
       editChannel = ko.observable(prechoosenUnit ? false : true),
       chooseUnit = function () { node.unitType(this); editChannel(false); },
       channelViewModels = [];
+
   for (let channel of channels) {
-    let cVM = new channelViewModel(channel, activeChannel);
+    let cVM = new channelViewModel(channel, activeChannel, chooseUnit);
     channelViewModels.push(cVM);
     if (prechoosenChannel && prechoosenChannel.id === channel.id) {
       activeChannel(cVM);
     }
   }
+
   this.node = node;
   this.channelViewModels = channelViewModels;
   this.activeChannel = activeChannel;
@@ -151,13 +194,12 @@ function viewModel(params) {
 }
 
 var viewModelFactory = (params, componentInfo) => {
-  let popupHelpRebindTimeoutID = undefined,
-      popupOpts = {
-        html: channelsHelp,
-        variation: 'basic',
-        delay: { show: 400, hide: 0 },
-        duration: 400,
-      };
+  let helpPopupOpts = {
+    html: channelsHelp,
+    variation: 'basic',
+    delay: { show: 400, hide: 0 },
+    duration: 400,
+  };
   jQuery.initialize('.bmpp-channelsHelp', function () {
     // HACK: Действие обязательно должно быть отложенным. И ловить элемент
     // нужно по сложному пути, а не просто jQuery(this). Времени меньше
@@ -168,7 +210,7 @@ var viewModelFactory = (params, componentInfo) => {
     // появиться в knockoutjs v3.5.
     let popupInit = function () {
       jQuery(componentInfo.element)
-        .find('.bmpp-channelsHelp').popup(popupOpts);
+        .find('.bmpp-channelsHelp').popup(helpPopupOpts);
     };
     setTimeout(popupInit, 1000);
   }, { target: componentInfo.element });
