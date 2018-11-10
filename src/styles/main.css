@@ -39,7 +39,7 @@ $black: #1c1b1d;
       cursor: auto;
     }
     &--current {
-      border-right: $borderWidth solid $bmppBorderColor!important;
+      border-right: $borderWidth solid rgba(34, 36, 38, .25)!important;
       background-color: rgba(250, 250, 250, .75) !important;
     }
     &--hover,
