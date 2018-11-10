@@ -121,7 +121,13 @@ page.base('/bumppo-ghpages/BUMPPO_VERSION');
 page('/', () => { vM.activePane(vM.queryPane); });
 page(`/${queryURL}`, () => { vM.activePane(vM.queryPane); });
 page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
-page(`/${resultsURL}`, () => { vM.activePane(vM.resultsPane); });
+page(`/${resultsURL}`, () => {
+  if (vM.canViewResults()) {
+    vM.activePane(vM.resultsPane);
+  } else {
+    vM.activePane(vM.queryPane);
+  }
+});
 page(`/${resultsOptionsURL}`, () => { vM.activePane(vM.resultsOptionsPane); });
 page({ hashbang: true });
 
