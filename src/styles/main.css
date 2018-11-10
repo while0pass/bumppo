@@ -197,6 +197,10 @@ $black: #1c1b1d;
     cursor: pointer;
     user-select: none;
   }
+  & .ui.form {
+    column-count: auto !important;
+    column-width: 10rem !important;
+  }
 }
 
 .bmpp-unitGroups {

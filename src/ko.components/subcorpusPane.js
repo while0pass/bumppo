@@ -30,14 +30,13 @@ const template = `
                     bmpp-nearLabelIcon bmpp-recordsHelp"></i>
         </div>
 
-        <form class="ui form" style="column-count: 2; column-fill: auto;"
-          data-bind="foreach: fields">
+        <div class="ui form" data-bind="foreach: fields">
           <div class="field">
             <bmpp-checkbox params="value: value, label: label,
               disabled: disabled, tabindex: $index,
               disabledTooltip: 'Запись пока не готова'"></bmpp-checkbox>
           </div>
-        </form>
+        </div>
 
       </div>
     </div>
