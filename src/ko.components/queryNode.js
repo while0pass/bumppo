@@ -43,7 +43,8 @@ const template = `
     </div>
 
     <search-unit-choice params="node: node,
-      isQueryReady: $root.isQueryReady, isQueryNew: $root.isQueryNew">
+      queryPartsNonReadiness: $root.queryPartsNonReadiness,
+      isQueryNew: $root.isQueryNew">
     </search-unit-choice>
 
   </div>

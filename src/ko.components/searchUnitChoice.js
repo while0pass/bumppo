@@ -21,7 +21,7 @@ const disabledChannelHTML = `
 
 const unitTemplate = `
 
-  <li data-bind="click: $component.chooseUnitType.bind($data),
+  <li data-bind="click: $component.iHaveChosenUnitType.bind($data),
                  css: { active: $component.node.unitType() &&
                                 $component.node.unitType().id === id }">
     <span class="unitSelectionContainer">
@@ -91,8 +91,7 @@ const chosenUnitTemplate = `
         style="padding-left: .5em"></strong>
     <!-- /ko -->
     <div style="margin-top: 4em">
-      <span data-bind="click: function(){ editUnitType(true); }"
-          class="bmpp-editUrl">
+      <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
     </div>
@@ -101,18 +100,18 @@ const chosenUnitTemplate = `
 
 const template = `
 
-  <!-- ko if: editUnitType -->
+  <!-- ko if: isEditState -->
   ${unitChoiceTemplate}
   <!-- /ko -->
 
-  <!-- ko ifnot: editUnitType -->
+  <!-- ko ifnot: isEditState -->
   ${chosenUnitTemplate}
   <!-- /ko -->
 
 `;
 
 class channelViewModel {
-  constructor(channel, activeChannel, chooseUnitType) {
+  constructor(channel, activeChannel, iHaveChosenUnitType) {
     let self = this;
     this.channel = channel;
     this.isActive = ko.computed(function() {
@@ -130,7 +129,7 @@ class channelViewModel {
         // popupAdditionalShowOnClick пользовательского нокаут-байндинга popup.
       } else if (self.channel.totalNumberOfUnits === 1) {
         activeChannel(self);
-        chooseUnitType.call(self.channel.getSingleUnit());
+        iHaveChosenUnitType.call(self.channel.getSingleUnit());
       } else {
         activeChannel(self);
       }
@@ -171,47 +170,55 @@ class channelViewModel {
   }
 }
 
-function viewModel(params) {
-  let node = params.node,
-      prechoosenUnit = node.unitType(),
-      prechoosenChannel = prechoosenUnit && prechoosenUnit.channel,
-      activeChannel = ko.observable(null),
-      editUnitType = ko.observable(prechoosenUnit ? false : true),
-      chooseUnitType = function () {
-        node.unitType(this);
-        editUnitType(false);
-        params.isQueryNew(true);
-      },
-      channelViewModels = [],
-      channelHelpPopupOpts = {
-        variation: 'basic',
-        delay: { show: 400, hide: 0 },
-        duration: 400,
-      };
+class viewModel {
+  constructor(params) {
+    let node = params.node,
+        prechoosenUnit = node.unitType(),
+        prechoosenChannel = prechoosenUnit && prechoosenUnit.channel,
+        activeChannel = ko.observable(null),
+        isEditState = ko.observable(prechoosenUnit ? false : true),
+        queryPartsNonReadiness = params.queryPartsNonReadiness,
+        goEditUnitType = function () {
+          isEditState(true);
+        },
+        iHaveChosenUnitType = function () {
+          node.unitType(this);
+          isEditState(false);
+          params.isQueryNew(true);
+        },
+        channelViewModels = [],
+        channelHelpPopupOpts = {
+          variation: 'basic',
+          delay: { show: 400, hide: 0 },
+          duration: 400,
+        };
 
-  ko.computed(function () {
-    params.isQueryReady(!editUnitType());
-  });
-  params.isQueryReady.subscribe(function (isReady) {
-    if (isReady && editUnitType()) {
-      editUnitType.valueHasMutated();
-    }
-  });
+    queryPartsNonReadiness.push(isEditState);
 
-  for (let channel of channels) {
-    let cVM = new channelViewModel(channel, activeChannel, chooseUnitType);
-    channelViewModels.push(cVM);
-    if (prechoosenChannel && prechoosenChannel.id === channel.id) {
-      activeChannel(cVM);
+    for (let channel of channels) {
+      let cVM = new channelViewModel(channel, activeChannel, iHaveChosenUnitType);
+      channelViewModels.push(cVM);
+      if (prechoosenChannel && prechoosenChannel.id === channel.id) {
+        activeChannel(cVM);
+      }
     }
+
+    if (!prechoosenUnit) {
+      goEditUnitType();
+    }
+
+    this.node = node;
+    this.channelViewModels = channelViewModels;
+    this.channelsHelp = { html: channelsHelp, opts: channelHelpPopupOpts };
+    this.activeChannel = activeChannel;
+    this.isEditState = isEditState;
+    this.queryPartsNonReadiness = queryPartsNonReadiness;
+    this.goEditUnitType = goEditUnitType;
+    this.iHaveChosenUnitType = iHaveChosenUnitType;
   }
-
-  this.node = node;
-  this.channelViewModels = channelViewModels;
-  this.channelsHelp = { html: channelsHelp, opts: channelHelpPopupOpts };
-  this.activeChannel = activeChannel;
-  this.editUnitType = editUnitType;
-  this.chooseUnitType = chooseUnitType;
+  dispose() {
+    this.queryPartsNonReadiness.remove(this.isEditState);
+  }
 }
 
 export default {

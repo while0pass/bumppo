@@ -49,7 +49,14 @@ function viewModel() {
     }
   });
 
-  this.isQueryReady = ko.observable(false);
+  this.queryPartsNonReadiness = ko.observableArray([]);
+  this.isQueryReady = ko.computed(function () {
+    for (let isQueryPartNotReady of self.queryPartsNonReadiness()) {
+      if (isQueryPartNotReady()) { return false; }
+    }
+    if (!self.queryTree || !self.queryTree.unitType()) { return false; }
+    return true;
+  }).extend({ rateLimit: 50 });
   this.isQueryNew = ko.observable(true);
   this.isSubcorpusNew = ko.observable(false);
 
