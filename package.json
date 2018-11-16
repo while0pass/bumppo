@@ -9,7 +9,7 @@
     "build": "rollup -c",
     "lint": "eslint",
     "lint-all": "find src/ -name '*.js' | xargs eslint",
-    "lint-watch": "find src/ -name '*.js' | entr yarn run lint-all",
+    "lint-watch": "find src/ -name '*.js' | entr -s 'clear; yarn run lint-all'",
     "live-rebuild": "rollup -c --watch",
     "production": "test -n \"$BUMPPO_VERSION\" && BUMPPO_ENV=production rollup -c || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
     "rsync": "test -n \"$BUMPPO_VERSION\" && rsync -av --exclude='*.mp4' build/ ../bumppo-ghpages/$BUMPPO_VERSION || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
