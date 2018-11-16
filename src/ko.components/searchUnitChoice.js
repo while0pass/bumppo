@@ -94,17 +94,22 @@ const chosenUnitTemplate = `
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
+      <span data-bind="click: goEditUnitProperties" class="bmpp-editUrl"
+        style="margin-left: 1em">
+        <span data-bind="text: isAnyUnitPropertySet() ? 'Изменить' : 'Задать'">
+        </span> свойства единицы
+      </span>
     </div>
   </div>
 `;
 
 const template = `
 
-  <!-- ko if: isEditState -->
+  <!-- ko if: node.isEditStateForUnitType -->
   ${unitChoiceTemplate}
   <!-- /ko -->
 
-  <!-- ko ifnot: isEditState -->
+  <!-- ko ifnot: node.isEditStateForUnitType -->
   ${chosenUnitTemplate}
   <!-- /ko -->
 
@@ -176,16 +181,28 @@ class viewModel {
         prechoosenUnit = node.unitType(),
         prechoosenChannel = prechoosenUnit && prechoosenUnit.channel,
         activeChannel = ko.observable(null),
-        isEditState = ko.observable(prechoosenUnit ? false : true),
         queryPartsNonReadiness = params.queryPartsNonReadiness,
         goEditUnitType = function () {
-          isEditState(true);
+          node.isEditStateForUnitType(true);
+        },
+        goEditUnitProperties = function () {
+          node.isEditStateForUnitProperties(true);
         },
         iHaveChosenUnitType = function () {
           node.unitType(this);
-          isEditState(false);
+          node.isEditStateForUnitType(false);
           params.isQueryNew(true);
         },
+        iHaveChosenUnitProperties = function () {
+          node.isEditStateForUnitProperties(false);
+          params.isQueryNew(true);
+        },
+        isAnyUnitPropertySet = ko.pureComputed(function () {
+          for (let prop of node.unitProperties()) {
+            if (prop.value() !== null) { return true; }
+          }
+          return false;
+        }).extend({ rateLimit: 500 }),
         channelViewModels = [],
         channelHelpPopupOpts = {
           variation: 'basic',
@@ -193,7 +210,8 @@ class viewModel {
           duration: 400,
         };
 
-    queryPartsNonReadiness.push(isEditState);
+    queryPartsNonReadiness.push(node.isEditStateForUnitType);
+    queryPartsNonReadiness.push(node.isEditStateForUnitProperties);
 
     for (let channel of channels) {
       let cVM = new channelViewModel(channel, activeChannel, iHaveChosenUnitType);
@@ -211,13 +229,18 @@ class viewModel {
     this.channelViewModels = channelViewModels;
     this.channelsHelp = { html: channelsHelp, opts: channelHelpPopupOpts };
     this.activeChannel = activeChannel;
-    this.isEditState = isEditState;
     this.queryPartsNonReadiness = queryPartsNonReadiness;
     this.goEditUnitType = goEditUnitType;
+    this.goEditUnitProperties = goEditUnitProperties;
     this.iHaveChosenUnitType = iHaveChosenUnitType;
+    this.iHaveChosenUnitProperties = iHaveChosenUnitProperties;
+    this.isAnyUnitPropertySet = isAnyUnitPropertySet;
   }
   dispose() {
-    this.queryPartsNonReadiness.remove(this.isEditState);
+    let queryPartsNonReadiness = this.queryPartsNonReadiness,
+        node = this.node;
+    queryPartsNonReadiness.remove(node.isEditStateForUnitType);
+    queryPartsNonReadiness.remove(node.isEditStateForUnitProperties);
   }
 }
 

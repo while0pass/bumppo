@@ -1,4 +1,5 @@
 import ko from 'knockout';
+import { data as propertiesList, SearchUnitProperty } from './searchUnitProperties.js';
 
 export class treeNode {
   constructor(parentNode=null, negative=false) {
@@ -11,10 +12,51 @@ export class treeNode {
     this.serialNumber = ko.observable(0);
     this.negative = ko.observable(negative);
     this.unitType = ko.observable(null);
+    this.unitProperties = ko.observableArray([]);
+    this.isEditStateForUnitType = ko.observable(true);
+    this.isEditStateForUnitProperties = ko.observable(false);
 
-    if (parentNode !== null) {
+    this.tuneRelations();
+    this.tuneUnitProperties();
+  }
+  tuneRelations() {
+    if (this.parentNode !== null) {
       this.addRelation();
     }
+  }
+  tuneUnitProperties() {
+    let unitProperties = this.unitProperties;
+    this.unitType.subscribe(unitType => {
+      if (unitType === null) {
+        unitProperties([]);
+      }
+      // Сохраняем все свойства прежнего типа. Разбираемся, какой новый тип
+      // и канал пользователь выбрал.
+      let oldUnitTypeProperties = unitProperties(),
+          newUnitTypeProperties = [];
+      //    unitTypeId = unitType.id,
+      //    unitTypeChannel = unitType.channel;
+      //
+      // По типу поисковой единицы или/и каналу вытягиваем перечень
+      // свойств нового типа.
+      let unitTypePropertiesData = propertiesList;
+
+      // Создаем свойства нового типа, совпадающие свойства переиспользуем
+      // или создаем на основе соответствующего свойства прежнего типа
+      for (let i = 0; i < unitTypePropertiesData.length; i++) {
+        let newPropertyData = unitTypePropertiesData[i],
+            oldProperty = oldUnitTypeProperties.find(
+              unitType => unitType.id === newPropertyData.id
+            );
+        if (oldProperty) {
+          newUnitTypeProperties.push(oldProperty);
+        } else {
+          let newProperty = SearchUnitProperty.createByType(newPropertyData);
+          newUnitTypeProperties.push(newProperty);
+        }
+      }
+      unitProperties(newUnitTypeProperties);
+    });
   }
   addChild(negative=false) {
     var child = new treeNode(this, negative);

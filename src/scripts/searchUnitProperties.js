@@ -1,3 +1,5 @@
+import ko from 'knockout';
+
 var data = [
 
   { type: 'interval', name: 'Длительность', id: 'duration',
@@ -112,9 +114,9 @@ class SearchUnitProperty {
     this.id = data.id;
     this.name = data.name;
     this.help = data.help || '';
-    this.value = null;
+    this.value = ko.observable(null);
   }
-  createByType(data) {
+  static createByType(data) {
     let map = {
           'interval': IntervalProperty,
           'text': TextProperty,
@@ -141,6 +143,10 @@ class TextProperty extends SearchUnitProperty {
   }
 }
 
+function escapeRegExp(string) {
+  return string.replace(/[\-.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 class ListProperty extends SearchUnitProperty {
   constructor(data) {
     super(data);
@@ -156,7 +162,7 @@ class ListProperty extends SearchUnitProperty {
       substitutions = data.substitute;
     }
     if (data.validChars && data.validChars.length) {
-      let invalidChars = `[^${ data.validChars.join('') }]`;
+      let invalidChars = `[^${ escapeRegExp(data.validChars.join('')) }]`;
       substitutions.push([new RegExp(invalidChars, 'g'), '']);
     }
     return substitutions;
