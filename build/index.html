@@ -68,7 +68,7 @@
     <div class="bmpp-resultsPane" data-bind="visible: isResultsPaneOn">
       <div class="bmpp-resultsPane_video">
         <video id="bmpp-videoPlayer" class="video-js"
-          preload="auto" height="354"
+          preload="auto" height="192"
           controls data-setup='{
             "techOrder": ["youtube"],
             "sources": [{
@@ -94,6 +94,14 @@
              data-bind="visible: resultsError">
           <code><pre data-bind="text: resultsError"></pre></code>
         </div>
+        <div style="padding: 1em">
+          <header class="ui header">JSON запроса</header>
+          <code><pre data-bind="text: queryJSON"></pre></code>
+        </div>
+        <div style="padding: 1em; background-color: #eee">
+          <header class="ui header">JSON ответа</header>
+          <code><pre data-bind="text: responseJSON"></pre></code>
+        </div>
         <div class="ui basic segment">
           <!-- ko foreach: results().records -->
           <p data-bind="click: $parent.playVideo.bind($data)"
@@ -104,14 +112,6 @@
             <em data-bind="text: right_context" style="color: grey"></em>
           </p>
           <!-- /ko -->
-        </div>
-        <div style="padding: 1em; background-color: #eee">
-          <header class="ui header">JSON запроса</header>
-          <code><pre data-bind="text: queryJSON"></pre></code>
-        </div>
-        <div style="padding: 1em">
-          <header class="ui header">JSON ответа</header>
-          <code><pre data-bind="text: responseJSON"></pre></code>
         </div>
       </div>
     </div>
