@@ -60,7 +60,7 @@ export default {
       ],
       BUMPPO_ENV: JSON.stringify(process.env.BUMPPO_ENV || 'development'),
       BUMPPO_VERSION: process.env.BUMPPO_VERSION || '',
-      BUMPPO_HOSTING: process.env.BUMPPO_HOSTING || '',
+      BUMPPO_HOSTING: process.env.BUMPPO_HOSTING || 'false',
     }),
     (process.env.BUMPPO_ENV === 'production' && terser()),
     copy({

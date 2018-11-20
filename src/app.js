@@ -1,5 +1,5 @@
 import './styles/main.css';
-import './scripts/log.js';
+import log from './scripts/log.js'; // eslint-disable-line no-unused-vars
 
 import jQuery from 'jquery';
 import ko from 'knockout';
@@ -14,10 +14,13 @@ import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import resultsData from './results_data.js';
 
 var videoPlayer = videojs('bmpp-videoPlayer');
-// eslint-disable-next-line no-extra-boolean-cast
-const baseURL = Boolean('BUMPPO_HOSTING') ?
-        '/bumppo-ghpages/BUMPPO_VERSION' : 'search_annotations',
-      searchEngineURL = baseURL + '/SearchAnnotations';
+/* eslint-disable no-undef */
+const searchEngineURL = (BUMPPO_ENV === 'production' ?
+        'http://multidiscourse.ru:8080/search_annotations/SearchAnnotations' :
+        'http://localhost:8080/search_annotations/SearchAnnotations'),
+      baseURL = (BUMPPO_ENV === 'production' ?
+        (BUMPPO_HOSTING ? '/bumppo-ghpages/BUMPPO_VERSION' : '/search/') : '');
+/* eslint-enable no-undef */
 
 function viewModel() {
   let self = this;
@@ -121,9 +124,10 @@ function viewModel() {
         self.isQueryNew(false);
         self.isSubcorpusNew(false);
         self.results(data);
+        self.resultsError(null);
       }).fail((jqXHR, textStatus, errorThrown) => {
         self.results(resultsData);
-        self.resultsError(`Ошибка: ${ errorThrown }`);
+        self.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
       }).always(() => {
         self.isSearchInProgress(false);
         self.canViewResults(true);
