@@ -144,7 +144,7 @@ class TextProperty extends SearchUnitProperty {
 }
 
 function escapeRegExp(string) {
-  return string.replace(/[\-.*+?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 }
 
 class ListProperty extends SearchUnitProperty {

@@ -50,10 +50,16 @@
     </div>
 
     <!-- ko if: isQueryPaneOn -->
-    <query-pane params="queryTree: queryTree"></query-pane>
+      <!-- ko if: queryPaneView.isTreeVisible -->
+        <query-pane params="queryTree: queryTree"></query-pane>
+      <!-- /ko -->
+      <!-- ko if: queryPaneView.arePropertiesVisible -->
+        <properties-pane
+          params="node: queryPaneView.propertiesNode"></properties-pane>
+      <!-- /ko -->
     <!-- /ko -->
 
-    <div class="bmpp-subcorpusPane" data-bind="visible: isSubcorpusPaneOn">
+    <div class="bmpp-paddedPane" data-bind="visible: isSubcorpusPaneOn">
       <subcorpus-pane params="records: subcorpus.records,
         recordPhases: subcorpus.recordPhases"></subcorpus-pane>
     </div>

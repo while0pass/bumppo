@@ -7,7 +7,7 @@ import page from 'page';
 import videojs from 'video.js';
 
 import initKnockout from './scripts/init.knockout.js';
-import { treeNode } from './scripts/queryTree.js';
+import { TreeNode } from './scripts/queryTree.js';
 import getQueryJSON from './scripts/queryJSON.js';
 
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
@@ -49,7 +49,27 @@ function viewModel() {
     }
   });
 
-  this.queryPartsNonReadiness = ko.observableArray([]);
+  this.queryPaneView = ko.observable(null);
+  this.queryPaneView.isTreeVisible = ko.computed(
+    () => self.queryPaneView() === null
+  );
+  this.queryPaneView.editNodeProperties = function (node) {
+    self.queryPaneView(node);
+  };
+  this.queryPaneView.finishEditingNodeProperties = function () {
+    self.queryPaneView(null);
+  };
+  this.queryPaneView.arePropertiesVisible = ko.computed(
+    () => self.queryPaneView() instanceof TreeNode
+  );
+  this.queryPaneView.propertiesNode = ko.computed(function () {
+    if (self.queryPaneView.arePropertiesVisible()) {
+      return self.queryPaneView.peek();
+    }
+  });
+
+  this.queryPartsNonReadiness = ko.observableArray(
+    [this.queryPaneView.arePropertiesVisible]);
   this.isQueryReady = ko.computed(function () {
     for (let isQueryPartNotReady of self.queryPartsNonReadiness()) {
       if (isQueryPartNotReady()) { return false; }
@@ -65,7 +85,7 @@ function viewModel() {
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
   };
 
-  this.queryTree = new treeNode();
+  this.queryTree = new TreeNode();
 
   this.canSearch = ko.computed(function () {
     let isQueryReady = self.isQueryReady(),

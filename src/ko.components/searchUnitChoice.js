@@ -186,7 +186,7 @@ class viewModel {
           node.isEditStateForUnitType(true);
         },
         goEditUnitProperties = function () {
-          node.isEditStateForUnitProperties(true);
+          params.editNodeProperties(node);
         },
         iHaveChosenUnitType = function () {
           node.unitType(this);
@@ -194,7 +194,7 @@ class viewModel {
           params.isQueryNew(true);
         },
         iHaveChosenUnitProperties = function () {
-          node.isEditStateForUnitProperties(false);
+          params.finishEditingNodeProperties();
           params.isQueryNew(true);
         },
         isAnyUnitPropertySet = ko.pureComputed(function () {
@@ -211,7 +211,6 @@ class viewModel {
         };
 
     queryPartsNonReadiness.push(node.isEditStateForUnitType);
-    queryPartsNonReadiness.push(node.isEditStateForUnitProperties);
 
     for (let channel of channels) {
       let cVM = new channelViewModel(channel, activeChannel, iHaveChosenUnitType);
@@ -237,10 +236,7 @@ class viewModel {
     this.isAnyUnitPropertySet = isAnyUnitPropertySet;
   }
   dispose() {
-    let queryPartsNonReadiness = this.queryPartsNonReadiness,
-        node = this.node;
-    queryPartsNonReadiness.remove(node.isEditStateForUnitType);
-    queryPartsNonReadiness.remove(node.isEditStateForUnitProperties);
+    this.queryPartsNonReadiness.remove(this.node.isEditStateForUnitType);
   }
 }
 

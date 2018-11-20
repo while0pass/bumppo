@@ -44,6 +44,8 @@ const template = `
 
     <search-unit-choice params="node: node,
       queryPartsNonReadiness: $root.queryPartsNonReadiness,
+      editNodeProperties: $root.queryPaneView.editNodeProperties,
+      finishEditingNodeProperties: $root.queryPaneView.finishEditingNodeProperties,
       isQueryNew: $root.isQueryNew">
     </search-unit-choice>
 

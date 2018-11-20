@@ -71,7 +71,7 @@ $black: #1c1b1d;
   padding-bottom: 3em;
 }
 
-.bmpp-subcorpusPane {
+.bmpp-paddedPane {
   width: 55em;
   margin: 3em auto auto 6em !important;
 }

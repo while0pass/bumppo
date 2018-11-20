@@ -1,7 +1,7 @@
 import ko from 'knockout';
 import { data as propertiesList, SearchUnitProperty } from './searchUnitProperties.js';
 
-export class treeNode {
+export class TreeNode {
   constructor(parentNode=null, negative=false) {
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
@@ -14,7 +14,6 @@ export class treeNode {
     this.unitType = ko.observable(null);
     this.unitProperties = ko.observableArray([]);
     this.isEditStateForUnitType = ko.observable(true);
-    this.isEditStateForUnitProperties = ko.observable(false);
 
     this.tuneRelations();
     this.tuneUnitProperties();
@@ -59,11 +58,11 @@ export class treeNode {
     });
   }
   addChild(negative=false) {
-    var child = new treeNode(this, negative);
+    var child = new TreeNode(this, negative);
     this.childNodes.push(child);
   }
   addRelation() {
-    this.relationsToParentNode.push(new nodesRelation(this.parentNode, this));
+    this.relationsToParentNode.push(new NodesRelation(this.parentNode, this));
   }
   removeRelation(relation) {
     this.relationsToParentNode.remove(relation);
@@ -78,7 +77,7 @@ export class treeNode {
   }
 }
 
-export class nodesRelation {
+export class NodesRelation {
   constructor(parentNode, childNode) {
     this.parentNode = parentNode;
     this.childNode = childNode;
