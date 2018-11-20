@@ -2,7 +2,7 @@ import linearizeTree from './linearizeTree.js';
 
 export default function getQueryJSON(viewModel) {
   let x = {
-        version: 1.0,
+        version: '1.0',
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
         segments: viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
         conditions: {
@@ -17,7 +17,7 @@ export default function getQueryJSON(viewModel) {
           search: '.+',
           duration: []
         };
-    simpleCond.tiers = [node.unitType().channel.id, node.unitType().id];
+    simpleCond.tiers = ['N-vSForm', 'R-vSForm', 'C-vSForm'];
     x.conditions[node.serialNumber().toString()] = simpleCond;
 
     if (i > 0) {
