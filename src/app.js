@@ -14,6 +14,9 @@ import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import resultsData from './results_data.js';
 
 var videoPlayer = videojs('bmpp-videoPlayer');
+const baseURL = Boolean('BUMPPO_HOSTING') ?
+      '/bumppo-ghpages/BUMPPO_VERSION' : 'search_annotations',
+      searchEngineURL = baseURL + '/SearchAnnotations';
 
 function viewModel() {
   let self = this;
@@ -109,13 +112,18 @@ function viewModel() {
   this.search = () => {
     if (self.canSearch()) {
       self.isSearchInProgress(true);
-      setTimeout(function () {
-        self.isSearchInProgress(false);
-        self.isQueryNew(false);
-        self.isSubcorpusNew(false);
-        self.canViewResults(true);
-        self.switchOnResultsPane();
-      }, 1000);
+      jQuery.ajax(searchEngineURL, { data: self.queryJSON() })
+        .done(() => {
+          self.isQueryNew(false);
+          self.isSubcorpusNew(false);
+        })
+        .fail(() => {
+        })
+        .always(() => {
+          self.isSearchInProgress(false);
+          self.canViewResults(true);
+          self.switchOnResultsPane();
+        });
     }
   };
   this.isSearchInProgress = ko.observable(false);
@@ -137,7 +145,7 @@ const queryURL = Symbol.keyFor(vM.queryPane),
       resultsURL = Symbol.keyFor(vM.resultsPane),
       resultsOptionsURL = Symbol.keyFor(vM.resultsOptionsPane);
 
-page.base('/bumppo-ghpages/BUMPPO_VERSION');
+page.base(baseURL);
 page('/', () => { vM.activePane(vM.queryPane); });
 page(`/${queryURL}`, () => { vM.activePane(vM.queryPane); });
 page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
