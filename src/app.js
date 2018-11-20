@@ -14,8 +14,9 @@ import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import resultsData from './results_data.js';
 
 var videoPlayer = videojs('bmpp-videoPlayer');
+// eslint-disable-next-line no-extra-boolean-cast
 const baseURL = Boolean('BUMPPO_HOSTING') ?
-      '/bumppo-ghpages/BUMPPO_VERSION' : 'search_annotations',
+        '/bumppo-ghpages/BUMPPO_VERSION' : 'search_annotations',
       searchEngineURL = baseURL + '/SearchAnnotations';
 
 function viewModel() {
@@ -112,26 +113,43 @@ function viewModel() {
   this.search = () => {
     if (self.canSearch()) {
       self.isSearchInProgress(true);
-      jQuery.ajax(searchEngineURL, { data: self.queryJSON() })
-        .done(() => {
-          self.isQueryNew(false);
-          self.isSubcorpusNew(false);
-        })
-        .fail(() => {
-        })
-        .always(() => {
-          self.isSearchInProgress(false);
-          self.canViewResults(true);
-          self.switchOnResultsPane();
-        });
+      jQuery.ajax(searchEngineURL, {
+        data: {
+          data: window.encodeURIComponent(self.queryJSON())
+        }
+      }).done(data => {
+        self.isQueryNew(false);
+        self.isSubcorpusNew(false);
+        self.results(data);
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        self.results(resultsData);
+        self.resultsError(`Ошибка: ${ errorThrown }`);
+      }).always(() => {
+        self.isSearchInProgress(false);
+        self.canViewResults(true);
+        self.switchOnResultsPane();
+      });
     }
   };
   this.isSearchInProgress = ko.observable(false);
 
   this.canViewResults = ko.observable(false);
-  this.results = resultsData;
+  this.results = ko.observable(resultsData);
+  this.resultsError = ko.observable(null);
+  this.responseJSON = ko.computed(() => JSON.stringify(self.results(), null, 4));
   this.playVideo = function (result) {
-    videoPlayer.currentTime(result.start);
+    let { begin, end } = result.time,
+        pauseFunction = function () {
+          if (videoPlayer.currentTime() >= end) videoPlayer.pause();
+        };
+    begin /= 1000;
+    end /= 1000;
+    videoPlayer.currentTime(begin);
+    if (videoPlayer.pauseFunction !== undefined) {
+      videoPlayer.off('timeupdate', videoPlayer.pauseFunction);
+    }
+    videoPlayer.pauseFunction = pauseFunction;
+    videoPlayer.on('timeupdate', pauseFunction);
     videoPlayer.play();
   };
 

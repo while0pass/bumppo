@@ -64,13 +64,8 @@
         recordPhases: subcorpus.recordPhases"></subcorpus-pane>
     </div>
 
-    <div data-bind="visible: isResultsPaneOn"
-      style="width: 55em; margin: 3em auto auto 6em !important">
-      <header class="ui header">JSON запроса</header>
-      <code><pre data-bind="text: queryJSON"></pre></code>
-    </div>
 
-    <div class="bmpp-resultsPane" style="display: none">
+    <div class="bmpp-resultsPane" data-bind="visible: isResultsPaneOn">
       <div class="bmpp-resultsPane_video">
         <video id="bmpp-videoPlayer" class="video-js"
           preload="auto" height="354"
@@ -94,15 +89,30 @@
         </div>
         -->
       </div>
-      <div class="bmpp-resultsPane_results ui basic segment">
-      <!-- ko foreach: results -->
-        <p data-bind="click: $parent.playVideo.bind($data)"
-          class="ui vertical segment" style="cursor: pointer">
-          <i class="disabled film icon"></i>
-          <span style="color: green" data-bind="text: edu"></span>
-          <span data-bind="text: transcription"></span>
-        </p>
-      <!-- /ko -->
+      <div class="bmpp-resultsPane_results">
+        <div style="padding: 1em; color: white; background-color: #a00;"
+             data-bind="visible: resultsError">
+          <code><pre data-bind="text: resultsError"></pre></code>
+        </div>
+        <div class="ui basic segment">
+          <!-- ko foreach: results().records -->
+          <p data-bind="click: $parent.playVideo.bind($data)"
+            class="ui vertical segment" style="cursor: pointer">
+            <i class="disabled film icon"></i>
+            <span style="color: green" data-bind="text: left_context"></span>
+            <span data-bind="text: value"></span>
+            <em data-bind="text: right_context" style="color: grey"></em>
+          </p>
+          <!-- /ko -->
+        </div>
+        <div style="padding: 1em; background-color: #eee">
+          <header class="ui header">JSON запроса</header>
+          <code><pre data-bind="text: queryJSON"></pre></code>
+        </div>
+        <div style="padding: 1em">
+          <header class="ui header">JSON ответа</header>
+          <code><pre data-bind="text: responseJSON"></pre></code>
+        </div>
       </div>
     </div>
 
