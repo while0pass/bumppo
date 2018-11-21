@@ -1,12 +1,12 @@
 import ko from 'knockout';
 
 export var records = [
-  { id: 'pears04', label: 'Pears 04', query: 4 },
-  { id: 'pears22', label: 'Pears 22', query: 22 },
-  { id: 'pears23', label: 'Pears 23', query: 23 },
-  { id: 'pears35', label: 'Pears 35', query: 35 },
-  { id: 'pears37', label: 'Pears 37', query: 37, disabled: true },
-  { id: 'pears39', label: 'Pears 39', query: 39, disabled: true }
+  { id: 'pears04', label: 'Pears 04', query: '04' },
+  { id: 'pears22', label: 'Pears 22', query: '22' },
+  { id: 'pears23', label: 'Pears 23', query: '23' },
+  { id: 'pears35', label: 'Pears 35', query: '35' },
+  { id: 'pears37', label: 'Pears 37', query: '37', disabled: true },
+  { id: 'pears39', label: 'Pears 39', query: '39', disabled: true }
 ];
 
 export var recordPhases = [

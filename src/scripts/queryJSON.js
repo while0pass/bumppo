@@ -14,8 +14,7 @@ export default function getQueryJSON(viewModel) {
         simpleCond = {
           type: 'simple',
           is_regex: true,
-          search: '.+',
-          duration: []
+          search: '.+'
         };
     simpleCond.tiers = ['N-vSForm', 'R-vSForm', 'C-vSForm'];
     x.conditions[node.serialNumber().toString()] = simpleCond;

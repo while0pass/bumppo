@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
   "version": "1.0",
-  "records": [
+  "results": [
     {
       "record_id": 22,
       "participant": "N",
