@@ -20,7 +20,8 @@ var data = [
     ]}
   },
 
-  { type: 'text', name: 'Словарная форма', id: 'word' },
+  { type: 'text', name: 'Словарная форма', id: 'word',
+    placeholder: '…'},
 
   { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'n_from_edu',
     min: 0 },
@@ -140,6 +141,7 @@ class IntervalProperty extends SearchUnitProperty {
 class TextProperty extends SearchUnitProperty {
   constructor(data) {
     super(data);
+    this.placeholder = data.placeholder || '';
   }
 }
 

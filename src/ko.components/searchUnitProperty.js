@@ -2,22 +2,16 @@ import log from '../scripts/log.js';
 
 const template = `
 
-  <div class="ui padded segment bmpp-propertyForm">
+  <div class="ui segment bmpp-propertyForm">
     <div class="ui top attached large label">
       <header data-bind="text: property.name"></header>
       <i class="disabled question circle outline icon bmpp-nearLabelIcon"></i>
     </div>
+    <div class="ui hidden divider"></div>
 
-    <!--
-    <div class="ui form" data-bind="foreach: fields">
-      <div class="field">
-        <bmpp-checkbox params="value: value, label: label,
-          disabled: disabled, tabindex: $index,
-          disabledTooltip: 'Запись пока не готова'"></bmpp-checkbox>
-      </div>
-    </div>
-    -->
-
+    <!-- ko if: property.type === 'text' -->
+    <text-property params="property: property"></text-property>
+    <!-- /ko -->
   </div>
 
 `;
