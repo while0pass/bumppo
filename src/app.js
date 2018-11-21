@@ -117,9 +117,7 @@ function viewModel() {
     if (self.canSearch()) {
       self.isSearchInProgress(true);
       jQuery.ajax(searchEngineURL, {
-        data: {
-          data: window.encodeURIComponent(self.queryJSON())
-        }
+        data: { data: self.queryJSON() }
       }).done(data => {
         self.isQueryNew(false);
         self.isSubcorpusNew(false);
