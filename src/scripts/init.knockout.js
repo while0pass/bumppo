@@ -7,6 +7,7 @@ import QueryNode from '../ko.components/queryNode.js';
 import QueryNodeRelations from '../ko.components/queryNodeRelations.js';
 import Checkbox from '../ko.components/checkbox.js';
 import SearchUnitChoice from '../ko.components/searchUnitChoice.js';
+import SearchUnitProperty from '../ko.components/searchUnitProperty.js';
 
 export default function init(ko, viewModel) {
   ko.bindingHandlers.popup = {
@@ -31,5 +32,6 @@ export default function init(ko, viewModel) {
   ko.components.register('query-node', QueryNode);
   ko.components.register('query-node-relations', QueryNodeRelations);
   ko.components.register('search-unit-choice', SearchUnitChoice);
+  ko.components.register('search-unit-property', SearchUnitProperty);
   ko.applyBindings(viewModel);
 }

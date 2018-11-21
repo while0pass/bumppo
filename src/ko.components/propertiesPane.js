@@ -2,6 +2,9 @@ const template = `
 
   <div class="bmpp-paddedPane">
     <header class="ui header">Свойства поисковой единицы</header>
+    <div data-bind="foreach: node() && node().unitProperties || []">
+      <search-unit-property params="property: $data"></search-unit-property>
+    </div>
     <div>
       <button class="ui small button"
         data-bind="click: $root.queryPaneView.finishEditingNodeProperties"
@@ -17,7 +20,7 @@ const template = `
 
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  return {};
+  return { node: params.node };
 };
 
 export default {
