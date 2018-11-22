@@ -3,7 +3,7 @@ import ko from 'knockout';
 var data = [
 
   { type: 'interval', name: 'Длительность', id: 'duration',
-    help: '', units: 'миллисекунд', min: 0 },
+    help: '', units: 'миллисекунд', step: 20 },
 
   { type: 'list', name: 'Участники', id: 'participants',
     valueList: { orValues: [
@@ -23,8 +23,7 @@ var data = [
   { type: 'text', name: 'Словарная форма', id: 'word',
     placeholder: '…'},
 
-  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'n_from_edu',
-    min: 0 },
+  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'n_from_edu' },
 
   { type: 'list', name: 'Точка прерывания', id: 'p0',
     valueList: { xorValues: [
@@ -109,6 +108,16 @@ var data = [
 
 ];
 
+function keepZero(...args) {
+  // Вычисляет аналог выражения:  arg1 || arg2 || ... || argN,
+  // но считает, что цифра ноль это тоже тру.
+  for (let i = 0; i < args.length - 1; i++) {
+    let arg = args[i];
+    if (arg || arg === 0) return arg;
+  }
+  if (args.length > 0) return args.slice(-1)[0];
+}
+
 class SearchUnitProperty {
   constructor(data) {
     this.type = data.type;
@@ -116,6 +125,10 @@ class SearchUnitProperty {
     this.name = data.name;
     this.help = data.help || '';
     this.value = ko.observable(null);
+
+    this.virtualKeyboard = data.virtualKeyboard || false;
+    this.validChars = data.validChars;
+    this.validitySusbstitutions = this.getValueSubstitutions(data);
   }
   static createByType(data) {
     let map = {
@@ -128,13 +141,56 @@ class SearchUnitProperty {
       return new Property(data);
     }
   }
+  getValueSubstitutions(data) {
+    let substitutions = [];
+    if (data.substitute && data.substitute.length) {
+      substitutions = data.substitute;
+    }
+    if (data.validChars && data.validChars.length) {
+      let invalidChars = `[^${ escapeRegExp(data.validChars.join('')) }]`;
+      substitutions.push([new RegExp(invalidChars, 'g'), '']);
+    }
+    return substitutions;
+  }
+  makeValueValid(string) {
+    for (let i = 0; i < this.validitySusbstitutions.length; i++) {
+      let [ regexp, replacement ] = this.validitySusbstitutions[i];
+      string = string.replace(regexp, replacement);
+    }
+    return string;
+  }
 }
 
 class IntervalProperty extends SearchUnitProperty {
   constructor(data) {
     super(data);
+
+    this.from = ko.observable(null);
+    this.to = ko.observable(null);
     this.units = data.units || '';
-    this.min = data.min;
+
+    this.from.min = keepZero(data.fromMin, data.min, 0);
+    this.from.max = keepZero(data.fromMax, data.max, null);
+    this.from.step = data.fromStep || data.step || 1;
+    this.from.placeholder = data.fromPlaceholder || '';
+
+    this.to.min = keepZero(data.toMin, data.min, 0);
+    this.to.max = keepZero(data.toMax, data.max, null);
+    this.to.step = data.toStep || data.step || 1;
+    this.to.placeholder = data.toPlaceholder || '';
+
+    this.validitySusbstitutions = this.getValueSubstitutions(data);
+
+    ko.computed(function () {
+      let interval = [this.from(), this.to()];
+      interval = interval.filter(x => x !== null);
+      this.value(interval.length > 0 ? interval : null);
+    }, this);
+  }
+  getValueSubstitutions(data) {
+    let ss = super.getValueSubstitutions(data);
+    ss.push([/[^\d]/g, '']);
+    return ss;
   }
 }
 
@@ -154,27 +210,6 @@ class ListProperty extends SearchUnitProperty {
     super(data);
     this.valueList = data.valueList;
     this.displayValues = data.displayValues || false;
-    this.virtualKeyboard = data.virtualKeyboard || false;
-    this.validChars = data.validChars;
-    this.validitySusbstitutions = this.getValueSubstitutions(data);
-  }
-  getValueSubstitutions(data) {
-    let substitutions = [];
-    if (data.substitute && data.substitute.length) {
-      substitutions = data.substitute;
-    }
-    if (data.validChars && data.validChars.length) {
-      let invalidChars = `[^${ escapeRegExp(data.validChars.join('')) }]`;
-      substitutions.push([new RegExp(invalidChars, 'g'), '']);
-    }
-    return substitutions;
-  }
-  makeValueValid(string) {
-    for (let i = 0; i < this.validitySusbstitutions.length; i++) {
-      let [ regexp, replacement ] = this.validitySusbstitutions[i];
-      string = string.replace(regexp, replacement);
-    }
-    return string;
   }
 }
 

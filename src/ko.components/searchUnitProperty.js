@@ -1,5 +1,3 @@
-import log from '../scripts/log.js';
-
 const template = `
 
   <div class="ui segment bmpp-propertyForm">
@@ -10,7 +8,11 @@ const template = `
     <div class="ui hidden divider"></div>
 
     <!-- ko if: property.type === 'text' -->
-    <text-property params="property: property"></text-property>
+      <text-property params="property: property"></text-property>
+    <!-- /ko -->
+
+    <!-- ko if: property.type === 'interval' -->
+      <interval-property params="property: property"></interval-property>
     <!-- /ko -->
   </div>
 

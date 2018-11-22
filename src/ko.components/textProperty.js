@@ -1,5 +1,3 @@
-import log from '../scripts/log.js';
-
 const template = `
 
   <div class="ui small input">

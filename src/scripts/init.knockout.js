@@ -1,6 +1,7 @@
 import jQuery from 'jquery';
 
 import Checkbox from '../ko.components/checkbox.js';
+import IntervalProperty from '../ko.components/intervalProperty.js';
 import PropertiesPane from '../ko.components/propertiesPane.js';
 import QueryNode from '../ko.components/queryNode.js';
 import QueryNodeRelations from '../ko.components/queryNodeRelations.js';
@@ -27,6 +28,7 @@ export default function init(ko, viewModel) {
     }
   };
   ko.components.register('text-property', TextProperty);
+  ko.components.register('interval-property', IntervalProperty);
   ko.components.register('search-unit-property', SearchUnitProperty);
   ko.components.register('properties-pane', PropertiesPane);
   ko.components.register('bmpp-checkbox', Checkbox);

@@ -1,5 +1,5 @@
 import './styles/main.css';
-import log from './scripts/log.js'; // eslint-disable-line no-unused-vars
+import './scripts/log.js';
 
 import jQuery from 'jquery';
 import ko from 'knockout';
