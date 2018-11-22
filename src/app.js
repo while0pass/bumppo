@@ -195,3 +195,5 @@ videoPlayer.ready(function () {
   videoPlayer.pause();
   videoPlayer.volume(volume);
 });
+
+jQuery('#safetyCurtain').fadeOut();

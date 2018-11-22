@@ -9,7 +9,46 @@
     <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
     <link href="https://vjs.zencdn.net/7.3.0/video-js.css" rel="stylesheet">
   </head>
-  <body>
+  <body style="position: relative">
+
+<style>
+#safetyCurtain{
+  background-color: #fff;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  z-index: 10000;
+}
+#safetyCurtain:after {
+  position: absolute;
+  content: '';
+  top: 33.3%;
+  left: 50%;
+  margin: -1.5em 0 0 -1.5em;
+  width: 3em;
+  height: 3em;
+  -webkit-animation: segment-spin .6s linear;
+  animation: segment-spin .6s linear;
+  animation-name: segment-spin;
+  animation-duration: .8s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  border-radius: 500rem;
+  border-color: #767676 rgba(0,0,0,.1) rgba(0,0,0,.1) rgba(0,0,0,.1);
+  border-style: solid;
+  border-width: .2em;
+  -webkit-box-shadow: 0 0 0 1px transparent;
+  box-shadow: 0 0 0 1px transparent;
+  visibility: visible;
+  z-index: 10001;
+}
+</style>
+<div id="safetyCurtain"></div>
 
 <div class="bmpp-uiLayout">
   <div class="bmpp-sidePane">
