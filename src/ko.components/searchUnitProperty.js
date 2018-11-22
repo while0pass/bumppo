@@ -14,6 +14,10 @@ const template = `
     <!-- ko if: property.type === 'interval' -->
       <interval-property params="property: property"></interval-property>
     <!-- /ko -->
+
+    <!-- ko if: property.type === 'list' -->
+      <list-property params="property: property"></list-property>
+    <!-- /ko -->
   </div>
 
 `;
