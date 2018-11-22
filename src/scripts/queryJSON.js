@@ -11,12 +11,15 @@ export default function getQueryJSON(viewModel) {
       ltree = linearizeTree(viewModel.queryTree);
   for (let i = 0; i < ltree.length; i++) {
     let node = ltree[i],
+        nodeTiers = node.unitType().tiers,
         simpleCond = {
           type: 'simple',
           is_regex: true,
           search: '.+'
-        };
-    simpleCond.tiers = ['N-vSForm', 'R-vSForm', 'C-vSForm'];
+        },
+        tiers = (nodeTiers && nodeTiers.length > 0 ? nodeTiers : ['-vSForm']);
+    tiers = tiers.map(t => ['N'+t, 'R'+t, 'C'+t]).reduce((x, y) => x.concat(y));
+    simpleCond.tiers = tiers;
     x.conditions[node.serialNumber().toString()] = simpleCond;
 
     if (i > 0) {
