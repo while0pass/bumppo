@@ -22,7 +22,7 @@ const template = `
 
   <div class="ui bottom attached info mini message" style="margin-bottom: 1em;">
     <span data-bind="text: property.id"></span>:
-    <span data-bind="text: JSON.stringify(property.value())">
+    <span data-bind="text: JSON.stringify(property.value(), null, 1)">
   </div>
 
 `;

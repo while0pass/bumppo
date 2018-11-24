@@ -215,20 +215,14 @@ class ListProperty extends SearchUnitProperty {
 
 class ValueList {
   constructor(data, value) {
-    if (data instanceof ValueListItem) {
-      this.isTop = false;
-      this.isOR = !data.xorValues;
-      this.isXOR = !data.orValues;
-    } else {
-      this.isTop = true;
-      this.isOR = !data.xorValues;
-      this.isXOR = !data.orValues;
-    }
+    this.isTop = !data.name;
+    this.isOR = !data.xorValues;
+    this.isXOR = !data.orValues;
     this.values = ko.observableArray([]);
     this.items = (this.isOR ? data.orValues : data.xorValues).map(
       itemData => new ValueListItem(itemData, this)
     );
-    ko.pureComputed(function () {
+    ko.computed(function () {
       let values = this.values();
       if (this.isTop) {
         if (values.length > 0) {
@@ -246,10 +240,16 @@ class ValueList {
       }
     }, this);
   }
-  clearValues() {
+  setValue(value) {
     this.items.forEach(item => {
-      this.values.remove(item.value);
-      item.childValueList && item.childValueList.clearValues();
+      if (item.value !== value) {
+        this.values.remove(item.value);
+        item.checked(false);
+        item.childValueList && item.childValueList.setValue(value);
+      } else {
+        this.values.push(value);
+        item.checked(true);
+      }
     });
   }
   clearMyValuesFrom(observableArray) {
@@ -265,14 +265,13 @@ class ValueListItem {
     this.value = data.value;
     this.checked = ko.observable(null);
 
-    ko.pureComputed(function () {
+    ko.computed(function () {
       let checked = this.checked(),
           value = this.value;
       if (checked && parentValueList.isOR) {
         parentValueList.values.push(value);
       } else if (checked && parentValueList.isXOR) {
-        parentValueList.clearValues();
-        parentValueList.values.push(value);
+        parentValueList.setValue(value);
       } else {
         parentValueList.values.remove(value);
       }
