@@ -14,11 +14,12 @@ var viewModelFactory = (params, componentInfo) => {
   let element = componentInfo.element,
       value = params.value,
       disabled = params.disabled,
+      disabledTooltip = params.disabledTooltip,
       checkboxOpts = {
         onChange: () => { value(!value()); }
       },
       popupOpts = {
-        content: params.disabledTooltip,
+        content: disabledTooltip,
         variation: 'basic',
         position: 'right center',
         transition: 'fade',
@@ -36,7 +37,7 @@ var viewModelFactory = (params, componentInfo) => {
       };
 
   if (disabled) {
-    jQuery(element).popup(popupOpts);
+    if (disabledTooltip) jQuery(element).popup(popupOpts);
   } else {
     jQuery(element).checkbox(checkboxOpts);
   }

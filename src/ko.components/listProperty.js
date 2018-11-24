@@ -1,5 +1,7 @@
 const template = `
 
+  <bmpp-value-list params="valueList: valueList"></bmpp-value-list>
+
 `;
 
 // eslint-disable-next-line no-unused-vars

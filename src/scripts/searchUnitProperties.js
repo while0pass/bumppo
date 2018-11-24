@@ -8,7 +8,7 @@ var data = [
   { type: 'list', name: 'Участники', id: 'participants',
     valueList: { orValues: [
       { name: 'Рассказчик', value: 'N' },
-      { name: 'Комментатор', value: 'C' },
+      { name: 'Комментатор', value: 'C', disableOn: ['ocul'] },
       { name: 'Пересказчик', value: 'R' }
     ]}
   },
@@ -208,8 +208,80 @@ function escapeRegExp(string) {
 class ListProperty extends SearchUnitProperty {
   constructor(data) {
     super(data);
-    this.valueList = data.valueList;
+    this.valueList = new ValueList(data.valueList, this.value);
     this.displayValues = data.displayValues || false;
+  }
+}
+
+class ValueList {
+  constructor(data, value) {
+    if (data instanceof ValueListItem) {
+      this.isTop = false;
+      this.isOR = !data.xorValues;
+      this.isXOR = !data.orValues;
+    } else {
+      this.isTop = true;
+      this.isOR = !data.xorValues;
+      this.isXOR = !data.orValues;
+    }
+    this.values = ko.observableArray([]);
+    this.items = (this.isOR ? data.orValues : data.xorValues).map(
+      itemData => new ValueListItem(itemData, this)
+    );
+    ko.pureComputed(function () {
+      let values = this.values();
+      if (this.isTop) {
+        if (values.length > 0) {
+          value(this.isOR ? values : values[0]);
+        } else {
+          value(null);
+        }
+      } else {
+        if (values.length > 0) {
+          this.clearMyValuesFrom(value);
+          value.concat(this.isOR ? values : values.slice(0, 1));
+        } else {
+          value.removeAll(values);
+        }
+      }
+    }, this);
+  }
+  clearValues() {
+    this.items.forEach(item => {
+      this.values.remove(item.value);
+      item.childValueList && item.childValueList.clearValues();
+    });
+  }
+  clearMyValuesFrom(observableArray) {
+    this.items.forEach(item => {
+      observableArray.remove(item.value);
+    });
+  }
+}
+
+class ValueListItem {
+  constructor(data, parentValueList) {
+    this.name = data.name;
+    this.value = data.value;
+    this.checked = ko.observable(null);
+
+    ko.pureComputed(function () {
+      let checked = this.checked(),
+          value = this.value;
+      if (checked && parentValueList.isOR) {
+        parentValueList.values.push(value);
+      } else if (checked && parentValueList.isXOR) {
+        parentValueList.clearValues();
+        parentValueList.values.push(value);
+      } else {
+        parentValueList.values.remove(value);
+      }
+    }, this);
+
+    this.childValueList = null;
+    if (data.orValues || data.xorValues) {
+      this.childValueList = new ValueList(data, parentValueList.values);
+    }
   }
 }
 
