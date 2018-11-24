@@ -321,3 +321,8 @@ $black: #1c1b1d;
     padding: 0.7em 0 0.5em 1.7em;
   }
 }
+
+.bmpp-listItemValue {
+  color: #2c662d;
+  padding: 0 0.1em;
+}

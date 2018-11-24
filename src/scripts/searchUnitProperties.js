@@ -47,7 +47,7 @@ var data = [
         { name: 'Обращение', value: '@' },
         { name: 'Полуутверждение', value: '¿' },
         { name: 'Неполнота информации', value: '…' },
-        { name: 'Восклицательность', value: '¿' },
+        { name: 'Восклицательность', value: '!' },
       ]},
       { name: 'Фазовое', orValues: [
         { name: 'Стандартная незавершенность', value: ',' },
@@ -208,16 +208,17 @@ function escapeRegExp(string) {
 class ListProperty extends SearchUnitProperty {
   constructor(data) {
     super(data);
-    this.valueList = new ValueList(data.valueList, this.value);
     this.displayValues = data.displayValues || false;
+    this.valueList = new ValueList(data.valueList, this.value, this);
   }
 }
 
 class ValueList {
-  constructor(data, value) {
+  constructor(data, value, property) {
     this.isTop = !data.name;
     this.isOR = !data.xorValues;
     this.isXOR = !data.orValues;
+    this.listProperty = property;
     this.values = ko.observableArray([]);
     this.items = (this.isOR ? data.orValues : data.xorValues).map(
       itemData => new ValueListItem(itemData, this)
@@ -233,7 +234,7 @@ class ValueList {
       } else {
         if (values.length > 0) {
           this.clearMyValuesFrom(value);
-          value.concat(this.isOR ? values : values.slice(0, 1));
+          value.splice(-1, 0, ...(this.isOR ? values : values.slice(0, 1)));
         } else {
           value.removeAll(values);
         }
@@ -264,6 +265,7 @@ class ValueListItem {
     this.name = data.name;
     this.value = data.value;
     this.checked = ko.observable(null);
+    this.parentValueList = parentValueList;
 
     ko.computed(function () {
       let checked = this.checked(),
@@ -279,7 +281,8 @@ class ValueListItem {
 
     this.childValueList = null;
     if (data.orValues || data.xorValues) {
-      this.childValueList = new ValueList(data, parentValueList.values);
+      this.childValueList = new ValueList(data,
+        parentValueList.values, parentValueList.listProperty);
     }
   }
 }
