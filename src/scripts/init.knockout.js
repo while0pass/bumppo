@@ -29,6 +29,12 @@ export default function init(ko, viewModel) {
       }
     }
   };
+  ko.bindingHandlers.inlinePopup = {
+    init: function(element, valueAccessor) {
+      let opts = ko.unwrap(valueAccessor()) || { inline: true };
+      jQuery(element).popup(opts);
+    }
+  };
   ko.components.register('text-property', TextProperty);
   ko.components.register('interval-property', IntervalProperty);
   ko.components.register('bmpp-value-list', ValueList);

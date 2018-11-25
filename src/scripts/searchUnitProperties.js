@@ -76,9 +76,9 @@ var data = [
     ]},
     validChars: ['P', 'R', 'S', '-', ' '],
     substitute: [
-      [/sыЫ/g, 'S'],
+      [/[sыЫ]/g, 'S'],
       [/[pрРзЗ]/g, 'P'],
-      [/rкК/g, 'R'],
+      [/[rкК]/g, 'R'],
       [/\s+/g, ' '],
       [/\s*[-_]\s*/g, '-'],
     ]
@@ -354,12 +354,19 @@ class ValueListItem {
       }, this);
     }
   }
+  get isChangeStraightforward() {
+    // Возвращает true, если галочка изменилась под направленным
+    // непосредственно на нее действием пользователя. Если же галочка
+    // устанавливается или снимается автоматически, например, при нажатии
+    // на родительскую галочку, то возвращает false.
+    return this.list.listProperty._lastActiveDepth === this.list.depth;
+  }
   tuneParentList() {
     if (this.list.depth > 0) {
       ko.computed(function () {
         let checked = this.checked(), list = this.list,
             parentItem = list.parentItem;
-        if (list.listProperty._lastActiveDepth === list.depth) {
+        if (this.isChangeStraightforward) {
           if (checked && !parentItem.checked.peek()) {
             parentItem.checked(true);
           } else if (!checked
@@ -375,9 +382,8 @@ class ValueListItem {
     if (this.childList) {
       ko.computed(function () {
         let checked = this.checked(),
-            list = this.list,
             childList = this.childList;
-        if (list.listProperty._lastActiveDepth === list.depth) {
+        if (this.isChangeStraightforward) {
           if (checked && childList.isOR) {
             childList.checkAll();
           } else if (checked && childList.isXOR) {
@@ -398,8 +404,12 @@ class ValueListItem {
       // Снимать галочку и активировать поле ввода, если значение пусто
       ko.computed(function () {
         if (this.checked() && !this.value.peek()) {
-          jQuery(this.userChecked.checkboxComponent)
-            .siblings('.ui.input').first().find('input[type="text"]').focus();
+          if (this.isChangeStraightforward) {
+            jQuery(this.userChecked.checkboxComponent)
+              .siblings('.ui.input').first()
+              .find('input[type="text"]')
+              .focus();
+          }
           this.checked(false);
         }
       }, this);

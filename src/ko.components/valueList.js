@@ -1,22 +1,28 @@
+import jQuery from 'jquery';
+
 const template = `
 
-  <ul data-bind="foreach: items" class="bmpp-valueList">
+  <ul data-bind="foreach: valueList.items" class="bmpp-valueList">
     <li>
       <bmpp-checkbox params="label: name, value: userChecked"></bmpp-checkbox>
       <!-- ko if: editable -->
         <div class="ui mini input bmpp-editableListItem">
+
           <input type="text"
-            data-bind="value: value, valueUpdate: 'input'">
-        </div>
-        <!-- ko if: $component.listProperty.virtualKeyboard -->
-          <div class="ui segment">
-          <!-- ko foreach: $component.listProperty.validChars -->
-            <button class="ui mini button" data-bind="text: $data,
-              click: $component.listProperty.insertText($data, $element,
-                $parent.value)"></button>
-          <!-- /ko -->
+            data-bind="value: value, valueUpdate: 'input',
+              inlinePopup: $component.virtualKeyboardPopupOpts">
+
+          <!-- ko if: $component.listProperty.virtualKeyboard -->
+          <div class="ui basic popup hidden">
+            <!-- ko foreach: $component.listProperty.validChars -->
+              <button class="ui mini button" data-bind="text: $data,
+                click: $component.listProperty.insertText($data, $element,
+                  $parent.value)"></button>
+            <!-- /ko -->
           </div>
-        <!-- /ko -->
+          <!-- /ko -->
+
+        </div>
       <!-- /ko -->
 
       <!-- ko if: $component.listProperty.displayValues &&
@@ -41,9 +47,26 @@ const template = `
 
 `;
 
-// eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  return params.valueList;
+  let popupOpts = {
+    on: 'focus',
+    inline: true,
+    position: 'bottom left',
+    variation: 'basic fluid',
+    preserve: true,
+    closable: false,
+    hideOnScroll: false,
+    delay: { show: 50, hide: 300 },
+    duration: 300,
+    lastResort: true
+  };
+  jQuery(componentInfo.element)
+    .find('.bmpp-editableListItem input[type="text"]').popup(popupOpts);
+  return {
+    virtualKeyboardPopupOpts: popupOpts,
+    listProperty: params.valueList.listProperty,
+    valueList: params.valueList
+  };
 };
 
 export default {
