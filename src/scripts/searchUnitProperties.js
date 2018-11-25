@@ -211,6 +211,36 @@ class ListProperty extends SearchUnitProperty {
     this.displayValues = data.displayValues || false;
     this._values = ko.observableArray([]);
     this.valueList = new ValueList(data.valueList, null, this);
+    this.tuneValue();
+  }
+  tuneValue() {
+    ko.computed(function () {
+      let _values = this._values(), value = this.value;
+      if (_values.length > 0) {
+        if (this.valueList.isXOR
+        && _values.length === 1
+        && this.valueList.items.some(item => {
+          if (item.value === undefined || item.value === null) return false;
+          if (item.value instanceof Array) return false;
+          if (item.value === _values[0]) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        ) {
+          value(this.unwrapValues(_values)[0]);
+        } else {
+          _values.sort();
+          value(this.unwrapValues(_values));
+        }
+      } else {
+        value(null);
+      }
+    }, this);
+  }
+  unwrapValues(values) {
+    return values.map(value => ko.isObservable(value) ? value() : value);
   }
 }
 
@@ -350,11 +380,11 @@ class ValueListItem {
       } else if (value instanceof Array) {
         _values.removeAll(value);
         if (checked) _values.splice(-1, 0, ...value);
-        _values.sort();
       } else {
+        // NOTE: value будет либо обычным значение, либо ko.observable.
+        // Нас устраивают оба варианта.
         _values.remove(value);
         if (checked) _values.push(value);
-        _values.sort();
       }
     }, this);
   }
