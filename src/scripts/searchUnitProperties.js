@@ -209,81 +209,154 @@ class ListProperty extends SearchUnitProperty {
   constructor(data) {
     super(data);
     this.displayValues = data.displayValues || false;
-    this.valueList = new ValueList(data.valueList, this.value, this);
+    this._values = ko.observableArray([]);
+    this.valueList = new ValueList(data.valueList, null, this);
   }
 }
 
 class ValueList {
-  constructor(data, value, property) {
-    this.isTop = !data.name;
+  constructor(data, parentItem, property) {
+    this.depth = parentItem === null ? 0 : parentItem.list.depth + 1;
     this.isOR = !data.xorValues;
     this.isXOR = !data.orValues;
+    this.parentItem = parentItem;
     this.listProperty = property;
-    this.values = ko.observableArray([]);
     this.items = (this.isOR ? data.orValues : data.xorValues).map(
       itemData => new ValueListItem(itemData, this)
     );
-    ko.computed(function () {
-      let values = this.values();
-      if (this.isTop) {
-        if (values.length > 0) {
-          value(this.isOR ? values : values[0]);
-        } else {
-          value(null);
-        }
-      } else {
-        if (values.length > 0) {
-          this.clearMyValuesFrom(value);
-          value.splice(-1, 0, ...(this.isOR ? values : values.slice(0, 1)));
-        } else {
-          value.removeAll(values);
-        }
-      }
-    }, this);
   }
-  setValue(value) {
+  checkAll() {
     this.items.forEach(item => {
-      if (item.value !== value) {
-        this.values.remove(item.value);
-        item.checked(false);
-        item.childValueList && item.childValueList.setValue(value);
-      } else {
-        this.values.push(value);
-        item.checked(true);
+      let childList = item.childList;
+      item.checked(true);
+      if (childList && childList.isOR) {
+        childList.checkAll();
+      } else if (childList && childList.isXOR) {
+        childList.checkFirst();
       }
     });
   }
-  clearMyValuesFrom(observableArray) {
+  checkFirst() {
+    let item = this.items[0],
+        childList = item.childList;
+    item.checked(true);
+    if (childList && childList.isOR) {
+      childList.checkAll();
+    } else if (childList && childList.isXOR) {
+      childList.checkFirst();
+    }
+  }
+  uncheckAll() {
     this.items.forEach(item => {
-      observableArray.remove(item.value);
+      item.checked(false);
+      if (item.childList) {
+        item.childList.uncheckAll();
+      }
+    });
+  }
+  uncheckAllBut(specialItem) {
+    this.items.forEach(item => {
+      if (item !== specialItem) {
+        item.checked(false);
+      }
     });
   }
 }
 
 class ValueListItem {
-  constructor(data, parentValueList) {
+  constructor(data, list) {
+    this.list = list;
     this.name = data.name;
-    this.value = data.value;
     this.checked = ko.observable(null);
-    this.parentValueList = parentValueList;
+    this.userChecked = this.getUserChecked();
+    this.editable = data.editable || false;
+    this.value = this.editable ? ko.observable(null) : data.value;
+    this.childList = (data.orValues || data.xorValues ?
+      new ValueList(data, this, list.listProperty) : null);
 
-    ko.computed(function () {
-      let checked = this.checked(),
-          value = this.value;
-      if (checked && parentValueList.isOR) {
-        parentValueList.values.push(value);
-      } else if (checked && parentValueList.isXOR) {
-        parentValueList.setValue(value);
-      } else {
-        parentValueList.values.remove(value);
+    this.tuneXOR();
+    this.tuneParentList();
+    this.tuneChildList();
+    this.tuneEditable();
+    this.tuneCumulativeValue();
+  }
+  getUserChecked() {
+    return ko.computed({
+      read: this.checked,
+      write: function (newValue) {
+        this.list.listProperty._lastActiveDepth = this.list.depth;
+        this.checked(newValue);
       }
     }, this);
-
-    this.childValueList = null;
-    if (data.orValues || data.xorValues) {
-      this.childValueList = new ValueList(data,
-        parentValueList.values, parentValueList.listProperty);
+  }
+  tuneXOR() {
+    if (this.list.isXOR) {
+      ko.computed(function () {
+        if (this.checked()) {
+          this.list.uncheckAllBut(this);
+        }
+      }, this);
     }
+  }
+  tuneParentList() {
+    if (this.list.depth > 0) {
+      ko.computed(function () {
+        let checked = this.checked(), list = this.list,
+            parentItem = list.parentItem;
+        if (list.listProperty._lastActiveDepth === list.depth) {
+          if (checked && !parentItem.checked.peek()) {
+            parentItem.checked(true);
+          } else if (!checked
+              && parentItem.checked.peek()
+              && list.items.every(item => !item.checked.peek())) {
+            parentItem.checked(false);
+          }
+        }
+      }, this);
+    }
+  }
+  tuneChildList() {
+    if (this.childList) {
+      ko.computed(function () {
+        let checked = this.checked(),
+            list = this.list,
+            childList = this.childList;
+        if (list.listProperty._lastActiveDepth === list.depth) {
+          if (checked && childList.isOR) {
+            childList.checkAll();
+          } else if (checked && childList.isXOR) {
+            childList.checkFirst();
+          } else if (!checked) {
+            childList.uncheckAll();
+          }
+        }
+      }, this);
+    }
+  }
+  tuneEditable() {
+    if (this.editable) {
+      ko.computed(function () {
+        this.checked(!!this.value());
+      }, this);
+    }
+  }
+  tuneCumulativeValue() {
+    ko.computed(function () {
+      let _values = this.list.listProperty._values,
+          value = this.value,
+          checked = this.checked();
+      if (value === undefined || value === null) {
+        // do nothing
+      } else if (value instanceof Array) {
+        _values.removeAll(value);
+        if (checked) _values.splice(-1, 0, ...value);
+        _values.sort();
+      } else {
+        _values.remove(value);
+        if (checked) _values.push(value);
+        _values.sort();
+      }
+    }, this);
   }
 }
 

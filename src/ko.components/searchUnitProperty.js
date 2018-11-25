@@ -22,7 +22,12 @@ const template = `
 
   <div class="ui bottom attached info mini message" style="margin-bottom: 1em;">
     <span data-bind="text: property.id"></span>:
-    <span data-bind="text: JSON.stringify(property.value(), null, 1)">
+    <span data-bind="text: JSON.stringify(property.value(), null, 1)"></span>
+
+    <!-- ko if: property.type === 'list' -->
+      <div data-bind="text: JSON.stringify(property._values(), null, 1)"></div>
+    <!-- /ko -->
+
   </div>
 
 `;

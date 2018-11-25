@@ -326,3 +326,8 @@ $black: #1c1b1d;
   color: #2c662d;
   padding: 0 0.1em;
 }
+
+.bmpp-editableListItem {
+  display: block !important;
+  margin: 0.7em 0 0 2.4em;
+}

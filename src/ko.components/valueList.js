@@ -2,9 +2,17 @@ const template = `
 
   <ul data-bind="foreach: items" class="bmpp-valueList">
     <li>
-      <bmpp-checkbox params="label: name, value: checked"></bmpp-checkbox>
+      <bmpp-checkbox params="label: name, value: userChecked"></bmpp-checkbox>
+      <!-- ko if: editable -->
+        <div class="ui mini input bmpp-editableListItem">
+          <input type="text"
+            data-bind="value: value, valueUpdate: 'afterkeypress'">
+        </div>
+      <!-- /ko -->
+
       <!-- ko if: $component.listProperty.displayValues &&
-                  [true, false, null, undefined].indexOf(value) < 0 -->
+                  [true, false, null, undefined].indexOf(value) < 0 &&
+                  !editable -->
         <!-- ko if: value instanceof Array -->
           (<!-- ko foreach: value --><span data-bind="if: $index() > 0">,
             </span><span data-bind="text: $data" class="bmpp-listItemValue">
@@ -14,9 +22,11 @@ const template = `
           (<span data-bind="text: value" class="bmpp-listItemValue"></span>)
         <!-- /ko -->
       <!-- /ko -->
-      <!-- ko if: childValueList -->
-        <bmpp-value-list params="valueList: childValueList"></bmpp-value-list>
+
+      <!-- ko if: childList -->
+        <bmpp-value-list params="valueList: childList"></bmpp-value-list>
       <!-- /ko -->
+
     </li>
   </ul>
 
