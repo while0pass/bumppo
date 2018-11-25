@@ -76,14 +76,11 @@ var data = [
     ]},
     validChars: ['P', 'R', 'S', '-', ' '],
     substitute: [
-      [/s/g, 'S'],
-      [/[pрР]/g, 'P'],
-      [/r/g, 'R'],
+      [/sыЫ/g, 'S'],
+      [/[pрРзЗ]/g, 'P'],
+      [/rкК/g, 'R'],
       [/\s+/g, ' '],
-      [/ -/g, '-'],
-      [/- /g, '-'],
-      [/^ /g, ''],
-      [/ $/g, ''],
+      [/\s*[-_]\s*/g, '-'],
     ]
   },
 
@@ -301,7 +298,7 @@ class ValueListItem {
     this.checked = ko.observable(null);
     this.userChecked = this.getUserChecked();
     this.editable = data.editable || false;
-    this.value = this.editable ? ko.observable(null) : data.value;
+    this.value = this.editable ? this.getValidatingValue(): data.value;
     this.childList = (data.orValues || data.xorValues ?
       new ValueList(data, this, list.listProperty) : null);
 
@@ -319,6 +316,22 @@ class ValueListItem {
         this.checked(newValue);
       }
     }, this);
+  }
+  getValidatingValue() {
+    let observable = ko.observable('');
+    let computed = ko.computed({
+      read: observable,
+      write: function (newVal) {
+        let oldVal = observable(),
+            newTunedVal = this.list.listProperty.makeValueValid(newVal);
+        if (newTunedVal !== oldVal) {
+          observable(newTunedVal);
+        } else if (newVal !== oldVal) {
+          observable.notifySubscribers(newTunedVal);
+        }
+      }
+    }, this).extend({ notify: 'always' });
+    return computed;
   }
   tuneXOR() {
     if (this.list.isXOR) {
