@@ -331,3 +331,11 @@ $black: #1c1b1d;
   display: block !important;
   margin: 0.7em 0 0 2.4em;
 }
+
+.bmpp-propertyHeader {
+  user-select: none;
+
+  &.clickable {
+    cursor: copy;
+  }
+}

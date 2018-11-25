@@ -173,6 +173,12 @@ class SearchUnitProperty {
       element.focus();
     };
   }
+  onHeaderClick() {
+    // do nothing if not implemented
+  }
+  get isHeaderClickable() {
+    return false;
+  }
 }
 
 class IntervalProperty extends SearchUnitProperty {
@@ -257,6 +263,19 @@ class ListProperty extends SearchUnitProperty {
   unwrapValues(values) {
     return values.map(value => ko.isObservable(value) ? value() : value);
   }
+  onHeaderClick() {
+    let valueList = this.valueList;
+    if (this.isHeaderClickable) {
+      if (valueList.isOR) {
+        valueList.invertSelection();
+      } else if (valueList.isXOR) {
+        valueList.rotateSelection();
+      }
+    }
+  }
+  get isHeaderClickable() {
+    return this.valueList.hasNoChildList;
+  }
 }
 
 class ValueList {
@@ -305,6 +324,27 @@ class ValueList {
         item.checked(false);
       }
     });
+  }
+  get hasNoChildList() {
+    return this.items.every(item => !item.childList);
+  }
+  invertSelection() {
+    this.items.forEach(item => {
+      item.checked(!item.checked());
+    });
+  }
+  rotateSelection() {
+    let found = false, rotated = false;
+    this.items.forEach(item => {
+      if (item.checked()) {
+        found = true;
+        item.checked(false);
+      } else if (found && !rotated) {
+        item.checked(true);
+        rotated = true;
+      }
+    });
+    if (!found) this.items[0].checked(true);
   }
 }
 

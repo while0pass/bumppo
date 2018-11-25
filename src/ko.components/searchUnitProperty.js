@@ -2,7 +2,10 @@ const template = `
 
   <div class="ui top attached segment">
     <div class="ui top attached large label">
-      <header data-bind="text: property.name"></header>
+      <header class="bmpp-propertyHeader" data-bind="text: property.name,
+        click: property.onHeaderClick.bind(property),
+        css: { clickable: property.isHeaderClickable }">
+      </header>
       <i class="disabled question circle outline icon bmpp-nearLabelIcon"></i>
     </div>
     <div class="ui hidden divider"></div>
