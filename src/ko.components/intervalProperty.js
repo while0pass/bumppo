@@ -6,7 +6,7 @@ const template = `
     <label>от</label>
     <input type="text" pattern="numeric"
       data-bind="attr: { placeholder: property.from.placeholder },
-        value: validatableFrom, valueUpdate: 'afterkeypress',">
+        value: validatableFrom, valueUpdate: 'input',">
     <div class="bmpp-numberControls">
       <i class="grey link icon sort up"
         data-bind="click: step(validatableFrom, '+')"></i>
@@ -19,7 +19,7 @@ const template = `
     <label>до</label>
     <input type="text" pattern="numeric"
       data-bind="attr: { placeholder: property.to.placeholder },
-        value: validatableTo, valueUpdate: 'afterkeypress',">
+        value: validatableTo, valueUpdate: 'input',">
     <div class="bmpp-numberControls">
       <i class="grey link icon sort up"
         data-bind="click: step(validatableTo, '+')"></i>

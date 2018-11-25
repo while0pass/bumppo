@@ -1,7 +1,7 @@
 const template = `
 
   <div class="ui small input">
-    <input type="text" data-bind="value: value,
+    <input type="text" data-bind="value: value, valueUpdate: 'input',
       attr: { placeholder: placeholder }">
   </div>
 

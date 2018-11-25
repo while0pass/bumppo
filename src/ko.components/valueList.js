@@ -6,7 +6,7 @@ const template = `
       <!-- ko if: editable -->
         <div class="ui mini input bmpp-editableListItem">
           <input type="text"
-            data-bind="value: value, valueUpdate: 'afterkeypress'">
+            data-bind="value: value, valueUpdate: 'input'">
         </div>
       <!-- /ko -->
 

@@ -36,6 +36,7 @@ var viewModelFactory = (params, componentInfo) => {
         }
       };
 
+  value.checkboxComponent = componentInfo.element;
   if (disabled) {
     if (disabledTooltip) jQuery(element).popup(popupOpts);
   } else {

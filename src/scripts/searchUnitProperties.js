@@ -1,3 +1,4 @@
+import jQuery from 'jquery';
 import ko from 'knockout';
 
 var data = [
@@ -365,8 +366,17 @@ class ValueListItem {
   }
   tuneEditable() {
     if (this.editable) {
+      // Ставить/снимать галочку в зависимости от введенного значения
       ko.computed(function () {
         this.checked(!!this.value());
+      }, this);
+      // Снимать галочку и активировать поле ввода, если значение пусто
+      ko.computed(function () {
+        if (this.checked() && !this.value.peek()) {
+          jQuery(this.userChecked.checkboxComponent)
+            .siblings('.ui.input').first().find('input[type="text"]').focus();
+          this.checked(false);
+        }
       }, this);
     }
   }
