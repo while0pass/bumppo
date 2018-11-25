@@ -157,6 +157,18 @@ class SearchUnitProperty {
     }
     return string;
   }
+  insertText(text, element, value) {
+    element = jQuery(element)
+      .parents('.bmpp-valueList', 'li').find('input[type="text"]').get(0);
+    return function () {
+      let pos = element.selectionStart || 0;
+      value(value().slice(0, pos) + text + value().slice(pos));
+      pos += text.length;
+      element.selectionStart = pos;
+      element.selectionEnd = pos;
+      element.focus();
+    };
+  }
 }
 
 class IntervalProperty extends SearchUnitProperty {

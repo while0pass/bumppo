@@ -8,6 +8,15 @@ const template = `
           <input type="text"
             data-bind="value: value, valueUpdate: 'input'">
         </div>
+        <!-- ko if: $component.listProperty.virtualKeyboard -->
+          <div class="ui segment">
+          <!-- ko foreach: $component.listProperty.validChars -->
+            <button class="ui mini button" data-bind="text: $data,
+              click: $component.listProperty.insertText($data, $element,
+                $parent.value)"></button>
+          <!-- /ko -->
+          </div>
+        <!-- /ko -->
       <!-- /ko -->
 
       <!-- ko if: $component.listProperty.displayValues &&
