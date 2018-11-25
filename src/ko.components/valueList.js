@@ -4,7 +4,9 @@ const template = `
 
   <ul data-bind="foreach: valueList.items" class="bmpp-valueList">
     <li>
-      <bmpp-checkbox params="label: name, value: userChecked"></bmpp-checkbox>
+      <bmpp-checkbox params="label: name,
+        value: userChecked, disabled: disabled"></bmpp-checkbox>
+
       <!-- ko if: editable -->
         <div class="ui mini input bmpp-editableListItem">
 

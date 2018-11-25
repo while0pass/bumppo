@@ -1,10 +1,12 @@
 import jQuery from 'jquery';
+import ko from 'knockout';
 
 const template = `
 
   <div class="ui checkbox" data-bind="css: { disabled: disabled }">
     <input type="checkbox" class="hidden"
-      data-bind="checked: value, attr: { tabindex: tabindex }">
+      data-bind="checked: ko.unwrap(disabled) ? false : value,
+        attr: { tabindex: tabindex }">
     <label data-bind="text: label"></label>
   </div>
 
@@ -36,8 +38,8 @@ var viewModelFactory = (params, componentInfo) => {
         }
       };
 
-  value.checkboxComponent = componentInfo.element;
-  if (disabled) {
+  value.checkboxComponent = element;
+  if (ko.unwrap(disabled)) {
     if (disabledTooltip) jQuery(element).popup(popupOpts);
   } else {
     jQuery(element).checkbox(checkboxOpts);

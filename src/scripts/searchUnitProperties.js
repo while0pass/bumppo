@@ -9,7 +9,7 @@ var data = [
   { type: 'list', name: 'Участники', id: 'participants',
     valueList: { orValues: [
       { name: 'Рассказчик', value: 'N' },
-      { name: 'Комментатор', value: 'C', disableOn: ['ocul'] },
+      { name: 'Комментатор', value: 'C', disabledInChannels: ['ocul'] },
       { name: 'Пересказчик', value: 'R' }
     ]}
   },
@@ -117,8 +117,9 @@ function keepZero(...args) {
 }
 
 class SearchUnitProperty {
-  constructor(data) {
+  constructor(data, unitType) {
     this.type = data.type;
+    this.unitType = ko.observable(unitType);
     this.id = data.id;
     this.name = data.name;
     this.help = data.help || '';
@@ -128,7 +129,7 @@ class SearchUnitProperty {
     this.validChars = data.validChars;
     this.validitySusbstitutions = this.getValueSubstitutions(data);
   }
-  static createByType(data) {
+  static createByType(data, unitType) {
     let map = {
           'interval': IntervalProperty,
           'text': TextProperty,
@@ -136,8 +137,11 @@ class SearchUnitProperty {
         },
         Property = map[data.type];
     if (Property) {
-      return new Property(data);
+      return new Property(data, unitType);
     }
+  }
+  changeUnitType(unitType) {
+    this.unitType(unitType);
   }
   getValueSubstitutions(data) {
     let substitutions = [];
@@ -172,8 +176,8 @@ class SearchUnitProperty {
 }
 
 class IntervalProperty extends SearchUnitProperty {
-  constructor(data) {
-    super(data);
+  constructor(data, unitType) {
+    super(data, unitType);
 
     this.from = ko.observable(null);
     this.to = ko.observable(null);
@@ -205,8 +209,8 @@ class IntervalProperty extends SearchUnitProperty {
 }
 
 class TextProperty extends SearchUnitProperty {
-  constructor(data) {
-    super(data);
+  constructor(data, unitType) {
+    super(data, unitType);
     this.placeholder = data.placeholder || '';
   }
 }
@@ -216,8 +220,8 @@ function escapeRegExp(string) {
 }
 
 class ListProperty extends SearchUnitProperty {
-  constructor(data) {
-    super(data);
+  constructor(data, unitType) {
+    super(data, unitType);
     this.displayValues = data.displayValues || false;
     this._values = ko.observableArray([]);
     this.valueList = new ValueList(data.valueList, null, this);
@@ -225,24 +229,25 @@ class ListProperty extends SearchUnitProperty {
   }
   tuneValue() {
     ko.computed(function () {
-      let _values = this._values(), value = this.value;
-      if (_values.length > 0) {
+      let value = this.value,
+          values = this.unwrapValues(this._values());
+      if (values.length > 0) {
         if (this.valueList.isXOR
-        && _values.length === 1
+        && values.length === 1
         && this.valueList.items.some(item => {
           if (item.value === undefined || item.value === null) return false;
           if (item.value instanceof Array) return false;
-          if (item.value === _values[0]) {
+          if (item.value === values[0]) {
             return true;
           } else {
             return false;
           }
         })
         ) {
-          value(this.unwrapValues(_values)[0]);
+          value(values[0]);
         } else {
-          _values.sort();
-          value(this.unwrapValues(_values));
+          values.sort();
+          value(values);
         }
       } else {
         value(null);
@@ -310,6 +315,8 @@ class ValueListItem {
     this.checked = ko.observable(null);
     this.userChecked = this.getUserChecked();
     this.editable = data.editable || false;
+    this.disabledInChannels = data.disabledInChannels;
+    this.disabled = this.getDisabledInfo();
     this.value = this.editable ? this.getValidatingValue(): data.value;
     this.childList = (data.orValues || data.xorValues ?
       new ValueList(data, this, list.listProperty) : null);
@@ -319,6 +326,17 @@ class ValueListItem {
     this.tuneChildList();
     this.tuneEditable();
     this.tuneCumulativeValue();
+  }
+  getDisabledInfo() {
+    let channelIds = this.disabledInChannels;
+    if (channelIds && channelIds.length > 0) {
+      return ko.computed(function () {
+        let channelId = this.list.listProperty.unitType().channel.id;
+        return channelIds.indexOf(channelId) > -1;
+      }, this);
+    } else {
+      return false;
+    }
   }
   getUserChecked() {
     return ko.computed({
@@ -419,17 +437,19 @@ class ValueListItem {
     ko.computed(function () {
       let _values = this.list.listProperty._values,
           value = this.value,
+          disabled = this.disabled,
           checked = this.checked();
+      disabled = ko.isObservable(disabled) ? disabled() : disabled;
       if (value === undefined || value === null) {
         // do nothing
       } else if (value instanceof Array) {
         _values.removeAll(value);
-        if (checked) _values.splice(-1, 0, ...value);
+        if (checked && !disabled) _values.splice(-1, 0, ...value);
       } else {
         // NOTE: value будет либо обычным значение, либо ko.observable.
         // Нас устраивают оба варианта.
         _values.remove(value);
-        if (checked) _values.push(value);
+        if (checked && !disabled) _values.push(value);
       }
     }, this);
   }
