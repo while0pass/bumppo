@@ -143,6 +143,57 @@ $black: #1c1b1d;
   }
 }
 
+.bmpp-number {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: baseline;
+  margin-right: 1em;
+
+  label {
+    margin-right: 1em;
+  }
+
+  & .bmpp-numberControls {
+    display: none;
+  }
+
+  &:hover .bmpp-numberControls {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    right: 0;
+    top: 0.1em;
+    position: absolute;
+
+    & .icon {
+      width: 2.5rem;
+      height: 1.25rem;
+      transition: opacity .3s ease,
+                  font-size .1s ease !important;
+      position: absolute;
+      overflow: hidden;
+      &:hover {
+        font-size: large !important;
+      }
+      &:last-of-type {
+        top: 50%;
+      }
+      &::before {
+        position: absolute;
+        top: 5%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        line-height: 0!important;
+      }
+      &:first-of-type::before {
+        bottom: 5%;
+        top: 95%;
+      }
+    }
+  }
+}
+
 .bmpp-queryDistances {
   margin: 1em auto !important;
   position: relative;
@@ -161,10 +212,6 @@ $black: #1c1b1d;
 
       & .field {
         margin-right: 1em;
-        &.bmpp-number {
-          min-width: 8em !important;
-          max-width: 9em !important;
-        }
         &.bmpp-units {
           width: 8em !important;
         }
@@ -259,4 +306,36 @@ $black: #1c1b1d;
 
 .bmpp-negativeNode {
   padding-top: 3.4em!important;
+}
+
+.bmpp-valueList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & li {
+    margin-bottom: 0.5em;
+  }
+
+  & .bmpp-valueList {
+    padding: 0.7em 0 0.5em 1.7em;
+  }
+}
+
+.bmpp-listItemValue {
+  color: #2c662d;
+  padding: 0 0.1em;
+}
+
+.bmpp-editableListItem {
+  display: block !important;
+  margin: 0.7em 0 0 2.4em;
+}
+
+.bmpp-propertyHeader {
+  user-select: none;
+
+  &.clickable {
+    cursor: copy;
+  }
 }

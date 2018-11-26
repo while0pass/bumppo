@@ -1,12 +1,17 @@
 import jQuery from 'jquery';
 
-import QueryPane from '../ko.components/queryPane.js';
-import SubcorpusPane from '../ko.components/subcorpusPane.js';
+import Checkbox from '../ko.components/checkbox.js';
+import IntervalProperty from '../ko.components/intervalProperty.js';
+import ListProperty from '../ko.components/listProperty.js';
 import PropertiesPane from '../ko.components/propertiesPane.js';
 import QueryNode from '../ko.components/queryNode.js';
 import QueryNodeRelations from '../ko.components/queryNodeRelations.js';
-import Checkbox from '../ko.components/checkbox.js';
+import QueryPane from '../ko.components/queryPane.js';
 import SearchUnitChoice from '../ko.components/searchUnitChoice.js';
+import SearchUnitProperty from '../ko.components/searchUnitProperty.js';
+import SubcorpusPane from '../ko.components/subcorpusPane.js';
+import TextProperty from '../ko.components/textProperty.js';
+import ValueList from '../ko.components/valueList.js';
 
 export default function init(ko, viewModel) {
   ko.bindingHandlers.popup = {
@@ -24,10 +29,21 @@ export default function init(ko, viewModel) {
       }
     }
   };
+  ko.bindingHandlers.inlinePopup = {
+    init: function(element, valueAccessor) {
+      let opts = ko.unwrap(valueAccessor()) || { inline: true };
+      jQuery(element).popup(opts);
+    }
+  };
+  ko.components.register('text-property', TextProperty);
+  ko.components.register('interval-property', IntervalProperty);
+  ko.components.register('bmpp-value-list', ValueList);
+  ko.components.register('list-property', ListProperty);
+  ko.components.register('search-unit-property', SearchUnitProperty);
+  ko.components.register('properties-pane', PropertiesPane);
   ko.components.register('bmpp-checkbox', Checkbox);
   ko.components.register('query-pane', QueryPane);
   ko.components.register('subcorpus-pane', SubcorpusPane);
-  ko.components.register('properties-pane', PropertiesPane);
   ko.components.register('query-node', QueryNode);
   ko.components.register('query-node-relations', QueryNodeRelations);
   ko.components.register('search-unit-choice', SearchUnitChoice);

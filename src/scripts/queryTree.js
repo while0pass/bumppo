@@ -45,12 +45,14 @@ export class TreeNode {
       for (let i = 0; i < unitTypePropertiesData.length; i++) {
         let newPropertyData = unitTypePropertiesData[i],
             oldProperty = oldUnitTypeProperties.find(
-              unitType => unitType.id === newPropertyData.id
+              prop => prop.id === newPropertyData.id
             );
         if (oldProperty) {
+          oldProperty.changeUnitType(unitType);
           newUnitTypeProperties.push(oldProperty);
         } else {
-          let newProperty = SearchUnitProperty.createByType(newPropertyData);
+          let newProperty = SearchUnitProperty
+            .createByType(newPropertyData, unitType);
           newUnitTypeProperties.push(newProperty);
         }
       }
