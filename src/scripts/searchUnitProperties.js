@@ -24,9 +24,9 @@ var data = [
   { type: 'text', name: 'Словарная форма', id: 'word',
     placeholder: '…'},
 
-  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'n_from_edu' },
+  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'position_within_edu' },
 
-  { type: 'list', name: 'Точка прерывания', id: 'p0',
+  { type: 'list', name: 'Точка прерывания', id: 'termination_point',
     valueList: { xorValues: [
       { name: 'Да', orValues: [
         { name: 'При самоисправлении внутри ЭДЕ', value: 'vx1' },
@@ -38,7 +38,7 @@ var data = [
     ]}
   },
 
-  { type: 'list', name: 'Иллокутивно-фазовое значение', id: 'iphv',
+  { type: 'list', name: 'Иллокутивно-фазовое значение', id: 'illocationary_phase',
     displayValues: true,
     valueList: { orValues: [
       { name: 'Иллокутивное', orValues: [
@@ -64,7 +64,7 @@ var data = [
     ]}
   },
 
-  { type: 'list', name: 'Фазовая структура', id: 'phs', displayValues: true,
+  { type: 'list', name: 'Фазовая структура', id: 'phase_structure', displayValues: true,
     valueList: { orValues: [
       { name: 'Мах', value: 'S' },
       { name: 'Мах, ретракция', value: 'S R' },
@@ -114,6 +114,10 @@ function keepZero(...args) {
     if (arg || arg === 0) return arg;
   }
   if (args.length > 0) return args.slice(-1)[0];
+}
+
+function isImportant(value) {
+  return [null, undefined, ''].indexOf(value) < 0;
 }
 
 class SearchUnitProperty {
@@ -179,6 +183,15 @@ class SearchUnitProperty {
   get isHeaderClickable() {
     return false;
   }
+  getJsonProperties() {
+    return ko.computed(function () {
+      let value = this.value(), props = [];
+      if (isImportant(value)) {
+        props.push({ prop: this.id, value: value });
+      }
+      return props;
+    }, this);
+  }
 }
 
 class IntervalProperty extends SearchUnitProperty {
@@ -200,11 +213,30 @@ class IntervalProperty extends SearchUnitProperty {
     this.to.placeholder = data.toPlaceholder || '';
 
     this.validitySusbstitutions = this.getValueSubstitutions(data);
-
+    this.tuneValue();
+    this.jsonProperties = this.getJsonProperties();
+  }
+  tuneValue() {
     ko.computed(function () {
-      let interval = [this.from(), this.to()];
-      interval = interval.filter(x => x !== null);
-      this.value(interval.length > 0 ? interval : null);
+      let from = this.from(), to = this.to(), struct = {};
+      if (!isImportant(from) && !isImportant(to)) this.value(null);
+      if (isImportant(from)) struct.min = from;
+      if (isImportant(to)) struct.max = to;
+      this.value(struct);
+    }, this);
+  }
+  getJsonProperties() {
+    return ko.computed(function () {
+      let value = this.value(), props = [];
+      if (isImportant(value)) {
+        if (isImportant(value.min)) {
+          props.push({ prop: `${ this.id }_min`, value: value.min });
+        }
+        if (isImportant(value.max)) {
+          props.push({ prop: `${ this.id }_max`, value: value.max });
+        }
+      }
+      return props;
     }, this);
   }
   getValueSubstitutions(data) {
@@ -218,6 +250,8 @@ class TextProperty extends SearchUnitProperty {
   constructor(data, unitType) {
     super(data, unitType);
     this.placeholder = data.placeholder || '';
+
+    this.jsonProperties = this.getJsonProperties();
   }
 }
 
@@ -231,7 +265,9 @@ class ListProperty extends SearchUnitProperty {
     this.displayValues = data.displayValues || false;
     this._values = ko.observableArray([]);
     this.valueList = new ValueList(data.valueList, null, this);
+
     this.tuneValue();
+    this.jsonProperties = this.getJsonProperties();
   }
   tuneValue() {
     ko.computed(function () {

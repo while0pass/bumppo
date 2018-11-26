@@ -24,13 +24,17 @@ const template = `
   </div>
 
   <div class="ui bottom attached info mini message" style="margin-bottom: 1em;">
-    <span data-bind="text: property.id"></span>:
-    <span data-bind="text: JSON.stringify(property.value(), null, 1)"></span>
-
-    <!-- ko if: property.type === 'list' -->
-      <div data-bind="text: JSON.stringify(property._values(), null, 1)"></div>
+    <!-- ko if: property.jsonProperties().length === 0 -->
+      Свойство не будет включено в запрос
     <!-- /ko -->
-
+    <code>
+    <!-- ko foreach: property.jsonProperties -->
+      <span data-bind="text: JSON.stringify(prop, null, 1)"></span>:
+      <span data-bind="text: JSON.stringify(value, null, 1)"></span><!--
+        ko if: $index() !== $component.property.jsonProperties().length - 1 -->,
+        <!-- /ko -->
+    <!-- /ko -->
+    </code>
   </div>
 
 `;
