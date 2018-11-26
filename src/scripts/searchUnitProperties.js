@@ -300,7 +300,9 @@ class ListProperty extends SearchUnitProperty {
     return values.map(value => ko.isObservable(value) ? value() : value);
   }
   onHeaderClick() {
-    let valueList = this.valueList;
+    let valueList = this.valueList,
+        CLICK_IS_NOT_ON_CHECKBOX_LIST = -1;
+    this._lastActiveDepth = CLICK_IS_NOT_ON_CHECKBOX_LIST;
     if (this.isHeaderClickable) {
       if (valueList.isOR) {
         valueList.invertSelection();
