@@ -197,12 +197,9 @@ class viewModel {
           params.finishEditingNodeProperties();
           params.isQueryNew(true);
         },
-        isAnyUnitPropertySet = ko.pureComputed(function () {
-          for (let prop of node.unitProperties()) {
-            if (prop.value() !== null) { return true; }
-          }
-          return false;
-        }).extend({ rateLimit: 500 }),
+        isAnyUnitPropertySet = ko.computed(
+          () => node.unitProperties().some(prop => prop.value() !== null)
+        ).extend({ rateLimit: 500 }),
         channelViewModels = [],
         channelHelpPopupOpts = {
           variation: 'basic',

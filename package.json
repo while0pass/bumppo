@@ -1,6 +1,6 @@
 {
   "name": "Bumppo",
-  "version": "0.6",
+  "version": "0.6.1",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
@@ -11,8 +11,8 @@
     "lint-all": "find src/ -name '*.js' | xargs eslint",
     "lint-watch": "find src/ -name '*.js' | entr -s 'clear; yarn run lint-all'",
     "live-rebuild": "rollup -c --watch",
-    "showreel": "test -n \"$BUMPPO_VERSION\" && { BUMPPO_ENV=production BUMPPO_HOSTING=1 rollup -c; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout gh-pages; rsync -av --exclude='*.mp4' build/ ../bumppo-ghpages/$BUMPPO_VERSION; } || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
-    "production": "BUMPPO_ENV=production rollup -c; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout build; rsync -av --delete --exclude=.git --exclude='*.mp4' build/ ../bumppo-ghpages/",
+    "showreel": "test -n \"$BUMPPO_VERSION\" && { gulp -f semantic/gulpfile.js build; BUMPPO_ENV=production BUMPPO_HOSTING=1 rollup -c; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout gh-pages; rsync -av --exclude='*.mp4' build/ ../bumppo-ghpages/$BUMPPO_VERSION; } || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
+    "production": "gulp -f semantic/gulpfile.js build; BUMPPO_ENV=production rollup -c",
     "serve": "lite-server -c lite-server.config.json",
     "test": "echo 'Error: no test specified' && exit 1",
     "watch": "npm-run-all --parallel live-rebuild serve"
@@ -23,7 +23,7 @@
     "jquery.initialize": "^1.3.0",
     "knockout": "^3.4.2",
     "page": "^1.10.2",
-    "semantic-ui": "^2.4.0",
+    "semantic-ui": "^2.4.2",
     "svg.js": "^2.6.6",
     "video.js": "^7.2.3",
     "videojs-markers": "^1.0.1",

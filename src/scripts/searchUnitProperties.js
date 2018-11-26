@@ -219,10 +219,13 @@ class IntervalProperty extends SearchUnitProperty {
   tuneValue() {
     ko.computed(function () {
       let from = this.from(), to = this.to(), struct = {};
-      if (!isImportant(from) && !isImportant(to)) this.value(null);
-      if (isImportant(from)) struct.min = from;
-      if (isImportant(to)) struct.max = to;
-      this.value(struct);
+      if (!isImportant(from) && !isImportant(to)) {
+        this.value(null);
+      } else {
+        if (isImportant(from)) struct.min = from;
+        if (isImportant(to)) struct.max = to;
+        this.value(struct);
+      }
     }, this);
   }
   getJsonProperties() {
