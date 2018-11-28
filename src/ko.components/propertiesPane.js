@@ -1,19 +1,8 @@
 const template = `
 
-  <div class="bmpp-paddedPane">
-    <header class="ui header">Свойства поисковой единицы</header>
-    <div data-bind="foreach: node() && node().unitProperties || []">
-      <search-unit-property params="property: $data"></search-unit-property>
-    </div>
-    <div>
-      <button class="ui small button"
-        data-bind="click: $root.queryPaneView.finishEditingNodeProperties"
-        >ОК</button>
-      <button class="ui small button">Очистить</button>
-      <button class="ui small button"
-        data-bind="click: $root.queryPaneView.finishEditingNodeProperties"
-        >Отмена</button>
-    </div>
+  <header class="ui header">Свойства поисковой единицы</header>
+  <div data-bind="foreach: node() && node().unitProperties || []">
+    <search-unit-property params="property: $data"></search-unit-property>
   </div>
 
 `;
