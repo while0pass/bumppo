@@ -82,8 +82,8 @@
 
   <div class="bmpp-main" style="position: relative">
 
-    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
-      data-bind="visible: isSearchInProgress" class="ui loading basic segment">
+    <div class="bmpp-mainWait" data-bind="visible: isSearchInProgress">
+      <div class="ui loading basic segment"></div>
     </div>
 
     <!-- ko if: isQueryPaneOn -->

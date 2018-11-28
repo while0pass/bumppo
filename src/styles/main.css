@@ -3,16 +3,9 @@ $green: #21ba45;
 $blue: #2185d0;
 $grey: #767676;
 $black: #1c1b1d;
-
-.bmpp-curtains {
-  background-color: white;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+$sidePaneWidth: 14vw;
+$mainWaitWidth: 86vw; /* = 100vw - $sidePaneWidth */
+$borderWidth: 0.3em;
 
 .bmpp-uiLayout {
   display: flex;
@@ -20,16 +13,42 @@ $black: #1c1b1d;
   height: 100vh;
 }
 
+.bmpp-main {
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-y: scroll;
+  padding-bottom: 3em;
+}
+
+.bmpp-mainWait {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: $mainWaitWidth;
+  height: 100vh;
+  z-index: 1001;
+  border-left: $borderWidth solid transparent!important;
+
+  & div {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+}
+
 .bmpp-sidePane {
   order: 0;
-  width: 14vw;
+  width: $sidePaneWidth;
   min-width: 13rem;
   border-left: 1px solid $bmppBorderColor;
   border-right: 1px solid $bmppBorderColor;
   overflow-y: hidden;
 
   &_menuItem {
-    $borderWidth: 0.3em;
     user-select: none;
     padding: 1em 1.5em!important;
     border-bottom: 1px solid $bmppBorderColor;
@@ -60,15 +79,6 @@ $black: #1c1b1d;
   &_searchButton {
     margin-left: 0.3em !important;
   }
-}
-
-.bmpp-main {
-  display: flex;
-  width: 100vw;
-  flex-direction: column;
-  align-items: stretch;
-  overflow-y: scroll;
-  padding-bottom: 3em;
 }
 
 .bmpp-paddedPane {
