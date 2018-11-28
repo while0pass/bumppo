@@ -4,7 +4,7 @@ const template = `
 
   <div class="ui inline input bmpp-number">
     <label>от</label>
-    <input type="text" pattern="numeric"
+    <input type="text" pattern="-?[0-9]*" inputmode="numeric"
       data-bind="attr: { placeholder: property.from.placeholder },
         value: validatableFrom, valueUpdate: 'input',">
     <div class="bmpp-numberControls">
@@ -17,7 +17,7 @@ const template = `
 
   <div class="ui inline input bmpp-number">
     <label>до</label>
-    <input type="text" pattern="numeric"
+    <input type="text" pattern="-?[0-9]*" inputmode="numeric"
       data-bind="attr: { placeholder: property.to.placeholder },
         value: validatableTo, valueUpdate: 'input',">
     <div class="bmpp-numberControls">
