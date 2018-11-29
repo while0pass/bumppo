@@ -85,12 +85,28 @@ const chosenUnitTemplate = `
         popup: tooltip, popupOpts: channelPopupOpts">
     </button>
     <!-- /ko -->
+
     <span style="padding-left: .5em">Тип единицы:</span>
     <!-- ko with: node.unitType -->
       <strong data-bind="text: hasAbbr ? abbr : name"
         style="padding-left: .5em"></strong>
     <!-- /ko -->
-    <div style="margin-top: 4em">
+
+    <!-- ko if: node.chosenUnitProperties().length > 0 -->
+    <div data-bind="foreach: node.chosenUnitProperties"
+      style="margin: 1.5em 0 2.5em 0"
+      ><!-- ko if: $index() === 0 --><span class="bmpp-bannerPropname"
+      data-bind="text: name"></span><span class="bmpp-bannerText"
+      >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
+      class="bmpp-bannerPropname" data-bind="textLowercaseFirstChar: name"
+      ></span><span class="bmpp-bannerText">:&#x2002;</span><!-- /ko --><span
+      data-bind="text: banner" class="bmpp-bannerPropvalue"></span><span
+      class="bmpp-bannerText" data-bind="text: $index() < $parent.node.
+      chosenUnitProperties().length - 1 ? ';&#x2002;' : '.'"></span
+    ></div>
+    <!-- /ko -->
+
+    <div style="position: absolute; bottom: 0.8em;">
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>

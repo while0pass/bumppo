@@ -35,6 +35,12 @@ export default function init(ko, viewModel) {
       jQuery(element).popup(opts);
     }
   };
+  ko.bindingHandlers.textLowercaseFirstChar = {
+    update: function (element, valueAccessor) {
+      let text = ko.unwrap(valueAccessor());
+      jQuery(element).text(text.slice(0, 1).toLowerCase() + text.slice(1));
+    }
+  };
   ko.components.register('text-property', TextProperty);
   ko.components.register('interval-property', IntervalProperty);
   ko.components.register('bmpp-value-list', ValueList);

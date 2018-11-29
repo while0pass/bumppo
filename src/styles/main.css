@@ -372,3 +372,15 @@ $borderWidth: 0.3em;
     cursor: copy;
   }
 }
+
+.bmpp-bannerPropname {
+  color: grey;
+  font-style: italic;
+}
+
+.bmpp-bannerText {
+  color: grey;
+}
+
+.bmpp-bannerPropvalue {
+}

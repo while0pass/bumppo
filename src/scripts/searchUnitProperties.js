@@ -277,9 +277,11 @@ class IntervalProperty extends SearchUnitProperty {
   getBanner() {
     return ko.computed(function () {
       let from = this.from, to = this.to, banner = '';
-      if (from() !== null) { banner += `${ from.banner } ${ from() } `; }
-      if (to() !== null) { banner += `${ to.banner } ${ to() } `; }
-      if (banner) { banner += this.unitsBanner; }
+      if (from() !== null) { banner += `${ from.banner } ${ from() }`; }
+      if (to() !== null) {
+        banner += `${ banner ? ' ' : '' }${ to.banner } ${ to() }`;
+      }
+      if (banner && this.unitsBanner) { banner += ' ' + this.unitsBanner; }
       return banner;
     }, this);
   }

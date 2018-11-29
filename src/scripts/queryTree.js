@@ -58,6 +58,9 @@ export class TreeNode {
       }
       unitProperties(newUnitTypeProperties);
     });
+    this.chosenUnitProperties = ko.computed(
+      () => this.unitProperties().filter(prop => ko.unwrap(prop.banner))
+    );
   }
   addChild(negative=false) {
     var child = new TreeNode(this, negative);
