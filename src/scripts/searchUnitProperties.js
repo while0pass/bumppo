@@ -5,6 +5,8 @@ var data = [
 
   { type: 'interval', name: 'Длительность', id: 'duration', step: 20,
     units: 'миллисекунд', unitsBanner: 'мс',
+    fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##',
+    fromToEqualBanner: 'ровно ##',
     help: `<header class="ui header">Интервал длительности единицы</header>
     <p>Чтобы отобрать единицы, длительность которых не меньше указанной,
     заполните только левое поле. Чтобы отобрать единицы, длительность которых
@@ -29,7 +31,12 @@ var data = [
   { type: 'text', name: 'Словарная форма', id: 'word',
     placeholder: '…'},
 
-  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'position_within_edu' },
+  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'position_within_edu',
+    fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
+    fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##' },
+
+  { type: 'interval', name: 'Число акцентов', id: 'n_accents',
+    fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' },
 
   { type: 'list', name: 'Точка прерывания', id: 'termination_point',
     valueList: { xorValues: [
@@ -125,6 +132,10 @@ function isImportant(value) {
   return [null, undefined, ''].indexOf(value) < 0;
 }
 
+function injectValue(template, value) {
+  return template.replace('##', value.toString());
+}
+
 class SearchUnitProperty {
   constructor(data, unitType) {
     this.type = data.type;
@@ -214,14 +225,20 @@ class IntervalProperty extends SearchUnitProperty {
     this.from.max = keepZero(data.fromMax, data.max, null);
     this.from.step = data.fromStep || data.step || 1;
     this.from.placeholder = data.fromPlaceholder || '';
-    this.from.banner = data.fromBanner || 'от';
+    this.from.label = data.fromLabel || 'от';
+    this.from.banner = data.fromBanner || 'от ##';
+    this.from.onlyBanner = data.fromOnlyBanner || this.from.banner;
 
     this.to.min = keepZero(data.toMin, data.min, 0);
     this.to.max = keepZero(data.toMax, data.max, null);
     this.to.step = data.toStep || data.step || 1;
     this.to.placeholder = data.toPlaceholder || '';
-    this.to.banner = data.toBanner || 'до';
+    this.to.label = data.toLabel || 'до';
+    this.to.banner = data.toBanner || 'до ##';
+    this.to.onlyBanner = data.toOnlyBanner || this.to.banner;
 
+    this.fromToBanner = data.fromToBanner || `${ this.from.banner } ${ this.to.banner }`;
+    this.fromToEqualBanner = data.fromToEqualBanner || '##';
     this.unitsBanner = data.unitsBanner || data.units || '';
 
     this.tune();
@@ -276,10 +293,19 @@ class IntervalProperty extends SearchUnitProperty {
   }
   getBanner() {
     return ko.computed(function () {
-      let from = this.from, to = this.to, banner = '';
-      if (from() !== null) { banner += `${ from.banner } ${ from() }`; }
-      if (to() !== null) {
-        banner += `${ banner ? ' ' : '' }${ to.banner } ${ to() }`;
+      let from = this.from(), to = this.to(), banner = '';
+      if (isImportant(from) && isImportant(to)) {
+        if (from === to) {
+          banner = injectValue(this.fromToEqualBanner, from);
+        } else {
+          banner = injectValue(injectValue(this.fromToBanner, from), to);
+        }
+      }
+      if (isImportant(from) && !isImportant(to)) {
+        banner = injectValue(this.from.onlyBanner, from);
+      }
+      if (!isImportant(from) && isImportant(to)) {
+        banner = injectValue(this.to.onlyBanner, to);
       }
       if (banner && this.unitsBanner) { banner += ' ' + this.unitsBanner; }
       return banner;

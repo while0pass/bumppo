@@ -3,7 +3,7 @@ import ko from 'knockout';
 const template = `
 
   <div class="ui inline input bmpp-number">
-    <label>от</label>
+    <label data-bind="text: property.from.label"></label>
     <input type="text" pattern="-?[0-9]*" inputmode="numeric"
       data-bind="attr: { placeholder: property.from.placeholder },
         value: validatableFrom, valueUpdate: 'input',">
@@ -16,7 +16,7 @@ const template = `
   </div>
 
   <div class="ui inline input bmpp-number">
-    <label>до</label>
+    <label data-bind="text: property.to.label"></label>
     <input type="text" pattern="-?[0-9]*" inputmode="numeric"
       data-bind="attr: { placeholder: property.to.placeholder },
         value: validatableTo, valueUpdate: 'input',">
