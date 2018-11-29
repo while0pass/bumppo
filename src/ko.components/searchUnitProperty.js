@@ -26,6 +26,12 @@ const template = `
     <!-- /ko -->
   </div>
 
+  <!-- ko if: property.banner -->
+  <div class="ui attached info mini message">
+    <em data-bind="text: property.name"></em>:
+    <span data-bind="text: property.banner"></span>
+  </div>
+  <!-- /ko -->
   <div class="ui bottom attached info mini message" style="margin-bottom: 1em;">
     <!-- ko if: property.jsonProperties().length === 0 -->
       Свойство не будет включено в запрос

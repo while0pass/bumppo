@@ -4,7 +4,7 @@ import ko from 'knockout';
 var data = [
 
   { type: 'interval', name: 'Длительность', id: 'duration', step: 20,
-    units: 'миллисекунд',
+    units: 'миллисекунд', unitsBanner: 'мс',
     help: `<header class="ui header">Интервал длительности единицы</header>
     <p>Чтобы отобрать единицы, длительность которых не меньше указанной,
     заполните только левое поле. Чтобы отобрать единицы, длительность которых
@@ -197,6 +197,9 @@ class SearchUnitProperty {
       return props;
     }, this);
   }
+  getBanner() {
+    return '';
+  }
 }
 
 class IntervalProperty extends SearchUnitProperty {
@@ -211,17 +214,36 @@ class IntervalProperty extends SearchUnitProperty {
     this.from.max = keepZero(data.fromMax, data.max, null);
     this.from.step = data.fromStep || data.step || 1;
     this.from.placeholder = data.fromPlaceholder || '';
+    this.from.banner = data.fromBanner || 'от';
 
     this.to.min = keepZero(data.toMin, data.min, 0);
     this.to.max = keepZero(data.toMax, data.max, null);
     this.to.step = data.toStep || data.step || 1;
     this.to.placeholder = data.toPlaceholder || '';
+    this.to.banner = data.toBanner || 'до';
 
+    this.unitsBanner = data.unitsBanner || data.units || '';
+
+    this.tune();
+  }
+  tune() {
     this.validitySusbstitutions = this.getValueSubstitutions(data);
     this.tuneValue();
     this.jsonProperties = this.getJsonProperties();
+    this.banner = this.getBanner();
   }
   tuneValue() {
+    // from не должно быть больше to
+    ko.computed(function () {
+      let from = this.from(), to = this.to.peek();
+      if (isImportant(from) && isImportant(to) && from > to) { this.from(to); }
+    }, this);
+    // to не должно быть меньше from
+    ko.computed(function () {
+      let from = this.from.peek(), to = this.to();
+      if (isImportant(from) && isImportant(to) && to < from) { this.to(from); }
+    }, this);
+    // композитное значение
     ko.computed(function () {
       let from = this.from(), to = this.to(), struct = {};
       if (!isImportant(from) && !isImportant(to)) {
@@ -252,14 +274,26 @@ class IntervalProperty extends SearchUnitProperty {
     ss.push([/[^\d]/g, '']);
     return ss;
   }
+  getBanner() {
+    return ko.computed(function () {
+      let from = this.from, to = this.to, banner = '';
+      if (from() !== null) { banner += `${ from.banner } ${ from() } `; }
+      if (to() !== null) { banner += `${ to.banner } ${ to() } `; }
+      if (banner) { banner += this.unitsBanner; }
+      return banner;
+    }, this);
+  }
 }
 
 class TextProperty extends SearchUnitProperty {
   constructor(data, unitType) {
     super(data, unitType);
     this.placeholder = data.placeholder || '';
-
+    this.tune();
+  }
+  tune() {
     this.jsonProperties = this.getJsonProperties();
+    this.banner = this.getBanner();
   }
 }
 
@@ -271,16 +305,20 @@ class ListProperty extends SearchUnitProperty {
   constructor(data, unitType) {
     super(data, unitType);
     this.displayValues = data.displayValues || false;
-    this._values = ko.observableArray([]);
+    this.chosenValues = ko.observableArray([]);
     this.valueList = new ValueList(data.valueList, null, this);
 
+    this.tune();
+  }
+  tune() {
     this.tuneValue();
     this.jsonProperties = this.getJsonProperties();
+    this.banner = this.getBanner();
   }
   tuneValue() {
     ko.computed(function () {
       let value = this.value,
-          values = this.unwrapValues(this._values());
+          values = this.unwrapValues(this.chosenValues());
       if (values.length > 0) {
         if (this.valueList.isXOR
         && values.length === 1
@@ -521,7 +559,7 @@ class ValueListItem {
   }
   tuneCumulativeValue() {
     ko.computed(function () {
-      let _values = this.list.listProperty._values,
+      let chosenValues = this.list.listProperty.chosenValues,
           value = this.value,
           disabled = this.disabled,
           checked = this.checked();
@@ -529,13 +567,13 @@ class ValueListItem {
       if (value === undefined || value === null) {
         // do nothing
       } else if (value instanceof Array) {
-        _values.removeAll(value);
-        if (checked && !disabled) _values.splice(-1, 0, ...value);
+        chosenValues.removeAll(value);
+        if (checked && !disabled) chosenValues.splice(-1, 0, ...value);
       } else {
         // NOTE: value будет либо обычным значение, либо ko.observable.
         // Нас устраивают оба варианта.
-        _values.remove(value);
-        if (checked && !disabled) _values.push(value);
+        chosenValues.remove(value);
+        if (checked && !disabled) chosenValues.push(value);
       }
     }, this);
   }
