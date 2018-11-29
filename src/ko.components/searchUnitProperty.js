@@ -6,7 +6,10 @@ const template = `
         click: property.onHeaderClick.bind(property),
         css: { clickable: property.isHeaderClickable }">
       </header>
-      <i class="disabled question circle outline icon bmpp-nearLabelIcon"></i>
+      <!-- ko if: property.help -->
+        <i class="disabled question circle outline icon bmpp-nearLabelIcon"
+          data-bind="popup: property.help"></i>
+      <!-- /ko -->
     </div>
     <div class="ui hidden divider"></div>
 
