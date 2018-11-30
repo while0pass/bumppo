@@ -1,5 +1,5 @@
 import ko from 'knockout';
-import { data as propertiesList, SearchUnitProperty } from './searchUnitProperties.js';
+import { defaultPropertiesList, propertiesLists, SearchUnitProperty } from './searchUnitProperties.js';
 
 export class TreeNode {
   constructor(parentNode=null, negative=false) {
@@ -38,7 +38,7 @@ export class TreeNode {
       //
       // По типу поисковой единицы или/и каналу вытягиваем перечень
       // свойств нового типа.
-      let unitTypePropertiesData = propertiesList;
+      let unitTypePropertiesData = propertiesLists[unitType.id] || defaultPropertiesList;
 
       // Создаем свойства нового типа, совпадающие свойства переиспользуем
       // или создаем на основе соответствующего свойства прежнего типа

@@ -1,32 +1,91 @@
 import jQuery from 'jquery';
 import ko from 'knockout';
 
-var data = [
+const DURATION = {
+  type: 'interval', name: 'Длительность', id: 'duration', step: 20,
+  units: 'миллисекунд', unitsBanner: 'мс',
+  fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##',
+  fromToEqualBanner: 'ровно ##',
+  help: `<header class="ui header">Интервал длительности единицы</header>
+  <p>Чтобы отобрать единицы, длительность которых не меньше указанной,
+  заполните только левое поле. Чтобы отобрать единицы, длительность которых
+  не больше указанной, заполните только правое поле. Свойство не будет
+  учитываться в запросе, если ничего не задать.</p>` };
 
-  { type: 'interval', name: 'Длительность', id: 'duration', step: 20,
-    units: 'миллисекунд', unitsBanner: 'мс',
-    fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##',
-    fromToEqualBanner: 'ровно ##',
-    help: `<header class="ui header">Интервал длительности единицы</header>
-    <p>Чтобы отобрать единицы, длительность которых не меньше указанной,
-    заполните только левое поле. Чтобы отобрать единицы, длительность которых
-    не больше указанной, заполните только правое поле. Свойство не будет
-    учитываться в запросе, если ничего не задать.</p>` },
+const PARTICIPANTS = {
+  type: 'list', name: 'Участники', id: 'participants',
+  valueList: { orValues: [
+    { name: 'Рассказчик', value: 'N' },
+    { name: 'Комментатор', value: 'C', disabledInChannels: ['ocul'] },
+    { name: 'Пересказчик', value: 'R' }
+  ]}};
 
-  { type: 'list', name: 'Участники', id: 'participants',
-    valueList: { orValues: [
-      { name: 'Рассказчик', value: 'N' },
-      { name: 'Комментатор', value: 'C', disabledInChannels: ['ocul'] },
-      { name: 'Пересказчик', value: 'R' }
-    ]}
-  },
+const SAME_PARTICIPANT = {
+  type: 'list', name: 'Совпадение участников', id: 'same_participant',
+  valueList: { xorValues: [
+    { name: 'Да', value: true },
+    { name: 'Нет', value: false },
+  ]}};
 
-  { type: 'list', name: 'Совпадение участников', id: 'same_participant',
-    valueList: { xorValues: [
-      { name: 'Да', value: true },
-      { name: 'Нет', value: false },
-    ]}
-  },
+const PHASE_STRUCTURE = {
+  type: 'list', name: 'Фазовая структура', id: 'phase_structure',
+  displayValues: true, valueList: { orValues: [
+    { name: 'Мах', value: 'S' },
+    { name: 'Мах, ретракция', value: 'S R' },
+    { name: 'Подготовка, мах', value: 'P S' },
+    { name: 'Подготовка, мах, ретракция', value: 'P S R' },
+    { name: 'Подготовка-мах', value: 'P-S' },
+    { name: 'Подготовка-мах, ретракция', value: 'P-S R' },
+    { name: 'Другой вариант', editable: true },
+  ]},
+  validChars: ['P', 'R', 'S', '-', ' '],
+  substitute: [
+    [/[sыЫ]/g, 'S'],
+    [/[pрРзЗ]/g, 'P'],
+    [/[rкК]/g, 'R'],
+    [/\s+/g, ' '],
+    [/\s*[-_]\s*/g, '-'],
+  ]};
+
+const HANDEDNESS = {
+  type: 'list', name: 'Рукость', id: 'handedness',
+  valueList: { orValues: [
+    { name: 'Леворучный', value: 'l' },
+    { name: 'Праворучный', value: 'r' },
+    { name: 'Двуручный с симетричной траекторией', value: 'bs' },
+    { name: 'Двуручный с идентичной / единой траекторией', value: 'bi' },
+    { name: 'Двуручный с различной траекторией у разных рук', value: 'bd' },
+    { name: 'Прочее', value: 'o' },
+  ]}};
+
+const FUNCTIONAL_TYPE = {
+  type: 'list', name: 'Функциональный тип', id: 'gesture_func_type',
+  valueList: { orValues: [
+    { name: 'Изобразительный жест', value: 'ic' },
+    { name: 'Указательный жест', value: 'ix' },
+    { name: 'Жестовое ударение', value: 'a' },
+    { name: 'Другое', value: 'o' },
+    { name: 'Прагматический / метафорический жест', value: 'pm' },
+  ]}};
+
+const GESTURE_OPTIONS = {
+  type: 'list', name: 'Дополнительные признаки', id: 'gesture_opts',
+  valueList: { orValues: [
+    { name: 'Двуручный жест («туда-обратно»)', value: 'ww' },
+    { name: 'Жест с многократным махом', value: 'ms' },
+    { name: 'Отскок в конце маха', value: 'sb' },
+    { name: 'Отскок в конце ретракции', value: 'rb' },
+    { name: 'Многократный отскок в конце маха', value: 'smb' },
+    { name: 'Длинная ретракция', value: 'lr' },
+    { name: 'Наложение на текущий жест фазы другого жеста', value: 'gi' },
+    { name: 'Повтор предыдущего жеста', value: 'gr' },
+    { name: 'Обрыв в основном сформированного жеста', value: 'z' },
+    { name: 'Обрыв жеста без маховой фазы', value: 'zz' },
+  ]}};
+
+const MUTUAL_PROPERTIES = [ DURATION, PARTICIPANTS, SAME_PARTICIPANT ];
+
+const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
 
   { type: 'text', name: 'Словарная форма', id: 'word',
     placeholder: '…'},
@@ -76,25 +135,7 @@ var data = [
     ]}
   },
 
-  { type: 'list', name: 'Фазовая структура', id: 'phase_structure', displayValues: true,
-    valueList: { orValues: [
-      { name: 'Мах', value: 'S' },
-      { name: 'Мах, ретракция', value: 'S R' },
-      { name: 'Подготовка, мах', value: 'P S' },
-      { name: 'Подготовка, мах, ретракция', value: 'P S R' },
-      { name: 'Подготовка-мах', value: 'P-S' },
-      { name: 'Подготовка-мах, ретракция', value: 'P-S R' },
-      { name: 'Другой вариант', editable: true },
-    ]},
-    validChars: ['P', 'R', 'S', '-', ' '],
-    substitute: [
-      [/[sыЫ]/g, 'S'],
-      [/[pрРзЗ]/g, 'P'],
-      [/[rкК]/g, 'R'],
-      [/\s+/g, ' '],
-      [/\s*[-_]\s*/g, '-'],
-    ]
-  },
+  PHASE_STRUCTURE,
 
   { type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
     valueList: { xorValues: [
@@ -116,7 +157,17 @@ var data = [
     ]
   },
 
-];
+]);
+
+const propertiesLists = {
+  u_mGesture: MUTUAL_PROPERTIES.concat([
+    HANDEDNESS,
+    PHASE_STRUCTURE,
+    FUNCTIONAL_TYPE,
+    GESTURE_OPTIONS
+  ]),
+  //u_vEDU:
+};
 
 function keepZero(...args) {
   // Вычисляет аналог выражения:  arg1 || arg2 || ... || argN,
@@ -241,9 +292,9 @@ class IntervalProperty extends SearchUnitProperty {
     this.fromToEqualBanner = data.fromToEqualBanner || '##';
     this.unitsBanner = data.unitsBanner || data.units || '';
 
-    this.tune();
+    this.tune(data);
   }
-  tune() {
+  tune(data) {
     this.validitySusbstitutions = this.getValueSubstitutions(data);
     this.tuneValue();
     this.jsonProperties = this.getJsonProperties();
@@ -669,6 +720,6 @@ class ValueListItem {
 }
 
 export {
-  data, SearchUnitProperty,
+  defaultPropertiesList, propertiesLists, SearchUnitProperty,
   IntervalProperty, TextProperty, ListProperty
 };

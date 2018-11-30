@@ -66,21 +66,21 @@ var data = [
     types: [
       { name: 'Первый уровень сегментации',
         types: [
-          { name: 'Движение', id: 'u_m1', tiers: ['-mLtMovement', '-mRtMovement'] },
-          { name: 'Неподвижность', id: 'u_m2', tiers: ['-mLtStillness', '-mRtStillness'] },
+          { name: 'Движение', id: 'u_mMovement', tiers: ['-mLtMovement', '-mRtMovement'] },
+          { name: 'Неподвижность', id: 'u_mStillness', tiers: ['-mLtStillness', '-mRtStillness'] },
         ]},
       { name: 'Второй уровень сегментации',
         types: [
-          { name: 'Жест', id: 'u_m3', tiers: ['-mGesture'] },
-          { name: 'Адаптор', id: 'u_m4', tiers: ['-mAdaptor'] },
-          { name: 'Смена позы', id: 'u_m5', tiers: ['-mPostureAccomodator'] },
+          { name: 'Жест', id: 'u_mGesture', tiers: ['-mGesture'] },
+          { name: 'Адаптор', id: 'u_mAdaptor', tiers: ['-mAdaptor'] },
+          { name: 'Смена позы', id: 'u_mPostureAccomodator', tiers: ['-mPostureAccomodator'] },
         ]},
       { name: 'Третий уровень сегментации',
         types: [
-          { name: 'Мануальная поза', id: 'u_m6', tiers: ['-mPosture'] },
-          { name: 'Фаза перехода', id: 'u_m7', tiers: ['-mPostureChange'] },
-          { name: 'Двигательная цепочка', id: 'u_m8', tiers: ['-mMovementChain'] },
-          { name: 'Жестовая цепочка', id: 'u_m9', tiers: ['-mGestureChain'] },
+          { name: 'Мануальная поза', id: 'u_mPosture', tiers: ['-mPosture'] },
+          { name: 'Фаза перехода', id: 'u_mPostureChange', tiers: ['-mPostureChange'] },
+          { name: 'Двигательная цепочка', id: 'u_mMovementChain', tiers: ['-mMovementChain'] },
+          { name: 'Жестовая цепочка', id: 'u_mGestureChain', tiers: ['-mGestureChain'] },
         ]},
     ]},
 
