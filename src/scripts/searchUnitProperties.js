@@ -83,6 +83,147 @@ const GESTURE_OPTIONS = {
     { name: 'Обрыв жеста без маховой фазы', value: 'zz' },
   ]}};
 
+const ILLOCUTIONARY_PHASE = {
+  type: 'list', name: 'Иллокутивно-фазовое значение', id: 'illocutionary_phase',
+  displayValues: true, valueList: { orValues: [
+    { name: 'Иллокутивное', orValues: [
+      { name: 'Завершение сообщения', value: '.' },
+      { name: 'Вопрос', value: '?' },
+      { name: 'Директив', value: '¡' },
+      { name: 'Обращение', value: '@' },
+      { name: 'Полуутверждение', value: '¿' },
+      { name: 'Неполнота информации', value: '…' },
+      { name: 'Восклицательность', value: '!' },
+    ]},
+    { name: 'Фазовое', orValues: [
+      { name: 'Стандартная незавершенность', value: ',' },
+      { name: 'Незавершенность, восполняемая последующим контекстом', value: ':' },
+      { name: 'Неполнота информации в контексте незавершенности', value: ',,,' },
+      { name: 'Начальная часть сплита', value: '—' },
+    ]},
+    { name: 'Обрыв', addNameToChildNames: true, orValues: [
+      { name: 'При самоисправлении', value: '==' },
+      { name: 'При апосиопезе', value: '~' },
+      { name: 'При вмешательстве собеседника', value: '≈≈' },
+    ]},
+  ]}};
+
+const ILLOCUTIONARY_PHASE_COMBINATION = {
+  type: 'list', name: 'Комбинация иллокутивно-фазовых значений',
+  id: 'illocutionary_phase_combination',
+  valueList: { orValues: [
+    { name: 'Не-сообщение + незавершенность', value: 'i1' },
+    { name: 'Не-сообщение + неполнота информации', value: 'i2' },
+    { name: 'Не-сообщение + восклицательность', value: 'i3' },
+    { name: 'Незавершенность + обрыв', value: 'i4' },
+    { name: 'Прочее', value: 'i5' },
+  ]}};
+
+const ACCENTS_N = {
+  type: 'interval', name: 'Число акцентов', id: 'accents_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const PRIMARY_ACCENTS_N = {
+  type: 'interval', name: 'Число главных акцентов', id: 'primary_accents_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const SECONDARY_ACCENTS_N = {
+  type: 'interval', name: 'Число вторичных акцентов после главного',
+  id: 'secondary_accents_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const WORDS_N = {
+  type: 'interval', name: 'Число слов', id: 'words_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const ABSOLUTE_PAUSES_N = {
+  type: 'interval', name: 'Число абсолютных пауз', id: 'abs_pauses_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const FILLED_PAUSES_N = {
+  type: 'interval', name: 'Число заполненных пауз', id: 'filled_pauses_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const STARTSWITH_FILLED_PAUSE = {
+  type: 'list', name: 'Начинается с заполненной паузы',
+  id: 'startswith_filled_pause',
+  valueList: { xorValues: [
+    { name: 'Да', value: true },
+    { name: 'Нет', value: false },
+  ]}};
+
+const INTERRUPTION_POINTS_N = {
+  type: 'interval', name: 'Число точек прерывания', id: 'ip_n',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+
+const TONE_MOVEMENT = {
+  type: 'list', name: 'Движение тона в главном акценте',
+  id: 'accent_movement', displayValues: true,
+  valueList: { orValues: [
+    { name: 'Восходящее', value: '/' },
+    { name: 'Нисходящее', value: '\\' },
+    { name: 'Ровное', value: '–' },
+    { name: 'Восходяще-нисходящее', value: ['/\\', '/↓', '↑\\'] },
+    { name: 'Восходяще-ровное', value: ['/–', '/→'] },
+    { name: 'Нисходяще-восходящее', value: ['\\/', '\\↑'] },
+    { name: 'Другой вариант', editable: true },
+  ]},
+  virtualKeyboard: true,
+  validChars: ['/', '\\', '–', '↑', '↓', '→'],
+  substitute: [
+    [/[-\u2014\u2012]/g, '\u2013'],
+  ]};
+
+const WITHIN_INSERTION = {
+  type: 'list', name: 'Входит в конструкцию со вставкой',
+  id: 'within_ins',
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'Непосредственно предшествует вставке', value: 'wi1' },
+      { name: 'Первая ЭДЕ сложной вставки', value: 'wi2' },
+      { name: 'Последняя ЭДЕ сложной вставки', value: 'wi3' },
+      { name: 'Внутренняя ЭДЕ сложной вставки', value: 'wi4' },
+      { name: 'Единственная ЭДЕ простой вставки', value: 'wi5' },
+      { name: 'Непосредственно следует за вставкой', value: 'wi6' },
+      { name: 'Первая ЭДЕ односторонней вставки', value: 'wi7' },
+    ]},
+    { name: 'Нет', value: false },
+  ]}};
+
+const WITHIN_SPLIT = {
+  type: 'list', name: 'Входит в конструкцию со сплитом',
+  id: 'within_split',
+  valueList: { xorValues: [
+    { name: 'Да', value: true },
+    { name: 'Нет', value: false },
+  ]}};
+
+const WITHIN_MUTUAL_VERBALISATION = {
+  type: 'list', name: 'Входит в совместное построение реплик',
+  id: 'within_muverb',
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'Достраивается другим участником', value: 'wi1' },
+      { name: 'Достраивает реплику другого участника', value: 'wi2' },
+      { name: 'И то, и другое', value: 'wi3' },
+    ]},
+    { name: 'Нет', value: false },
+  ]}};
+
+const WITHIN_CITAION = {
+  type: 'list', name: 'Входит в конструкцию с (полу)прямой цитацией',
+  id: 'within_cit',
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'Вводит чужую речь (авторская ремарка)', value: 'wc1' },
+      { name: 'Первая ЭДЕ сложной цитации', value: 'wc2' },
+      { name: 'Последняя ЭДЕ сложной цитации', value: 'wc3' },
+      { name: 'Внутренняя ЭДЕ сложной цитации', value: 'wc4' },
+      { name: 'Единственная ЭДЕ простой цитации', value: 'wc5' },
+    ]},
+    { name: 'Нет', value: false },
+  ]}};
+
 const MUTUAL_PROPERTIES = [ DURATION, PARTICIPANTS, SAME_PARTICIPANT ];
 
 const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
@@ -94,8 +235,7 @@ const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
     fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
     fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##' },
 
-  { type: 'interval', name: 'Число акцентов', id: 'n_accents',
-    fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' },
+  ACCENTS_N,
 
   { type: 'list', name: 'Точка прерывания', id: 'termination_point',
     valueList: { xorValues: [
@@ -109,32 +249,7 @@ const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
     ]}
   },
 
-  { type: 'list', name: 'Иллокутивно-фазовое значение', id: 'illocationary_phase',
-    displayValues: true,
-    valueList: { orValues: [
-      { name: 'Иллокутивное', orValues: [
-        { name: 'Завершение сообщения', value: '.' },
-        { name: 'Вопрос', value: '?' },
-        { name: 'Директив', value: '¡' },
-        { name: 'Обращение', value: '@' },
-        { name: 'Полуутверждение', value: '¿' },
-        { name: 'Неполнота информации', value: '…' },
-        { name: 'Восклицательность', value: '!' },
-      ]},
-      { name: 'Фазовое', orValues: [
-        { name: 'Стандартная незавершенность', value: ',' },
-        { name: 'Незавершенность, восполняемая последующим контекстом', value: ':' },
-        { name: 'Неполнота информации в контексте незавершенности', value: ',,,' },
-        { name: 'Начальная часть сплита', value: '—' },
-      ]},
-      { name: 'Обрыв', addNameToChildNames: true, orValues: [
-        { name: 'При самоисправлении', value: '==' },
-        { name: 'При апосиопезе', value: '~' },
-        { name: 'При вмешательстве собеседника', value: '≈≈' },
-      ]},
-    ]}
-  },
-
+  ILLOCUTIONARY_PHASE,
   PHASE_STRUCTURE,
 
   { type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
@@ -160,13 +275,8 @@ const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
 ]);
 
 const propertiesLists = {
-  u_mGesture: MUTUAL_PROPERTIES.concat([
-    HANDEDNESS,
-    PHASE_STRUCTURE,
-    FUNCTIONAL_TYPE,
-    GESTURE_OPTIONS
-  ]),
-  //u_vEDU:
+  u_mGesture: MUTUAL_PROPERTIES.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
+  u_vEDU: MUTUAL_PROPERTIES.concat([ILLOCUTIONARY_PHASE, WORDS_N, ABSOLUTE_PAUSES_N, FILLED_PAUSES_N, STARTSWITH_FILLED_PAUSE, ILLOCUTIONARY_PHASE_COMBINATION, INTERRUPTION_POINTS_N, ACCENTS_N, PRIMARY_ACCENTS_N, SECONDARY_ACCENTS_N, TONE_MOVEMENT, WITHIN_INSERTION, WITHIN_SPLIT, WITHIN_MUTUAL_VERBALISATION, WITHIN_CITAION]),
 };
 
 function keepZero(...args) {
