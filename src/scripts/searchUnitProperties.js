@@ -323,6 +323,12 @@ class TextProperty extends SearchUnitProperty {
     this.jsonProperties = this.getJsonProperties();
     this.banner = this.getBanner();
   }
+  getBanner() {
+    return ko.computed(function () {
+      let value = this.value();
+      return isImportant(value) ? `«${ value }»` : '';
+    }, this);
+  }
 }
 
 function escapeRegExp(string) {
