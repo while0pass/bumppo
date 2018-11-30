@@ -142,6 +142,7 @@ $borderWidth: 0.3em;
 .bmpp-queryPane {
   display: flex;
   flex: 1 0 auto;
+  overflow: hidden;
 }
 
 .bmpp-query {
@@ -154,6 +155,7 @@ $borderWidth: 0.3em;
 .bmpp-queryTree {
   order: 0;
   width: 9em;
+  flex: 0 0 auto;
 }
 
 .bmpp-queryElement {

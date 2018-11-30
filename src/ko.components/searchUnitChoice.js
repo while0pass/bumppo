@@ -101,7 +101,7 @@ const chosenUnitTemplate = `
       class="bmpp-bannerPropname" data-bind="textLowercaseFirstChar: name"
       ></span><span class="bmpp-bannerText">:&#x2002;</span><!-- /ko --><span
       data-bind="text: banner" class="bmpp-bannerPropvalue"></span><span
-      class="bmpp-bannerText" data-bind="text: $index() < $parent.node.
+      class="bmpp-bannerText" data-bind="text: $index() &lt; $parent.node.
       chosenUnitProperties().length - 1 ? ';&#x2002;' : '.'"></span
     ></div>
     <!-- /ko -->
