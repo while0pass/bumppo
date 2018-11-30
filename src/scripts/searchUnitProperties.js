@@ -68,7 +68,7 @@ var data = [
         { name: 'Неполнота информации в контексте незавершенности', value: ',,,' },
         { name: 'Начальная часть сплита', value: '—' },
       ]},
-      { name: 'Обрыв', orValues: [
+      { name: 'Обрыв', addNameToChildNames: true, orValues: [
         { name: 'При самоисправлении', value: '==' },
         { name: 'При апосиопезе', value: '~' },
         { name: 'При вмешательстве собеседника', value: '≈≈' },
@@ -405,6 +405,21 @@ class ListProperty extends SearchUnitProperty {
   get isHeaderClickable() {
     return this.valueList.hasNoChildList;
   }
+  getBanner() {
+    return ko.computed(function () {
+      return this.chosenValues().map(
+        item => {
+          let prefix = '', parentItem = item.list.depth > 0 && item.list.parentItem;
+          while (parentItem && parentItem.addNameToChildNames) {
+            prefix = parentItem.name.slice(0, 1).toLowerCase() +
+              parentItem.name.slice(1) + ' ' + prefix;
+            parentItem = parentItem.list.depth > 0 && parentItem.list.parentItem;
+          }
+          return prefix + item.name.slice(0, 1).toLowerCase() + item.name.slice(1);
+        }
+      ).join('; ');
+    }, this);
+  }
 }
 
 class ValueList {
@@ -510,6 +525,7 @@ class ValueListItem {
     this.value = this.editable ? this.getValidatingValue(): data.value;
     this.childList = (data.orValues || data.xorValues ?
       new ValueList(data, this, list.listProperty) : null);
+    this.addNameToChildNames = data.addNameToChildNames || false;
 
     this.tuneXOR();
     this.tuneParentList();
