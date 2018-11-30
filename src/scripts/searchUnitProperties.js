@@ -477,6 +477,27 @@ class ValueList {
   }
 }
 
+
+function compareOnDepth(x, y, depth) {
+  let a = x.getListItemOnDepth(depth),
+      b = y.getListItemOnDepth(depth),
+      ai = a.list.items.indexOf(a),
+      bi = b.list.items.indexOf(b);
+  if (ai < bi) return -1;
+  if (ai > bi) return 1;
+  return 0;
+}
+
+function sortTwoValueListItems(a, b) {
+  let depth = 0,
+      x = compareOnDepth(a, b, depth);
+  while(x === 0 || a.list.depth < depth && b.list.depth < depth) {
+    depth += 1;
+    x = compareOnDepth(a, b, depth);
+  }
+  return x;
+}
+
 class ValueListItem {
   constructor(data, list) {
     this.list = list;
@@ -612,9 +633,16 @@ class ValueListItem {
         chosenValues.remove(this);
         if (checked && !disabled) {
           chosenValues.push(this);
+          chosenValues.sort(sortTwoValueListItems);
         }
       }
     }, this);
+  }
+  getListItemOnDepth(depth) {
+    if (depth === this.list.depth) {
+      return this;
+    }
+    return this.list.parentItem.getListItemOnDepth(depth);
   }
 }
 
