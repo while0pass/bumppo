@@ -2,15 +2,18 @@ const template = `
 
   <!-- ko with: node -->
 
-  <header class="ui header">Свойства поисковой единицы:
+  <header class="ui header">
     <!-- ko with: unitType -->
-      <!--
+
       <button class="ui button bmpp-channelSlug"
         data-bind="css: channel.color, text: channel.id">
       </button>
-      -->
+
+      <span style="padding-left: .5em; font-weight: normal;">Тип единицы:</span>
+
       <span data-bind="text: hasAbbr ? abbr : name"
-        style="padding-left: .5em"></span>
+        style="padding-left: .5em; font-weight: bold"></span>
+
     <!-- /ko -->
   </header>
 
