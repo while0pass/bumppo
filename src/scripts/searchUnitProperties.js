@@ -409,13 +409,19 @@ class ListProperty extends SearchUnitProperty {
     return ko.computed(function () {
       return this.chosenValues().map(
         item => {
-          let prefix = '', parentItem = item.list.depth > 0 && item.list.parentItem;
+          let prefix = '', postfix,
+              parentItem = item.list.depth > 0 && item.list.parentItem;
           while (parentItem && parentItem.addNameToChildNames) {
             prefix = parentItem.name.slice(0, 1).toLowerCase() +
               parentItem.name.slice(1) + ' ' + prefix;
             parentItem = parentItem.list.depth > 0 && parentItem.list.parentItem;
           }
-          return prefix + item.name.slice(0, 1).toLowerCase() + item.name.slice(1);
+          if (item.editable) {
+            postfix = `«${ item.value() }»`;
+          } else {
+            postfix = item.name.slice(0, 1).toLowerCase() + item.name.slice(1);
+          }
+          return prefix + postfix;
         }
       ).join('; ');
     }, this);
