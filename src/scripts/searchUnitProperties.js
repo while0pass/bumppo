@@ -335,6 +335,18 @@ function escapeRegExp(string) {
   return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 }
 
+function addChosenAttr(attr, listItem, values) {
+  let value = ko.unwrap(listItem[attr]);
+  if (value instanceof Array) {
+    values = values.filter(x => value.indexOf(x) < 0);
+    values.concat(value);
+  } else if (isImportant(value)) {
+    values = values.filter(x => x !== value);
+    values.push(value);
+  }
+  return values;
+}
+
 class ListProperty extends SearchUnitProperty {
   constructor(data, unitType) {
     super(data, unitType);
@@ -354,22 +366,21 @@ class ListProperty extends SearchUnitProperty {
       let value = this.value,
           values = this.unwrapValues(this.chosenValues());
       if (values.length > 0) {
-        if (this.valueList.isXOR
-        && values.length === 1
-        && this.valueList.items.some(item => {
-          if (item.value === undefined || item.value === null) return false;
-          if (item.value instanceof Array) return false;
-          if (item.value === values[0]) {
-            return true;
+        if (this.valueList.isXOR && values.length === 1
+        && this.valueList.items.some(item => item === values[0])) {
+          let vals = [];
+          vals = addChosenAttr('value', values[0], vals);
+          if (vals.length === 1) {
+            value(vals[0]);
           } else {
-            return false;
+            value(vals);
           }
-        })
-        ) {
-          value(values[0]);
         } else {
-          values.sort();
-          value(values);
+          let vals = [];
+          values.map(item => {
+            vals = addChosenAttr('value', item, vals);
+          });
+          value(vals);
         }
       } else {
         value(null);
@@ -594,20 +605,14 @@ class ValueListItem {
   tuneCumulativeValue() {
     ko.computed(function () {
       let chosenValues = this.list.listProperty.chosenValues,
-          value = this.value,
           disabled = this.disabled,
           checked = this.checked();
       disabled = ko.isObservable(disabled) ? disabled() : disabled;
-      if (value === undefined || value === null) {
-        // do nothing
-      } else if (value instanceof Array) {
-        chosenValues.removeAll(value);
-        if (checked && !disabled) chosenValues.splice(-1, 0, ...value);
-      } else {
-        // NOTE: value будет либо обычным значение, либо ko.observable.
-        // Нас устраивают оба варианта.
-        chosenValues.remove(value);
-        if (checked && !disabled) chosenValues.push(value);
+      if (isImportant(this.value)) {
+        chosenValues.remove(this);
+        if (checked && !disabled) {
+          chosenValues.push(this);
+        }
       }
     }, this);
   }
