@@ -77,6 +77,10 @@
                  css: { 'bmpp-sidePane_menuItem--current': isResultsPaneOn,
                          disabled: !canViewResults() }">
       Результаты
+      <!-- ko if: resultsNumber -->
+      <span class="label" data-bind="text: resultsNumber,
+        css: { currentResults: !canSearch() }"></span>
+      <!-- /ko -->
     </div>
   </div>
 

@@ -140,6 +140,9 @@ function viewModel() {
   this.canViewResults = ko.observable(false);
   this.results = ko.observable(null);
   this.resultsError = ko.observable(null);
+  this.resultsNumber = ko.computed(
+    () => self.results() ? self.results().results.length : 0
+  );
   this.responseJSON = ko.computed(
     () => self.results() ? JSON.stringify(self.results(), null, 4) : ''
   );
@@ -148,7 +151,7 @@ function viewModel() {
         pauseFunction = function () {
           if (videoPlayer.currentTime() >= end - 1e-2) {
             videoPlayer.off('timeupdate', self._pauseFunction);
-            delete self._pauseFunction
+            delete self._pauseFunction;
             videoPlayer.pause();
           }
         };
