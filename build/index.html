@@ -140,29 +140,60 @@
         </div>
         -->
       </div>
-      <div class="bmpp-resultsPane_results">
-        <div style="padding: 1em; color: white; background-color: #a00;"
-             data-bind="visible: resultsError">
-          <code><pre data-bind="text: resultsError"></pre></code>
-        </div>
-        <div class="ui basic segment">
-          <!-- ko foreach: results().results -->
-          <p data-bind="click: $parent.playVideo.bind($data)"
-            class="ui vertical segment" style="cursor: pointer">
-            <i class="disabled film icon"></i>
-            <span style="color: green" data-bind="text: left_context"></span>
-            <span data-bind="text: value"></span>
-            <em data-bind="text: right_context" style="color: grey"></em>
-          </p>
+      <div class="bmpp-resultsPane_results" data-bind="if: results">
+        <div class="ui basic segment" data-bind="with: results">
+
+          <!-- ko ifnot: version === 'test' -->
+            <!-- ko foreach: results -->
+            <p data-bind="click: $root.playVideo.bind($data)"
+              class="ui vertical segment" style="cursor: pointer">
+              <i class="disabled film icon"></i>
+              <span style="color: green" data-bind="text: left_context"></span>
+              <span data-bind="text: value"></span>
+              <em data-bind="text: right_context" style="color: grey"></em>
+            </p>
+            <!-- /ko -->
           <!-- /ko -->
+
+          <!-- ko if: version === 'test' -->
+          <div data-bind="foreach: results" class="bmpp-searchResult">
+
+            <div class="divider" data-bind="visible: $index() > 0"></div>
+
+            <div class="bmpp-unitValue bmpp-context"
+              data-bind="text: before_context"></div>
+            <div class="bmpp-transcription bmpp-context"
+              data-bind="html: before_context_transcription"></div>
+
+            <div class="bmpp-unitValue"
+              data-bind="text: value, click: $root.playVideo.bind($data)"></div>
+            <div class="bmpp-transcription"
+              data-bind="html: value_transcription,
+                click: $root.playVideo.bind($data)"></div>
+
+            <div class="bmpp-unitValue bmpp-context"
+              data-bind="text: after_context"></div>
+            <div class="bmpp-transcription bmpp-context"
+              data-bind="html: after_context_transcription"></div>
+
+          </div>
+          <!-- /ko -->
+
         </div>
+
         <div style="padding: 1em; background-color: #eee">
           <header class="ui header">JSON ответа</header>
           <code><pre data-bind="text: responseJSON"></pre></code>
         </div>
+
         <div style="padding: 1em">
           <header class="ui header">JSON запроса</header>
           <code><pre data-bind="text: queryJSON"></pre></code>
+        </div>
+
+        <div style="padding: 1em; color: white; background-color: #a00;"
+             data-bind="visible: resultsError">
+          <code><pre data-bind="text: resultsError"></pre></code>
         </div>
       </div>
     </div>

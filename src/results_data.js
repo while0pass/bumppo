@@ -1,409 +1,188 @@
 /* eslint-disable */
 export default {
-  "version": "1.0",
+  "version": "test",
   "results": [
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 2200,
-        "end": 3740
-      },
-      "left_context": "N-vE002",
-      "value": "Годов \\семидесятых я думаю.",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
         "begin": 6010,
-        "end": 8490
+        "end": 8490,
+        "before_begin": 5250,
+        "after_end": 8590
       },
-      "left_context": "N-vE005",
-      "value": "(ˀ 0.06) (ɐ 0.53) Мы видим˗м сельский /–пейзаж,,,",
-      "right_context": ""
+      "value": "N-vE005",
+      "value_transcription": "(ˀ 0.06) (ɐ 0.53) Мы видим˗м сельский /–пейз<u>а</u>ж,,,",
+      "before_context": "N-vN001",
+      "before_context_transcription": "(ɥ 0.76)",
+      "after_context": "pN-004",
+      "after_context_transcription": "(0.10)"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 25640,
-        "end": 28380
+        "begin": 8590,
+        "end": 9490,
+        "before_begin": 8490,
+        "after_end": 10000
       },
-      "left_context": "N-vE017",
-      "value": "у него (ɥ 0.29) на шее красный \\платок ↑завязан,",
-      "right_context": ""
+      "value": "N-vE006",
+      "value_transcription": "сельская /–м<u>е</u>стность,,,",
+      "before_context": "pN-004",
+      "before_context_transcription": "(0.10)",
+      "after_context": "N-vE007",
+      "after_context_transcription": "/–дор<u>о</u>га,,,"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 50030,
-        "end": 52790
+        "begin": 9490,
+        "end": 10000,
+        "before_begin": 8590,
+        "after_end": 10880
       },
-      "left_context": "N-vE027",
-      "value": "там уже \\стоят (0.13) (ɥ 0.26) \\парочка корзин /полных,",
-      "right_context": ""
+      "value": "N-vE007",
+      "value_transcription": "/–дор<u>о</u>га,,,",
+      "before_context": "N-vE006",
+      "before_context_transcription": "сельская /–м<u>е</u>стность,,,",
+      "after_context": "N-vE008",
+      "after_context_transcription": "–↑дер<u>е</u>вья<sup>ɯ</sup>, ≈≈"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 65950,
-        "end": 68350
+        "begin": 22700,
+        "end": 23700,
+        "before_begin": 21180,
+        "after_end": 24690
       },
-      "left_context": "N-vE034",
-      "value": "так всё очень не= || делает /нежно и \\любовноɯ.",
-      "right_context": ""
+      "value": "N-vE014",
+      "value_transcription": "такой /–т<u>о</u>лстый,,,",
+      "before_context": "N-vE013",
+      "before_context_transcription": "Похож на Дмитрия \\Б<u>ы</u>кова чуть-чуть,",
+      "after_context": "N-vE015",
+      "after_context_transcription": "/–краснол<u>и</u>цый,,,"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 106370,
-        "end": 107350
+        "begin": 23700,
+        "end": 24690,
+        "before_begin": 22700,
+        "after_end": 24880
       },
-      "left_context": "N-vE064",
-      "value": "велосипед /большой,",
-      "right_context": ""
+      "value": "N-vE015",
+      "value_transcription": "/–краснол<u>и</u>цый,,,",
+      "before_context": "N-vE014",
+      "before_context_transcription": "такой /–т<u>о</u>лстый,,,",
+      "after_context": "pN-008",
+      "after_context_transcription": "(0.19)"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 107350,
-        "end": 108550
+        "begin": 24880,
+        "end": 25640,
+        "before_begin": 24690,
+        "after_end": 28380
       },
-      "left_context": "N-vE065",
-      "value": "какие \\старые /советские,",
-      "right_context": ""
+      "value": "N-vE016",
+      "value_transcription": "в /–ф<u>а˗а</u>ртуке,,,",
+      "before_context": "pN-008",
+      "before_context_transcription": "(0.19)",
+      "after_context": "N-vE017",
+      "after_context_transcription": "у него (ɥ 0.29) на шее красный \\плат<u>о</u>к ↑завязан,"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 131450,
-        "end": 133380
+        "begin": 32360,
+        "end": 33110,
+        "before_begin": 30800,
+        "after_end": 35100
       },
-      "left_context": "N-vE079",
-      "value": "видит \\фермер собирает там –груши,",
-      "right_context": ""
+      "value": "N-vE020",
+      "value_transcription": "/→зел<u>ё</u>ные,,,",
+      "before_context": "N-vE019",
+      "before_context_transcription": "\\груши˗и<sup>ə</sup> (ə 0.10) (ˀ 0.10) /больш<u>и</u>е,",
+      "after_context": "N-vE021",
+      "after_context_transcription": "на /вид совершенно \\твердок<u>а</u>менные<sup>ɯ</sup>."
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 133380,
-        "end": 134920
+        "begin": 53370,
+        "end": 54550,
+        "before_begin": 52790,
+        "after_end": 54910
       },
-      "left_context": "N-vE080",
-      "value": "полностью поглощён этим /занятием,",
-      "right_context": ""
+      "value": "N-vE028",
+      "value_transcription": "он <em>заполняет</em> /ещ<u>ё</u> →одну,,,",
+      "before_context": "pN-012",
+      "before_context_transcription": "(0.57)",
+      "after_context": "N-vN010",
+      "after_context_transcription": "(ɥ 0.36)"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 151010,
-        "end": 152500
+        "begin": 181950,
+        "end": 183520,
+        "before_begin": 180620,
+        "after_end": 183960
       },
-      "left_context": "N-vE090",
-      "value": "с этой тяжеленной /↑корзиной,",
-      "right_context": ""
+      "value": "N-vE107",
+      "value_transcription": "велосипедом его /→придав<u>и</u>ло,,,",
+      "before_context": "N-vE106",
+      "before_context_transcription": "{sw 0.15} (ɐ 0.36) он /\\леж<u>и˗и</u>т<sup>ə</sup>,,,",
+      "after_context": "N-vN029",
+      "after_context_transcription": "(ɥ 0.15) {sm 0.28}"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 192570,
-        "end": 193790
+        "begin": 186460,
+        "end": 187410,
+        "before_begin": 184270,
+        "after_end": 188170
       },
-      "left_context": "N-vE117",
-      "value": "он один из них /приспускает,",
-      "right_context": "Произносит [прыспускает]."
+      "value": "N-vE109",
+      "value_transcription": "потирает /→кол<u>ен</u>ку,,,",
+      "before_context": "N-vE108",
+      "before_context_transcription": "(ə 0.63) он (ɯ 0.31) <п=> || /↓сад<u>и</u>тся˗а,,,",
+      "after_context": "N-vE110",
+      "after_context_transcription": "там смотрит =="
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 228210,
-        "end": 230180
+        "begin": 265920,
+        "end": 267310,
+        "before_begin": 265280,
+        "after_end": 267480
       },
-      "left_context": "N-vE136",
-      "value": "(ˀ 0.11) Они \\помогают ему /подняться=,",
-      "right_context": ""
+      "value": "N-vE159",
+      "value_transcription": "(ɐ 0.25) отдаёт ему /–шл<u>я</u>пу,,,",
+      "before_context": "N-vE158",
+      "before_context_transcription": "— /–ид<u>ё</u>т,",
+      "after_context": "pN-060",
+      "after_context_transcription": "(0.17)"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 230180,
-        "end": 231170
+        "begin": 281930,
+        "end": 283890,
+        "before_begin": 281500,
+        "after_end": 284240
       },
-      "left_context": "N-vE137",
-      "value": "(ə 0.04) (\\Двое /помогают,",
-      "right_context": "Произносит [помогаюƟ]."
+      "value": "N-vE169",
+      "value_transcription": "(ɐ 0.13) \\вытирает (ɐ 0.49) о /–себ<u>я˗а</u>,,,",
+      "before_context": "N-vN042",
+      "before_context_transcription": "(ɥ 0.43)",
+      "after_context": "pN-064",
+      "after_context_transcription": "(0.34)"
     },
     {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
       "time": {
-        "begin": 231170,
-        "end": 233480
+        "begin": 310320,
+        "end": 312480,
+        "before_begin": 309860,
+        "after_end": 314110
       },
-      "left_context": "N-vE138",
-      "value": "/ˀодин так и сту= || и \\стучит своей этой \\↑штукой.)",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 255660,
-        "end": 256960
-      },
-      "left_context": "N-vE152",
-      "value": "/поднимают они ↑её,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 271630,
-        "end": 272320
-      },
-      "left_context": "N-vE161",
-      "value": "взамен \\шляпы,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 445390,
-        "end": 447440
-      },
-      "left_context": "N-vE238",
-      "value": "/Корзины прям просто под \\грушей /стоят,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 480570,
-        "end": 481360
-      },
-      "left_context": "N-vE246",
-      "value": "Ничего не \\видно, ",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 596290,
-        "end": 597690
-      },
-      "left_context": "N-vE289",
-      "value": "я бы \\свалилась точно.",
-      "right_context": "Второе слово произносит [салилась]. Последнее слово — шепотом."
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 766410,
-        "end": 768090
-      },
-      "left_context": "N-vE325",
-      "value": "Как˗к какая-то \\əшпанаɯ.",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 770110,
-        "end": 772280
-      },
-      "left_context": "N-vE326",
-      "value": "Ну /сначала как-то они \\подозрительно выглядят,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 772280,
-        "end": 773340
-      },
-      "left_context": "N-vE327",
-      "value": "но /вообще \\нормально.",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 773340,
-        "end": 774340
-      },
-      "left_context": "N-vE328",
-      "value": "Они ему /помогают...",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 801810,
-        "end": 802150
-      },
-      "left_context": "N-vE329",
-      "value": "(ɯ 0.19) \\Да,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 802150,
-        "end": 803460
-      },
-      "left_context": "N-vE330",
-      "value": "он /садится,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 803630,
-        "end": 805600
-      },
-      "left_context": "N-vE331",
-      "value": "(ə 0.16) см= || смотрит свою /–коленку,,, ≈≈",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 805600,
-        "end": 806230
-      },
-      "left_context": "N-vE332",
-      "value": "Ну прямо \\так, ",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 806230,
-        "end": 807020
-      },
-      "left_context": "N-vE333",
-      "value": "он /лежал сначала,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 841780,
-        "end": 843470
-      },
-      "left_context": "N-vE343",
-      "value": "ˀОни ст= || \\поднимают ему всё это,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 928410,
-        "end": 928890
-      },
-      "left_context": "N-vE364",
-      "value": "/Не- \\н˗не!,",
-      "right_context": ""
-    },
-    {
-      "record_id": 22,
-      "participant": "N",
-      "tier": "N-vSForm",
-      "annotation_index": 20,
-      "time": {
-        "begin": 1092770,
-        "end": 1095300
-      },
-      "left_context": "N-vE385",
-      "value": "мы /ничего˗оə || (0.40) уже не \\поправляем /никого.",
-      "right_context": ""
+      "value": "N-vE184",
+      "value_transcription": "так спокойно мимо него /–прох<u>о</u>дят вразвалочку,,,",
+      "before_context": "pN-070",
+      "before_context_transcription": "(0.47)",
+      "after_context": "N-vE185",
+      "after_context_transcription": "и /он в недоумении на них /–см<u>о</u>трит,"
     }
   ]
 };

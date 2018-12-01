@@ -1,5 +1,5 @@
 import './styles/main.css';
-import './scripts/log.js';
+import log from './scripts/log.js';
 
 import jQuery from 'jquery';
 import ko from 'knockout';
@@ -17,10 +17,12 @@ var videoPlayer = videojs('bmpp-videoPlayer');
 /* eslint-disable no-undef */
 const searchEngineURL = (BUMPPO_ENV === 'production' ?
         'http://multidiscourse.ru:8080/search_annotations/SearchAnnotations' :
-        'http://localhost:8080/search_annotations/SearchAnnotations'),
+        (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
+          'http://localhost:8080/search_annotations/SearchAnnotations')),
       baseURL = (BUMPPO_ENV === 'production' ?
         (BUMPPO_HOSTING ? '/bumppo-ghpages/BUMPPO_VERSION' : '/search/') : '');
 /* eslint-enable no-undef */
+log('Search Engine:', searchEngineURL);
 
 function viewModel() {
   let self = this;
@@ -136,22 +138,28 @@ function viewModel() {
   this.isSearchInProgress = ko.observable(false);
 
   this.canViewResults = ko.observable(false);
-  this.results = ko.observable(resultsData);
+  this.results = ko.observable(null);
   this.resultsError = ko.observable(null);
-  this.responseJSON = ko.computed(() => JSON.stringify(self.results(), null, 4));
+  this.responseJSON = ko.computed(
+    () => self.results() ? JSON.stringify(self.results(), null, 4) : ''
+  );
   this.playVideo = function (result) {
     let { begin, end } = result.time,
         pauseFunction = function () {
-          if (videoPlayer.currentTime() >= end) videoPlayer.pause();
+          if (videoPlayer.currentTime() >= end - 1e-2) {
+            videoPlayer.off('timeupdate', self._pauseFunction);
+            delete self._pauseFunction
+            videoPlayer.pause();
+          }
         };
     begin /= 1000;
     end /= 1000;
     videoPlayer.currentTime(begin);
-    if (videoPlayer.pauseFunction !== undefined) {
-      videoPlayer.off('timeupdate', videoPlayer.pauseFunction);
+    if (self._pauseFunction !== undefined) {
+      videoPlayer.off('timeupdate', self._pauseFunction);
     }
-    videoPlayer.pauseFunction = pauseFunction;
-    videoPlayer.on('timeupdate', pauseFunction);
+    self._pauseFunction = pauseFunction;
+    videoPlayer.on('timeupdate', self._pauseFunction);
     videoPlayer.play();
   };
 

@@ -59,8 +59,9 @@ export default {
         'src/semantic/**',
       ],
       BUMPPO_ENV: JSON.stringify(process.env.BUMPPO_ENV || 'development'),
+      BUMPPO_HOSTING: process.env.BUMPPO_HOSTING || JSON.stringify(false),
+      BUMPPO_LOCAL_SERVER: JSON.stringify(process.env.BUMPPO_LOCAL_SERVER || ''),
       BUMPPO_VERSION: process.env.BUMPPO_VERSION || '',
-      BUMPPO_HOSTING: process.env.BUMPPO_HOSTING || 'false',
     }),
     (process.env.BUMPPO_ENV === 'production' && terser()),
     copy({
