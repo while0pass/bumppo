@@ -93,6 +93,39 @@ function viewModel() {
     records: new CheckboxForm(records, this.isSubcorpusNew),
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
   };
+  this.subcorpusBanner = ko.computed(function () {
+    let records = self.subcorpus.records,
+        recordPhases = self.subcorpus.recordPhases,
+        banner;
+    if (self.results && self.results() && self.results().version === 'test') {
+      return self.results().subcorpus;
+    }
+    if (records.areAllUnchecked || records.areAllChecked) {
+      banner = 'все записи; ';
+    } else {
+      let list = records.fields
+        .filter(field => !field.disabled && field.value())
+        .map(field => field.query);
+      if (list.length === 1) {
+        banner = `запись ${ list[0] }; `;
+      } else {
+        banner = `записи ${ list.join(', ') }; `;
+      }
+    }
+    if (recordPhases.areAllUnchecked || recordPhases.areAllChecked) {
+      banner += 'все этапы.';
+    } else {
+      let list = recordPhases.fields
+        .filter(field => !field.disabled && field.value())
+        .map(field => field.label);
+      if (list.length === 1) {
+        banner += `этап ${ list[0] }.`;
+      } else {
+        banner += `этапы ${ list.join(', ') }.`;
+      }
+    }
+    return banner;
+  }, this);
 
   this.queryTree = new TreeNode();
 

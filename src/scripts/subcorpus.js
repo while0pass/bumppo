@@ -49,11 +49,11 @@ export class CheckboxForm{
       }
     };
   }
-  areAllUnchecked() {
-    for (let field of this.fields) {
-      if (!field.disabled && field.value()) return false;
-    }
-    return true;
+  get areAllChecked() {
+    return this.fields.every(field => field.disabled || field.value());
+  }
+  get areAllUnchecked() {
+    return this.fields.every(field => field.disabled || !field.value());
   }
   getAllButDisabledQueryValues() {
     let queryValues = [];
@@ -74,7 +74,7 @@ export class CheckboxForm{
     return queryValues;
   }
   getQueryValuesForJSON() {
-    if (this.areAllUnchecked()) return this.getAllButDisabledQueryValues();
+    if (this.areAllUnchecked) return this.getAllButDisabledQueryValues();
     return this.getAllCheckedQueryValues();
   }
 }

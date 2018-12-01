@@ -140,6 +140,9 @@ $borderWidth: 0.3em;
   &_video {
     border-bottom: 1px solid $bmppBorderColor;
     background-color: #eee;
+    display: flex;
+    height: 192px !important;
+    flex: 0 0 auto;
   }
   &_results {
     overflow-y: scroll;

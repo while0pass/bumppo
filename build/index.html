@@ -143,6 +143,62 @@
           <div>W-vi</div>
         </div>
         -->
+        <div style="max-width: 40em; padding: 0.7em 1em; font-size: smaller;">
+
+          <!-- ko if: results() && results().version === 'test' -->
+          <div style="margin-bottom: .33em; color: #a00;">
+            NB: Отображаются результаты условной выдачи!
+          </div>
+          <!-- /ko -->
+
+          <div style="margin-bottom: .33em;">
+            <em>Область поиска:</em>&#x2002;<span
+              data-bind="text: subcorpusBanner"></span>
+          </div>
+
+          <!-- ko if: results() && results().version === 'test' -->
+          <div style="margin-bottom: .33em;">
+            <em>Условие поиска:</em>&#x2002;<span
+            data-bind="text: results().query"></span>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: results() && results().version !== 'test'
+            && queryTree.unitType() -->
+          <div style="margin-bottom: .33em;" data-bind="with: queryTree">
+            <em>Условие поиска:</em>&#x2002;<span data-bind="text:
+            unitType().hasAbbr ? unitType().abbr : unitType().name"></span
+            ><!-- ko if: chosenUnitProperties().length > 0 -->, со следующими
+            свойствами: <span data-bind="foreach: chosenUnitProperties"
+            ><!-- ko if: $index() === 0 --><span
+            data-bind="textLowercaseFirstChar: name"></span><span
+            >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
+            data-bind="textLowercaseFirstChar: name"></span><span
+            >:&#x2002;</span><!-- /ko --><span data-bind="text: banner"></span
+            ><span data-bind="text:
+            $index() &lt; $parent.chosenUnitProperties().length - 1 ?
+            ';&#x2002;' : '.'"></span></span><!-- /ko --><!-- ko if:
+            chosenUnitProperties().length === 0 -->.<!-- /ko -->
+          </div>
+          <!-- /ko -->
+
+          <div>
+            <em>Всего найдено:</em>&#x2002;<span
+              data-bind="text: resultsNumber"></span>
+            <!-- ko if: resultsNumber() % 100 - resultsNumber() % 10 === 10
+              || [5, 6, 7, 8, 9, 0].indexOf(resultsNumber() % 10) > 0 -->
+              совпадений.
+            <!-- /ko -->
+            <!-- ko if: resultsNumber() % 100 - resultsNumber() % 10 !== 10
+              && resultsNumber() % 10 === 1 -->
+              совпадение.
+            <!-- /ko -->
+            <!-- ko if: resultsNumber() % 100 - resultsNumber() % 10 !== 10
+              && [2, 3, 4].indexOf(resultsNumber() % 10) > 0 -->
+              совпадения.
+            <!-- /ko -->
+          </div>
+
+        </div>
       </div>
       <div class="bmpp-resultsPane_results" data-bind="if: results">
         <div class="ui basic segment" data-bind="with: results">
@@ -187,17 +243,20 @@
 
         <div style="padding: 1em; background-color: #eee">
           <header class="ui header">JSON ответа</header>
-          <code><pre data-bind="text: responseJSON"></pre></code>
+          <code style="white-space: pre-wrap"
+            data-bind="text: responseJSON"></code>
         </div>
 
         <div style="padding: 1em">
           <header class="ui header">JSON запроса</header>
-          <code><pre data-bind="text: queryJSON"></pre></code>
+          <code style="white-space: pre-wrap"
+            data-bind="text: queryJSON"></pre></code>
         </div>
 
         <div style="padding: 1em; color: white; background-color: #a00;"
              data-bind="visible: resultsError">
-          <code><pre data-bind="text: resultsError"></pre></code>
+          <code style="white-space: pre-wrap"
+             data-bind="text: resultsError"></code>
         </div>
       </div>
     </div>

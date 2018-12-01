@@ -1,6 +1,8 @@
 /* eslint-disable */
 export default {
   "version": "test",
+  "subcorpus": "запись 04; этап Рассказ",
+  "query": "ЭДЕ, со следующими свойствами: участники: рассказчик; иллокутивно-фазовое значение: неполнота информации в контексте незавершенности; движение тона в главном акценте: восходяще-ровное.",
   "results": [
     {
       "time": {
@@ -138,7 +140,7 @@ export default {
       "value": "N-vE109",
       "value_transcription": "потирает /→кол<u>ен</u>ку,,,",
       "before_context": "N-vE108",
-      "before_context_transcription": "(ə 0.63) он (ɯ 0.31) <п=> || /↓сад<u>и</u>тся˗а,,,",
+      "before_context_transcription": "(ə 0.63) он (ɯ 0.31) &lt;п=&gt; || /↓сад<u>и</u>тся˗а,,,",
       "after_context": "N-vE110",
       "after_context_transcription": "там смотрит =="
     },
