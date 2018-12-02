@@ -143,9 +143,32 @@ $borderWidth: 0.3em;
     display: flex;
     height: 192px !important;
     flex: 0 0 auto;
+    overflow: hidden;
   }
   &_results {
     overflow-y: scroll;
+  }
+}
+
+.bmpp-resultsInfo {
+  max-width: 40em;
+  padding: 0.7em 1em;
+  font-size: smaller;
+  position: relative;
+
+  &::after {
+    display: block;
+    content: '';
+    width: 100%;
+    height: 2em;
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(
+      to top,
+      rgba(238,238,238,1) 0%,
+      rgba(238,238,238,1) 40%,
+      rgba(238,238,238,0) 100%
+    );
   }
 }
 
