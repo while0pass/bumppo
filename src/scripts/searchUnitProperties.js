@@ -496,8 +496,8 @@ function escapeRegExp(string) {
   return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 }
 
-function addChosenAttr(attr, listItem, values) {
-  let value = ko.unwrap(listItem[attr]);
+function addRawValues(listItem, values) {
+  let value = ko.unwrap(listItem.value);
   if (value instanceof Array) {
     values = values.filter(x => value.indexOf(x) < 0);
     values = values.concat(value);
@@ -530,7 +530,7 @@ class ListProperty extends SearchUnitProperty {
         if (this.valueList.isXOR && values.length === 1
         && this.valueList.items.some(item => item === values[0])) {
           let vals = [];
-          vals = addChosenAttr('value', values[0], vals);
+          vals = addRawValues(values[0], vals);
           if (vals.length === 1) {
             value(vals[0]);
           } else {
@@ -539,7 +539,7 @@ class ListProperty extends SearchUnitProperty {
         } else {
           let vals = [];
           values.map(item => {
-            vals = addChosenAttr('value', item, vals);
+            vals = addRawValues(item, vals);
           });
           value(vals);
         }
