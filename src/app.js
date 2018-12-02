@@ -173,9 +173,14 @@ function viewModel() {
   this.canViewResults = ko.observable(false);
   this.results = ko.observable(null);
   this.resultsError = ko.observable(null);
-  this.resultsNumber = ko.computed(
-    () => self.results() ? self.results().results.length : 0
-  );
+  this.resultsNumber = ko.computed(function () {
+    let R = self.results();
+    if (R && R.results instanceof Array) {
+      return R.results.length;
+    } else {
+      return null;
+    }
+  });
   this.responseJSON = ko.computed(
     () => self.results() ? JSON.stringify(self.results(), null, 4) : ''
   );

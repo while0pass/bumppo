@@ -77,7 +77,7 @@
                  css: { 'bmpp-sidePane_menuItem--current': isResultsPaneOn,
                          disabled: !canViewResults() }">
       Результаты
-      <!-- ko if: resultsNumber -->
+      <!-- ko if: resultsNumber() !== null -->
       <span class="label" data-bind="text: resultsNumber,
         css: { currentResults: !canSearch() }"></span>
       <!-- /ko -->
@@ -181,7 +181,7 @@
           </div>
           <!-- /ko -->
 
-          <div>
+          <div data-bind="if: resultsNumber() !== null">
             <em>Всего найдено:</em>&#x2002;<span
               data-bind="text: resultsNumber"></span>
             <!-- ko if: resultsNumber() % 100 - resultsNumber() % 10 === 10
