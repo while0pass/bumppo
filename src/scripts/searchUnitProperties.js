@@ -500,7 +500,7 @@ function addChosenAttr(attr, listItem, values) {
   let value = ko.unwrap(listItem[attr]);
   if (value instanceof Array) {
     values = values.filter(x => value.indexOf(x) < 0);
-    values.concat(value);
+    values = values.concat(value);
   } else if (isImportant(value)) {
     values = values.filter(x => x !== value);
     values.push(value);
