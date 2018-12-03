@@ -294,9 +294,10 @@ const p_mStrokeLenType = {
   ]}
 };
 
-const MUTUAL_PROPERTIES = [ DURATION, PARTICIPANTS, SAME_PARTICIPANT ];
+const commonProperties = [DURATION, PARTICIPANTS, SAME_PARTICIPANT];
 
-const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
+const defaultPropertiesList = commonProperties;
+const testPropertiesList = commonProperties.concat([
 
   { type: 'text', name: 'Словарная форма', id: 'word',
     placeholder: '…'},
@@ -345,14 +346,14 @@ const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
 ]);
 
 const propertiesLists = {
-  u_vEDU: MUTUAL_PROPERTIES.concat([ILLOCUTIONARY_PHASE, WORDS_N, ABSOLUTE_PAUSES_N, FILLED_PAUSES_N, STARTSWITH_FILLED_PAUSE, ILLOCUTIONARY_PHASE_COMBINATION, INTERRUPTION_POINTS_N, ACCENTS_N, PRIMARY_ACCENTS_N, SECONDARY_ACCENTS_N, TONE_MOVEMENT, WITHIN_INSERTION, WITHIN_SPLIT, WITHIN_MUTUAL_VERBALISATION, WITHIN_CITAION]),
+  u_vEDU: commonProperties.concat([ILLOCUTIONARY_PHASE, WORDS_N, ABSOLUTE_PAUSES_N, FILLED_PAUSES_N, STARTSWITH_FILLED_PAUSE, ILLOCUTIONARY_PHASE_COMBINATION, INTERRUPTION_POINTS_N, ACCENTS_N, PRIMARY_ACCENTS_N, SECONDARY_ACCENTS_N, TONE_MOVEMENT, WITHIN_INSERTION, WITHIN_SPLIT, WITHIN_MUTUAL_VERBALISATION, WITHIN_CITAION]),
 
-  u_oFixation: MUTUAL_PROPERTIES.concat([p_oInterlocutor, p_oLocus]),
+  u_oFixation: commonProperties.concat([p_oInterlocutor, p_oLocus]),
 
-  u_mMovement: MUTUAL_PROPERTIES.concat([p_mHand, p_mMtType]),
-  u_mStillness: MUTUAL_PROPERTIES.concat([p_mHand, p_mStType]),
-  u_mStroke: MUTUAL_PROPERTIES.concat([p_mStrokeHandedness, p_mStrokeLenType]),
-  u_mGesture: MUTUAL_PROPERTIES.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
+  u_mMovement: commonProperties.concat([p_mHand, p_mMtType]),
+  u_mStillness: commonProperties.concat([p_mHand, p_mStType]),
+  u_mStroke: commonProperties.concat([p_mStrokeHandedness, p_mStrokeLenType]),
+  u_mGesture: commonProperties.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
 };
 
 function keepZero(...args) {
@@ -906,6 +907,6 @@ class ValueListItem {
 }
 
 export {
-  defaultPropertiesList, propertiesLists, SearchUnitProperty,
-  IntervalProperty, TextProperty, ListProperty
+  defaultPropertiesList, testPropertiesList, propertiesLists,
+  SearchUnitProperty, IntervalProperty, TextProperty, ListProperty
 };
