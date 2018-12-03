@@ -246,6 +246,36 @@ const p_oLocus = {
   ]}
 };
 
+const p_mHand = {
+  type: 'list', name: 'Рука', id: 'p_mHand',
+  valueList: { orValues: [
+    { name: 'Левая', value: 'Lt' },
+    { name: 'Правая', value: 'Rt' },
+  ]}
+};
+
+const p_mMtType = {
+  type: 'list', name: 'Тип движения', id: 'p_mMtType',
+  valueList: { orValues: [
+    { name: 'Подготовка', value: 'P' },
+    { name: 'Мах', value: 'S' },
+    { name: 'Ретракция', value: 'R' },
+    { name: 'Независимая смена положения', value: 't1' },
+    { name: 'Зависимая смена положения', value: 't2' },
+    { name: 'Неструктурированное движение', value: 't3' },
+    { name: 'Иное', value: 't4' },
+  ]}
+};
+
+const p_mStType = {
+  type: 'list', name: 'Тип неподвижности', id: 'p_mStType',
+  valueList: { orValues: [
+    { name: 'Удержание', value: 's1' },
+    { name: 'Покой', value: 's2' },
+    { name: 'Зависание', value: 's3' },
+  ]}
+};
+
 const MUTUAL_PROPERTIES = [ DURATION, PARTICIPANTS, SAME_PARTICIPANT ];
 
 const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
@@ -301,6 +331,8 @@ const propertiesLists = {
 
   u_oFixation: MUTUAL_PROPERTIES.concat([p_oInterlocutor, p_oLocus]),
 
+  u_mMovement: MUTUAL_PROPERTIES.concat([p_mHand, p_mMtType]),
+  u_mStillness: MUTUAL_PROPERTIES.concat([p_mHand, p_mStType]),
   u_mGesture: MUTUAL_PROPERTIES.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
 };
 
