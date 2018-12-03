@@ -224,6 +224,28 @@ const WITHIN_CITAION = {
     { name: 'Нет', value: false },
   ]}};
 
+const p_oInterlocutor = {
+  type: 'list', name: 'Объект взгляда',
+  id: 'p_oInterlocutor', displayValues: true,
+  valueList: { orValues: [
+    { name: 'Рассказчик', value: 'N' },
+    { name: 'Комментатор', value: 'C' },
+    { name: 'Пересказчик', value: 'R' },
+    { name: 'Слушатель', value: 'L' },
+    { name: 'Прочее', value: 'O' },
+  ]}
+};
+
+const p_oLocus = {
+  type: 'list', name: 'Локус взгляда', id: 'p_oLocus',
+  valueList: { orValues: [
+    { name: 'Лицо', value: 'F' },
+    { name: 'Руки', value: 'M' },
+    { name: 'Тело', value: 'B' },
+    { name: 'Прочее', value: 'O' },
+  ]}
+};
+
 const MUTUAL_PROPERTIES = [ DURATION, PARTICIPANTS, SAME_PARTICIPANT ];
 
 const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
@@ -275,8 +297,11 @@ const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
 ]);
 
 const propertiesLists = {
-  u_mGesture: MUTUAL_PROPERTIES.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
   u_vEDU: MUTUAL_PROPERTIES.concat([ILLOCUTIONARY_PHASE, WORDS_N, ABSOLUTE_PAUSES_N, FILLED_PAUSES_N, STARTSWITH_FILLED_PAUSE, ILLOCUTIONARY_PHASE_COMBINATION, INTERRUPTION_POINTS_N, ACCENTS_N, PRIMARY_ACCENTS_N, SECONDARY_ACCENTS_N, TONE_MOVEMENT, WITHIN_INSERTION, WITHIN_SPLIT, WITHIN_MUTUAL_VERBALISATION, WITHIN_CITAION]),
+
+  u_oFixation: MUTUAL_PROPERTIES.concat([p_oInterlocutor, p_oLocus]),
+
+  u_mGesture: MUTUAL_PROPERTIES.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
 };
 
 function keepZero(...args) {
