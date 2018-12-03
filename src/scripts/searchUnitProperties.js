@@ -276,6 +276,24 @@ const p_mStType = {
   ]}
 };
 
+const p_mStrokeHandedness = {
+  type: 'list', name: 'Рукость', id: 'p_mStrokeHandedness',
+  valueList: { orValues: [
+    { name: 'Левая рука', value: 'L' },
+    { name: 'Правая рука', value: 'R' },
+    { name: 'Обе руки', value: 'B' },
+  ]}
+};
+
+const p_mStrokeLenType = {
+  type: 'list', name: 'Тип длительности', id: 'p_mStrokeLenType',
+  valueList: { orValues: [
+    { name: 'Короткий', value: 's' },
+    { name: 'Средний', value: 'm' },
+    { name: 'Длинный', value: 'l' },
+  ]}
+};
+
 const MUTUAL_PROPERTIES = [ DURATION, PARTICIPANTS, SAME_PARTICIPANT ];
 
 const defaultPropertiesList = MUTUAL_PROPERTIES.concat([
@@ -333,6 +351,7 @@ const propertiesLists = {
 
   u_mMovement: MUTUAL_PROPERTIES.concat([p_mHand, p_mMtType]),
   u_mStillness: MUTUAL_PROPERTIES.concat([p_mHand, p_mStType]),
+  u_mStroke: MUTUAL_PROPERTIES.concat([p_mStrokeHandedness, p_mStrokeLenType]),
   u_mGesture: MUTUAL_PROPERTIES.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
 };
 
