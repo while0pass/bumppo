@@ -27,8 +27,8 @@ const SAME_PARTICIPANT = {
     { name: 'Нет', value: false },
   ]}};
 
-const PHASE_STRUCTURE = {
-  type: 'list', name: 'Фазовая структура', id: 'phase_structure',
+const p_mGeStructure = {
+  type: 'list', name: 'Фазовая структура', id: 'p_mGeStructure',
   displayValues: true, valueList: { orValues: [
     { name: 'Мах', value: 'S' },
     { name: 'Мах, ретракция', value: 'S R' },
@@ -47,8 +47,8 @@ const PHASE_STRUCTURE = {
     [/\s*[-_]\s*/g, '-'],
   ]};
 
-const HANDEDNESS = {
-  type: 'list', name: 'Рукость', id: 'handedness',
+const p_mGeHandedness = {
+  type: 'list', name: 'Рукость', id: 'p_mGeHandedness',
   valueList: { orValues: [
     { name: 'Леворучный', value: 'l' },
     { name: 'Праворучный', value: 'r' },
@@ -58,8 +58,8 @@ const HANDEDNESS = {
     { name: 'Прочее', value: 'o' },
   ]}};
 
-const FUNCTIONAL_TYPE = {
-  type: 'list', name: 'Функциональный тип', id: 'gesture_func_type',
+const p_mGeFunction = {
+  type: 'list', name: 'Функциональный тип', id: 'p_mGeFunction',
   valueList: { orValues: [
     { name: 'Изобразительный жест', value: 'ic' },
     { name: 'Указательный жест', value: 'ix' },
@@ -68,8 +68,8 @@ const FUNCTIONAL_TYPE = {
     { name: 'Прагматический / метафорический жест', value: 'pm' },
   ]}};
 
-const GESTURE_OPTIONS = {
-  type: 'list', name: 'Дополнительные признаки', id: 'gesture_opts',
+const p_mGeTags = {
+  type: 'list', name: 'Дополнительные признаки', id: 'p_mGeTags',
   valueList: { orValues: [
     { name: 'Двуручный жест («туда-обратно»)', value: 'ww' },
     { name: 'Жест с многократным махом', value: 'ms' },
@@ -83,8 +83,8 @@ const GESTURE_OPTIONS = {
     { name: 'Обрыв жеста без маховой фазы', value: 'zz' },
   ]}};
 
-const ILLOCUTIONARY_PHASE = {
-  type: 'list', name: 'Иллокутивно-фазовое значение', id: 'illocutionary_phase',
+const p_vIllocPhase = {
+  type: 'list', name: 'Иллокутивно-фазовое значение', id: 'p_vIllocPhase',
   displayValues: true, valueList: { orValues: [
     { name: 'Иллокутивное', orValues: [
       { name: 'Завершение сообщения', value: '.' },
@@ -108,9 +108,9 @@ const ILLOCUTIONARY_PHASE = {
     ]},
   ]}};
 
-const ILLOCUTIONARY_PHASE_COMBINATION = {
+const p_vCombIllocPhase = {
   type: 'list', name: 'Комбинация иллокутивно-фазовых значений',
-  id: 'illocutionary_phase_combination',
+  id: 'p_vCombIllocPhase',
   valueList: { orValues: [
     { name: 'Не-сообщение + незавершенность', value: 'i1' },
     { name: 'Не-сообщение + неполнота информации', value: 'i2' },
@@ -119,46 +119,46 @@ const ILLOCUTIONARY_PHASE_COMBINATION = {
     { name: 'Прочее', value: 'i5' },
   ]}};
 
-const ACCENTS_N = {
-  type: 'interval', name: 'Число акцентов', id: 'accents_n',
+const p_vAccentsCount = {
+  type: 'interval', name: 'Число акцентов', id: 'p_vAccentsCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const PRIMARY_ACCENTS_N = {
-  type: 'interval', name: 'Число главных акцентов', id: 'primary_accents_n',
+const p_vMainAccentsCount = {
+  type: 'interval', name: 'Число главных акцентов', id: 'p_vMainAccentsCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const SECONDARY_ACCENTS_N = {
+const p_vAccentsAfterMainCount = {
   type: 'interval', name: 'Число вторичных акцентов после главного',
-  id: 'secondary_accents_n',
+  id: 'p_vAccentsAfterMainCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const WORDS_N = {
-  type: 'interval', name: 'Число слов', id: 'words_n',
+const p_vWordsCount = {
+  type: 'interval', name: 'Число слов', id: 'p_vWordsCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const ABSOLUTE_PAUSES_N = {
-  type: 'interval', name: 'Число абсолютных пауз', id: 'abs_pauses_n',
+const p_vPausesCount = {
+  type: 'interval', name: 'Число абсолютных пауз', id: 'p_vPausesCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const FILLED_PAUSES_N = {
-  type: 'interval', name: 'Число заполненных пауз', id: 'filled_pauses_n',
+const p_vFilledCount = {
+  type: 'interval', name: 'Число заполненных пауз', id: 'p_vFilledCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const STARTSWITH_FILLED_PAUSE = {
+const p_vStartFilled = {
   type: 'list', name: 'Начинается с заполненной паузы',
-  id: 'startswith_filled_pause',
+  id: 'p_vStartFilled',
   valueList: { xorValues: [
     { name: 'Да', value: true },
     { name: 'Нет', value: false },
   ]}};
 
-const INTERRUPTION_POINTS_N = {
-  type: 'interval', name: 'Число точек прерывания', id: 'ip_n',
+const p_vInterruptCount = {
+  type: 'interval', name: 'Число точек прерывания', id: 'p_vInterruptCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
-const TONE_MOVEMENT = {
+const p_vMainAccents = {
   type: 'list', name: 'Движение тона в главном акценте',
-  id: 'accent_movement', displayValues: true,
+  id: 'p_vMainAccents', displayValues: true,
   valueList: { orValues: [
     { name: 'Восходящее', value: '/' },
     { name: 'Нисходящее', value: '\\' },
@@ -174,9 +174,9 @@ const TONE_MOVEMENT = {
     [/[-\u2014\u2012]/g, '\u2013'],
   ]};
 
-const WITHIN_INSERTION = {
+const p_vParenth = {
   type: 'list', name: 'Входит в конструкцию со вставкой',
-  id: 'within_ins',
+  id: 'p_vParenth',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Непосредственно предшествует вставке', value: 'wi1' },
@@ -190,17 +190,17 @@ const WITHIN_INSERTION = {
     { name: 'Нет', value: false },
   ]}};
 
-const WITHIN_SPLIT = {
+const p_vInSplit = {
   type: 'list', name: 'Входит в конструкцию со сплитом',
-  id: 'within_split',
+  id: 'p_vInSplit',
   valueList: { xorValues: [
     { name: 'Да', value: true },
     { name: 'Нет', value: false },
   ]}};
 
-const WITHIN_MUTUAL_VERBALISATION = {
+const p_vCoConstr = {
   type: 'list', name: 'Входит в совместное построение реплик',
-  id: 'within_muverb',
+  id: 'p_vCoConstr',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Достраивается другим участником', value: 'wi1' },
@@ -210,9 +210,9 @@ const WITHIN_MUTUAL_VERBALISATION = {
     { name: 'Нет', value: false },
   ]}};
 
-const WITHIN_CITAION = {
+const p_vCitation = {
   type: 'list', name: 'Входит в конструкцию с (полу)прямой цитацией',
-  id: 'within_cit',
+  id: 'p_vCitation',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Вводит чужую речь (авторская ремарка)', value: 'wc1' },
@@ -306,7 +306,7 @@ const testPropertiesList = commonProperties.concat([
     fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
     fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##' },
 
-  ACCENTS_N,
+  p_vAccentsCount,
 
   { type: 'list', name: 'Точка прерывания', id: 'termination_point',
     valueList: { xorValues: [
@@ -320,8 +320,8 @@ const testPropertiesList = commonProperties.concat([
     ]}
   },
 
-  ILLOCUTIONARY_PHASE,
-  PHASE_STRUCTURE,
+  p_vIllocPhase,
+  p_mGeStructure,
 
   { type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
     valueList: { xorValues: [
@@ -346,14 +346,19 @@ const testPropertiesList = commonProperties.concat([
 ]);
 
 const propertiesLists = {
-  u_vEDU: commonProperties.concat([ILLOCUTIONARY_PHASE, WORDS_N, ABSOLUTE_PAUSES_N, FILLED_PAUSES_N, STARTSWITH_FILLED_PAUSE, ILLOCUTIONARY_PHASE_COMBINATION, INTERRUPTION_POINTS_N, ACCENTS_N, PRIMARY_ACCENTS_N, SECONDARY_ACCENTS_N, TONE_MOVEMENT, WITHIN_INSERTION, WITHIN_SPLIT, WITHIN_MUTUAL_VERBALISATION, WITHIN_CITAION]),
+  u_vEDU: commonProperties.concat([
+    p_vIllocPhase, p_vWordsCount, p_vPausesCount, p_vFilledCount,
+    p_vStartFilled, p_vCombIllocPhase, p_vInterruptCount, p_vAccentsCount,
+    p_vMainAccentsCount, p_vAccentsAfterMainCount, p_vMainAccents, p_vParenth,
+    p_vInSplit, p_vCoConstr, p_vCitation]),
 
   u_oFixation: commonProperties.concat([p_oInterlocutor, p_oLocus]),
 
   u_mMovement: commonProperties.concat([p_mHand, p_mMtType]),
   u_mStillness: commonProperties.concat([p_mHand, p_mStType]),
   u_mStroke: commonProperties.concat([p_mStrokeHandedness, p_mStrokeLenType]),
-  u_mGesture: commonProperties.concat([HANDEDNESS, PHASE_STRUCTURE, FUNCTIONAL_TYPE, GESTURE_OPTIONS]),
+  u_mGesture: commonProperties.concat([p_mGeHandedness, p_mGeStructure,
+    p_mGeFunction, p_mGeTags]), // eslint-disable-line indent
 };
 
 function keepZero(...args) {
