@@ -452,3 +452,38 @@ $borderWidth: 0.3em;
   }
 }
 
+.bmpp-unitTypeAndGroup {
+  position: relative;
+
+  & .bmpp-unitType {
+    position: relative;
+    left: 0.5em;
+    bottom: auto;
+    white-space: nowrap;
+    font-weight: normal !important;
+  }
+  & .bmpp-unitTypeWithGroup {
+    position: absolute;
+    bottom: -0.5em;
+
+    header & {
+      bottom: -0.4em;
+    }
+  }
+  & .bmpp-unitTypeGroup {
+    color: grey;
+    font-variant: small-caps;
+    font-size: smaller;
+    font-weight: normal !important;
+    white-space: nowrap;
+    position: absolute;
+    top: -1em;
+    left: 0.75em;
+
+    header & {
+      font-size: x-small;
+      top: -1em;
+      left: 1em;
+    }
+  }
+}

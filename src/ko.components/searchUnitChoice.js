@@ -86,10 +86,19 @@ const chosenUnitTemplate = `
     </button>
     <!-- /ko -->
 
-    <span style="padding-left: .5em">Тип единицы:</span>
     <!-- ko with: node.unitType -->
-      <strong data-bind="text: hasAbbr ? abbr : name"
-        style="padding-left: .5em"></strong>
+    <span class="bmpp-unitTypeAndGroup">
+      <!-- ko if: group -->
+        <span data-bind="textLowercaseFirstChar: group.name"
+          class="bmpp-unitTypeGroup"></span>
+      <!-- /ko -->
+      <span class="bmpp-unitType"
+      data-bind="css: { 'bmpp-unitTypeWithGroup': group }">
+        Тип единицы:
+        <strong data-bind="text: hasAbbr ? abbr : name"
+          style="padding-left: .5em;"></strong>
+      </span>
+    </span>
     <!-- /ko -->
 
     <!-- ko if: node.chosenUnitProperties().length > 0 -->
