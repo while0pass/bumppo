@@ -294,6 +294,62 @@ const p_mStrokeLenType = {
   ]}
 };
 
+const p_mAdType = {
+  type: 'list', name: 'Тип адаптора', id: 'p_mAdType',
+  valueList: { orValues: [
+    { name: 'Четкий адаптор', value: 'a1' },
+    { name: 'Нечеткий адаптор', value: 'a2' },
+    { name: 'Комбинированный адаптор (тип 1)', value: 'ac1' },
+    { name: 'Комбинированный адаптор (тип 2)', value: 'ac2' },
+    { name: 'Другое', value: 'o' },
+  ]}
+};
+
+function createPropertyFromTemplate(propertyTemplate, propertyId) {
+  prop = JSON.parse(JSON.stringify(propertyTemplate));
+  prop.id = propertyId;
+  return prop;
+}
+
+const pt_InOutEDU = {
+  type: 'list', name: 'Изолированность',
+  valueList: { orValues: [
+    { name: 'Внутри ЭДЕ', value: 'i' },
+    { name: 'Отдельно', value: 'o' },
+  ]}
+};
+const p_vLInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vLInOutEDU'),
+      p_vHInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vHInOutEDU'),
+      p_vOInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vOInOutEDU');
+
+const pt_NearPause = {
+  type: 'list', name: 'Соседство с изолированными паузами',
+  valueList: { orValues: [
+    { name: 'Непосредственно перед паузой', value: 'bp' },
+    { name: 'Непосредственно после паузы', value: 'ap' },
+    { name: 'Непосредственно между паузами', value: 'ip' },
+    { name: 'Не соседствует с паузами', value: 'x' },
+  ]}
+};
+const p_vLNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vLNearPause'),
+      p_vHNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vHNearPause'),
+      p_vONearPause = createPropertyFromTemplate(pt_NearPause, 'p_vONearPause');
+
+const p_vOForm = {
+  type: 'list', name: 'Тип действия', id: 'p_vOForm',
+  valueList: { orValues: [
+    { name: 'Цоканье', value: 'f1' },
+    { name: 'Чмоканье', value: 'f2' },
+    { name: 'Фырканье', value: 'f3' },
+    { name: 'Шмыганье', value: 'f4' },
+    { name: 'Сглатывание', value: 'f5' },
+    { name: 'Откашливание', value: 'f6' },
+    { name: 'Свист', value: 'f7' },
+    { name: 'Вздох', value: 'f8' },
+    { name: 'Кашель', value: 'f9' },
+  ]}
+};
+
 const commonProperties = [DURATION, PARTICIPANTS, SAME_PARTICIPANT];
 
 const defaultPropertiesList = commonProperties;
@@ -346,6 +402,9 @@ const testPropertiesList = commonProperties.concat([
 ]);
 
 const propertiesLists = {
+  u_vLaughSegm: commonProperties.concat([p_vLInOutEDU, p_vLNearPause]),
+  u_vHPause: commonProperties.concat([p_vHInOutEDU, p_vHNearPause]),
+  u_vOtherSegm: commonProperties.concat([p_vOInOutEDU, p_vONearPause, p_vOForm]),
   u_vEDU: commonProperties.concat([
     p_vIllocPhase, p_vWordsCount, p_vPausesCount, p_vFilledCount,
     p_vStartFilled, p_vCombIllocPhase, p_vInterruptCount, p_vAccentsCount,
@@ -357,6 +416,7 @@ const propertiesLists = {
   u_mMovement: commonProperties.concat([p_mHand, p_mMtType]),
   u_mStillness: commonProperties.concat([p_mHand, p_mStType]),
   u_mStroke: commonProperties.concat([p_mStrokeHandedness, p_mStrokeLenType]),
+  u_mAdaptor: commonProperties.concat([p_mAdType]),
   u_mGesture: commonProperties.concat([p_mGeHandedness, p_mGeStructure,
     p_mGeFunction, p_mGeTags]), // eslint-disable-line indent
 };
