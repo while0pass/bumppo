@@ -306,7 +306,7 @@ const p_mAdType = {
 };
 
 function createPropertyFromTemplate(propertyTemplate, propertyId) {
-  prop = JSON.parse(JSON.stringify(propertyTemplate));
+  let prop = JSON.parse(JSON.stringify(propertyTemplate));
   prop.id = propertyId;
   return prop;
 }
