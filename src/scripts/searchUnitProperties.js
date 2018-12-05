@@ -50,37 +50,37 @@ const p_mGeStructure = {
 const p_mGeHandedness = {
   type: 'list', name: 'Рукость', id: 'p_mGeHandedness',
   valueList: { orValues: [
-    { name: 'Леворучный', value: 'l' },
-    { name: 'Праворучный', value: 'r' },
-    { name: 'Двуручный с симетричной траекторией', value: 'bs' },
-    { name: 'Двуручный с идентичной / единой траекторией', value: 'bi' },
-    { name: 'Двуручный с различной траекторией у разных рук', value: 'bd' },
-    { name: 'Прочее', value: 'o' },
+    { name: 'Леворучный', value: 'Lt' },
+    { name: 'Праворучный', value: 'Rt' },
+    { name: 'Двуручный с симетричной траекторией', value: 'Bh-sym' },
+    { name: 'Двуручный с идентичной / единой траекторией', value: 'Bh-id' },
+    { name: 'Двуручный с различной траекторией у разных рук', value: 'Bh-dif' },
+    { name: 'Прочее', value: 'Other' },
   ]}};
 
 const p_mGeFunction = {
   type: 'list', name: 'Функциональный тип', id: 'p_mGeFunction',
   valueList: { orValues: [
-    { name: 'Изобразительный жест', value: 'ic' },
-    { name: 'Указательный жест', value: 'ix' },
-    { name: 'Жестовое ударение', value: 'a' },
-    { name: 'Другое', value: 'o' },
-    { name: 'Прагматический / метафорический жест', value: 'pm' },
+    { name: 'Изобразительный жест', value: 'Depictive' },
+    { name: 'Указательный жест', value: 'Pointing' },
+    { name: 'Жестовое ударение', value: 'Beat' },
+    { name: 'Другое', value: 'Other' },
+    { name: 'Прагматический / метафорический жест', value: 'Pragmatic' },
   ]}};
 
 const p_mGeTags = {
   type: 'list', name: 'Дополнительные признаки', id: 'p_mGeTags',
   valueList: { orValues: [
-    { name: 'Двуручный жест («туда-обратно»)', value: 'ww' },
-    { name: 'Жест с многократным махом', value: 'ms' },
-    { name: 'Отскок в конце маха', value: 'sb' },
-    { name: 'Отскок в конце ретракции', value: 'rb' },
-    { name: 'Многократный отскок в конце маха', value: 'smb' },
-    { name: 'Длинная ретракция', value: 'lr' },
-    { name: 'Наложение на текущий жест фазы другого жеста', value: 'gi' },
-    { name: 'Повтор предыдущего жеста', value: 'gr' },
-    { name: 'Обрыв в основном сформированного жеста', value: 'z' },
-    { name: 'Обрыв жеста без маховой фазы', value: 'zz' },
+    { name: 'Двуручный жест («туда-обратно»)', value: 'Shuttle' },
+    { name: 'Жест с многократным махом', value: 'Multi-S' },
+    { name: 'Отскок в конце маха', value: 'S Rebound' },
+    { name: 'Отскок в конце ретракции', value: 'R Rebound' },
+    { name: 'Многократный отскок в конце маха', value: 'Multi Rebound' },
+    { name: 'Длинная ретракция', value: 'Long R' },
+    { name: 'Наложение на текущий жест фазы другого жеста', value: '(Lt|Rt) [PSHR] Overlap' },
+    { name: 'Повтор предыдущего жеста', value: 'Repeat' },
+    { name: 'Обрыв в основном сформированного жеста', value: 'GeBreakOff' },
+    { name: 'Обрыв жеста без маховой фазы', value: 'GeFalstart' },
   ]}};
 
 const p_vIllocPhase = {
@@ -112,11 +112,11 @@ const p_vCombIllocPhase = {
   type: 'list', name: 'Комбинация иллокутивно-фазовых значений',
   id: 'p_vCombIllocPhase',
   valueList: { orValues: [
-    { name: 'Не-сообщение + незавершенность', value: 'i1' },
-    { name: 'Не-сообщение + неполнота информации', value: 'i2' },
-    { name: 'Не-сообщение + восклицательность', value: 'i3' },
-    { name: 'Незавершенность + обрыв', value: 'i4' },
-    { name: 'Прочее', value: 'i5' },
+    { name: 'Не-сообщение + незавершенность', value: 'NonStNonFinal' },
+    { name: 'Не-сообщение + неполнота информации', value: 'NonStDots' },
+    { name: 'Не-сообщение + восклицательность', value: 'NonStExclam' },
+    { name: 'Незавершенность + обрыв', value: 'NonFinalTrunc' },
+    { name: 'Прочее', value: 'Other' },
   ]}};
 
 const p_vAccentsCount = {
@@ -148,7 +148,7 @@ const p_vStartFilled = {
   type: 'list', name: 'Начинается с заполненной паузы',
   id: 'p_vStartFilled',
   valueList: { xorValues: [
-    { name: 'Да', value: true },
+    { name: 'Да', value: 'Yes' },
     { name: 'Нет', value: false },
   ]}};
 
@@ -179,13 +179,13 @@ const p_vParenth = {
   id: 'p_vParenth',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
-      { name: 'Непосредственно предшествует вставке', value: 'wi1' },
-      { name: 'Первая ЭДЕ сложной вставки', value: 'wi2' },
-      { name: 'Последняя ЭДЕ сложной вставки', value: 'wi3' },
-      { name: 'Внутренняя ЭДЕ сложной вставки', value: 'wi4' },
-      { name: 'Единственная ЭДЕ простой вставки', value: 'wi5' },
-      { name: 'Непосредственно следует за вставкой', value: 'wi6' },
-      { name: 'Первая ЭДЕ односторонней вставки', value: 'wi7' },
+      { name: 'Непосредственно предшествует вставке', value: 'Enter' },
+      { name: 'Первая ЭДЕ сложной вставки', value: 'Start' },
+      { name: 'Последняя ЭДЕ сложной вставки', value: 'Final' },
+      { name: 'Внутренняя ЭДЕ сложной вставки', value: 'Inside' },
+      { name: 'Единственная ЭДЕ простой вставки', value: 'Full' },
+      { name: 'Непосредственно следует за вставкой', value: 'Return' },
+      { name: 'Первая ЭДЕ односторонней вставки', value: '*Start' },
     ]},
     { name: 'Нет', value: false },
   ]}};
@@ -194,7 +194,7 @@ const p_vInSplit = {
   type: 'list', name: 'Входит в конструкцию со сплитом',
   id: 'p_vInSplit',
   valueList: { xorValues: [
-    { name: 'Да', value: true },
+    { name: 'Да', value: 'InSplit' },
     { name: 'Нет', value: false },
   ]}};
 
@@ -203,9 +203,9 @@ const p_vCoConstr = {
   id: 'p_vCoConstr',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
-      { name: 'Достраивается другим участником', value: 'wi1' },
-      { name: 'Достраивает реплику другого участника', value: 'wi2' },
-      { name: 'И то, и другое', value: 'wi3' },
+      { name: 'Достраивается другим участником', value: 'Prelim' },
+      { name: 'Достраивает реплику другого участника', value: 'Final' },
+      { name: 'И то, и другое', value: 'Both' },
     ]},
     { name: 'Нет', value: false },
   ]}};
@@ -215,11 +215,11 @@ const p_vCitation = {
   id: 'p_vCitation',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
-      { name: 'Вводит чужую речь (авторская ремарка)', value: 'wc1' },
-      { name: 'Первая ЭДЕ сложной цитации', value: 'wc2' },
-      { name: 'Последняя ЭДЕ сложной цитации', value: 'wc3' },
-      { name: 'Внутренняя ЭДЕ сложной цитации', value: 'wc4' },
-      { name: 'Единственная ЭДЕ простой цитации', value: 'wc5' },
+      { name: 'Вводит чужую речь (авторская ремарка)', value: 'Frame' },
+      { name: 'Первая ЭДЕ сложной цитации', value: 'Begin' },
+      { name: 'Последняя ЭДЕ сложной цитации', value: 'End' },
+      { name: 'Внутренняя ЭДЕ сложной цитации', value: 'Within' },
+      { name: 'Единственная ЭДЕ простой цитации', value: 'Whole' },
     ]},
     { name: 'Нет', value: false },
   ]}};
@@ -232,17 +232,17 @@ const p_oInterlocutor = {
     { name: 'Комментатор', value: 'C' },
     { name: 'Пересказчик', value: 'R' },
     { name: 'Слушатель', value: 'L' },
-    { name: 'Прочее', value: 'O' },
+    { name: 'Прочее', value: 'Other' },
   ]}
 };
 
 const p_oLocus = {
   type: 'list', name: 'Локус взгляда', id: 'p_oLocus',
   valueList: { orValues: [
-    { name: 'Лицо', value: 'F' },
-    { name: 'Руки', value: 'M' },
-    { name: 'Тело', value: 'B' },
-    { name: 'Прочее', value: 'O' },
+    { name: 'Лицо', value: 'Face' },
+    { name: 'Руки', value: 'Hands' },
+    { name: 'Тело', value: 'Body' },
+    { name: 'Прочее', value: 'Other' },
   ]}
 };
 
@@ -260,19 +260,19 @@ const p_mMtType = {
     { name: 'Подготовка', value: 'P' },
     { name: 'Мах', value: 'S' },
     { name: 'Ретракция', value: 'R' },
-    { name: 'Независимая смена положения', value: 't1' },
-    { name: 'Зависимая смена положения', value: 't2' },
-    { name: 'Неструктурированное движение', value: 't3' },
-    { name: 'Иное', value: 't4' },
+    { name: 'Независимая смена положения', value: 'PnC-In' },
+    { name: 'Зависимая смена положения', value: 'PnC-Dp' },
+    { name: 'Неструктурированное движение', value: 'U' },
+    { name: 'Иное', value: 'Other' },
   ]}
 };
 
 const p_mStType = {
   type: 'list', name: 'Тип неподвижности', id: 'p_mStType',
   valueList: { orValues: [
-    { name: 'Удержание', value: 's1' },
-    { name: 'Покой', value: 's2' },
-    { name: 'Зависание', value: 's3' },
+    { name: 'Удержание', value: 'Hold' },
+    { name: 'Покой', value: 'Reset' },
+    { name: 'Зависание', value: 'Frozen' },
   ]}
 };
 
@@ -297,11 +297,11 @@ const p_mStrokeLenType = {
 const p_mAdType = {
   type: 'list', name: 'Тип адаптора', id: 'p_mAdType',
   valueList: { orValues: [
-    { name: 'Четкий адаптор', value: 'a1' },
-    { name: 'Нечеткий адаптор', value: 'a2' },
-    { name: 'Комбинированный адаптор (тип 1)', value: 'ac1' },
-    { name: 'Комбинированный адаптор (тип 2)', value: 'ac2' },
-    { name: 'Другое', value: 'o' },
+    { name: 'Четкий адаптор', value: 'Adaptor1' },
+    { name: 'Нечеткий адаптор', value: 'Adaptor2' },
+    { name: 'Комбинированный адаптор (тип 1)', value: 'Adaptor1+2' },
+    { name: 'Комбинированный адаптор (тип 2)', value: 'Adaptor2+1' },
+    { name: 'Другое', value: 'Other' },
   ]}
 };
 
@@ -314,26 +314,27 @@ function createPropertyFromTemplate(propertyTemplate, propertyId) {
 const pt_InOutEDU = {
   type: 'list', name: 'Изолированность',
   valueList: { orValues: [
-    { name: 'Внутри ЭДЕ', value: 'i' },
-    { name: 'Отдельно', value: 'o' },
+    { name: 'Внутри ЭДЕ', value: 'In' },
+    { name: 'Отдельно', value: 'Out' },
   ]}
 };
-const p_vLInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vLInOutEDU'),
-      p_vHInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vHInOutEDU'),
+const p_vHInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vHInOutEDU'),
+      p_vLInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vLInOutEDU'),
       p_vOInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vOInOutEDU');
 
 const pt_NearPause = {
   type: 'list', name: 'Соседство с изолированными паузами',
   valueList: { orValues: [
-    { name: 'Непосредственно перед паузой', value: 'bp' },
-    { name: 'Непосредственно после паузы', value: 'ap' },
-    { name: 'Непосредственно между паузами', value: 'ip' },
-    { name: 'Не соседствует с паузами', value: 'x' },
+    { name: 'Непосредственно перед паузой', value: 'Before' },
+    { name: 'Непосредственно после паузы', value: 'After' },
+    { name: 'Непосредственно между паузами', value: 'Between' },
+    { name: 'Не соседствует с паузами', value: false },
   ]}
 };
-const p_vLNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vLNearPause'),
-      p_vHNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vHNearPause'),
-      p_vONearPause = createPropertyFromTemplate(pt_NearPause, 'p_vONearPause');
+const p_vHNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vHNearPause'),
+      p_vLNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vLNearPause'),
+      p_vONearPause = createPropertyFromTemplate(pt_NearPause, 'p_vONearPause'),
+      p_vWNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vWNearPause');
 
 const p_vOForm = {
   type: 'list', name: 'Тип действия', id: 'p_vOForm',
@@ -350,66 +351,168 @@ const p_vOForm = {
   ]}
 };
 
+const p_vWForm = {
+  type: 'text', name: 'Словарная форма', id: 'p_vWForm', placeholder: '…',
+};
+
+const p_vOnom = {
+  type: 'list', name: 'Идеофон', id: 'p_vOnom',
+  valueList: { xorValues: [
+    { name: 'Да', value: 'Onom' },
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vTruncated = {
+  type: 'list', name: 'Оборванное слово', id: 'p_vTruncated',
+  valueList: { xorValues: [
+    { name: 'Да', value: 'Truncated' },
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vWordNum = {
+  type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'p_vWordNum',
+  fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
+  fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##'
+};
+
+const p_vWordNumReversed = {
+  type: 'interval', name: 'Позиция от конца ЭДЕ', id: 'p_vWordNumReversed',
+  fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
+  fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##'
+};
+
+const p_vInterrupt = {
+  type: 'list', name: 'Точка прерывания', id: 'p_vInterrupt',
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'При самоисправлении внутри ЭДЕ', value: 'Mild' },
+      { name: 'При самоисправлении на границе ЭДЕ', value: 'Severe' },
+      { name: 'При вмешательстве внутри ЭДЕ', value: 'Mild-other' },
+      { name: 'При вмешательстве на границе ЭДЕ', value: 'Severe-other' },
+    ]},
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vAccents = {
+  type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'С восходящим тоном', value: '/' },
+      { name: 'С нисходящим тоном', value: '\\' },
+      { name: 'С ровным тоном', value: '–' },
+      { name: 'С восходяще-нисходящим тоном', value: ['/\\', '/↓', '↑\\'] },
+      { name: 'С восходяще-ровным тоном', value: ['/–', '/→'] },
+      { name: 'С нисходяще-восходящим тоном', value: ['\\/', '\\↑'] },
+      { name: 'Другой вариант', editable: true },
+    ]},
+    { name: 'Нет', value: false },
+  ]},
+  virtualKeyboard: true,
+  validChars: ['/', '\\', '–', '↑', '↓', '→'],
+  substitute: [
+    [/[-\u2014\u2012]/g, '\u2013'],
+  ]
+};
+
+const p_vMainAccent = {
+  type: 'list', name: 'С главным акцентом', id: 'p_vMainAccent',
+  valueList: { xorValues: [
+    { name: 'Да', value: 'Main' },
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vReduction = {
+  type: 'list', name: 'Редуцированное произнесение', id: 'p_vReduction',
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'Всего слова', value: 'Full' },
+      { name: 'Части слова', value: 'Part' },
+    ]},
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vRegister = {
+  type: 'list', name: 'Смещенный тональный регистр', id: 'p_vRegister',
+  valueList: { xorValues: [
+    { name: 'Да', orValues: [
+      { name: 'Повышенный', value: 'Hi' },
+      { name: 'Сниженный', value: 'Lo' },
+    ]},
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vLength = {
+  type: 'list', name: 'Удлиненная реализация фонем', id: 'p_vLength',
+  valueList: { xorValues: [
+    { name: 'Да', value: 'Len' },
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vTempo = {
+  type: 'list', name: 'Темп произнесения', id: 'p_vTempo',
+  valueList: { orValues: [
+    { name: 'Нейтральный', value: false },
+    { name: 'Ускоренный', value: 'Fast' },
+    { name: 'Замедленный', value: 'Slow' },
+  ]}
+};
+
+const p_vEmph = {
+  type: 'list', name: 'Эмфатическое произнесение', id: 'p_vEmph',
+  valueList: { xorValues: [
+    { name: 'Да', value: 'Emph' },
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vStress = {
+  type: 'list', name: 'Нестандартное лексическое ударение', id: 'p_vStress',
+  valueList: { xorValues: [
+    { name: 'Да', value: 'Stress' },
+    { name: 'Нет', value: false },
+  ]}};
+
+const p_vStops = {
+  type: 'list', name: 'Особенности произнесения начала / конца словоформы',
+  id: 'p_vStops',
+  valueList: { orValues: [
+    { name: 'Гласный («шва»-) призвук в начале словоформы', value: 'Schw-st' },
+    { name: 'Гортанная смычка («твердый приступ») в начале словоформы', value: 'Gl-st' },
+    { name: 'Гласный («шва»-) призвук в конце словоформы', value: 'Schw-en' },
+    { name: 'Гортанная смычка («твердый приступ») в конце словоформы', value: 'Gl-en' },
+    { name: 'Губная смычка в конце словоформы', value: 'Lab-en' },
+    { name: 'Придыхание в конце словоформы', value: 'Asp-en' },
+  ]}
+};
+
+const p_vCollatForm = {
+  type: 'list', name: 'Тип явления', id: 'p_vCollatForm',
+  valueList: { orValues: [
+    { name: 'Смех', value: '{laugh}' },
+    { name: 'Улыбка', value: '{smile}' },
+    { name: 'Скрипучий голос', value: '{creaky}' },
+  ]}
+};
+
 const commonProperties = [DURATION, PARTICIPANTS, SAME_PARTICIPANT];
 
 const defaultPropertiesList = commonProperties;
-const testPropertiesList = commonProperties.concat([
-
-  { type: 'text', name: 'Словарная форма', id: 'word',
-    placeholder: '…'},
-
-  { type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'position_within_edu',
-    fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
-    fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##' },
-
-  p_vAccentsCount,
-
-  { type: 'list', name: 'Точка прерывания', id: 'termination_point',
-    valueList: { xorValues: [
-      { name: 'Да', orValues: [
-        { name: 'При самоисправлении внутри ЭДЕ', value: 'vx1' },
-        { name: 'При самоисправлении на границе ЭДЕ', value: 'vx2' },
-        { name: 'При вмешательстве внутри ЭДЕ', value: 'vx3' },
-        { name: 'При вмешательстве на границе ЭДЕ', value: 'vx4' },
-      ]},
-      { name: 'Нет', value: false },
-    ]}
-  },
-
-  p_vIllocPhase,
-  p_mGeStructure,
-
-  { type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
-    valueList: { xorValues: [
-      { name: 'Да', orValues: [
-        { name: 'С восходящим тоном', value: '/' },
-        { name: 'С нисходящим тоном', value: '\\' },
-        { name: 'С ровным тоном', value: '–' },
-        { name: 'С восходяще-нисходящим тоном', value: ['/\\', '/↓', '↑\\'] },
-        { name: 'С восходяще-ровным тоном', value: ['/–', '/→'] },
-        { name: 'С нисходяще-восходящим тоном', value: ['\\/', '\\↑'] },
-        { name: 'Другой вариант', editable: true },
-      ]},
-      { name: 'Нет', value: false },
-    ]},
-    virtualKeyboard: true,
-    validChars: ['/', '\\', '–', '↑', '↓', '→'],
-    substitute: [
-      [/[-\u2014\u2012]/g, '\u2013'],
-    ]
-  },
-
-]);
+const testPropertiesList = commonProperties.concat([p_vWForm, p_vWordNum,
+  p_vAccentsCount, p_vInterrupt, p_vIllocPhase, p_mGeStructure, p_vAccents]);
 
 const propertiesLists = {
-  u_vLaughSegm: commonProperties.concat([p_vLInOutEDU, p_vLNearPause]),
-  u_vHPause: commonProperties.concat([p_vHInOutEDU, p_vHNearPause]),
-  u_vOtherSegm: commonProperties.concat([p_vOInOutEDU, p_vONearPause, p_vOForm]),
   u_vEDU: commonProperties.concat([
     p_vIllocPhase, p_vWordsCount, p_vPausesCount, p_vFilledCount,
     p_vStartFilled, p_vCombIllocPhase, p_vInterruptCount, p_vAccentsCount,
     p_vMainAccentsCount, p_vAccentsAfterMainCount, p_vMainAccents, p_vParenth,
     p_vInSplit, p_vCoConstr, p_vCitation]),
+  u_vWord: commonProperties.concat([p_vWForm, p_vWNearPause, p_vOnom,
+    p_vTruncated, p_vWordNum, p_vWordNumReversed, p_vInterrupt, p_vAccents,
+    p_vMainAccent, p_vReduction, p_vRegister, p_vLength, p_vTempo, p_vEmph,
+    p_vStress, p_vStops]),
+  u_vLaughSegm: commonProperties.concat([p_vLInOutEDU, p_vLNearPause]),
+  u_vHPause: commonProperties.concat([p_vHInOutEDU, p_vHNearPause]),
+  u_vOtherSegm: commonProperties.concat([p_vOInOutEDU, p_vONearPause, p_vOForm]),
+  u_vCollat: commonProperties.concat([p_vCollatForm]),
 
   u_oFixation: commonProperties.concat([p_oInterlocutor, p_oLocus]),
 
@@ -418,7 +521,7 @@ const propertiesLists = {
   u_mStroke: commonProperties.concat([p_mStrokeHandedness, p_mStrokeLenType]),
   u_mAdaptor: commonProperties.concat([p_mAdType]),
   u_mGesture: commonProperties.concat([p_mGeHandedness, p_mGeStructure,
-    p_mGeFunction, p_mGeTags]), // eslint-disable-line indent
+    p_mGeFunction, p_mGeTags]),
 };
 
 function keepZero(...args) {
