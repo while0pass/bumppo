@@ -139,9 +139,9 @@ $borderWidth: 0.3em;
 
   &_video {
     border-bottom: 1px solid $bmppBorderColor;
-    background-color: #eee;
+    background-color: white;
     display: flex;
-    height: 192px !important;
+    height: 193px !important;
     flex: 0 0 auto;
     overflow: hidden;
   }
@@ -165,14 +165,49 @@ $borderWidth: 0.3em;
     bottom: 0;
     background: linear-gradient(
       to top,
-      rgba(238,238,238,1) 0%,
-      rgba(238,238,238,1) 40%,
-      rgba(238,238,238,0) 100%
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,1) 40%,
+      rgba(255,255,255,0) 100%
     );
   }
 }
 
 .bmpp-videoChoices {
+  display: flex;
+  flex-flow: column nowrap;
+  border-right: 1px solid $bmppBorderColor;
+
+  & div {
+    border-bottom: 1px solid $bmppBorderColor;
+    flex: 1 0 auto;
+    display: flex;
+    font-size: x-small;
+    padding: 0 0.66em 0 1em;
+    white-space: nowrap;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    letter-spacing: 0.01em;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    &.disabled {
+      color: $bmppBorderColor;
+      cursor: auto;
+    }
+    &:not(.disabled):not(.current):hover {
+      background-color: $bmppBorderColor;
+    }
+    &.current {
+      background-color: green;
+      border-bottom-color: green;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+    }
+  }
 }
 
 .bmpp-queryPane {
