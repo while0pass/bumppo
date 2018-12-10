@@ -12,6 +12,7 @@ import SearchUnitProperty from '../ko.components/searchUnitProperty.js';
 import SubcorpusPane from '../ko.components/subcorpusPane.js';
 import TextProperty from '../ko.components/textProperty.js';
 import ValueList from '../ko.components/valueList.js';
+import ResultsList from '../ko.components/resultsList.js';
 
 export default function init(ko, viewModel) {
   ko.bindingHandlers.popup = {
@@ -44,6 +45,7 @@ export default function init(ko, viewModel) {
   ko.components.register('text-property', TextProperty);
   ko.components.register('interval-property', IntervalProperty);
   ko.components.register('bmpp-value-list', ValueList);
+  ko.components.register('results-list', ResultsList);
   ko.components.register('list-property', ListProperty);
   ko.components.register('search-unit-property', SearchUnitProperty);
   ko.components.register('properties-pane', PropertiesPane);

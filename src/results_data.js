@@ -5,6 +5,7 @@ export default {
   "query": "ЭДЕ, со следующими свойствами: участники: рассказчик; иллокутивно-фазовое значение: неполнота информации в контексте незавершенности; движение тона в главном акценте: восходяще-ровное.",
   "results": [
     {
+      "record_id": "pears04-mult-voc-manu.eaf",
       "time": {
         "begin": 6010,
         "end": 8490,
@@ -19,6 +20,7 @@ export default {
       "after_context_transcription": "(0.10)"
     },
     {
+      "record_id": "pears04-mult-voc-manu.eaf",
       "time": {
         "begin": 8590,
         "end": 9490,
@@ -33,6 +35,7 @@ export default {
       "after_context_transcription": "/–дор<u>о</u>га,,,"
     },
     {
+      "record_id": "pears04-mult-voc-manu.eaf",
       "time": {
         "begin": 9490,
         "end": 10000,
@@ -47,6 +50,7 @@ export default {
       "after_context_transcription": "–↑дер<u>е</u>вья<sup>ɯ</sup>, ≈≈"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 22700,
         "end": 23700,
@@ -61,6 +65,7 @@ export default {
       "after_context_transcription": "/–краснол<u>и</u>цый,,,"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 23700,
         "end": 24690,
@@ -75,6 +80,7 @@ export default {
       "after_context_transcription": "(0.19)"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 24880,
         "end": 25640,
@@ -89,6 +95,7 @@ export default {
       "after_context_transcription": "у него (ɥ 0.29) на шее красный \\плат<u>о</u>к ↑завязан,"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 32360,
         "end": 33110,
@@ -103,6 +110,7 @@ export default {
       "after_context_transcription": "на /вид совершенно \\твердок<u>а</u>менные<sup>ɯ</sup>."
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 53370,
         "end": 54550,
@@ -117,6 +125,7 @@ export default {
       "after_context_transcription": "(ɥ 0.36)"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 181950,
         "end": 183520,
@@ -131,6 +140,7 @@ export default {
       "after_context_transcription": "(ɥ 0.15) {sm 0.28}"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 186460,
         "end": 187410,
@@ -145,6 +155,7 @@ export default {
       "after_context_transcription": "там смотрит =="
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 265920,
         "end": 267310,
@@ -159,6 +170,7 @@ export default {
       "after_context_transcription": "(0.17)"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 281930,
         "end": 283890,
@@ -173,6 +185,7 @@ export default {
       "after_context_transcription": "(0.34)"
     },
     {
+      "record_id": "pears22-mult-voc-manu.eaf",
       "time": {
         "begin": 310320,
         "end": 312480,
