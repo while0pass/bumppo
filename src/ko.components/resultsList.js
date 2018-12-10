@@ -67,7 +67,7 @@ const resultsTemplate = `
 
 const template = `
 
-  <div class="ui basic segment">
+  <div class="ui basic segment" data-bind="with: resultsData">
 
     <!-- ko ifnot: version === 'test' -->
       ${ resultsTemplate }
@@ -81,63 +81,9 @@ const template = `
 
 `;
 
-const R = /[A-Za-z]+(\d+).*/g;
-
-class Result {
-  constructor(data, isTestResult=false) {
-    this.record_id = this.getRecordId(data.record_id);
-    this.time = data.time;
-    this.participant = data.participant;
-    this.value = data.value;
-    this.left_context = data.left_context;
-    this.right_context = data.right_context;
-    this.setupIfTest(data, isTestResult);
-  }
-  getRecordId(raw_record_id) {
-    let splits = raw_record_id.split(R);
-    if (splits.length === 3) {
-      return splits[1];
-    }
-    return 'NoID';
-  }
-  setupIfTest(data, isTestResult) {
-    if (!isTestResult) return;
-    this.value_transcription = data.value_transcription;
-    this.before_context = data.before_context;
-    this.before_context_transcription = data.before_context_transcription;
-    this.after_context = data.after_context;
-    this.after_context_transcription = data.after_context_transcription;
-  }
-  setPreviousItem(item) {
-    this.previousItem = item;
-  }
-}
-
-class Results {
-  constructor(data) {
-    this.version = data.version;
-    this.results = this.getResults(data.results);
-    this.setupIfTest(data);
-  }
-  getResults(list) {
-    let results = list.map(item => new Result(item, this.isTestResults));
-    results.forEach((item, index, array) => {
-      let previousItem = index > 0 ? array[index - 1] : null;
-      item.setPreviousItem(previousItem);
-    });
-    return results;
-  }
-  setupIfTest(data) {
-    if (!this.isTestResults) return;
-    this.subcorpus = data.subcorpus;
-    this.query = data.query;
-  }
-  get isTestResults() {
-    return this.version === 'test';
-  }
-}
-
-var viewModelFactory = params => new Results(params.results());
+var viewModelFactory = function (params) {
+  return { resultsData: params.resultsData };
+};
 
 export default {
   viewModel: { createViewModel: viewModelFactory },

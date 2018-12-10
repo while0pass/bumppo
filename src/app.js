@@ -11,7 +11,7 @@ import getQueryJSON from './scripts/queryJSON.js';
 import videoPlayer from './scripts/init.plyr.js';
 
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
-import resultsData from './results_data.js';
+import testResultsRawData from './results_data.js';
 
 /* eslint-disable no-undef */
 const searchEngineURL = (BUMPPO_ENV === 'production' ?
@@ -96,8 +96,9 @@ function viewModel() {
     let records = self.subcorpus.records,
         recordPhases = self.subcorpus.recordPhases,
         banner;
-    if (self.results && self.results() && self.results().version === 'test') {
-      return self.results().subcorpus;
+    if (self.resultsRawData && self.resultsRawData()
+        && self.resultsRawData().version === 'test') {
+      return self.resultsRawData().subcorpus;
     }
     if (records.areAllUnchecked || records.areAllChecked) {
       banner = 'все записи; ';
@@ -155,10 +156,10 @@ function viewModel() {
       }).done(data => {
         self.isQueryNew(false);
         self.isSubcorpusNew(false);
-        self.results(data);
+        self.resultsRawData(data);
         self.resultsError(null);
       }).fail((jqXHR, textStatus, errorThrown) => {
-        self.results(resultsData);
+        self.resultsRawData(testResultsRawData);
         self.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
       }).always(() => {
         self.isSearchInProgress(false);
@@ -170,10 +171,10 @@ function viewModel() {
   this.isSearchInProgress = ko.observable(false);
 
   this.canViewResults = ko.observable(false);
-  this.results = ko.observable(null);
+  this.resultsRawData = ko.observable(null);
   this.resultsError = ko.observable(null);
   this.resultsNumber = ko.computed(function () {
-    let R = self.results();
+    let R = self.resultsRawData();
     if (R && R.results instanceof Array) {
       return R.results.length;
     } else {
@@ -181,7 +182,7 @@ function viewModel() {
     }
   });
   this.responseJSON = ko.computed(
-    () => self.results() ? JSON.stringify(self.results(), null, 4) : ''
+    () => self.resultsRawData() ? JSON.stringify(self.resultsRawData(), null, 4) : ''
   );
   this.playVideo = function (result) {
     let { begin, end } = result.time;
