@@ -6,6 +6,7 @@ export default {
   "results": [
     {
       "record_id": "pears04-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 6010,
         "end": 8490,
@@ -21,6 +22,7 @@ export default {
     },
     {
       "record_id": "pears04-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 8590,
         "end": 9490,
@@ -36,6 +38,7 @@ export default {
     },
     {
       "record_id": "pears04-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 9490,
         "end": 10000,
@@ -51,6 +54,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 22700,
         "end": 23700,
@@ -66,6 +70,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 23700,
         "end": 24690,
@@ -81,6 +86,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 24880,
         "end": 25640,
@@ -96,6 +102,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 32360,
         "end": 33110,
@@ -111,6 +118,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 53370,
         "end": 54550,
@@ -126,6 +134,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 181950,
         "end": 183520,
@@ -141,6 +150,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 186460,
         "end": 187410,
@@ -156,6 +166,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 265920,
         "end": 267310,
@@ -171,6 +182,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 281930,
         "end": 283890,
@@ -186,6 +198,7 @@ export default {
     },
     {
       "record_id": "pears22-mult-voc-manu.eaf",
+      "participant": "N",
       "time": {
         "begin": 310320,
         "end": 312480,

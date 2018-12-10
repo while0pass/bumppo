@@ -150,6 +150,13 @@ $borderWidth: 0.3em;
   }
 }
 
+#bmpp-videoPlayer {
+  flex: 0 0 auto;
+  position: relative;
+  width: 342px;
+  height: 192px;
+}
+
 .bmpp-videoCurtain {
   position: absolute;
   top: -1em;

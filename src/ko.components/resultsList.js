@@ -1,3 +1,5 @@
+import cinema from '../scripts/cinema.js';
+
 const testResultsTemplate = `
 
   <div data-bind="foreach: results" class="bmpp-searchResult">
@@ -18,10 +20,13 @@ const testResultsTemplate = `
       data-bind="html: before_context_transcription"></div>
 
     <div class="bmpp-unitValue"
-      data-bind="text: value, click: $root.playVideo.bind($data)"></div>
+      data-bind="text: value, click: $component.cinema.showFilm
+        .bind($component.cinema, record_id, participant + '-vi', $data.time)
+        "></div>
     <div class="bmpp-transcription"
-      data-bind="html: value_transcription,
-        click: $root.playVideo.bind($data)"></div>
+      data-bind="html: value_transcription, click: $component.cinema.showFilm
+        .bind($component.cinema, record_id, participant + '-vi', $data.time)
+        "></div>
 
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: after_context"></div>
@@ -82,7 +87,10 @@ const template = `
 `;
 
 var viewModelFactory = function (params) {
-  return { resultsData: params.resultsData };
+  return {
+    resultsData: params.resultsData,
+    cinema: cinema
+  };
 };
 
 export default {

@@ -4,14 +4,10 @@ const template = `
 
   <div class="bmpp-resultsPane_video">
 
-    <div id="bmpp-videoPlayer"
-    style="height: 192px; width: 342px; flex: 0 0 auto; position: relative;">
+    <div id="bmpp-videoPlayer">
       <div class="bmpp-videoCurtain">
         <div class="bmpp-videoLoader" style="display: none;"></div>
       </div>
-      <iframe
-        src="https://www.youtube.com/embed/BlacvxT1Xdk?modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1"
-        crossorigin></iframe>
     </div>
 
     <div class="bmpp-videoChoices">
@@ -132,7 +128,7 @@ class Result {
     return 'NoID';
   }
   setup() {
-    this.previousItem = ko.observable(null);
+    this.previousItem = null;
   }
   setupIfTest(data, isTestResult) {
     if (!isTestResult) return;
@@ -143,7 +139,7 @@ class Result {
     this.after_context_transcription = data.after_context_transcription;
   }
   setPreviousItem(item) {
-    this.previousItem(item);
+    this.previousItem = item;
   }
 }
 

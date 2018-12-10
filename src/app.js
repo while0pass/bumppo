@@ -8,7 +8,7 @@ import page from 'page';
 import initKnockout from './scripts/init.knockout.js';
 import { TreeNode } from './scripts/queryTree.js';
 import getQueryJSON from './scripts/queryJSON.js';
-import videoPlayer from './scripts/init.plyr.js';
+import cinema from './scripts/cinema.js';
 
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import testResultsRawData from './results_data.js';
@@ -53,7 +53,7 @@ function viewModel() {
     var activePane = self.activePane();
     if (activePane) {
       page(`/${Symbol.keyFor(activePane)}`);
-      videoPlayer.pause();
+      cinema.pauseAll();
     }
   });
 
@@ -184,43 +184,6 @@ function viewModel() {
   this.responseJSON = ko.computed(
     () => self.resultsRawData() ? JSON.stringify(self.resultsRawData(), null, 4) : ''
   );
-  this.playVideo = function (result) {
-    let { begin, end } = result.time;
-    const logoHideTime = 0.8,
-          logoFirstHideTime = 2,
-          pauseFunction =
-    event => {
-      let p = event.detail.plyr;
-      if (p.currentTime >= end - 1e-2) {
-        p.muted = false;
-        p.off('timeupdate', p._pauseFunction);
-        delete p._pauseFunction;
-        p.pause();
-      } else if (p.currentTime >= begin - 1e-1) {
-        delete p.$hidden;
-        p.muted = false;
-        jQuery(event.srcElement).find('.bmpp-videoLoader').hide();
-        jQuery(event.srcElement).find('.bmpp-videoCurtain').hide();
-      }
-    };
-    jQuery(videoPlayer.elements.container).find('.bmpp-seeking').show();
-    begin /= 1000;
-    end /= 1000;
-    videoPlayer.$hidden = true;
-    if (videoPlayer._nonFirstPlay) {
-      videoPlayer.currentTime = begin - logoHideTime;
-    } else {
-      videoPlayer.currentTime = begin - logoFirstHideTime;
-      videoPlayer._nonFirstPlay = true;
-    }
-    if (videoPlayer._pauseFunction !== undefined) {
-      videoPlayer.off('timeupdate', videoPlayer._pauseFunction);
-    }
-    videoPlayer._pauseFunction = pauseFunction;
-    videoPlayer.on('timeupdate', videoPlayer._pauseFunction);
-    videoPlayer.muted = true;
-    videoPlayer.play();
-  };
 
 }
 const vM = new viewModel();
@@ -253,29 +216,6 @@ jQuery('.bmpp-sidePane_menuItem').mouseover(function () {
 });
 jQuery('.bmpp-sidePane_menuItem').mouseout(function () {
   jQuery(this).removeClass('bmpp-sidePane_menuItem--hover');
-});
-
-videoPlayer.on('ready', event => {
-  let p = event.detail.plyr;
-  jQuery(event.srcElement).find('.bmpp-videoCurtain').show();
-  jQuery(event.srcElement).find('.bmpp-videoLoader').hide();
-  p.rewind(10);
-  p.play();
-});
-videoPlayer.on('pause', event => {
-  jQuery(event.srcElement).find('.bmpp-videoCurtain').show();
-  jQuery(event.srcElement).find('.bmpp-videoLoader').hide();
-});
-videoPlayer.on('seeking', event => {
-  jQuery(event.srcElement).find('.bmpp-videoCurtain').show();
-  jQuery(event.srcElement).find('.bmpp-videoLoader').show();
-});
-videoPlayer.on('seeked', event => {
-  let p = event.detail.plyr;
-  if (!p.$hidden) {
-    jQuery(event.srcElement).find('.bmpp-videoLoader').hide();
-    jQuery(event.srcElement).find('.bmpp-videoCurtain').hide();
-  }
 });
 
 jQuery('#safetyCurtain').fadeOut();
