@@ -1,4 +1,5 @@
 import jQuery from 'jquery';
+import ko from 'knockout';
 import Plyr from 'plyr';
 
 import cinematheque from '../video_data.js';
@@ -72,6 +73,18 @@ class Film {
 class Cinema {
   constructor() {
     this.films = {};
+    this.filmTypes = [
+      { id: 'N-eyf', disabled: true },
+      { id: 'N-vi', disabled: false },
+      { id: 'N-ey', disabled: true },
+      { id: 'C-vi', disabled: false },
+      { id: 'R-vi', disabled: false },
+      { id: 'R-ey', disabled: true },
+      { id: 'W-vi', disabled: false },
+    ];
+    this.activeRecordId = ko.observable(null);
+    this.activeFilmType = ko.observable(null);
+    this.activeDataItem = ko.observable(null);
   }
   get screen() {
     return jQuery('#bmpp-videoPlayer');
@@ -82,8 +95,12 @@ class Cinema {
   get loader() {
     return jQuery(this.screen).find('.bmpp-videoLoader');
   }
-  showFilm(recordId, filmType, time) {
-    let { begin, end } = time,
+  showFilm(recordId, filmType, dataItem) {
+    if (!dataItem || recordId === null || !filmType) return;
+    this.activeRecordId(recordId);
+    this.activeFilmType(filmType);
+    this.activeDataItem(dataItem);
+    let { begin, end } = dataItem.time,
         film = this.getFilm(recordId, filmType).film;
     const cinema = this,
           logoHideTime = 0.8,

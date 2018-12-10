@@ -53,7 +53,7 @@ export default {
       "after_context_transcription": "–↑дер<u>е</u>вья<sup>ɯ</sup>, ≈≈"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 22700,
@@ -69,7 +69,7 @@ export default {
       "after_context_transcription": "/–краснол<u>и</u>цый,,,"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 23700,
@@ -85,7 +85,7 @@ export default {
       "after_context_transcription": "(0.19)"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 24880,
@@ -101,7 +101,7 @@ export default {
       "after_context_transcription": "у него (ɥ 0.29) на шее красный \\плат<u>о</u>к ↑завязан,"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 32360,
@@ -117,7 +117,7 @@ export default {
       "after_context_transcription": "на /вид совершенно \\твердок<u>а</u>менные<sup>ɯ</sup>."
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 53370,
@@ -133,7 +133,7 @@ export default {
       "after_context_transcription": "(ɥ 0.36)"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 181950,
@@ -149,7 +149,7 @@ export default {
       "after_context_transcription": "(ɥ 0.15) {sm 0.28}"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 186460,
@@ -165,7 +165,7 @@ export default {
       "after_context_transcription": "там смотрит =="
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 265920,
@@ -181,7 +181,7 @@ export default {
       "after_context_transcription": "(0.17)"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 281930,
@@ -197,7 +197,7 @@ export default {
       "after_context_transcription": "(0.34)"
     },
     {
-      "record_id": "pears22-mult-voc-manu.eaf",
+      "record_id": "pears04-mult-voc-manu.eaf",
       "participant": "N",
       "time": {
         "begin": 310320,

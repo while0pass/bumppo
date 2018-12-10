@@ -21,11 +21,11 @@ const testResultsTemplate = `
 
     <div class="bmpp-unitValue"
       data-bind="text: value, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, participant + '-vi', $data.time)
+        .bind($component.cinema, record_id, participant + '-vi', $data)
         "></div>
     <div class="bmpp-transcription"
       data-bind="html: value_transcription, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, participant + '-vi', $data.time)
+        .bind($component.cinema, record_id, participant + '-vi', $data)
         "></div>
 
     <div class="bmpp-unitValue bmpp-context"
@@ -57,9 +57,13 @@ const resultsTemplate = `
       data-bind="html: left_context"></div>
 
     <div class="bmpp-unitValue"
-      data-bind="text: value, click: $root.playVideo.bind($data)"></div>
+      data-bind="text: value, click: $component.cinema.showFilm
+        .bind($component.cinema, record_id, participant + '-vi', $data)
+        "></div>
     <div class="bmpp-transcription"
-      data-bind="html: value, click: $root.playVideo.bind($data)"></div>
+      data-bind="html: value, click: $component.cinema.showFilm
+        .bind($component.cinema, record_id, participant + '-vi', $data)
+        "></div>
 
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: right_context"></div>

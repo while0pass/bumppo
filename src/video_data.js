@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
   '04': {
-    'Neyf': '4j2LpBHEYOY',
+    'N-eyf': '4j2LpBHEYOY',
     'N-ey': 'GLuOSjTap-M',
     'N-vi': 'BlacvxT1Xdk',
     'C-vi': '4WtA-PbZf-s',
@@ -10,7 +10,7 @@ export default {
     'W-vi': 'Jxdu1X_LtaE',
   },
   '22': {
-    'Neyf': 'lkKsggceTb4',
+    'N-eyf': 'lkKsggceTb4',
     'N-ey': 'pnLXBP9Jzqk',
     'N-vi': 'CFFkrk9RwVg',
     'C-vi': '5nWcsLwsVoY',
@@ -19,7 +19,7 @@ export default {
     'W-vi': 'z1C8pfXya-s',
   },
   '23': {
-    'Neyf': 'rMRwxgB7tu4',
+    'N-eyf': 'rMRwxgB7tu4',
     'N-ey': '3-UyrpT3FXM',
     'N-vi': 'u8N8XXlZbtA',
     'C-vi': 'TcjujDC0pg0',

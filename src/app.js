@@ -88,6 +88,7 @@ function viewModel() {
   this.isQueryNew = ko.observable(true);
   this.isSubcorpusNew = ko.observable(false);
 
+  this.resultsRawData = ko.observable(null);
   this.subcorpus = {
     records: new CheckboxForm(records, this.isSubcorpusNew),
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
@@ -96,8 +97,7 @@ function viewModel() {
     let records = self.subcorpus.records,
         recordPhases = self.subcorpus.recordPhases,
         banner;
-    if (self.resultsRawData && self.resultsRawData()
-        && self.resultsRawData().version === 'test') {
+    if (self.resultsRawData() && self.resultsRawData().version === 'test') {
       return self.resultsRawData().subcorpus;
     }
     if (records.areAllUnchecked || records.areAllChecked) {
@@ -171,7 +171,6 @@ function viewModel() {
   this.isSearchInProgress = ko.observable(false);
 
   this.canViewResults = ko.observable(false);
-  this.resultsRawData = ko.observable(null);
   this.resultsError = ko.observable(null);
   this.resultsNumber = ko.computed(function () {
     let R = self.resultsRawData();

@@ -1,4 +1,5 @@
 import ko from 'knockout';
+import cinema from '../scripts/cinema.js';
 
 const template = `
 
@@ -10,14 +11,17 @@ const template = `
       </div>
     </div>
 
-    <div class="bmpp-videoChoices">
-      <div class="disabled">N-eyf</div>
-      <div class="current">N-vi</div>
-      <div>N-ey</div>
-      <div>C-vi</div>
-      <div>R-vi</div>
-      <div>R-ey</div>
-      <div>W-vi</div>
+    <div class="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">
+      <div data-bind="
+        text: id,
+        css: {
+          disabled: disabled || !$component.cinema.activeDataItem(),
+          current: $component.cinema.activeFilmType() === id
+        },
+        click: $component.cinema.showFilm.bind(
+          $component.cinema, $component.cinema.activeRecordId(),
+          id, $component.cinema.activeDataItem())
+        "></div>
     </div>
 
     <div class="bmpp-resultsInfo">
@@ -182,7 +186,10 @@ function viewModelFactory(params) {
         }
         return oldResults;
       });
-  return { resultsData: resultsData };
+  return {
+    resultsData: resultsData,
+    cinema: cinema
+  };
 }
 viewModelFactory.prototype.dispose = function () {
   this.resultsData.dispose();
