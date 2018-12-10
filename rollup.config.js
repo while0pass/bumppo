@@ -2,6 +2,8 @@
 import babel from 'rollup-plugin-babel';
 import { eslint } from 'rollup-plugin-eslint';
 import resolve from 'rollup-plugin-node-resolve';
+//import builtins from 'rollup-plugin-node-builtins';
+//import globals from 'rollup-plugin-node-globals';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
@@ -15,7 +17,7 @@ import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 
 export default {
-  external: ['jquery', 'semantic-ui', 'knockout', 'video.js', 'svg.js'],
+  external: ['jquery', 'semantic-ui', 'knockout', 'svg.js'],
   input: 'src/app.js',
   output: {
     file: 'build/js/spa.js',
@@ -24,7 +26,6 @@ export default {
     globals: {
       'jquery': 'jQuery',
       'knockout': 'ko',
-      'video.js': 'videojs',
       'svg.js': 'SVG',
     },
   },
@@ -38,12 +39,14 @@ export default {
         cssnano(),
       ],
     }),
+    //builtins(),
     resolve({
       jsnext: true,
       main: true,
       browser: true,
     }),
     commonjs(),
+    //globals(),
     eslint({
       exclude: [
         'src/styles/**',
@@ -65,8 +68,8 @@ export default {
     }),
     (process.env.BUMPPO_ENV === 'production' && terser()),
     copy({
-      'node_modules/videojs-youtube/dist/Youtube.min.js':
-      'build/js/libs/videojs-youtube.min.js',
+      'node_modules/plyr/dist/plyr.css':
+      'build/plyr.css',
       'node_modules/svg.js/dist/svg.min.js':
       'build/js/libs/svg.min.js',
       'node_modules/jquery.initialize/jquery.initialize.min.js':

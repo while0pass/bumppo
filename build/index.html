@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
-    <link href="https://vjs.zencdn.net/7.3.0/video-js.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="plyr.css">
   </head>
   <body style="position: relative">
 
@@ -122,16 +122,15 @@
 
     <div class="bmpp-resultsPane" data-bind="visible: isResultsPaneOn">
       <div class="bmpp-resultsPane_video">
-        <video id="bmpp-videoPlayer" class="video-js"
-          preload="auto" height="192"
-          controls data-setup='{
-            "techOrder": ["youtube"],
-            "sources": [{
-              "type": "video/youtube",
-              "src": "https://www.youtube.com/embed/9qPtGm9vcok"
-            }]
-          }'>
-        </video>
+        <div id="bmpp-videoPlayer" style="height: 192px; width: 342px;
+          flex: 0 0 auto;">
+          <div class="bmpp-videoCurtain">
+            <div class="ui active inverted loader bmpp-videoLoader"></div>
+          </div>
+          <iframe
+            src="https://www.youtube.com/embed/BlacvxT1Xdk?modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1"
+            crossorigin></iframe>
+        </div>
         <div class="bmpp-videoChoices">
           <div class="disabled">N-eyf</div>
           <div class="current">N-vi</div>
@@ -270,8 +269,6 @@
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"
       crossorigin="anonymous"></script>
-    <script src="https://vjs.zencdn.net/7.3.0/video.js"></script>
-    <script src="js/libs/videojs-youtube.min.js"></script>
     <script src="js/libs/svg.min.js"></script>
     <script src="js/libs/jquery.initialize.min.js"></script>
     <script src="js/spa.js"></script>
