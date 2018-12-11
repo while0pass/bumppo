@@ -48,17 +48,17 @@ const template = `
       <div style="margin-bottom: .33em;" data-bind="with: $root.queryTree">
         <em>Условие поиска:</em>&#x2002;<span data-bind="text:
         unitType().hasAbbr ? unitType().abbr : unitType().name"></span
-        ><!-- ko if: $root.chosenUnitProperties().length > 0 -->, со следующими
-        свойствами: <span data-bind="foreach: $root.chosenUnitProperties"
+        ><!-- ko if: chosenUnitProperties().length > 0 -->, со следующими
+        свойствами: <span data-bind="foreach: chosenUnitProperties"
         ><!-- ko if: $index() === 0 --><span
         data-bind="textLowercaseFirstChar: name"></span><span
         >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
         data-bind="textLowercaseFirstChar: name"></span><span
         >:&#x2002;</span><!-- /ko --><span data-bind="text: banner"></span
         ><span data-bind="text:
-        $index() &lt; $root.chosenUnitProperties().length - 1 ?
+        $index() &lt; $root.queryTree.chosenUnitProperties().length - 1 ?
         ';&#x2002;' : '.'"></span></span><!-- /ko --><!-- ko if:
-        $root.chosenUnitProperties().length === 0 -->.<!-- /ko -->
+        chosenUnitProperties().length === 0 -->.<!-- /ko -->
       </div>
       <!-- /ko -->
 
