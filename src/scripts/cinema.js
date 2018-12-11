@@ -5,7 +5,7 @@ import Plyr from 'plyr';
 import cinematheque from '../video_data.js';
 
 const plyrOpts = {
-  //debug: BUMPPO_ENV !== 'production', // eslint-disable-line no-undef
+  debug: BUMPPO_ENV !== 'production', // eslint-disable-line no-undef
   controls: [],
   clickToPlay: false,
   fullscreen: { enabled: false, fallback: false, iosNative: false },
@@ -47,7 +47,8 @@ class Film {
       let film = event.detail.plyr;
       cinema.curtain.show();
       cinema.loader.hide();
-      film.rewind(10);
+      film.muted = true;
+      film.rewind(0);
       film.play();
     });
     film.on('pause', () => {
@@ -104,9 +105,10 @@ class Cinema {
         film = this.getFilm(recordId, filmType).film;
     const cinema = this,
           logoHideTime = 0.8,
-          logoFirstHideTime = 2,
+          logoFirstHideTime = 2.5,
           pauseFunction = event => {
             let p = event.detail.plyr;
+            if (!p._playCount === 1) return;
             if (p.currentTime >= end - 1e-2) {
               p.muted = false;
               p.off('timeupdate', p._pauseFunction);
@@ -124,11 +126,17 @@ class Cinema {
     begin /= 1000;
     end /= 1000;
     film.$hidden = true;
-    if (film._nonFirstPlay) {
-      film.currentTime = begin - logoHideTime;
-    } else {
+    if (film._playCount && film._playCount === 1) {
       film.currentTime = begin - logoFirstHideTime;
-      film._nonFirstPlay = true;
+      film._playCount = 2;
+    } else if (film._playCount && film._playCount > 1) {
+      film.currentTime = begin - logoHideTime;
+      film._playCount = 3;
+    } else {
+      film._playCount = 1;
+      setTimeout(function () {
+        cinema.showFilm(recordId, filmType, dataItem);
+      }, 4000);
     }
     if (film._pauseFunction !== undefined) {
       film.off('timeupdate', film._pauseFunction);
