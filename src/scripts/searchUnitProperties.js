@@ -157,23 +157,41 @@ const p_vInterruptCount = {
   type: 'interval', name: 'Число точек прерывания', id: 'p_vInterruptCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
+const v_R = '/', v_F = '\\', v_L = '–', v_r = '↑', v_f = '↓', v_l = '→',
+      v_RF = v_R + v_F,
+      v_Rf = v_R + v_f,
+      v_rF = v_r + v_F,
+      v_RL = v_R + v_L,
+      v_Rl = v_R + v_l,
+      v_FR = v_F + v_R,
+      v_Fr = v_F + v_r;
+
 const p_vMainAccents = {
   type: 'list', name: 'Движение тона в главном акценте',
   id: 'p_vMainAccents', displayValues: true,
   valueList: { orValues: [
-    { name: 'Восходящее', value: '/' },
-    { name: 'Нисходящее', value: '\\' },
-    { name: 'Ровное', value: '–' },
-    { name: 'Восходяще-нисходящее', value: ['/\\', '/↓', '↑\\'] },
-    { name: 'Восходяще-ровное', value: ['/–', '/→'] },
-    { name: 'Нисходяще-восходящее', value: ['\\/', '\\↑'] },
+    { name: 'Восходящее', value: v_R },
+    { name: 'Нисходящее', value: v_F },
+    { name: 'Ровное', value: v_L },
+    { name: 'Восходяще-нисходящее', value: [v_RF, v_Rf, v_rF] },
+    { name: 'Восходяще-ровное', value: [v_RL, v_Rl] },
+    { name: 'Нисходяще-восходящее', value: [v_FR, v_Fr] },
     { name: 'Другой вариант', editable: true },
   ]},
   virtualKeyboard: true,
-  validChars: ['/', '\\', '–', '↑', '↓', '→'],
+  validChars: [v_R, v_F, v_L, v_r, v_f, v_l],
   substitute: [
     [/[-\u2014\u2012]/g, '\u2013'],
-  ]};
+  ],
+  valuesSubstitute: [
+    [v_R, 'R'],
+    [v_F, 'F'],
+    [v_L, 'L'],
+    [v_r, 'r'],
+    [v_f, 'f'],
+    [v_l, 'l'],
+  ],
+};
 
 const p_vParenth = {
   type: 'list', name: 'Входит в конструкцию со вставкой',
@@ -398,21 +416,29 @@ const p_vAccents = {
   type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
   valueList: { xorValues: [
     { name: 'Да', orValues: [
-      { name: 'С восходящим тоном', value: '/' },
-      { name: 'С нисходящим тоном', value: '\\' },
-      { name: 'С ровным тоном', value: '–' },
-      { name: 'С восходяще-нисходящим тоном', value: ['/\\', '/↓', '↑\\'] },
-      { name: 'С восходяще-ровным тоном', value: ['/–', '/→'] },
-      { name: 'С нисходяще-восходящим тоном', value: ['\\/', '\\↑'] },
+      { name: 'С восходящим тоном', value: v_R },
+      { name: 'С нисходящим тоном', value: v_F },
+      { name: 'С ровным тоном', value: v_L },
+      { name: 'С восходяще-нисходящим тоном', value: [v_RF, v_Rf, v_rF] },
+      { name: 'С восходяще-ровным тоном', value: [v_RL, v_Rl] },
+      { name: 'С нисходяще-восходящим тоном', value: [v_FR, v_Fr] },
       { name: 'Другой вариант', editable: true },
     ]},
     { name: 'Нет', value: false },
   ]},
   virtualKeyboard: true,
-  validChars: ['/', '\\', '–', '↑', '↓', '→'],
+  validChars: [v_R, v_F, v_L, v_r, v_f, v_l],
   substitute: [
     [/[-\u2014\u2012]/g, '\u2013'],
-  ]
+  ],
+  valuesSubstitute: [
+    [v_R, 'R'],
+    [v_F, 'F'],
+    [v_L, 'L'],
+    [v_r, 'r'],
+    [v_f, 'f'],
+    [v_l, 'l'],
+  ],
 };
 
 const p_vMainAccent = {
