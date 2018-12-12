@@ -38,11 +38,12 @@ const p_mGeStructure = {
     { name: 'Подготовка-мах, ретракция', value: 'P-S R' },
     { name: 'Другой вариант', editable: true },
   ]},
-  validChars: ['P', 'R', 'S', '-', ' '],
+  validChars: ['P', 'R', 'S', 'H', '-', ' '],
   substitute: [
     [/[sыЫ]/g, 'S'],
-    [/[pрРзЗ]/g, 'P'],
+    [/[pзЗ]/g, 'P'],
     [/[rкК]/g, 'R'],
+    [/[hрР]/g, 'H'],
     [/\s+/g, ' '],
     [/\s*[-_]\s*/g, '-'],
   ]};
