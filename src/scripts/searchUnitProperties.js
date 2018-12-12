@@ -355,7 +355,8 @@ const pt_InOutEDU = {
     { name: 'Отдельно', value: 'Out' },
   ]}
 };
-const p_vHInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vHInOutEDU'),
+const p_vFInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vFInOutEDU'),
+      p_vHInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vHInOutEDU'),
       p_vLInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vLInOutEDU'),
       p_vOInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vOInOutEDU');
 
@@ -368,10 +369,29 @@ const pt_NearPause = {
     { name: 'Не соседствует с паузами', value: false },
   ]}
 };
-const p_vHNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vHNearPause'),
+const p_vFNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vFNearPause'),
+      p_vHNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vHNearPause'),
       p_vLNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vLNearPause'),
       p_vONearPause = createPropertyFromTemplate(pt_NearPause, 'p_vONearPause'),
       p_vWNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vWNearPause');
+
+const p_vFForm = {
+  type: 'list', name: 'Тип заполнения', id: 'p_vFForm', isRegExValues: true,
+  valueList: { orValues: [
+    { name: 'Простое заполнение', orValues: [
+      { name: 'Эканье', value: '\\(əɥ?\\)' },
+      { name: 'Аканье', value: '\\(ɐɥ?\\)' },
+      { name: 'Мэканье', value: '\\(ɯɥ?\\)' },
+      { name: 'Гортанный скрип', value: '\\(ˀɥ?\\)' },
+    ]},
+    { name: 'Комбинированное заполнение', orValues: [
+      { name: 'С эканьем', value: '\\((ə[ɐɯˀ]|[ɐɯˀ]ə)ɥ?\\)' },
+      { name: 'С аканьем', value: '\\((ɐ[əɯˀ]|[əɯˀ]ɐ)ɥ?\\)' },
+      { name: 'С мэканьем', value: '\\((ɯ[əɐˀ]|[əɐˀ]ɯ)ɥ?\\)' },
+      { name: 'С гортанным скрипом', value: '\\((ˀ[əɐɯ]|[əɐɯ]ˀ)ɥ?\\)' },
+    ]},
+  ]}
+};
 
 const p_vOForm = {
   type: 'list', name: 'Тип действия', id: 'p_vOForm',
@@ -555,6 +575,7 @@ const propertiesLists = {
     p_vMainAccent, p_vReduction, p_vRegister, p_vLength, p_vTempo, p_vEmph,
     p_vStress, p_vStops]),
   u_vLaughSegm: commonProperties.concat([p_vLInOutEDU, p_vLNearPause]),
+  u_vFilledSegm: commonProperties.concat([p_vFInOutEDU, p_vFNearPause, p_vFForm]),
   u_vHPause: commonProperties.concat([p_vHInOutEDU, p_vHNearPause]),
   u_vOtherSegm: commonProperties.concat([p_vOInOutEDU, p_vONearPause, p_vOForm]),
   u_vCollat: commonProperties.concat([p_vCollatForm]),
