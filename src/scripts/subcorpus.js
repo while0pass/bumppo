@@ -10,9 +10,9 @@ export var records = [
 ];
 
 export var recordPhases = [
-  { id: 'narration', label: 'Рассказ', query: 'telling' },
-  { id: 'dialogue', label: 'Разговор', query: 'talk' },
-  { id: 'retelling', label: 'Пересказ', query: 'retelling' }
+  { id: 'narration', label: 'Рассказ', query: '1st_telling' },
+  { id: 'dialogue', label: 'Разговор', query: 'Conversation' },
+  { id: 'retelling', label: 'Пересказ', query: 'Retelling' }
 ];
 
 class CheckboxField{
