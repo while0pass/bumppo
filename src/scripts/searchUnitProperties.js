@@ -376,15 +376,15 @@ const p_vHNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vHNearPause'),
 const p_vOForm = {
   type: 'list', name: 'Тип действия', id: 'p_vOForm',
   valueList: { orValues: [
-    { name: 'Цоканье', value: 'f1' },
-    { name: 'Чмоканье', value: 'f2' },
-    { name: 'Фырканье', value: 'f3' },
-    { name: 'Шмыганье', value: 'f4' },
-    { name: 'Сглатывание', value: 'f5' },
-    { name: 'Откашливание', value: 'f6' },
-    { name: 'Свист', value: 'f7' },
-    { name: 'Вздох', value: 'f8' },
-    { name: 'Кашель', value: 'f9' },
+    { name: 'Цоканье', value: '{cl}' }
+    { name: 'Чмоканье', value: '{sm}' },
+    { name: 'Фырканье', value: '{st}' },
+    { name: 'Шмыганье', value: '{sf}' },
+    { name: 'Сглатывание', value: '{gp}' },
+    { name: 'Откашливание', value: '{exp}' },
+    { name: 'Свист', value: '{wh}' },
+    { name: 'Вздох', value: '{sg}' },
+    { name: 'Кашель', value: '{cg}' },
   ]}
 };
 
