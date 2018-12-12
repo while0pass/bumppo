@@ -63,8 +63,9 @@ const template = `
 
     <div>
       <button class="ui small button three wide column"
+        data-bind="click: $root.switchOnQueryPane">ОK</button>
+      <button class="ui small button three wide column"
         data-bind="click: subcorpusClearSelection">Очистить</button>
-      <button class="ui small button three wide column">Отмена</button>
     </div>
 
   </div>
