@@ -105,10 +105,10 @@
             <button class="ui small button"
               data-bind="click: queryPaneView.finishEditingNodeProperties"
               >ОК</button>
-            <button class="ui small button">Очистить</button>
-            <button class="ui small button"
-              data-bind="click: queryPaneView.finishEditingNodeProperties"
-              >Отмена</button>
+            <button class="ui small button" data-bind="click:
+              queryPaneView.propertiesNode().clearAllProperties
+                .bind(queryPaneView.propertiesNode())"
+              >Очистить</button>
         </div>
       </div>
       <!-- /ko -->

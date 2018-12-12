@@ -80,6 +80,9 @@ export class TreeNode {
     this.childNodes.removeAll();
     this.parentNode.childNodes.remove(this);
   }
+  clearAllProperties() {
+    this.chosenUnitProperties().forEach(prop => prop.clear());
+  }
 }
 
 export class NodesRelation {

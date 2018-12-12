@@ -617,6 +617,9 @@ class SearchUnitProperty {
   getBanner() {
     return '';
   }
+  clear() {
+    this.value(null);
+  }
 }
 
 class IntervalProperty extends SearchUnitProperty {
@@ -677,6 +680,10 @@ class IntervalProperty extends SearchUnitProperty {
         this.value(struct);
       }
     }, this);
+  }
+  clear() {
+    this.from(null);
+    this.to(null);
   }
   getJsonProperties() {
     return ko.computed(function () {
@@ -792,6 +799,9 @@ class ListProperty extends SearchUnitProperty {
         value(null);
       }
     }, this);
+  }
+  clear() {
+    this.valueList.uncheckAll();
   }
   unwrapValues(values) {
     return values.map(value => ko.isObservable(value) ? value() : value);
