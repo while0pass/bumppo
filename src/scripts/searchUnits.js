@@ -45,6 +45,7 @@ var data = [
     name: 'Жесты головы',
     unitsHeader: 'Единицы цефалической жестикуляции',
     color: 'green',
+    disabled: true,
     types: [
       { name: 'Базовый уровень сегментации',
         types: [
