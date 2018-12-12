@@ -107,7 +107,25 @@ const p_vIllocPhase = {
       { name: 'При апосиопезе', value: '~' },
       { name: 'При вмешательстве собеседника', value: '≈≈' },
     ]},
-  ]}};
+  ]},
+  valuesSubstitute: [
+    ['.', 'Period'],
+    ['?', 'Quest'],
+    ['¡', 'Dir'],
+    ['@', 'Appeal'],
+    ['¿', 'Semi-St'],
+    ['…', 'Dots-f'],
+    ['!', 'Exclam'],
+    [',,,', 'Dots-nf'], // NOTE: Это значение должно
+    // предшествовать запятой для получения правильных значений.
+    [',', 'Comma'],
+    [':', 'Colon'],
+    ['—', 'Split'],
+    ['==', 'Fst'],
+    ['~', 'Tilde'],
+    ['≈≈', 'Interrupt'],
+  ]
+};
 
 const p_vCombIllocPhase = {
   type: 'list', name: 'Комбинация иллокутивно-фазовых значений',
