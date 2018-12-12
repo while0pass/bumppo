@@ -543,6 +543,53 @@ function injectValue(template, value) {
   return template.replace('##', value.toString());
 }
 
+ko.extenders.autoMorphingValue = function(target, substitutions) {
+  let makeSubstitutions = string => {
+    for (let i = 0; i < substitutions.length; i++) {
+      let [ regexp, replacement ] = substitutions[i];
+      if (typeof regexp === 'string') {
+        regexp = new RegExp(escapeRegExp(regexp), 'g');
+      }
+      string = string.replace(regexp, replacement);
+    }
+    return string;
+  };
+  let result = ko.computed({
+    read: target,
+    write: function (newValue) {
+      let current = target();
+      if (typeof newValue === 'string') {
+        let valueToWrite = makeSubstitutions(newValue);
+        if (valueToWrite !== current) {
+          target(valueToWrite);
+        } else if (newValue !== current) {
+          target.notifySubscribers(valueToWrite);
+        }
+      } else if (newValue instanceof Array) {
+        let valueToWrite = newValue.slice();
+        for (let i = 0; i < newValue.length; i++) {
+          let item = newValue[i];
+          if (typeof item === 'string') {
+            valueToWrite[i] = makeSubstitutions(item);
+          }
+        }
+        if (!(current instanceof Array)) {
+          target(valueToWrite);
+        } else if (JSON.stringify(valueToWrite) !== JSON.stringify(current)) {
+          target(valueToWrite);
+        } else if (JSON.stringify(newValue) !== JSON.stringify(current)) {
+          target.notifySubscribers(valueToWrite);
+        }
+      } else if (newValue !== current) {
+        target(newValue);
+      }
+    }
+  }).extend({ notify: 'always' });
+
+  result(target());
+  return result;
+};
+
 class SearchUnitProperty {
   constructor(data, unitType) {
     this.type = data.type;
@@ -551,10 +598,9 @@ class SearchUnitProperty {
     this.name = data.name;
     this.help = data.help || '';
     this.value = ko.observable(null);
-
     this.virtualKeyboard = data.virtualKeyboard || false;
-    this.validChars = data.validChars;
-    this.validitySusbstitutions = this.getValueSubstitutions(data);
+
+    this._SearchUnitProperty_tune(data);
   }
   static createByType(data, unitType) {
     let map = {
@@ -566,6 +612,15 @@ class SearchUnitProperty {
     if (Property) {
       return new Property(data, unitType);
     }
+  }
+  _SearchUnitProperty_tune(data) { // NOTE: Если использовать в качестве
+    // имени просто tune, будет скрытый конфликт имен при наличии у потомка
+    // метода с тем же названием и вызове у него в конструкторе super.
+    if (data.valuesSubstitute) {
+      this.value = this.value.extend({ autoMorphingValue: data.valuesSubstitute });
+    }
+    this.validChars = data.validChars;
+    this.validitySusbstitutions = this.getValueSubstitutions(data);
   }
   changeUnitType(unitType) {
     this.unitType(unitType);
