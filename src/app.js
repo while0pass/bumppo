@@ -151,6 +151,7 @@ function viewModel() {
   this.search = () => {
     if (self.canSearch()) {
       self.isSearchInProgress(true);
+      cinema.clearActiveState();
       jQuery.ajax(searchEngineURL, {
         data: { data: self.queryJSON() }
       }).done(data => {

@@ -14,6 +14,7 @@ const plyrOpts = {
 
 class Film {
   constructor(cinema, filmData) {
+    this.cinema = cinema;
     this.elementId = this.getElementId(cinema, filmData);
     this.filmId = this.getFilmId(filmData);
     this.element = this.createElement(cinema, this.elementId, this.filmId);
@@ -29,39 +30,53 @@ class Film {
     const ytParams = 'modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1',
           element = jQuery(`
 
-  <div id="${ elementId }">
+  <div id="${ elementId }" style="position: absolute;">
     <iframe src="https://www.youtube.com/embed/${ filmId }?${ ytParams }"
       crossorigin></iframe>
   </div>
           `);
-    cinema.screen.append(element);
+
+    jQuery(document.body).append(element);
     return element;
+  }
+  activateIFrame() {
+    let element = this.element,
+        screen = this.cinema.screen;
+    element.offset(screen.offset());
+    element.width(screen.width());
+    element.height(screen.height());
+    element.css({ zIndex: 900 });
+  }
+  deactivateIFrame() {
+    this.element.css({ zIndex: -1000 });
   }
   createFilm(cinema, element) {
     let film = new Plyr(element, plyrOpts);
+    film.filmObject = this;
     film.cinema = cinema;
     // NOTE: На плеере не стоит создавать дополнительный атрибут с element,
     // т.к. получить доступ к элементу можно через film.elements.container
 
     film.on('ready', event => {
       let film = event.detail.plyr;
-      cinema.curtain.show();
-      cinema.loader.hide();
       film.muted = true;
       film.rewind(0);
       film.play();
     });
     film.on('pause', () => {
+      film.filmObject.deactivateIFrame();
       cinema.curtain.show();
       cinema.loader.hide();
     });
     film.on('seeking', () => {
+      film.filmObject.deactivateIFrame();
       cinema.curtain.show();
       cinema.loader.show();
     });
     film.on('seeked', event => {
       let film = event.detail.plyr;
       if (!film.$hidden) {
+        film.filmObject.activateIFrame();
         cinema.loader.hide();
         cinema.curtain.hide();
       }
@@ -86,6 +101,7 @@ class Cinema {
     this.activeRecordId = ko.observable(null);
     this.activeFilmType = ko.observable(null);
     this.activeDataItem = ko.observable(null);
+    this.createHider();
   }
   get screen() {
     return jQuery('#bmpp-videoPlayer');
@@ -95,6 +111,18 @@ class Cinema {
   }
   get loader() {
     return jQuery(this.screen).find('.bmpp-videoLoader');
+  }
+  createHider() {
+    // Создаем шторку, за которой будут прятаться iframe'ы видео
+    // во всех разделах кроме раздела с результатами
+    jQuery(document.body).append(`<div style="position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0; background-color: #fff;
+      z-index: -800;"></div>`);
+  }
+  clearActiveState() {
+    this.activeRecordId(null);
+    this.activeFilmType(null);
+    this.activeDataItem(null);
   }
   showFilm(recordId, filmType, dataItem) {
     if (!dataItem || recordId === null || !filmType) return;
@@ -116,6 +144,7 @@ class Cinema {
               p.pause();
             } else if (p.currentTime >= begin - 1e-1) {
               delete p.$hidden;
+              p.filmObject.activateIFrame();
               p.muted = false;
               cinema.loader.hide();
               cinema.curtain.hide();
@@ -160,9 +189,11 @@ class Cinema {
     Object.keys(films).forEach(key => films[key].film.pause());
   }
   hideAllBut(showKey) {
-    let films = this.films;
+    const films = this.films;
     Object.keys(films).forEach(key => {
-      films[key].element[key === showKey ? 'show' : 'hide']();
+      if (showKey === key) {
+        films[key][showKey === key ? 'activateIFrame' : 'deactivateIFrame']();
+      }
     });
   }
 }
