@@ -71,6 +71,7 @@ const p_mGeFunction = {
 
 const p_mGeTags = {
   type: 'list', name: 'Дополнительные признаки', id: 'p_mGeTags',
+  isRegEx: true,
   valueList: { orValues: [
     { name: 'Двуручный жест («туда-обратно»)', value: 'Shuttle' },
     { name: 'Жест с многократным махом', value: 'Multi-S' },
@@ -78,7 +79,8 @@ const p_mGeTags = {
     { name: 'Отскок в конце ретракции', value: 'R Rebound' },
     { name: 'Многократный отскок в конце маха', value: 'Multi Rebound' },
     { name: 'Длинная ретракция', value: 'Long R' },
-    { name: 'Наложение на текущий жест фазы другого жеста', value: '(Lt|Rt) [PSHR] Overlap' },
+    { name: 'Наложение на текущий жест фазы другого жеста',
+      value: '(Lt|Rt) [PSHR] Overlap' },
     { name: 'Повтор предыдущего жеста', value: 'Repeat' },
     { name: 'Обрыв в основном сформированного жеста', value: 'GeBreakOff' },
     { name: 'Обрыв жеста без маховой фазы', value: 'GeFalstart' },
@@ -376,7 +378,7 @@ const p_vFNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vFNearPause'),
       p_vWNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vWNearPause');
 
 const p_vFForm = {
-  type: 'list', name: 'Тип заполнения', id: 'p_vFForm', isRegExValues: true,
+  type: 'list', name: 'Тип заполнения', id: 'p_vFForm', isRegEx: true,
   valueList: { orValues: [
     { name: 'Простое заполнение', orValues: [
       { name: 'Эканье', value: '\\(əɥ?\\)' },
@@ -396,7 +398,7 @@ const p_vFForm = {
 const p_vOForm = {
   type: 'list', name: 'Тип действия', id: 'p_vOForm',
   valueList: { orValues: [
-    { name: 'Цоканье', value: '{cl}' }
+    { name: 'Цоканье', value: '{cl}' },
     { name: 'Чмоканье', value: '{sm}' },
     { name: 'Фырканье', value: '{st}' },
     { name: 'Шмыганье', value: '{sf}' },
@@ -664,6 +666,7 @@ class SearchUnitProperty {
     this.help = data.help || '';
     this.value = ko.observable(null);
     this.virtualKeyboard = data.virtualKeyboard || false;
+    this.isRegEx = data.isRegEx || false;
 
     this._SearchUnitProperty_tune(data);
   }
