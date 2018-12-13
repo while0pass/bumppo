@@ -6,7 +6,8 @@ import resolve from 'rollup-plugin-node-resolve';
 //import globals from 'rollup-plugin-node-globals';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
-import { terser } from 'rollup-plugin-terser';
+//import { terser } from 'rollup-plugin-terser';
+import minify from 'rollup-plugin-babel-minify';
 import postcss from 'rollup-plugin-postcss';
 import copy from 'rollup-plugin-copy';
 
@@ -15,8 +16,6 @@ import simplevars from 'postcss-simple-vars';
 import nested from 'postcss-nested';
 import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
-
-const IS_PRODUCTION = process.BUMPPO_ENV === 'production';
 
 export default {
   external: ['jquery', 'semantic-ui', 'knockout', 'svg.js'],
@@ -68,11 +67,15 @@ export default {
       BUMPPO_LOCAL_SERVER: JSON.stringify(process.env.BUMPPO_LOCAL_SERVER || ''),
       BUMPPO_VERSION: process.env.BUMPPO_VERSION || '',
     }),
-    terser({
-      warnings: "verbose",
-      compress: IS_PRODUCTION ? {} : false,
-      mangle: IS_PRODUCTION ? true : false,
-    }),
+    minify({ comments: false }),
+    // На продакшене плагин терсера и последующие молчаливо не отрабатывают,
+    // но сжимает он лучше, чем minify. Minify не отрабатывает, только если
+    // его поместить в условную конструкцию типа следующей строки
+    //(process.env.BUMPPO_ENV === 'production' && terser({
+    //  warnings: "verbose",
+    //  compress: IS_PRODUCTION ? {} : false,
+    //  mangle: IS_PRODUCTION ? true : false,
+    //})),
     copy({
       'node_modules/plyr/dist/plyr.css':
       'build/plyr.css',
