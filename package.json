@@ -12,7 +12,7 @@
     "lint-watch": "find src/ -name '*.js' | entr -s 'clear; yarn run lint-all'",
     "live-rebuild": "rollup -c --watch",
     "showreel": "test -n \"$BUMPPO_VERSION\" && { gulp -f semantic/gulpfile.js build; BUMPPO_ENV=production BUMPPO_HOSTING=1 rollup -c; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout gh-pages; rsync -av --exclude='*.mp4' build/ ../bumppo-ghpages/$BUMPPO_VERSION; } || echo $'\\n\\nЗадайте переменную окружения BUMPPO_VERSION\\n'",
-    "production": "gulp -f semantic/gulpfile.js build; BUMPPO_ENV=production rollup -c",
+    "production": "rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production",
     "serve": "lite-server -c lite-server.config.json",
     "test": "echo 'Error: no test specified' && exit 1",
     "watch": "npm-run-all --parallel live-rebuild serve"

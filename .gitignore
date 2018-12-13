@@ -1,5 +1,4 @@
 build/**
-!build/index.html
 
 node_modules
 semantic

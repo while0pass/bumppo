@@ -17,6 +17,8 @@ import nested from 'postcss-nested';
 import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 
+const IS_PRODUCTION = process.env.BUMPPO_ENV === 'production';
+
 export default {
   external: ['jquery', 'semantic-ui', 'knockout', 'svg.js'],
   input: 'src/app.js',
@@ -71,18 +73,18 @@ export default {
     // На продакшене плагин терсера и последующие молчаливо не отрабатывают,
     // но сжимает он лучше, чем minify. Minify не отрабатывает, только если
     // его поместить в условную конструкцию типа следующей строки
-    //(process.env.BUMPPO_ENV === 'production' && terser({
+    //(IS_PRODUCTION && terser({
     //  warnings: "verbose",
     //  compress: IS_PRODUCTION ? {} : false,
     //  mangle: IS_PRODUCTION ? true : false,
     //})),
     copy({
-      'node_modules/plyr/dist/plyr.css':
-      'build/plyr.css',
-      'node_modules/svg.js/dist/svg.min.js':
-      'build/js/libs/svg.min.js',
+      'src/index.html': 'build/index.html',
+      'node_modules/plyr/dist/plyr.css': 'build/plyr.css',
+      'node_modules/svg.js/dist/svg.min.js': 'build/js/libs/svg.min.js',
       'node_modules/jquery.initialize/jquery.initialize.min.js':
       'build/js/libs/jquery.initialize.min.js',
+      verbose: IS_PRODUCTION
     }),
   ],
 };
