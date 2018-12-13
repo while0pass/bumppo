@@ -13,18 +13,19 @@ import cinema from './scripts/cinema.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import testResultsRawData from './results_data.js';
 
-/* eslint-disable no-undef */
+/* eslint-disable no-undef,no-constant-condition */
 const searchEngineURL = (BUMPPO_ENV === 'production' ?
         'http://multidiscourse.ru:8080/search_annotations/SearchAnnotations' :
         (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
           'http://localhost:8080/search_annotations/SearchAnnotations')),
-      baseURL = (BUMPPO_ENV === 'production' ?
-        (BUMPPO_HOSTING ? '/bumppo-ghpages/BUMPPO_VERSION' : '/search/') : '');
-/* eslint-enable no-undef */
+      baseURL = (BUMPPO_ENV !== 'production' ? '' :
+        ('BUMPPO_SHOWREEL' ? '/bumppo-ghpages/BUMPPO_SHOWREEL' : '/search/'));
+/* eslint-enable no-undef,no-constant-condition */
 log('Search Engine:', searchEngineURL);
 
 function viewModel() {
   let self = this;
+  this.version = 'v' + 'BUMPPO_VERSION';
 
   this.queryPane = Symbol.for('query'),
   this.subcorpusPane = Symbol.for('subcorpus'),

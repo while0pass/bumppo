@@ -17,7 +17,10 @@ import nested from 'postcss-nested';
 import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 
-const IS_PRODUCTION = process.env.BUMPPO_ENV === 'production';
+const IS_PRODUCTION = process.env.BUMPPO_ENV === 'production',
+      BUMPPO_VERSION = require('./package.json').version;
+
+console.log('\nBumppo v' + BUMPPO_VERSION);
 
 export default {
   external: ['jquery', 'semantic-ui', 'knockout', 'svg.js'],
@@ -67,7 +70,9 @@ export default {
       BUMPPO_ENV: JSON.stringify(process.env.BUMPPO_ENV || 'development'),
       BUMPPO_HOSTING: process.env.BUMPPO_HOSTING || JSON.stringify(false),
       BUMPPO_LOCAL_SERVER: JSON.stringify(process.env.BUMPPO_LOCAL_SERVER || ''),
-      BUMPPO_VERSION: process.env.BUMPPO_VERSION || '',
+      BUMPPO_SHOWREEL: (process.env.BUMPPO_SHOWREEL === 'false' ? '' :
+        process.env.BUMPPO_SHOWREEL || ''),
+      BUMPPO_VERSION: BUMPPO_VERSION,
     }),
     minify({ comments: false }),
     // На продакшене плагин терсера и последующие молчаливо не отрабатывают,
