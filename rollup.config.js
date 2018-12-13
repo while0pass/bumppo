@@ -16,6 +16,8 @@ import nested from 'postcss-nested';
 import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 
+const IS_PRODUCTION = process.BUMPPO_ENV === 'production';
+
 export default {
   external: ['jquery', 'semantic-ui', 'knockout', 'svg.js'],
   input: 'src/app.js',
@@ -66,7 +68,11 @@ export default {
       BUMPPO_LOCAL_SERVER: JSON.stringify(process.env.BUMPPO_LOCAL_SERVER || ''),
       BUMPPO_VERSION: process.env.BUMPPO_VERSION || '',
     }),
-    (process.env.BUMPPO_ENV === 'production' && terser()),
+    terser({
+      warnings: "verbose",
+      compress: IS_PRODUCTION ? {} : false,
+      mangle: IS_PRODUCTION ? true : false,
+    }),
     copy({
       'node_modules/plyr/dist/plyr.css':
       'build/plyr.css',
