@@ -29,6 +29,7 @@ const p_sameParticipant = { // eslint-disable-line no-unused-vars
 
 const p_mGeStructure = {
   type: 'list', name: 'Фазовая структура', id: 'p_mGeStructure',
+  tierTemplate: '{ p_participants }-mGeStructure',
   displayValues: true, valueList: { orValues: [
     { name: 'Мах', value: 'S' },
     { name: 'Мах, ретракция', value: 'S R' },
@@ -50,6 +51,7 @@ const p_mGeStructure = {
 
 const p_mGeHandedness = {
   type: 'list', name: 'Рукость', id: 'p_mGeHandedness',
+  tierTemplate: '{ p_participants }-mGeHandedness',
   valueList: { orValues: [
     { name: 'Леворучный', value: 'Lt' },
     { name: 'Праворучный', value: 'Rt' },
@@ -61,6 +63,7 @@ const p_mGeHandedness = {
 
 const p_mGeFunction = {
   type: 'list', name: 'Функциональный тип', id: 'p_mGeFunction',
+  tierTemplate: '{ p_participants }-mGeFunction',
   valueList: { orValues: [
     { name: 'Изобразительный жест', value: 'Depictive' },
     { name: 'Указательный жест', value: 'Pointing' },
@@ -71,7 +74,7 @@ const p_mGeFunction = {
 
 const p_mGeTags = {
   type: 'list', name: 'Дополнительные признаки', id: 'p_mGeTags',
-  isRegEx: true,
+  isRegEx: true, tierTemplate: '{ p_participants }-mGeTags',
   valueList: { orValues: [
     { name: 'Двуручный жест («туда-обратно»)', value: 'Shuttle' },
     { name: 'Жест с многократным махом', value: 'Multi-S' },
@@ -88,6 +91,7 @@ const p_mGeTags = {
 
 const p_vIllocPhase = {
   type: 'list', name: 'Иллокутивно-фазовое значение', id: 'p_vIllocPhase',
+  tierTemplate: '{ p_participants }-vIllocPhase',
   displayValues: true, valueList: { orValues: [
     { name: 'Иллокутивное', orValues: [
       { name: 'Завершение сообщения', value: '.' },
@@ -131,7 +135,7 @@ const p_vIllocPhase = {
 
 const p_vCombIllocPhase = {
   type: 'list', name: 'Комбинация иллокутивно-фазовых значений',
-  id: 'p_vCombIllocPhase',
+  id: 'p_vCombIllocPhase', tierTemplate: '{ p_participants }-vCombIllocPhase',
   valueList: { orValues: [
     { name: 'Не-сообщение + незавершенность', value: 'NonStNonFinal' },
     { name: 'Не-сообщение + неполнота информации', value: 'NonStDots' },
@@ -142,23 +146,28 @@ const p_vCombIllocPhase = {
 
 const p_vAccentsCount = {
   type: 'interval', name: 'Число акцентов', id: 'p_vAccentsCount',
+  tierTemplate: '{ p_participants }-vAccentsCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vMainAccentsCount = {
   type: 'interval', name: 'Число главных акцентов', id: 'p_vMainAccentsCount',
+  tierTemplate: '{ p_participants }-vMainAccentsCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vAccentsAfterMainCount = {
   type: 'interval', name: 'Число вторичных акцентов после главного',
   id: 'p_vAccentsAfterMainCount',
+  tierTemplate: '{ p_participants }-vAccentsAfterMainCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vWordsCount = {
   type: 'interval', name: 'Число слов', id: 'p_vWordsCount',
+  tierTemplate: '{ p_participants }-vWordsCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vPausesCount = {
   type: 'interval', name: 'Число абсолютных пауз', id: 'p_vPausesCount',
+  tierTemplate: '{ p_participants }-vPausesCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vFilledCount = {
@@ -167,7 +176,7 @@ const p_vFilledCount = {
 
 const p_vStartFilled = {
   type: 'list', name: 'Начинается с заполненной паузы',
-  id: 'p_vStartFilled',
+  id: 'p_vStartFilled', tierTemplate: '{ p_participants }-vStartFilled',
   valueList: { xorValues: [
     { name: 'Да', value: 'Yes' },
     { name: 'Нет', value: false },
@@ -175,6 +184,7 @@ const p_vStartFilled = {
 
 const p_vInterruptCount = {
   type: 'interval', name: 'Число точек прерывания', id: 'p_vInterruptCount',
+  tierTemplate: '{ p_participants }-vInterruptCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const v_R = '/', v_F = '\\', v_L = '–', v_r = '↑', v_f = '↓', v_l = '→',
@@ -189,6 +199,7 @@ const v_R = '/', v_F = '\\', v_L = '–', v_r = '↑', v_f = '↓', v_l = '→',
 const p_vMainAccents = {
   type: 'list', name: 'Движение тона в главном акценте',
   id: 'p_vMainAccents', displayValues: true,
+  tierTemplate: '{ p_participants }-vMainAccents',
   valueList: { orValues: [
     { name: 'Восходящее', value: v_R },
     { name: 'Нисходящее', value: v_F },
@@ -215,7 +226,7 @@ const p_vMainAccents = {
 
 const p_vParenth = {
   type: 'list', name: 'Входит в конструкцию со вставкой',
-  id: 'p_vParenth',
+  id: 'p_vParenth', tierTemplate: '{ p_participants }-vParenth',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Непосредственно предшествует вставке', value: 'Enter' },
@@ -231,7 +242,7 @@ const p_vParenth = {
 
 const p_vInSplit = {
   type: 'list', name: 'Входит в конструкцию со сплитом',
-  id: 'p_vInSplit',
+  id: 'p_vInSplit', tierTemplate: '{ p_participants }-vInSplit',
   valueList: { xorValues: [
     { name: 'Да', value: 'InSplit' },
     { name: 'Нет', value: false },
@@ -239,7 +250,7 @@ const p_vInSplit = {
 
 const p_vCoConstr = {
   type: 'list', name: 'Входит в совместное построение реплик',
-  id: 'p_vCoConstr',
+  id: 'p_vCoConstr', tierTemplate: '{ p_participants }-vCoConstr',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Достраивается другим участником', value: 'Prelim' },
@@ -251,7 +262,7 @@ const p_vCoConstr = {
 
 const p_vCitation = {
   type: 'list', name: 'Входит в конструкцию с (полу)прямой цитацией',
-  id: 'p_vCitation',
+  id: 'p_vCitation', tierTemplate: '{ p_participants }-vCitation',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Вводит чужую речь (авторская ремарка)', value: 'Frame' },
@@ -266,6 +277,7 @@ const p_vCitation = {
 const p_oInterlocutor = {
   type: 'list', name: 'Объект взгляда',
   id: 'p_oInterlocutor', displayValues: true,
+  tierTemplate: '{ p_participants }-oInterlocutor',
   valueList: { orValues: [
     { name: 'Рассказчик', value: 'N' },
     { name: 'Комментатор', value: 'C' },
@@ -277,6 +289,7 @@ const p_oInterlocutor = {
 
 const p_oLocus = {
   type: 'list', name: 'Локус взгляда', id: 'p_oLocus',
+  tierTemplate: '{ p_participants }-oLocus',
   valueList: { orValues: [
     { name: 'Лицо', value: 'Face' },
     { name: 'Руки', value: 'Hands' },
@@ -295,6 +308,7 @@ const p_mHand = {
 
 const p_mMtType = {
   type: 'list', name: 'Тип движения', id: 'p_mMtType',
+  tierTemplate: '{ p_participants }-m{ p_mHand }MtType',
   valueList: { orValues: [
     { name: 'Подготовка', value: 'P' },
     { name: 'Мах', value: 'S' },
@@ -308,6 +322,7 @@ const p_mMtType = {
 
 const p_mStType = {
   type: 'list', name: 'Тип неподвижности', id: 'p_mStType',
+  tierTemplate: '{ p_participants }-m{ p_mHand }StType',
   valueList: { orValues: [
     { name: 'Удержание', value: 'Hold' },
     { name: 'Покой', value: 'Reset' },
@@ -335,6 +350,7 @@ const p_mStrokeLenType = {
 
 const p_mAdType = {
   type: 'list', name: 'Тип адаптора', id: 'p_mAdType',
+  tierTemplate: '{ p_participants }-mAdType',
   valueList: { orValues: [
     { name: 'Четкий адаптор', value: 'Adaptor1' },
     { name: 'Нечеткий адаптор', value: 'Adaptor2' },
@@ -352,6 +368,7 @@ function createPropertyFromTemplate(propertyTemplate, propertyId) {
 
 const pt_InOutEDU = {
   type: 'list', name: 'Изолированность',
+  tierTemplate: '{ p_participants }-vInOutEDU',
   valueList: { orValues: [
     { name: 'Внутри ЭДЕ', value: 'In' },
     { name: 'Отдельно', value: 'Out' },
@@ -360,10 +377,19 @@ const pt_InOutEDU = {
 const p_vFInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vFInOutEDU'),
       p_vHInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vHInOutEDU'),
       p_vLInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vLInOutEDU'),
-      p_vOInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vOInOutEDU');
+      p_vOInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vOInOutEDU'),
+      p_vPauseInOutEDU = {
+        type: 'list', name: 'Изолированность',
+        tierTemplate: '{ p_participants }-vPauseInOutEDU',
+        valueList: { orValues: [
+          { name: 'Внутри ЭДЕ', value: 'In' },
+          { name: 'Отдельно', value: 'Out' },
+        ]}
+      };
 
 const pt_NearPause = {
   type: 'list', name: 'Соседство с изолированными паузами',
+  tierTemplate: '{ p_participants }-vNearPause',
   valueList: { orValues: [
     { name: 'Непосредственно перед паузой', value: 'Before' },
     { name: 'Непосредственно после паузы', value: 'After' },
@@ -379,6 +405,7 @@ const p_vFNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vFNearPause'),
 
 const p_vFForm = {
   type: 'list', name: 'Тип заполнения', id: 'p_vFForm', isRegEx: true,
+  tierTemplate: '{ p_participants }-vSForm',
   valueList: { orValues: [
     { name: 'Простое заполнение', orValues: [
       { name: 'Эканье', value: '\\(əɥ?\\)' },
@@ -397,6 +424,7 @@ const p_vFForm = {
 
 const p_vOForm = {
   type: 'list', name: 'Тип действия', id: 'p_vOForm',
+  tierTemplate: '{ p_participants }-vSForm',
   valueList: { orValues: [
     { name: 'Цоканье', value: '{cl}' },
     { name: 'Чмоканье', value: '{sm}' },
@@ -412,10 +440,12 @@ const p_vOForm = {
 
 const p_vWForm = {
   type: 'text', name: 'Словарная форма', id: 'p_vWForm', placeholder: '…',
+  tierTemplate: '{ p_participants }-vSForm',
 };
 
 const p_vOnom = {
   type: 'list', name: 'Идеофон', id: 'p_vOnom',
+  tierTemplate: '{ p_participants }-vOnom',
   valueList: { xorValues: [
     { name: 'Да', value: 'Onom' },
     { name: 'Нет', value: false },
@@ -423,6 +453,7 @@ const p_vOnom = {
 
 const p_vTruncated = {
   type: 'list', name: 'Оборванное слово', id: 'p_vTruncated',
+  tierTemplate: '{ p_participants }-vTruncated',
   valueList: { xorValues: [
     { name: 'Да', value: 'Truncated' },
     { name: 'Нет', value: false },
@@ -430,18 +461,21 @@ const p_vTruncated = {
 
 const p_vWordNum = {
   type: 'interval', name: 'Позиция от начала ЭДЕ', id: 'p_vWordNum',
+  tierTemplate: '{ p_participants }-vWordNum',
   fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
   fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##'
 };
 
 const p_vWordNumReversed = {
   type: 'interval', name: 'Позиция от конца ЭДЕ', id: 'p_vWordNumReversed',
+  tierTemplate: '{ p_participants }-vWordNumReversed',
   fromOnlyBanner: '##‐я и дальше', toOnlyBanner: '##‐я и ближе',
   fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##'
 };
 
 const p_vInterrupt = {
   type: 'list', name: 'Точка прерывания', id: 'p_vInterrupt',
+  tierTemplate: '{ p_participants }-vInterrupt',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'При самоисправлении внутри ЭДЕ', value: 'Mild' },
@@ -454,6 +488,7 @@ const p_vInterrupt = {
 
 const p_vAccents = {
   type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
+  tierTemplate: '{ p_participants }-vAccents',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'С восходящим тоном', value: v_R },
@@ -483,6 +518,7 @@ const p_vAccents = {
 
 const p_vMainAccent = {
   type: 'list', name: 'С главным акцентом', id: 'p_vMainAccent',
+  tierTemplate: '{ p_participants }-vMainAccent',
   valueList: { xorValues: [
     { name: 'Да', value: 'Main' },
     { name: 'Нет', value: false },
@@ -490,6 +526,7 @@ const p_vMainAccent = {
 
 const p_vReduction = {
   type: 'list', name: 'Редуцированное произнесение', id: 'p_vReduction',
+  tierTemplate: '{ p_participants }-vReduction',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Всего слова', value: 'Full' },
@@ -500,6 +537,7 @@ const p_vReduction = {
 
 const p_vRegister = {
   type: 'list', name: 'Смещенный тональный регистр', id: 'p_vRegister',
+  tierTemplate: '{ p_participants }-vRegister',
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'Повышенный', value: 'Hi' },
@@ -510,6 +548,7 @@ const p_vRegister = {
 
 const p_vLength = {
   type: 'list', name: 'Удлиненная реализация фонем', id: 'p_vLength',
+  tierTemplate: '{ p_participants }-vLength',
   valueList: { xorValues: [
     { name: 'Да', value: 'Len' },
     { name: 'Нет', value: false },
@@ -517,6 +556,7 @@ const p_vLength = {
 
 const p_vTempo = {
   type: 'list', name: 'Темп произнесения', id: 'p_vTempo',
+  tierTemplate: '{ p_participants }-vTempo',
   valueList: { orValues: [
     { name: 'Нейтральный', value: false },
     { name: 'Ускоренный', value: 'Fast' },
@@ -526,6 +566,7 @@ const p_vTempo = {
 
 const p_vEmph = {
   type: 'list', name: 'Эмфатическое произнесение', id: 'p_vEmph',
+  tierTemplate: '{ p_participants }-vEmph',
   valueList: { xorValues: [
     { name: 'Да', value: 'Emph' },
     { name: 'Нет', value: false },
@@ -533,6 +574,7 @@ const p_vEmph = {
 
 const p_vStress = {
   type: 'list', name: 'Нестандартное лексическое ударение', id: 'p_vStress',
+  tierTemplate: '{ p_participants }-vStress',
   valueList: { xorValues: [
     { name: 'Да', value: 'Stress' },
     { name: 'Нет', value: false },
@@ -540,7 +582,7 @@ const p_vStress = {
 
 const p_vStops = {
   type: 'list', name: 'Особенности произнесения начала / конца словоформы',
-  id: 'p_vStops',
+  id: 'p_vStops', tierTemplate: '{ p_participants }-vStops',
   valueList: { orValues: [
     { name: 'Гласный («шва»-) призвук в начале словоформы', value: 'Schw-st' },
     { name: 'Гортанная смычка («твердый приступ») в начале словоформы', value: 'Gl-st' },
@@ -553,6 +595,7 @@ const p_vStops = {
 
 const p_vCollatForm = {
   type: 'list', name: 'Тип явления', id: 'p_vCollatForm',
+  tierTemplate: '{ p_participants }-vCollatForm',
   valueList: { orValues: [
     { name: 'Смех', value: '{laugh}' },
     { name: 'Улыбка', value: '{smile}' },
@@ -581,6 +624,7 @@ const propertiesLists = {
   u_vHPause: commonProperties.concat([p_vHInOutEDU, p_vHNearPause]),
   u_vOtherSegm: commonProperties.concat([p_vOInOutEDU, p_vONearPause, p_vOForm]),
   u_vCollat: commonProperties.concat([p_vCollatForm]),
+  u_vPause: commonProperties.concat([p_vPauseInOutEDU]),
 
   u_oFixation: commonProperties.concat([p_oInterlocutor, p_oLocus]),
 
@@ -667,6 +711,7 @@ class SearchUnitProperty {
     this.value = ko.observable(null);
     this.virtualKeyboard = data.virtualKeyboard || false;
     this.isRegEx = data.isRegEx || false;
+    this.tierTemplate = data.tierTemplate;
 
     this._SearchUnitProperty_tune(data);
   }

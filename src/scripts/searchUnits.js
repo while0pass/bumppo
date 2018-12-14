@@ -53,7 +53,7 @@ var data = [
             subtierTemplate: '{ p_participants }-vSType',
             subtierValue: 'Other' },
 
-          { name: 'Абсолютная пауза', id: 'u_v--AbsolutePause',
+          { name: 'Абсолютная пауза', id: 'u_vPause',
             tierTemplate: '{ p_participants }-vPause' },
         ]},
       { name: 'Параллельный уровень сегментации',

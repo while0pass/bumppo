@@ -1,16 +1,23 @@
+import log from './log.js';
 import linearizeTree from './linearizeTree.js';
-import { p_duration } from './searchUnitProperties.js';
+import { p_duration, TextProperty, IntervalProperty,
+  ListProperty } from './searchUnitProperties.js';
+
+function escapeRegExpELAN(string) {
+  return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
+}
 
 export default function getQueryJSON(viewModel) {
   let stages = viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
       shouldFilterStages = stages.length > 0 && stages.length < 3,
-      stagesKeyAndTier = 'Stages',
+      stagesKeyAndTier = 'Stage',
       x = {
         version: '1.0',
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
         conditions: {}
       },
       ltree = linearizeTree(viewModel.queryTree);
+
   if (shouldFilterStages) {
     let reTemplate = stages.join('|');
     x.conditions[stagesKeyAndTier] = {
@@ -20,8 +27,9 @@ export default function getQueryJSON(viewModel) {
       tiers: [stagesKeyAndTier]
     };
   }
-  for (let i = 0; i < ltree.length; i++) {
-    let node = ltree[i],
+
+  for (let nodeIndex = 0; nodeIndex < ltree.length; nodeIndex++) {
+    let node = ltree[nodeIndex],
         unitType = node.unitType(),
         unitPropertiesMap = node.unitProperties.unitPropertiesMap(),
         nodeKey = node.serialNumber().toString();
@@ -31,6 +39,7 @@ export default function getQueryJSON(viewModel) {
       search: '.+',
       tiers: node.getTiersFromTemplate(unitType.tierTemplate)
     };
+
     if (p_duration.id in unitPropertiesMap) {
       let duration = unitPropertiesMap[p_duration.id].value();
       if (duration && 'min' in duration) {
@@ -40,6 +49,7 @@ export default function getQueryJSON(viewModel) {
         x.conditions[nodeKey].duration_max = duration.max;
       }
     }
+
     if (unitType.subtierTemplate) {
       let subKey = nodeKey + 'p0';
       x.conditions[subKey] = {
@@ -56,6 +66,47 @@ export default function getQueryJSON(viewModel) {
         distance_max: 0
       };
     }
+
+    let propIndex = 1;
+    node.chosenUnitProperties().forEach(prop => {
+      if (!prop.tierTemplate) return;
+      let propKey = `${ nodeKey }p${ propIndex }`,
+          value = prop.value(),
+          tiers = node.getTiersFromTemplate(prop.tierTemplate);
+      log(propKey, value, tiers);
+      if (prop instanceof TextProperty) {
+        x.conditions[propKey] = {
+          type: 'simple',
+          is_regex: true,
+          search: value
+        };
+      } else if (prop instanceof ListProperty) {
+        if (!(value instanceof Array)) return;
+        x.conditions[propKey] = {
+          type: 'simple',
+          is_regex: true,
+          search: value
+            .filter(a => typeof a === 'string')
+            .map(a => prop.isRegEx ? a : escapeRegExpELAN(a)).join('|')
+        };
+      } else if (prop instanceof IntervalProperty) {
+        x.conditions[propKey] = {
+          type: 'simple_number'
+        };
+        if ('min' in value) x.conditions[propKey].min_value = value.min;
+        if ('max' in value) x.conditions[propKey].max_value = value.max;
+      }
+      x.conditions[propKey].tiers = tiers;
+      x.conditions[`${ nodeKey }.${ propKey }`] = {
+        type: 'structural',
+        first_condition_id: nodeKey,
+        second_condition_id: propKey,
+        distance_min: 0,
+        distance_max: 0
+      };
+      propIndex += 1;
+    });
+
     if (shouldFilterStages) {
       x.conditions[`${ nodeKey }.${ stagesKeyAndTier }`] = {
         type: 'overlaps',
@@ -64,8 +115,7 @@ export default function getQueryJSON(viewModel) {
       };
     }
 
-
-    if (i > 0) {
+    if (nodeIndex > 0) {
       let n1 = node.parentNode,
           n2 = node,
           id1 = n1.serialNumber().toString(),
