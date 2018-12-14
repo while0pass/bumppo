@@ -1,7 +1,7 @@
 import jQuery from 'jquery';
 import ko from 'knockout';
 
-const DURATION = {
+const p_duration = {
   type: 'interval', name: 'Длительность', id: 'duration', step: 20,
   units: 'миллисекунд', unitsBanner: 'мс',
   fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##',
@@ -20,7 +20,7 @@ const p_participants = {
     { name: 'Пересказчик', value: 'R' }
   ]}};
 
-const SAME_PARTICIPANT = {
+const p_sameParticipant = { // eslint-disable-line no-unused-vars
   type: 'list', name: 'Совпадение участников', id: 'same_participant',
   valueList: { xorValues: [
     { name: 'Да', value: true },
@@ -560,7 +560,7 @@ const p_vCollatForm = {
   ]}
 };
 
-const commonProperties = [DURATION, p_participants, SAME_PARTICIPANT];
+const commonProperties = [p_duration, p_participants];
 
 const defaultPropertiesList = commonProperties;
 const testPropertiesList = commonProperties.concat([p_vWForm, p_vWordNum,
