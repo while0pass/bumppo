@@ -10,14 +10,31 @@ export default function getQueryJSON(viewModel) {
       ltree = linearizeTree(viewModel.queryTree);
   for (let i = 0; i < ltree.length; i++) {
     let node = ltree[i],
-        simpleCond = {
-          type: 'simple',
-          is_regex: true,
-          search: '.+'
-        },
-        tiers = node.getTiersFromTemplate(node.unitType().tierTemplate);
-    simpleCond.tiers = tiers;
-    x.conditions[node.serialNumber().toString()] = simpleCond;
+        unitType = node.unitType(),
+        nodeKey = node.serialNumber().toString();
+    x.conditions[nodeKey] = {
+      type: 'simple',
+      is_regex: true,
+      search: '.+',
+      tiers: node.getTiersFromTemplate(unitType.tierTemplate)
+    };
+    if (unitType.subtierTemplate) {
+      let subKey = nodeKey + 'p0';
+      x.conditions[subKey] = {
+        type: 'simple',
+        is_regex: false,
+        search: unitType.subtierValue,
+        tiers: node.getTiersFromTemplate(unitType.subtierTemplate)
+      };
+      x.conditions[`${ nodeKey }.${ subKey }`] = {
+        type: 'structural',
+        first_condition_id: nodeKey,
+        second_condition_id: subKey,
+        distance_min: 0,
+        distance_max: 0
+      };
+    }
+
 
     if (i > 0) {
       let n1 = node.parentNode,
