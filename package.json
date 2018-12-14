@@ -1,21 +1,20 @@
 {
   "name": "Bumppo",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
   "private": false,
   "scripts": {
     "build": "rollup -c",
+    "build-watch": "rollup -c --watch",
     "lint": "eslint",
-    "lint-all": "find src/ -name '*.js' | xargs eslint",
-    "lint-watch": "find src/ -name '*.js' | entr -s 'clear; yarn run lint-all'",
-    "live-rebuild": "rollup -c --watch",
+    "lint-all": "clear; find src/ -name '*.js' | xargs eslint",
     "showreel": "test -n \"$BUMPPO_SHOWREEL\" && { rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout gh-pages; rsync -av build/ ../bumppo-ghpages/$BUMPPO_SHOWREEL; } || echo $'\\n\\nЗадайте переменную окружения BUMPPO_SHOWREEL\\n'",
     "production": "rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production,BUMPPO_SHOWREEL:false",
     "serve": "lite-server -c lite-server.config.json",
     "test": "echo 'Error: no test specified' && exit 1",
-    "watch": "npm-run-all --parallel live-rebuild serve"
+    "watch": "find src/ -name '*.js' | entr -s 'npm-run-all --silent --parallel lint-all build'"
   },
   "dependencies": {
     "debug": "^4.1.0",

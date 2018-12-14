@@ -4,21 +4,18 @@ export default function getQueryJSON(viewModel) {
   let x = {
         version: '1.0',
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
-        segments: viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
-        conditions: {
-        }
+        //segments: viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
+        conditions: {}
       },
       ltree = linearizeTree(viewModel.queryTree);
   for (let i = 0; i < ltree.length; i++) {
     let node = ltree[i],
-        nodeTiers = node.unitType().tiers,
         simpleCond = {
           type: 'simple',
           is_regex: true,
           search: '.+'
         },
-        tiers = (nodeTiers && nodeTiers.length > 0 ? nodeTiers : ['-vSForm']);
-    tiers = tiers.map(t => ['N'+t, 'R'+t, 'C'+t]).reduce((x, y) => x.concat(y));
+        tiers = node.getTiersFromTemplate(node.unitType().tierTemplate);
     simpleCond.tiers = tiers;
     x.conditions[node.serialNumber().toString()] = simpleCond;
 

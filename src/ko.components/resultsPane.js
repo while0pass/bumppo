@@ -84,21 +84,20 @@ const template = `
   </div>
 
   <div class="bmpp-resultsPane_results" data-bind="if: resultsData">
-    <div data-bind="text: JSON.stringify(resultsData, null, 2)">
-    </div>
-    <results-list params="resultsData: resultsData"></results-list>
 
-    <div style="padding: 1em; background-color: #eee">
+    <div style="padding: 1em; font-size: x-small;">
+      <header class="ui header">JSON запроса</header>
+      <code style="white-space: pre-wrap"
+        data-bind="text: $root.queryJSON"></pre></code>
+    </div>
+
+    <div style="padding: 1em; background-color: #eee; font-size: x-small;">
       <header class="ui header">JSON ответа</header>
       <code style="white-space: pre-wrap"
         data-bind="text: $root.responseJSON"></code>
     </div>
 
-    <div style="padding: 1em">
-      <header class="ui header">JSON запроса</header>
-      <code style="white-space: pre-wrap"
-        data-bind="text: $root.queryJSON"></pre></code>
-    </div>
+    <results-list params="resultsData: resultsData"></results-list>
 
     <div style="padding: 1em; color: white; background-color: #a00;"
          data-bind="visible: $root.resultsError">

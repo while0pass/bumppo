@@ -12,8 +12,8 @@ const DURATION = {
   не больше указанной, заполните только правое поле. Свойство не будет
   учитываться в запросе, если ничего не задать.</p>` };
 
-const PARTICIPANTS = {
-  type: 'list', name: 'Участники', id: 'participants',
+const p_participants = {
+  type: 'list', name: 'Участники', id: 'p_participants', allIfEmpty: true,
   valueList: { orValues: [
     { name: 'Рассказчик', value: 'N' },
     { name: 'Комментатор', value: 'C', disabledInChannels: ['ocul'] },
@@ -286,7 +286,7 @@ const p_oLocus = {
 };
 
 const p_mHand = {
-  type: 'list', name: 'Рука', id: 'p_mHand',
+  type: 'list', name: 'Рука', id: 'p_mHand', allIfEmpty: true,
   valueList: { orValues: [
     { name: 'Левая', value: 'Lt' },
     { name: 'Правая', value: 'Rt' },
@@ -560,7 +560,7 @@ const p_vCollatForm = {
   ]}
 };
 
-const commonProperties = [DURATION, PARTICIPANTS, SAME_PARTICIPANT];
+const commonProperties = [DURATION, p_participants, SAME_PARTICIPANT];
 
 const defaultPropertiesList = commonProperties;
 const testPropertiesList = commonProperties.concat([p_vWForm, p_vWordNum,
@@ -887,6 +887,7 @@ function addRawValues(listItem, values) {
 class ListProperty extends SearchUnitProperty {
   constructor(data, unitType) {
     super(data, unitType);
+    this.allIfEmpty = data.allIfEmpty || false;
     this.displayValues = data.displayValues || false;
     this.chosenValues = ko.observableArray([]);
     this.valueList = new ValueList(data.valueList, null, this);
@@ -902,6 +903,21 @@ class ListProperty extends SearchUnitProperty {
     ko.computed(function () {
       let value = this.value,
           values = this.unwrapValues(this.chosenValues());
+
+      this.unitType(); // Реагировать на изменение типа единицы поиска.
+      // Этот вызов необходим, чтобы, если измениться тип единицы, этот
+      // computed вычислился повторно. Это важно, например, для свойств
+      // со свойством allIfEmpty === true. Свойство p_participants
+      // чувствительно к типу канала, в окуломотрном канале часть калочек
+      // деактивируется. Поэтому если пользователь изменил текущую единицу
+      // с окуломотрной фиксации на вокальную ЭДЕ и при этом никакие участники
+      // у него не были выбраны, что эквивалентно использованию всех, то без
+      // этого вызова число выбранных участников у него осталось бы прежним,
+      // меньшим нужного.
+      if (this.allIfEmpty && values.length === 0) {
+        values = this.getAllValues();
+      }
+
       if (values.length > 0) {
         if (this.valueList.isXOR && values.length === 1
         && this.valueList.items.some(item => item === values[0])) {
@@ -965,6 +981,24 @@ class ListProperty extends SearchUnitProperty {
         }
       ).join('; ');
     }, this);
+  }
+  getAllValues() {
+    let list = [], hasChildItems = false;
+    if (this.valueList.isXOR) return list;
+    this.valueList.items.forEach(item => {
+      let disabled = item.disabled;
+      disabled = ko.isObservable(disabled) ? disabled() : disabled;
+      if (isImportant(item.value) && !disabled) {
+        list.push(item);
+      }
+      if (item.childList) {
+        hasChildItems = true;
+      }
+    });
+    if (hasChildItems) {
+      list = [];
+    }
+    return list;
   }
 }
 

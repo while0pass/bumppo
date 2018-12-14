@@ -6,23 +6,60 @@ var data = [
     types: [
       { name: 'Верхний уровень сегментации',
         types: [
-          { name: 'Элементарная дискурсивная единица (ЭДЕ)', abbr: 'ЭДЕ', id: 'u_vEDU' },
-          { name: 'Изолированный смех', id: 'u_vLaughLine'},
-          { name: 'Изолированный кластер заполненных пауз', id: 'u_vFilledLine' },
-          { name: 'Самостоятельное неречевое вокальное явление', id: 'u_vNonVerbalLine' },
+          { name: 'Элементарная дискурсивная единица (ЭДЕ)', abbr: 'ЭДЕ',
+            id: 'u_vEDU', tierTemplate: '{ p_participants }-vLine',
+            subtierTemplate: '{ p_participants }-vLineType',
+            subtierValue: 'EDU' },
+
+          { name: 'Изолированный смех', id: 'u_vLaughLine',
+            tierTemplate: '{ p_participants }-vLine',
+            subtierTemplate: '{ p_participants }-vLineType',
+            subtierValue: 'Laugh' },
+
+          { name: 'Изолированный кластер заполненных пауз', id: 'u_vFilledLine',
+            tierTemplate: '{ p_participants }-vLine',
+            subtierTemplate: '{ p_participants }-vLineType',
+            subtierValue: 'Filled' },
+
+          { name: 'Самостоятельное неречевое вокальное явление',
+            id: 'u_vNonVerbalLine', tierTemplate: '{ p_participants }-vLine',
+            subtierTemplate: '{ p_participants }-vLineType',
+            subtierValue: 'NonVerbal' },
         ]},
       { name: 'Нижний уровень сегментации',
         types: [
-          { name: 'Слово', id: 'u_vWord' },
-          { name: 'Cмех', id: 'u_vLaughSegm'},
-          { name: 'Заполненная пауза', id: 'u_vFilledSegm' },
-          { name: 'Пауза со вдохом', id: 'u_vHPause' },
-          { name: 'Неречевое вокальное действие', id: 'u_vOtherSegm' },
-          { name: 'Абсолютная пауза', id: 'u_v--AbsolutePause' },
+          { name: 'Слово', id: 'u_vWord',
+            tierTemplate: '{ p_participants }-vSegm',
+            subtierTemplate: '{ p_participants }-vSType',
+            subtierValue: 'Word' },
+
+          { name: 'Cмех', id: 'u_vLaughSegm',
+            tierTemplate: '{ p_participants }-vSegm',
+            subtierTemplate: '{ p_participants }-vSType',
+            subtierValue: 'Laugh' },
+
+          { name: 'Заполненная пауза', id: 'u_vFilledSegm',
+            tierTemplate: '{ p_participants }-vSegm',
+            subtierTemplate: '{ p_participants }-vSType',
+            subtierValue: 'Filled' },
+
+          { name: 'Пауза со вдохом', id: 'u_vHPause',
+            tierTemplate: '{ p_participants }-vSegm',
+            subtierTemplate: '{ p_participants }-vSType',
+            subtierValue: 'HPause' },
+
+          { name: 'Неречевое вокальное действие', id: 'u_vOtherSegm',
+            tierTemplate: '{ p_participants }-vSegm',
+            subtierTemplate: '{ p_participants }-vSType',
+            subtierValue: 'Other' },
+
+          { name: 'Абсолютная пауза', id: 'u_v--AbsolutePause',
+            tierTemplate: '{ p_participants }-vPause' },
         ]},
       { name: 'Параллельный уровень сегментации',
         types: [
-          { name: 'Вокальное явление, накладывающееся на речь', id: 'u_vCollat' },
+          { name: 'Вокальное явление, накладывающееся на речь',
+            id: 'u_vCollat', tierTemplate: '{ p_participants }-vCollat' },
         ]},
     ]},
 
@@ -31,7 +68,8 @@ var data = [
     unitsHeader: 'Единицы окуломоторного канала',
     color: 'orange',
     types: [
-      { name: 'Фиксация', id: 'u_oFixation' },
+      { name: 'Фиксация', id: 'u_oFixation',
+        tierTemplate: '{ p_participants }-oFixation' },
     ]},
 
   { id: 'facial',
@@ -67,21 +105,36 @@ var data = [
     types: [
       { name: 'Первый уровень сегментации',
         types: [
-          { name: 'Движение', id: 'u_mMovement', tiers: ['-mLtMovement', '-mRtMovement'] },
-          { name: 'Неподвижность', id: 'u_mStillness', tiers: ['-mLtStillness', '-mRtStillness'] },
+          { name: 'Движение', id: 'u_mMovement',
+            tierTemplate: '{ p_participants }-m{ p_mHand }Movement' },
+
+          { name: 'Неподвижность', id: 'u_mStillness',
+            tierTemplate: '{ p_participants }-m{ p_mHand }Stillness' },
         ]},
       { name: 'Второй уровень сегментации',
         types: [
-          { name: 'Жест', id: 'u_mGesture', tiers: ['-mGesture'] },
-          { name: 'Адаптор', id: 'u_mAdaptor', tiers: ['-mAdaptor'] },
-          { name: 'Смена позы', id: 'u_mPostureAccomodator', tiers: ['-mPostureAccomodator'] },
+          { name: 'Жест', id: 'u_mGesture',
+            tierTemplate: '{ p_participant }-mGesture' },
+
+          { name: 'Адаптор', id: 'u_mAdaptor',
+            tierTemplate: '{ p_participant }-mAdaptor' },
+
+          { name: 'Смена позы', id: 'u_mPostureChange',
+            tierTemplate: '{ p_participant }-mPostureChange' },
         ]},
       { name: 'Третий уровень сегментации',
         types: [
-          { name: 'Мануальная поза', id: 'u_mPosture', tiers: ['-mPosture'] },
-          { name: 'Фаза перехода', id: 'u_mPostureChange', tiers: ['-mPostureChange'] },
-          { name: 'Двигательная цепочка', id: 'u_mMovementChain', tiers: ['-mMovementChain'] },
-          { name: 'Жестовая цепочка', id: 'u_mGestureChain', tiers: ['-mGestureChain'] },
+          { name: 'Мануальная поза', id: 'u_mPosture',
+            tierTemplate: '{ p_participant }-mPosture' },
+
+          { name: 'Фаза перехода', id: 'u_mPrPhase',
+            tierTemplate: '{ p_participant }-mPrPhase' },
+
+          { name: 'Двигательная цепочка', id: 'u_mMovementChain',
+            tierTemplate: '{ p_participant }-mMovementChain' },
+
+          { name: 'Жестовая цепочка', id: 'u_mGestureChain',
+            tierTemplate: '{ p_participant }-mGestureChain' },
         ]},
     ]},
 
@@ -108,10 +161,9 @@ class Unit {
     this.group = group;
     this.hasAbbr = Boolean(data.abbr);
     this.abbr = data.abbr || '';
-
-    if (data.tiers) {
-      this.tiers = data.tiers;
-    }
+    this.tierTemplate = data.tierTemplate;
+    this.subtierTemplate = data.subtierTemplate;
+    this.subtierValue = data.subtierValue;
   }
 }
 
