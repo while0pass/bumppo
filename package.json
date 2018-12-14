@@ -11,8 +11,8 @@
     "lint-all": "find src/ -name '*.js' | xargs eslint",
     "lint-watch": "find src/ -name '*.js' | entr -s 'clear; yarn run lint-all'",
     "live-rebuild": "rollup -c --watch",
-    "showreel": "test -n \"$BUMPPO_SHOWREEL\" && BUMPPO_ENV=production rollup -c || echo $'\\n\\nЗадайте переменную окружения BUMPPO_SHOWREEL\\n'",
-    "production": "rollup -c --environment BUMPPO_ENV:production,BUMPPO_SHOWREEL:false",
+    "showreel": "test -n \"$BUMPPO_SHOWREEL\" && { rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout gh-pages; rsync -av build/ ../bumppo-ghpages/$BUMPPO_SHOWREEL; } || echo $'\\n\\nЗадайте переменную окружения BUMPPO_SHOWREEL\\n'",
+    "production": "rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production,BUMPPO_SHOWREEL:false",
     "serve": "lite-server -c lite-server.config.json",
     "test": "echo 'Error: no test specified' && exit 1",
     "watch": "npm-run-all --parallel live-rebuild serve"
