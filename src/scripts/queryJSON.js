@@ -1,13 +1,24 @@
 import linearizeTree from './linearizeTree.js';
 
 export default function getQueryJSON(viewModel) {
-  let x = {
+  let stages = viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
+      shouldFilterStages = stages.length > 0 && stages.length < 3,
+      stagesKeyAndTier = 'Stages',
+      x = {
         version: '1.0',
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
-        //segments: viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
         conditions: {}
       },
       ltree = linearizeTree(viewModel.queryTree);
+  if (shouldFilterStages) {
+    let reTemplate = stages.join('|');
+    x.conditions[stagesKeyAndTier] = {
+      type: 'simple',
+      is_regex: true,
+      search: reTemplate,
+      tiers: [stagesKeyAndTier]
+    };
+  }
   for (let i = 0; i < ltree.length; i++) {
     let node = ltree[i],
         unitType = node.unitType(),
@@ -32,6 +43,13 @@ export default function getQueryJSON(viewModel) {
         second_condition_id: subKey,
         distance_min: 0,
         distance_max: 0
+      };
+    }
+    if (shouldFilterStages) {
+      x.conditions[`${ nodeKey }.${ stagesKeyAndTier }`] = {
+        type: 'overlaps',
+        first_condition_id: nodeKey,
+        second_condition_id: stagesKeyAndTier,
       };
     }
 

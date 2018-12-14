@@ -114,27 +114,27 @@ var data = [
       { name: 'Второй уровень сегментации',
         types: [
           { name: 'Жест', id: 'u_mGesture',
-            tierTemplate: '{ p_participant }-mGesture' },
+            tierTemplate: '{ p_participants }-mGesture' },
 
           { name: 'Адаптор', id: 'u_mAdaptor',
-            tierTemplate: '{ p_participant }-mAdaptor' },
+            tierTemplate: '{ p_participants }-mAdaptor' },
 
           { name: 'Смена позы', id: 'u_mPostureChange',
-            tierTemplate: '{ p_participant }-mPostureChange' },
+            tierTemplate: '{ p_participants }-mPostureChange' },
         ]},
       { name: 'Третий уровень сегментации',
         types: [
           { name: 'Мануальная поза', id: 'u_mPosture',
-            tierTemplate: '{ p_participant }-mPosture' },
+            tierTemplate: '{ p_participants }-mPosture' },
 
           { name: 'Фаза перехода', id: 'u_mPrPhase',
-            tierTemplate: '{ p_participant }-mPrPhase' },
+            tierTemplate: '{ p_participants }-mPrPhase' },
 
           { name: 'Двигательная цепочка', id: 'u_mMovementChain',
-            tierTemplate: '{ p_participant }-mMovementChain' },
+            tierTemplate: '{ p_participants }-mMovementChain' },
 
           { name: 'Жестовая цепочка', id: 'u_mGestureChain',
-            tierTemplate: '{ p_participant }-mGestureChain' },
+            tierTemplate: '{ p_participants }-mGestureChain' },
         ]},
     ]},
 
