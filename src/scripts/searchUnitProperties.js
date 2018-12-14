@@ -2,7 +2,7 @@ import jQuery from 'jquery';
 import ko from 'knockout';
 
 const p_duration = {
-  type: 'interval', name: 'Длительность', id: 'duration', step: 20,
+  type: 'interval', name: 'Длительность', id: 'p_duration', step: 20,
   units: 'миллисекунд', unitsBanner: 'мс',
   fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##',
   fromToEqualBanner: 'ровно ##',
@@ -1244,5 +1244,6 @@ class ValueListItem {
 
 export {
   defaultPropertiesList, testPropertiesList, propertiesLists,
-  SearchUnitProperty, IntervalProperty, TextProperty, ListProperty
+  SearchUnitProperty, IntervalProperty, TextProperty, ListProperty,
+  p_duration
 };

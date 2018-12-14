@@ -1,4 +1,5 @@
 import linearizeTree from './linearizeTree.js';
+import { p_duration } from './searchUnitProperties.js';
 
 export default function getQueryJSON(viewModel) {
   let stages = viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
@@ -22,6 +23,7 @@ export default function getQueryJSON(viewModel) {
   for (let i = 0; i < ltree.length; i++) {
     let node = ltree[i],
         unitType = node.unitType(),
+        unitPropertiesMap = node.unitProperties.unitPropertiesMap(),
         nodeKey = node.serialNumber().toString();
     x.conditions[nodeKey] = {
       type: 'simple',
@@ -29,6 +31,15 @@ export default function getQueryJSON(viewModel) {
       search: '.+',
       tiers: node.getTiersFromTemplate(unitType.tierTemplate)
     };
+    if (p_duration.id in unitPropertiesMap) {
+      let duration = unitPropertiesMap[p_duration.id].value();
+      if (duration && 'min' in duration) {
+        x.conditions[nodeKey].duration_min = duration.min;
+      }
+      if (duration && 'max' in duration) {
+        x.conditions[nodeKey].duration_max = duration.max;
+      }
+    }
     if (unitType.subtierTemplate) {
       let subKey = nodeKey + 'p0';
       x.conditions[subKey] = {
