@@ -394,7 +394,7 @@ const pt_NearPause = {
     { name: 'Непосредственно перед паузой', value: 'Before' },
     { name: 'Непосредственно после паузы', value: 'After' },
     { name: 'Непосредственно между паузами', value: 'Between' },
-    { name: 'Не соседствует с паузами', value: false },
+    { name: 'Не соседствует с паузами', value: 'None' },
   ]}
 };
 const p_vFNearPause = createPropertyFromTemplate(pt_NearPause, 'p_vFNearPause'),
@@ -558,7 +558,7 @@ const p_vTempo = {
   type: 'list', name: 'Темп произнесения', id: 'p_vTempo',
   tierTemplate: '{ p_participants }-vTempo',
   valueList: { orValues: [
-    { name: 'Нейтральный', value: false },
+    { name: 'Нейтральный', value: 'Neutral' },
     { name: 'Ускоренный', value: 'Fast' },
     { name: 'Замедленный', value: 'Slow' },
   ]}
