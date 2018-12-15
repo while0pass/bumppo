@@ -129,7 +129,7 @@ class Cinema {
     this.activeRecordId(recordId);
     this.activeFilmType(filmType);
     this.activeDataItem(dataItem);
-    let { begin, end } = dataItem.time,
+    let { begin, end } = dataItem.match.time,
         film = this.getFilm(recordId, filmType).film;
     const cinema = this,
           logoHideTime = 0.8,
