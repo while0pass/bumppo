@@ -6,8 +6,7 @@ import resolve from 'rollup-plugin-node-resolve';
 //import globals from 'rollup-plugin-node-globals';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
-//import { terser } from 'rollup-plugin-terser';
-import minify from 'rollup-plugin-babel-minify';
+import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import copy from 'rollup-plugin-copy';
 
@@ -18,7 +17,9 @@ import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 
 const IS_PRODUCTION = process.env.BUMPPO_ENV === 'production',
-      BUMPPO_VERSION = require('./package.json').version;
+      BUMPPO_VERSION = require('./package.json').version,
+      terserOpts = IS_PRODUCTION ? { numWorkers: 1 } : {};
+      // NOTE: Без numWorkers=1 terser не отрабатывает на нашем продакшене.
 
 console.log('\nBumppo v' + BUMPPO_VERSION);
 
@@ -74,15 +75,7 @@ export default {
         process.env.BUMPPO_SHOWREEL || ''),
       BUMPPO_VERSION: BUMPPO_VERSION,
     }),
-    minify({ comments: false }),
-    // На продакшене плагин терсера и последующие молчаливо не отрабатывают,
-    // но сжимает он лучше, чем minify. Minify не отрабатывает, только если
-    // его поместить в условную конструкцию типа следующей строки
-    //(IS_PRODUCTION && terser({
-    //  warnings: "verbose",
-    //  compress: IS_PRODUCTION ? {} : false,
-    //  mangle: IS_PRODUCTION ? true : false,
-    //})),
+    IS_PRODUCTION && terser(terserOpts),
     copy({
       'src/index.html': 'build/index.html',
       'node_modules/plyr/dist/plyr.css': 'build/plyr.css',

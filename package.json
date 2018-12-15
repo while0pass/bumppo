@@ -37,7 +37,6 @@
     "postcss-simple-vars": "^5.0.1",
     "rollup": "^0.67.4",
     "rollup-plugin-babel": "^4.1.0",
-    "rollup-plugin-babel-minify": "^6.2.0",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-copy": "^0.2.3",
     "rollup-plugin-eslint": "^5.0.0",
