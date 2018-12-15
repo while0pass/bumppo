@@ -1,39 +1,10 @@
 import cinema from '../scripts/cinema.js';
 
-const testResultsTemplate = `
+const tiersDataTemplate = `
 
-  <div data-bind="foreach: results" class="bmpp-searchResult">
-
-    <div class="ui label bmpp-recordLabel bmpp-initialRecordLabel"
-      data-bind="text: 'Запись ' + record_id,
-        visible: $index() === 0"></div>
-
-    <div class="divider" data-bind="visible: $index() > 0">
-      <div class="ui label bmpp-recordLabel"
-        data-bind="text: 'Запись ' + record_id,
-          visible: previousItem && previousItem.record_id !== record_id"></div>
-    </div>
-
-    <div class="bmpp-unitValue bmpp-context"
-      data-bind="text: before_context"></div>
-    <div class="bmpp-transcription bmpp-context"
-      data-bind="html: before_context_transcription"></div>
-
-    <div class="bmpp-unitValue"
-      data-bind="text: value, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, participant + '-vi', $data)
-        "></div>
-    <div class="bmpp-transcription"
-      data-bind="html: value_transcription, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, participant + '-vi', $data)
-        "></div>
-
-    <div class="bmpp-unitValue bmpp-context"
-      data-bind="text: after_context"></div>
-    <div class="bmpp-transcription bmpp-context"
-      data-bind="html: after_context_transcription"></div>
-
-  </div>
+  <!-- ko if: $index() > 0 -->;<!-- /ko -->
+  <span data-bind="text: $data[0]">
+  </span>=<span data-bind="text: $data[1]"></span>
 
 `;
 
@@ -52,23 +23,29 @@ const resultsTemplate = `
     </div>
 
     <div class="bmpp-unitValue bmpp-context"
-      data-bind="text: left_context"></div>
+      data-bind="text: before.value"></div>
     <div class="bmpp-transcription bmpp-context"
-      data-bind="html: left_context"></div>
+      data-bind="foreach: Object.entries(before.additionalTiers)">
+      ${ tiersDataTemplate }
+    </div>
 
     <div class="bmpp-unitValue"
-      data-bind="text: value, click: $component.cinema.showFilm
+      data-bind="text: match.value, click: $component.cinema.showFilm
         .bind($component.cinema, record_id, participant + '-vi', $data)
         "></div>
     <div class="bmpp-transcription"
-      data-bind="html: value, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, participant + '-vi', $data)
-        "></div>
+      data-bind="foreach: Object.entries(match.additionalTiers),
+        click: $component.cinema.showFilm.bind($component.cinema,
+          record_id, participant + '-vi', $data)">
+      ${ tiersDataTemplate }
+    </div>
 
     <div class="bmpp-unitValue bmpp-context"
-      data-bind="text: right_context"></div>
+      data-bind="text: after.value"></div>
     <div class="bmpp-transcription bmpp-context"
-      data-bind="html: right_context"></div>
+      data-bind="foreach: Object.entries(after.additionalTiers)">
+      ${ tiersDataTemplate }
+    </div>
 
   </div>
 
@@ -77,15 +54,7 @@ const resultsTemplate = `
 const template = `
 
   <div class="ui basic segment" data-bind="with: resultsData">
-
-    <!-- ko ifnot: version === 'test' -->
-      ${ resultsTemplate }
-    <!-- /ko -->
-
-    <!-- ko if: version === 'test' -->
-      ${ testResultsTemplate }
-    <!-- /ko -->
-
+    ${ resultsTemplate }
   </div>
 
 `;

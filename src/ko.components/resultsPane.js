@@ -28,7 +28,7 @@ const template = `
 
       <!-- ko if: resultsData() && resultsData().version === 'test' -->
       <div style="margin-bottom: .33em; color: #a00;">
-        NB: Отображаются результаты условной выдачи!
+        NB: Сервер поиска недоступен. Отображаются результаты условной выдачи!
       </div>
       <!-- /ko -->
 
@@ -37,14 +37,7 @@ const template = `
           data-bind="text: $root.subcorpusBanner"></span>
       </div>
 
-      <!-- ko if: resultsData() && resultsData().version === 'test' -->
-      <div style="margin-bottom: .33em;">
-        <em>Условие поиска:</em>&#x2002;<span
-        data-bind="text: resultsData().query"></span>
-      </div>
-      <!-- /ko -->
-      <!-- ko if: resultsData() && resultsData().version !== 'test'
-        && $root.queryTree.unitType() -->
+      <!-- ko if: resultsData() && $root.queryTree.unitType() -->
       <div style="margin-bottom: .33em;" data-bind="with: $root.queryTree">
         <em>Условие поиска:</em>&#x2002;<span data-bind="text:
         unitType().hasAbbr ? unitType().abbr : unitType().name"></span
@@ -85,11 +78,7 @@ const template = `
 
   <div class="bmpp-resultsPane_results" data-bind="if: resultsData">
 
-    <div style="padding: 1em; font-size: x-small;">
-      <header class="ui header">JSON запроса</header>
-      <code style="white-space: pre-wrap"
-        data-bind="text: $root.queryJSON"></pre></code>
-    </div>
+    <results-list params="resultsData: resultsData"></results-list>
 
     <div style="padding: 1em; background-color: #eee; font-size: x-small;">
       <header class="ui header">JSON ответа</header>
@@ -97,31 +86,34 @@ const template = `
         data-bind="text: $root.responseJSON"></code>
     </div>
 
-    <results-list params="resultsData: resultsData"></results-list>
-
-    <div style="padding: 1em; color: white; background-color: #a00;"
-         data-bind="visible: $root.resultsError">
+    <div style="padding: 1em; font-size: x-small;">
+      <header class="ui header">JSON запроса</header>
       <code style="white-space: pre-wrap"
-         data-bind="text: $root.resultsError"></code>
+        data-bind="text: $root.queryJSON"></pre></code>
     </div>
 
   </div>
 
 `;
 
-const R = /[A-Za-z]+(\d+).*/g;
+const R = /^[^\d]*(\d+).*$/g;
+
+class ContextOrMatch {
+  constructor(data) {
+    this.time = data.time;
+    this.value = data.value;
+    this.additionalTiers = data.show_tiers;
+  }
+}
 
 class Result {
-  constructor(data, isTestResult=false) {
-    this.record_id = this.getRecordId(data.record_id);
-    this.time = data.time;
-    this.participant = data.participant;
-    this.value = data.value;
-    this.left_context = data.left_context;
-    this.right_context = data.right_context;
+  constructor(data) {
+    [this.before, this.match, this.after] = this.getMatchAndContext(data);
+    this.record_id = this.getRecordId(data[0] && data[0].record_id || '');
+    this.participant = data[0] && data[0].participant || '';
+    this.tier = data[0] && data[0].tier;
 
     this.setup();
-    this.setupIfTest(data, isTestResult);
   }
   getRecordId(raw_record_id) {
     let splits = raw_record_id.split(R);
@@ -133,16 +125,35 @@ class Result {
   setup() {
     this.previousItem = null;
   }
-  setupIfTest(data, isTestResult) {
-    if (!isTestResult) return;
-    this.value_transcription = data.value_transcription;
-    this.before_context = data.before_context;
-    this.before_context_transcription = data.before_context_transcription;
-    this.after_context = data.after_context;
-    this.after_context_transcription = data.after_context_transcription;
-  }
   setPreviousItem(item) {
     this.previousItem = item;
+  }
+  getMatchAndContext(data) {
+    let before = null, match = null, after = null;
+    if (data instanceof Array) {
+      if (data.length === 3) {
+        if (data[1].is_main) {
+          [before, match, after] = data;
+        } else if (data[0].is_main) {
+          [match, before, after] = data;
+        } else if (data[2].is_main) {
+          [before, after, match] = data;
+        }
+      } else if (data.length === 2) {
+        if (data[1].is_main) {
+          [before, match] = data;
+        } else if (data[0].is_main) {
+          [match, after] = data;
+        }
+      } else if (data.length === 1) {
+        match = data[0];
+      }
+    }
+    return [
+      before && new ContextOrMatch(before),
+      new ContextOrMatch(match),
+      after && new ContextOrMatch(after)
+    ];
   }
 }
 
@@ -150,23 +161,14 @@ class Results {
   constructor(data) {
     this.version = data.version;
     this.results = this.getResults(data.results);
-    this.setupIfTest(data);
   }
   getResults(list) {
-    let results = list.map(item => new Result(item, this.isTestResults));
+    let results = list.map(item => new Result(item));
     results.forEach((item, index, array) => {
       let previousItem = index > 0 ? array[index - 1] : null;
       item.setPreviousItem(previousItem);
     });
     return results;
-  }
-  setupIfTest(data) {
-    if (!this.isTestResults) return;
-    this.subcorpus = data.subcorpus;
-    this.query = data.query;
-  }
-  get isTestResults() {
-    return this.version === 'test';
   }
 }
 
