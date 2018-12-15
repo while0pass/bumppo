@@ -456,6 +456,11 @@ $videoHeight: 193px;
   border-bottom: 1px dotted $blue;
   color: $blue;
   cursor: pointer;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .bmpp-negativeNode {

@@ -28,35 +28,34 @@ export class TreeNode {
     this.unitType.subscribe(unitType => {
       if (unitType === null) {
         unitProperties([]);
-      }
-      // Сохраняем все свойства прежнего типа. Разбираемся, какой новый тип
-      // и канал пользователь выбрал.
-      let oldUnitTypeProperties = unitProperties(),
-          newUnitTypeProperties = [];
-      //    unitTypeId = unitType.id,
-      //    unitTypeChannel = unitType.channel;
-      //
-      // По типу поисковой единицы или/и каналу вытягиваем перечень
-      // свойств нового типа.
-      let unitTypePropertiesData = propertiesLists[unitType.id] || defaultPropertiesList;
+      } else {
+        // Сохраняем все свойства прежнего типа. Разбираемся, какой новый тип
+        // и канал пользователь выбрал.
+        let oldUnitTypeProperties = unitProperties(),
+            newUnitTypeProperties = [];
+        // По типу поисковой единицы или/и каналу вытягиваем перечень
+        // свойств нового типа.
+        let unitTypePropertiesData = propertiesLists[unitType.id]
+          || defaultPropertiesList;
 
-      // Создаем свойства нового типа, совпадающие свойства переиспользуем
-      // или создаем на основе соответствующего свойства прежнего типа
-      for (let i = 0; i < unitTypePropertiesData.length; i++) {
-        let newPropertyData = unitTypePropertiesData[i],
-            oldProperty = oldUnitTypeProperties.find(
-              prop => prop.id === newPropertyData.id
-            );
-        if (oldProperty) {
-          oldProperty.changeUnitType(unitType);
-          newUnitTypeProperties.push(oldProperty);
-        } else {
-          let newProperty = SearchUnitProperty
-            .createByType(newPropertyData, unitType);
-          newUnitTypeProperties.push(newProperty);
+        // Создаем свойства нового типа, совпадающие свойства переиспользуем
+        // или создаем на основе соответствующего свойства прежнего типа
+        for (let i = 0; i < unitTypePropertiesData.length; i++) {
+          let newPropertyData = unitTypePropertiesData[i],
+              oldProperty = oldUnitTypeProperties.find(
+                prop => prop.id === newPropertyData.id
+              );
+          if (oldProperty) {
+            oldProperty.changeUnitType(unitType);
+            newUnitTypeProperties.push(oldProperty);
+          } else {
+            let newProperty = SearchUnitProperty
+              .createByType(newPropertyData, unitType);
+            newUnitTypeProperties.push(newProperty);
+          }
         }
+        unitProperties(newUnitTypeProperties);
       }
-      unitProperties(newUnitTypeProperties);
     });
     this.chosenUnitProperties = ko.computed(
       () => unitProperties().filter(prop => ko.unwrap(prop.banner))
@@ -83,7 +82,10 @@ export class TreeNode {
     }
     this.relationsToParentNode.removeAll();
     this.childNodes.removeAll();
-    this.parentNode.childNodes.remove(this);
+    this.unitType(null);
+    if (this.parentNode) {
+      this.parentNode.childNodes.remove(this);
+    }
   }
   clearAllProperties() {
     this.chosenUnitProperties().forEach(prop => prop.clear());

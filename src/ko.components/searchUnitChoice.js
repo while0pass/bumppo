@@ -115,7 +115,7 @@ const chosenUnitTemplate = `
     ></div>
     <!-- /ko -->
 
-    <div style="position: absolute; bottom: 0.8em;">
+    <div style="position: absolute; bottom: 0.8em">
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
@@ -125,6 +125,14 @@ const chosenUnitTemplate = `
         </span> свойства единицы
       </span>
     </div>
+
+    <span data-bind="click: node.seppuku.bind(node),
+                     visible: node.depth() === 0 && node.unitType()"
+      style="position: absolute; right: 1.5em; bottom: 1.1em; color: #a00;
+      border-bottom-color: #a00; line-height: 1em;"
+      class="bmpp-editUrl">
+      Очистить запрос
+    </span>
   </div>
 `;
 
@@ -245,6 +253,13 @@ class viewModel {
     if (!prechoosenUnit) {
       goEditUnitType();
     }
+
+    ko.computed(function () {
+      if (node.unitType() === null) {
+        activeChannel(null);
+        node.isEditStateForUnitType(true);
+      }
+    });
 
     this.node = node;
     this.channelViewModels = channelViewModels;
