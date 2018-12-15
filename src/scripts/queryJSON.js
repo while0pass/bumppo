@@ -1,4 +1,3 @@
-import log from './log.js';
 import linearizeTree from './linearizeTree.js';
 import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
@@ -11,16 +10,17 @@ export default function getQueryJSON(viewModel) {
   let stages = viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
       shouldFilterStages = stages.length > 0 && stages.length < 3,
       stagesKeyAndTier = 'Stage',
-      x = {
+      query = {
         version: '1.0',
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
         conditions: {}
       },
+      showTiers = [],
       ltree = linearizeTree(viewModel.queryTree);
 
   if (shouldFilterStages) {
     let reTemplate = stages.join('|');
-    x.conditions[stagesKeyAndTier] = {
+    query.conditions[stagesKeyAndTier] = {
       type: 'simple',
       is_regex: true,
       search: reTemplate,
@@ -33,7 +33,8 @@ export default function getQueryJSON(viewModel) {
         unitType = node.unitType(),
         unitPropertiesMap = node.unitProperties.unitPropertiesMap(),
         nodeKey = node.serialNumber().toString();
-    x.conditions[nodeKey] = {
+
+    query.conditions[nodeKey] = {
       type: 'simple',
       is_regex: true,
       search: '.+',
@@ -43,22 +44,22 @@ export default function getQueryJSON(viewModel) {
     if (p_duration.id in unitPropertiesMap) {
       let duration = unitPropertiesMap[p_duration.id].value();
       if (duration && 'min' in duration) {
-        x.conditions[nodeKey].duration_min = duration.min;
+        query.conditions[nodeKey].duration_min = duration.min;
       }
       if (duration && 'max' in duration) {
-        x.conditions[nodeKey].duration_max = duration.max;
+        query.conditions[nodeKey].duration_max = duration.max;
       }
     }
 
     if (unitType.subtierTemplate) {
       let subKey = nodeKey + 'p0';
-      x.conditions[subKey] = {
+      query.conditions[subKey] = {
         type: 'simple',
         is_regex: false,
         search: unitType.subtierValue,
         tiers: node.getTiersFromTemplate(unitType.subtierTemplate)
       };
-      x.conditions[`${ nodeKey }.${ subKey }`] = {
+      query.conditions[`${ nodeKey }.${ subKey }`] = {
         type: 'structural',
         first_condition_id: nodeKey,
         second_condition_id: subKey,
@@ -73,16 +74,15 @@ export default function getQueryJSON(viewModel) {
       let propKey = `${ nodeKey }p${ propIndex }`,
           value = prop.value(),
           tiers = node.getTiersFromTemplate(prop.tierTemplate);
-      log(propKey, value, tiers);
       if (prop instanceof TextProperty) {
-        x.conditions[propKey] = {
+        query.conditions[propKey] = {
           type: 'simple',
           is_regex: true,
           search: value
         };
       } else if (prop instanceof ListProperty) {
         if (!(value instanceof Array)) return;
-        x.conditions[propKey] = {
+        query.conditions[propKey] = {
           type: 'simple',
           is_regex: true,
           search: value
@@ -90,14 +90,17 @@ export default function getQueryJSON(viewModel) {
             .map(a => prop.isRegEx ? a : escapeRegExpELAN(a)).join('|')
         };
       } else if (prop instanceof IntervalProperty) {
-        x.conditions[propKey] = {
+        query.conditions[propKey] = {
           type: 'simple_number'
         };
-        if ('min' in value) x.conditions[propKey].min_value = value.min;
-        if ('max' in value) x.conditions[propKey].max_value = value.max;
+        if ('min' in value) query.conditions[propKey].min_value = value.min;
+        if ('max' in value) query.conditions[propKey].max_value = value.max;
       }
-      x.conditions[propKey].tiers = tiers;
-      x.conditions[`${ nodeKey }.${ propKey }`] = {
+      query.conditions[propKey].tiers = tiers;
+      if (nodeIndex === 0) {
+        showTiers = showTiers.concat(tiers);
+      }
+      query.conditions[`${ nodeKey }.${ propKey }`] = {
         type: 'structural',
         first_condition_id: nodeKey,
         second_condition_id: propKey,
@@ -108,11 +111,16 @@ export default function getQueryJSON(viewModel) {
     });
 
     if (shouldFilterStages) {
-      x.conditions[`${ nodeKey }.${ stagesKeyAndTier }`] = {
+      query.conditions[`${ nodeKey }.${ stagesKeyAndTier }`] = {
         type: 'overlaps',
         first_condition_id: nodeKey,
         second_condition_id: stagesKeyAndTier,
       };
+    }
+
+    if (showTiers.length > 0) {
+      showTiers = Array.from(new Set(showTiers)).sort();
+      query.show_tiers = showTiers;
     }
 
     if (nodeIndex > 0) {
@@ -126,8 +134,8 @@ export default function getQueryJSON(viewModel) {
             is_same_tier: (n1.unitType().channel.id === n2.unitType().channel.id),
             type: 'overlaps'
           };
-      x.conditions[`${id1}.${id2}`] = complexCond;
+      query.conditions[`${id1}.${id2}`] = complexCond;
     }
   }
-  return JSON.stringify(x, null, 4);
+  return JSON.stringify(query, null, 4);
 }
