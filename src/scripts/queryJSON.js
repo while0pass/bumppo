@@ -81,14 +81,27 @@ export default function getQueryJSON(viewModel) {
           search: value
         };
       } else if (prop instanceof ListProperty) {
-        if (!(value instanceof Array)) return;
-        query.conditions[propKey] = {
-          type: 'simple',
-          is_regex: true,
-          search: value
-            .filter(a => typeof a === 'string')
-            .map(a => prop.isRegEx ? a : escapeRegExpELAN(a)).join('|')
-        };
+        if (value instanceof Array) {
+          query.conditions[propKey] = {
+            type: 'simple',
+            is_regex: true,
+            search: value
+              .filter(a => typeof a === 'string')
+              .map(a => prop.isRegEx ? a : escapeRegExpELAN(a)).join('|')
+          };
+        } else if (typeof value === 'string') {
+          query.conditions[propKey] = {
+            type: 'simple',
+            is_regex: prop.isRegEx,
+            search: value
+          };
+        } else if (value === false) {
+          query.conditions[propKey] = {
+            type: 'simple',
+            is_regex: false,
+            search: ''
+          };
+        }
       } else if (prop instanceof IntervalProperty) {
         query.conditions[propKey] = {
           type: 'simple_number'
@@ -100,8 +113,10 @@ export default function getQueryJSON(viewModel) {
       if (nodeIndex === 0) {
         showTiers = showTiers.concat(tiers);
       }
+      let relationType = (prop instanceof ListProperty && value === false ?
+        'non_structural' : 'structural');
       query.conditions[`${ nodeKey }.${ propKey }`] = {
-        type: 'structural',
+        type: relationType,
         first_condition_id: nodeKey,
         second_condition_id: propKey,
         distance_min: 0,
