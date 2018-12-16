@@ -98,8 +98,8 @@ export default function getQueryJSON(viewModel) {
         } else if (value === false) {
           query.conditions[propKey] = {
             type: 'simple',
-            is_regex: false,
-            search: ''
+            is_regex: true,
+            search: '.*'
           };
         }
       } else if (prop instanceof IntervalProperty) {
