@@ -130,5 +130,12 @@ export class NodesRelation {
   constructor(parentNode, childNode) {
     this.parentNode = parentNode;
     this.childNode = childNode;
+
+    this.from = ko.observable(null);
+    this.to = ko.observable(null);
+
+    this.units = ko.observable('ms');
+    this.parentRefPoint = ko.observable(null);
+    this.childRefPoint = ko.observable(null);
   }
 }

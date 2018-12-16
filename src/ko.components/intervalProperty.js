@@ -32,6 +32,9 @@ const template = `
 
 `;
 
+// FIXME: Переписать с ko.extenders. См. ветку ft-koExtenderNumeric, где
+// не до конца срабатывают взаимные ограничения на то, чтобы from был
+// меньше или равен to, и аналогчиное наоборот.
 function getIntSelfValidating(observable, property) {
   function readValue() {
     let value = observable();
