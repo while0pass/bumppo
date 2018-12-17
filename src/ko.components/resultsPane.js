@@ -104,6 +104,15 @@ class ContextOrMatch {
     this.value = data.value;
     this.additionalTiers = data.show_tiers;
   }
+  get beginTime() {
+    return (this.time.begin / 1000).toFixed(2);
+  }
+  get endTime() {
+    return (this.time.end / 1000).toFixed(2);
+  }
+  get duration() {
+    return ((this.time.end - this.time.begin) / 1000).toFixed(2);
+  }
 }
 
 class Result {

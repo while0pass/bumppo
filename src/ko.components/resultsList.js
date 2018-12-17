@@ -23,6 +23,9 @@ const resultsTemplate = `
     </div>
 
     <!-- ko if: before -->
+    <div class="bmpp-time bmpp-context"
+      data-bind="text: before.beginTime + '–' + before.endTime"></div>
+    <div class="bmpp-time bmpp-context" data-bind="text: before.duration"></div>
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: before.value"></div>
     <div class="bmpp-transcription bmpp-context"
@@ -31,6 +34,9 @@ const resultsTemplate = `
     </div>
     <!-- /ko -->
 
+    <div class="bmpp-time bmpp-context"
+      data-bind="text: match.beginTime + '–' + match.endTime"></div>
+    <div class="bmpp-time bmpp-context" data-bind="text: match.duration"></div>
     <div class="bmpp-unitValue"
       data-bind="text: match.value, click: $component.cinema.showFilm
         .bind($component.cinema, record_id, participant + '-vi', $data)
@@ -43,6 +49,9 @@ const resultsTemplate = `
     </div>
 
     <!-- ko if: after -->
+    <div class="bmpp-time bmpp-context"
+      data-bind="text: after.beginTime + '–' + after.endTime"></div>
+    <div class="bmpp-time bmpp-context" data-bind="text: after.duration"></div>
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: after.value"></div>
     <div class="bmpp-transcription bmpp-context"
