@@ -388,7 +388,7 @@ const p_vFInOutEDU = createPropertyFromTemplate(pt_InOutEDU, 'p_vFInOutEDU'),
       };
 
 const pt_NearPause = {
-  type: 'list', name: 'Соседство с изолированными паузами',
+  type: 'list', name: 'Соседство с абсолютными паузами',
   tierTemplate: '{ p_participants }-vNearPause',
   valueList: { orValues: [
     { name: 'Непосредственно перед паузой', value: 'Before' },
@@ -466,6 +466,7 @@ const p_vWordNum = {
   fromLabel: 'с', toLabel: 'по', fromToBanner: '##–##'
 };
 
+// eslint-disable-next-line no-unused-vars
 const p_vWordNumReversed = {
   type: 'interval', name: 'Позиция от конца ЭДЕ', id: 'p_vWordNumReversed',
   tierTemplate: '{ p_participants }-vWordNumReversed',
@@ -524,6 +525,7 @@ const p_vMainAccent = {
     { name: 'Нет', value: false },
   ]}};
 
+// eslint-disable-next-line no-unused-vars
 const p_vReduction = {
   type: 'list', name: 'Редуцированное произнесение', id: 'p_vReduction',
   tierTemplate: '{ p_participants }-vReduction',
@@ -535,6 +537,7 @@ const p_vReduction = {
     { name: 'Нет', value: false },
   ]}};
 
+// eslint-disable-next-line no-unused-vars
 const p_vRegister = {
   type: 'list', name: 'Смещенный тональный регистр', id: 'p_vRegister',
   tierTemplate: '{ p_participants }-vRegister',
@@ -616,8 +619,8 @@ const propertiesLists = {
     p_vMainAccentsCount, p_vAccentsAfterMainCount, p_vMainAccents, p_vParenth,
     p_vInSplit, p_vCoConstr, p_vCitation]),
   u_vWord: commonProperties.concat([p_vWForm, p_vWNearPause, p_vOnom,
-    p_vTruncated, p_vWordNum, p_vWordNumReversed, p_vInterrupt, p_vAccents,
-    p_vMainAccent, p_vReduction, p_vRegister, p_vLength, p_vTempo, p_vEmph,
+    p_vTruncated, /* p_vWordNum, p_vWordNumReversed, */ p_vInterrupt, p_vAccents,
+    p_vMainAccent, /* p_vReduction, p_vRegister, */ p_vLength, p_vTempo, p_vEmph,
     p_vStress, p_vStops]),
   u_vLaughSegm: commonProperties.concat([p_vLInOutEDU, p_vLNearPause]),
   u_vFilledSegm: commonProperties.concat([p_vFInOutEDU, p_vFNearPause, p_vFForm]),
