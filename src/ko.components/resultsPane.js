@@ -53,6 +53,10 @@ const template = `
         $index() &lt; $root.queryTree.chosenUnitProperties().length - 1 ?
         ';&#x2002;' : '.'"></span></span><!-- /ko --><!-- ko if:
         chosenUnitProperties().length === 0 -->.<!-- /ko -->
+        <!-- ko if: childNodes().length > 0 -->
+        <span style="color: grey; font-style: italic;">[…] Подробнее см.
+        вкладку «Запрос».</span>
+        <!-- /ko -->
       </div>
       <!-- /ko -->
 
