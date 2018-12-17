@@ -1,13 +1,5 @@
 import cinema from '../scripts/cinema.js';
 
-const tiersDataTemplate = `
-
-  <!-- ko if: $index() > 0 -->;<!-- /ko -->
-  <span data-bind="text: $data[0]">
-  </span>=<span data-bind="text: $data[1]"></span>
-
-`;
-
 const resultsTemplate = `
 
   <div data-bind="foreach: results" class="bmpp-searchResult">
@@ -29,9 +21,7 @@ const resultsTemplate = `
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: before.value"></div>
     <div class="bmpp-transcription bmpp-context"
-      data-bind="foreach: Object.entries(before.additionalTiers)">
-      ${ tiersDataTemplate }
-    </div>
+      data-bind="html: before.transcription"></div>
     <!-- /ko -->
 
     <div class="bmpp-time bmpp-context"
@@ -42,10 +32,9 @@ const resultsTemplate = `
         .bind($component.cinema, record_id, participant + '-vi', $data)
         "></div>
     <div class="bmpp-transcription"
-      data-bind="foreach: Object.entries(match.additionalTiers),
+      data-bind="html: match.transcription,
         click: $component.cinema.showFilm.bind($component.cinema,
           record_id, participant + '-vi', $data)">
-      ${ tiersDataTemplate }
     </div>
 
     <!-- ko if: after -->
@@ -55,9 +44,7 @@ const resultsTemplate = `
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: after.value"></div>
     <div class="bmpp-transcription bmpp-context"
-      data-bind="foreach: Object.entries(after.additionalTiers)">
-      ${ tiersDataTemplate }
-    </div>
+      data-bind="html: after.transcription"></div>
     <!-- /ko -->
 
   </div>
