@@ -131,11 +131,11 @@ export class NodesRelation {
     this.parentNode = parentNode;
     this.childNode = childNode;
 
-    this.from = ko.observable(null);
-    this.to = ko.observable(null);
+    this.from = ko.observable(0);
+    this.to = ko.observable(0);
 
     this.units = ko.observable('ms');
-    this.parentRefPoint = ko.observable(null);
-    this.childRefPoint = ko.observable(null);
+    this.parentNodeRefPoint = ko.observable('end');
+    this.childNodeRefPoint = ko.observable('begin');
   }
 }

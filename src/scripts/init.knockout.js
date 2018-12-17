@@ -6,6 +6,7 @@ import IntervalProperty from '../ko.components/intervalProperty.js';
 import ListProperty from '../ko.components/listProperty.js';
 import PropertiesPane from '../ko.components/propertiesPane.js';
 import QueryNode from '../ko.components/queryNode.js';
+import QueryNodeRelation from '../ko.components/queryNodeRelation.js';
 import QueryNodeRelations from '../ko.components/queryNodeRelations.js';
 import QueryPane from '../ko.components/queryPane.js';
 import ResultsList from '../ko.components/resultsList.js';
@@ -91,6 +92,28 @@ export default function init(ko, viewModel) {
     result(target());
     return result;
   };
+  ko.extenders.numeric = function (target, regexp) {
+    function writeValue(value) {
+      let oldNumVal = target(),
+          oldStrVal = typeof oldNumVal === 'number' ? oldNumVal.toString() : '',
+          newValidStrVal = (typeof value === 'string' ?
+            value : typeof value === 'number' ?
+              value.toString() : '').replace(regexp, ''),
+          newNumVal = parseInt(newValidStrVal, 10),
+          newValidNumVal = isNaN(newNumVal) ? null : newNumVal;
+      if (newValidNumVal !== oldNumVal) {
+        target(newValidNumVal);
+      } else if (value !== oldStrVal) {
+        target.notifySubscribers(newValidNumVal);
+      }
+    }
+    let result = ko.computed({
+      read: target,
+      write: writeValue
+    }).extend({ notify: 'always' });
+    result(target());
+    return result;
+  };
 
   ko.components.register('text-property', TextProperty);
   ko.components.register('interval-property', IntervalProperty);
@@ -102,6 +125,7 @@ export default function init(ko, viewModel) {
   ko.components.register('query-pane', QueryPane);
   ko.components.register('subcorpus-pane', SubcorpusPane);
   ko.components.register('query-node', QueryNode);
+  ko.components.register('query-node-relation', QueryNodeRelation);
   ko.components.register('query-node-relations', QueryNodeRelations);
   ko.components.register('search-unit-choice', SearchUnitChoice);
   ko.components.register('results-list', ResultsList);
