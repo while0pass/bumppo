@@ -181,6 +181,12 @@ var viewModelFactory = (params, componentInfo) => {
     return relation.units() !== 'u';
   });
 
+  ko.computed(function () {
+    if (!canShowUnits() && !unitsAreNotChosen.peek()) {
+      unitsElement.dropdown('set selected', 'ms');
+    }
+  });
+
   return {
     relations: params.relations,
     relation: relation,
