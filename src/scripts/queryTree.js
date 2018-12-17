@@ -90,6 +90,13 @@ export class TreeNode {
   clearAllProperties() {
     this.chosenUnitProperties().forEach(prop => prop.clear());
   }
+  arePropertiesChanged() {
+    let before = this.$oldPropsSummary || '',
+        after = this.chosenUnitProperties()
+          .map(prop => ko.unwrap(prop.banner)).join('');
+    this.$oldPropsSummary = after;
+    return after !== before;
+  }
   getTiersFromTemplate(template) {
     if (template.indexOf('{') < 0) return [template];
 

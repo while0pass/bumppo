@@ -226,10 +226,6 @@ class viewModel {
           node.isEditStateForUnitType(false);
           params.isQueryNew(true);
         },
-        iHaveChosenUnitProperties = function () {
-          params.finishEditingNodeProperties();
-          params.isQueryNew(true);
-        },
         isAnyUnitPropertySet = ko.computed(
           () => node.unitProperties().some(prop => prop.value() !== null)
         ).extend({ rateLimit: 500 }),
@@ -269,7 +265,6 @@ class viewModel {
     this.goEditUnitType = goEditUnitType;
     this.goEditUnitProperties = goEditUnitProperties;
     this.iHaveChosenUnitType = iHaveChosenUnitType;
-    this.iHaveChosenUnitProperties = iHaveChosenUnitProperties;
     this.isAnyUnitPropertySet = isAnyUnitPropertySet;
   }
   dispose() {

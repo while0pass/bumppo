@@ -66,6 +66,10 @@ function viewModel() {
     self.queryPaneView(node);
   };
   this.queryPaneView.finishEditingNodeProperties = function () {
+    let node = self.queryPaneView();
+    if (node.arePropertiesChanged()) {
+      self.isQueryNew(true);
+    }
     self.queryPaneView(null);
   };
   this.queryPaneView.arePropertiesVisible = ko.computed(
