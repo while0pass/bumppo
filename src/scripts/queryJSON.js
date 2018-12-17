@@ -29,6 +29,8 @@ export default function getQueryJSON(viewModel) {
   }
 
   for (let nodeIndex = 0; nodeIndex < ltree.length; nodeIndex++) {
+
+    // Единицы поиска, соответствующая узлу дерева запроса
     let node = ltree[nodeIndex],
         unitType = node.unitType(),
         unitPropertiesMap = node.unitProperties.unitPropertiesMap(),
@@ -41,6 +43,7 @@ export default function getQueryJSON(viewModel) {
       tiers: node.getTiersFromTemplate(unitType.tierTemplate)
     };
 
+    // Длительность единицы поиска
     if (p_duration.id in unitPropertiesMap) {
       let duration = unitPropertiesMap[p_duration.id].value();
       if (duration && 'min' in duration) {
@@ -51,6 +54,7 @@ export default function getQueryJSON(viewModel) {
       }
     }
 
+    // Случай, если тип единицы надо проверять в подслое
     if (unitType.subtierTemplate) {
       let subKey = nodeKey + 'p0';
       query.conditions[subKey] = {
@@ -68,6 +72,7 @@ export default function getQueryJSON(viewModel) {
       };
     }
 
+    // Выбранные свойства единицы
     let propIndex = 1;
     node.chosenUnitProperties().forEach(prop => {
       if (!prop.tierTemplate) return;
@@ -95,7 +100,7 @@ export default function getQueryJSON(viewModel) {
             is_regex: prop.isRegEx,
             search: value
           };
-        } else if (value === false) {
+        } else if (value === false) { // Поиск нулевых интервалов
           query.conditions[propKey] = {
             type: 'simple',
             is_regex: true,
@@ -114,7 +119,7 @@ export default function getQueryJSON(viewModel) {
         showTiers = showTiers.concat(tiers);
       }
       let relationType = (prop instanceof ListProperty && value === false ?
-        'non_structural' : 'structural');
+        'non_structural' : 'structural'); // Выбор non_structural для нулевых интервалов
       query.conditions[`${ nodeKey }.${ propKey }`] = {
         type: relationType,
         first_condition_id: nodeKey,
@@ -125,6 +130,8 @@ export default function getQueryJSON(viewModel) {
       propIndex += 1;
     });
 
+    // Дополнительное ограничение по стадиям записи (рассказ, разговор,
+    // пересказ).
     if (shouldFilterStages) {
       query.conditions[`${ nodeKey }.${ stagesKeyAndTier }`] = {
         type: 'overlaps',
@@ -133,23 +140,36 @@ export default function getQueryJSON(viewModel) {
       };
     }
 
+    // Запрос на вывод в ответе дополнительных слоев
     if (showTiers.length > 0) {
       showTiers = Array.from(new Set(showTiers)).sort();
       query.show_tiers = showTiers;
     }
 
+    // Ограничения на расстояние между единицами поиска
     if (nodeIndex > 0) {
       let n1 = node.parentNode,
           n2 = node,
           id1 = n1.serialNumber().toString(),
           id2 = n2.serialNumber().toString(),
-          complexCond = {
-            first_condition_id: id1,
-            second_condition_id: id2,
-            is_same_tier: (n1.unitType().channel.id === n2.unitType().channel.id),
-            type: 'overlaps'
-          };
-      query.conditions[`${id1}.${id2}`] = complexCond;
+          relations = n2.relationsToParentNode();
+
+      for (let rIndex = 0; rIndex < relations.length; rIndex++) {
+        let relation = relations[rIndex],
+            complexCond = {
+              first_condition_id: id1,
+              second_condition_id: id2,
+              distance_min: relation.from(),
+              distance_max: relation.to(),
+            };
+        if (relation.units() === 'u') {
+          complexCond.type = 'structural';
+        } else {
+          complexCond.type = `${ relation.childNodeRefPoint() }_2_${
+            relation.parentNodeRefPoint() }_1`;
+        }
+        query.conditions[`${ id1 }-r${ rIndex + 1 }-${ id2 }`] = complexCond;
+      }
     }
   }
   return JSON.stringify(query, null, 4);
