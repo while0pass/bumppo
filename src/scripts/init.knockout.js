@@ -92,15 +92,22 @@ export default function init(ko, viewModel) {
     result(target());
     return result;
   };
-  ko.extenders.numeric = function (target, regexp) {
+  ko.extenders.numeric = function (target, opts) {
     function writeValue(value) {
-      let oldNumVal = target(),
+      let le = opts.lessOrEqualTo && opts.lessOrEqualTo(),
+          oldNumVal = target(),
           oldStrVal = typeof oldNumVal === 'number' ? oldNumVal.toString() : '',
           newValidStrVal = (typeof value === 'string' ?
             value : typeof value === 'number' ?
-              value.toString() : '').replace(regexp, ''),
+              value.toString() : '').replace(opts.regexp || /^$/, ''),
           newNumVal = parseInt(newValidStrVal, 10),
-          newValidNumVal = isNaN(newNumVal) ? null : newNumVal;
+          newValidNumVal = isNaN(newNumVal) ?
+            (opts.isNullable ?
+              null : Math.max(
+                le !== undefined && le !== null ? le : 0,
+                opts.min !== undefined && opts.min !== null ? opts.min : 0,
+                0)
+            ) : newNumVal;
       if (newValidNumVal !== oldNumVal) {
         target(newValidNumVal);
       } else if (value !== oldStrVal) {

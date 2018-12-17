@@ -5,16 +5,14 @@ const numbersTemplate = `
 
   <div class="inline field bmpp-number">
     <label style="font-weight: normal">от</label>
-    <input type="number" min="0" placeholder="0"
-      data-bind="value: from, valueUpdate: 'input',
-        attr: { step: unitsAreNotChosen() ? 20 : 1 }">
+    <input type="number" min="0"
+      data-bind="value: from, attr: { step: unitsAreNotChosen() ? 20 : 1 }">
   </div>
 
   <div class="inline field bmpp-number">
     <label style="font-weight: normal">до</label>
-    <input type="number" min="0" placeholder="0"
-      data-bind="value: to, valueUpdate: 'input',
-        attr: { step: unitsAreNotChosen() ? 20 : 1 }">
+    <input type="number" min="0"
+      data-bind="value: to, attr: { step: unitsAreNotChosen() ? 20 : 1 }">
   </div>
 
 `;
@@ -122,20 +120,26 @@ var viewModelFactory = (params, componentInfo) => {
   const charsToDelete = /[^0-9]+/g;
   let element = jQuery(componentInfo.element).next('.bmpp-queryDistance'),
       relation = params.relation,
-      from = relation.from.extend({ numeric: charsToDelete }),
-      to = relation.to.extend({ numeric: charsToDelete });
+      from = relation.from.extend(
+        { numeric: { regexp: charsToDelete, isNullable: false }}),
+      to = relation.to.extend({ numeric: { regexp: charsToDelete,
+        isNullable: false, lessOrEqualTo: from }});
 
   // Настройка взаимного поведения значений "от" и "до"
   ko.computed(function () {
     let f = from(), t = to.peek();
     if (typeof f === 'number' && typeof t === 'number' && f > t) {
       to(f);
+    } else if (typeof f !== 'number') {
+      from(0); // FIXME: Здесь надо учитывать атрибут min поля ввода
     }
   });
   ko.computed(function () {
     let f = from.peek(), t = to();
     if (typeof f === 'number' && typeof t === 'number' && t < f) {
       from(t);
+    } else if (typeof t !== 'number') {
+      to(f); // FIXME: Здесь надо учитывать атрибут min поля ввода
     }
   });
 

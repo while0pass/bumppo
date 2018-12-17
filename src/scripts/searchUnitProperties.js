@@ -784,12 +784,16 @@ class IntervalProperty extends SearchUnitProperty {
     // from не должно быть больше to
     ko.computed(function () {
       let from = this.from(), to = this.to.peek();
-      if (isImportant(from) && isImportant(to) && from > to) { this.from(to); }
+      if (isImportant(from) && isImportant(to) && from > to) {
+        this.to(from);
+      }
     }, this);
     // to не должно быть меньше from
     ko.computed(function () {
       let from = this.from.peek(), to = this.to();
-      if (isImportant(from) && isImportant(to) && to < from) { this.to(from); }
+      if (isImportant(from) && isImportant(to) && to < from) {
+        this.from(to);
+      }
     }, this);
     // композитное значение
     ko.computed(function () {
