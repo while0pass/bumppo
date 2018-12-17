@@ -5,6 +5,7 @@ export default {
   "query": "ЭДЕ, со следующими свойствами: участники: рассказчик; иллокутивно-фазовое значение: неполнота информации в контексте незавершенности; движение тона в главном акценте: восходяще-ровное.",
   "results": [
     [
+      /*
       {
         "record_id": "pears04-mult-voc-manu.eaf",
         "participant": "N",
@@ -13,6 +14,7 @@ export default {
         "value": "N-vN001",
         "show_tiers": { "transcription": "(ɥ 0.76)" }
       },
+      */
       {
         "is_main": true,
         "record_id": "pears04-mult-voc-manu.eaf",
@@ -76,6 +78,7 @@ export default {
         "value": "N-vE007",
         "show_tiers": { "transcription": "/–дор<u>о</u>га,,," }
       },
+      /*
       {
         "record_id": "pears04-mult-voc-manu.eaf",
         "participant": "N",
@@ -84,6 +87,7 @@ export default {
         "value": "N-vE008",
         "show_tiers": { "transcription": "–↑дер<u>е</u>вья<sup>ɯ</sup>, ≈≈" }
       },
+      */
     ]
   ]
 };

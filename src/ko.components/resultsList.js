@@ -22,12 +22,14 @@ const resultsTemplate = `
           visible: previousItem && previousItem.record_id !== record_id"></div>
     </div>
 
+    <!-- ko if: before -->
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: before.value"></div>
     <div class="bmpp-transcription bmpp-context"
       data-bind="foreach: Object.entries(before.additionalTiers)">
       ${ tiersDataTemplate }
     </div>
+    <!-- /ko -->
 
     <div class="bmpp-unitValue"
       data-bind="text: match.value, click: $component.cinema.showFilm
@@ -40,12 +42,14 @@ const resultsTemplate = `
       ${ tiersDataTemplate }
     </div>
 
+    <!-- ko if: after -->
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: after.value"></div>
     <div class="bmpp-transcription bmpp-context"
       data-bind="foreach: Object.entries(after.additionalTiers)">
       ${ tiersDataTemplate }
     </div>
+    <!-- /ko -->
 
   </div>
 

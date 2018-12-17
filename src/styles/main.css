@@ -540,6 +540,7 @@ $videoHeight: 193px;
   }
   & .bmpp-transcription {
     cursor: pointer;
+    padding-right: 7em;
   }
   & .bmpp-context {
     color: grey;
