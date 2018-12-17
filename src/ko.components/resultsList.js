@@ -18,8 +18,8 @@ const resultsTemplate = `
 
     <div class="divider" data-bind="visible: $index() > 0">
       <div class="ui label bmpp-recordLabel"
-        data-bind="text: 'Запись ' + record_id,
-          visible: previousItem && previousItem.record_id !== record_id"></div>
+        data-bind="text: 'Запись ' + record_id, css: { transparent:
+          previousItem && previousItem.record_id === record_id }"></div>
     </div>
 
     <!-- ko if: before -->

@@ -531,6 +531,9 @@ $videoHeight: 193px;
     &.bmpp-initialRecordLabel {
       top: 1em;
     }
+    &.transparent {
+      opacity: 0.2;
+    }
   }
   & .bmpp-unitValue {
     text-align: right;
