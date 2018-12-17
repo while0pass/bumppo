@@ -131,6 +131,13 @@ export class TreeNode {
     tiers = tiers.sort();
     return tiers;
   }
+  getTiersFromListOfTemplates(listOfTemplates) {
+    var tiers = [], self = this;
+    listOfTemplates.forEach(template => {
+      tiers = tiers.concat(self.getTiersFromTemplate(template));
+    });
+    return tiers;
+  }
 }
 
 export class NodesRelation {

@@ -115,9 +115,6 @@ export default function getQueryJSON(viewModel) {
         if ('max' in value) query.conditions[propKey].max_value = value.max;
       }
       query.conditions[propKey].tiers = tiers;
-      if (nodeIndex === 0) {
-        showTiers = showTiers.concat(tiers);
-      }
       let relationType = (prop instanceof ListProperty && value === false ?
         'non_structural' : 'structural'); // Выбор non_structural для нулевых интервалов
       query.conditions[`${ nodeKey }.${ propKey }`] = {
@@ -138,6 +135,34 @@ export default function getQueryJSON(viewModel) {
         first_condition_id: nodeKey,
         second_condition_id: stagesKeyAndTier,
       };
+    }
+
+    // Дополнительные слои для разных типов корневой единицы
+    if (nodeIndex === 0) {
+      let tiers = [],
+          tierMap = {
+            '{ p_participants }-vLine': ['{ p_participants }-vLineHTML'],
+            '{ p_participants }-vSegm': ['{ p_participants }-vSegmHTML'],
+            '{ p_participants }-vPause': ['{ p_participants }-vPauseHTML'],
+            '{ p_participants }-vCollat': ['{ p_participants }-vCollatForm'],
+            '{ p_participants }-m{ p_mHand }Movement': [
+              '{ p_participants }-m{ p_mHand }MtType'],
+            '{ p_participants }-m{ p_mHand }Stillness': [
+              '{ p_participants }-m{ p_mHand }StType'],
+            '{ p_participants }-mGesture': [
+              '{ p_participants }-mGeHandedness',
+              '{ p_participants }-mGeStructure',
+              '{ p_participants }-mGeFunction',
+              '{ p_participants }-mGeTags'],
+            '{ p_participants }-mAdaptor': ['{ p_participants }-mAdType'],
+            '{ p_participants }-oFixation': [
+              '{ p_participants }-oInterlocutor',
+              '{ p_participants }-oLocus'],
+          };
+      if (unitType.tierTemplate in tierMap) {
+        tiers = node.getTiersFromListOfTemplates(tierMap[unitType.tierTemplate]);
+        showTiers = showTiers.concat(tiers);
+      }
     }
 
     // Запрос на вывод в ответе дополнительных слоев
