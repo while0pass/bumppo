@@ -76,7 +76,7 @@ export default {
         "is_main": true,
         "record_id": "pears04-mult-voc-manu.eaf",
         "participant": "N",
-        "tier": "N-vLine",
+        "tier": "N-oFixation",
         "time": { "begin": 9490, "end": 10000 },
         "value": "N-vE007",
         "show_tiers": { "N-vLineHTML": "/–дор<u>о</u>га,,," }

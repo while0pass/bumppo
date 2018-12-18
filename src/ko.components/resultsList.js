@@ -29,12 +29,12 @@ const resultsTemplate = `
     <div class="bmpp-time bmpp-context" data-bind="text: match.duration"></div>
     <div class="bmpp-unitValue"
       data-bind="text: match.value, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, participant + '-vi', $data)
+        .bind($component.cinema, record_id, filmType, $data)
         "></div>
     <div class="bmpp-transcription"
       data-bind="html: match.transcription,
         click: $component.cinema.showFilm.bind($component.cinema,
-          record_id, participant + '-vi', $data)">
+          record_id, filmType, $data)">
     </div>
 
     <!-- ko if: after -->

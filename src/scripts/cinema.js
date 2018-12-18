@@ -92,10 +92,10 @@ class Cinema {
     this.filmTypes = [
       { id: 'N-eyf', disabled: true },
       { id: 'N-vi', disabled: false },
-      { id: 'N-ey', disabled: true },
+      { id: 'N-ey', disabled: false },
       { id: 'C-vi', disabled: false },
       { id: 'R-vi', disabled: false },
-      { id: 'R-ey', disabled: true },
+      { id: 'R-ey', disabled: false },
       { id: 'W-vi', disabled: false },
     ];
     this.activeRecordId = ko.observable(null);

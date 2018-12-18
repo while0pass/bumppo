@@ -234,8 +234,8 @@ class Result {
   constructor(data) {
     this.record_id = this.getRecordId(data[0] && data[0].record_id || '');
     this.participant = data[0] && data[0].participant || '';
-    this.tier = data[0] && data[0].tier;
     [this.before, this.match, this.after] = this.getMatchAndContext(data);
+    this.filmType = this.getFilmType();
 
     this.setup();
   }
@@ -278,6 +278,10 @@ class Result {
       new ContextOrMatch(match, this),
       after && new ContextOrMatch(after, this)
     ];
+  }
+  getFilmType() {
+    let filmType = this.match.tier.slice(-10) === '-oFixation' ? 'ey' : 'vi';
+    return `${ this.participant }-${ filmType }`;
   }
 }
 
