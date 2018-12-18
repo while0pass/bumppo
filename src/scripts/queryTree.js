@@ -151,5 +151,27 @@ export class NodesRelation {
     this.units = ko.observable('ms');
     this.parentNodeRefPoint = ko.observable('end');
     this.childNodeRefPoint = ko.observable('begin');
+
+    this.tune();
+  }
+  tune() {
+    this.oldValues = {};
+    // Активация кнопки поиска при изменении значений в полях
+    ko.computed(function () {
+      let from = this.from(), to = this.to(), units = this.units(),
+          pNRefPoint = this.parentNodeRefPoint(),
+          cNRefPoint = this.childNodeRefPoint(),
+          oldValues = this.oldValues;
+      if (from !== oldValues.from || to !== oldValues.to ||
+        units !== oldValues.units || pNRefPoint !== oldValues.pNRefPoint ||
+        cNRefPoint !== oldValues.cNRefPoint) {
+        this.isQueryNew && this.isQueryNew(true);
+      }
+      this.oldValues.from = from;
+      this.oldValues.to = to;
+      this.oldValues.units = units;
+      this.oldValues.pNRefPoint = pNRefPoint;
+      this.oldValues.cNRefPoint = cNRefPoint;
+    }, this);
   }
 }

@@ -1,4 +1,3 @@
-import log from './log.js';
 const R = /^[^\d]*(\d+).*$/g;
 
 const tierMap = {
@@ -274,7 +273,6 @@ class Result {
         match = data[0];
       }
     }
-    log('result', this);
     return [
       before && new ContextOrMatch(before, this),
       new ContextOrMatch(match, this),

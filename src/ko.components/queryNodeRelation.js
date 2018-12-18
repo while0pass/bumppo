@@ -125,6 +125,8 @@ var viewModelFactory = (params, componentInfo) => {
       to = relation.to.extend({ numeric: { regexp: charsToDelete,
         isNullable: false, lessOrEqualTo: from }});
 
+  relation.isQueryNew = params.isQueryNew;
+
   // Настройка взаимного поведения значений "от" и "до"
   ko.computed(function () {
     let f = from(), t = to.peek();
@@ -146,21 +148,31 @@ var viewModelFactory = (params, componentInfo) => {
   // Настройка дропдауна единиц измерения
   let unitsElement = element.find('.bmpp-units .ui.dropdown');
   unitsElement.dropdown({
-    onChange: function (value) { relation.units(value); }
+    onChange: function (value) {
+      if (value !== relation.units()) { relation.units(value); }
+    }
   });
   unitsElement.dropdown('set selected', relation.units());
 
   // Настройка дропдауна родительского узла
   let pElement = element.find('.bmpp-parentNodeRefPoint .ui.dropdown');
   pElement.dropdown({
-    onChange: function (value) { relation.parentNodeRefPoint(value); }
+    onChange: function (value) {
+      if (value !== relation.parentNodeRefPoint()) {
+        relation.parentNodeRefPoint(value);
+      }
+    }
   });
   pElement.dropdown('set selected', relation.parentNodeRefPoint());
 
   // Настройка дропдауна дочернего узла
   let cElement = element.find('.bmpp-childNodeRefPoint .ui.dropdown');
   cElement.dropdown({
-    onChange: function (value) { relation.childNodeRefPoint(value); }
+    onChange: function (value) {
+      if (value !== relation.childNodeRefPoint()) {
+        relation.childNodeRefPoint(value);
+      }
+    }
   });
   cElement.dropdown('set selected', relation.childNodeRefPoint());
 

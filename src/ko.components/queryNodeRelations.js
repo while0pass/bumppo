@@ -27,7 +27,8 @@ const template = `
 
     <!-- ko foreach: relations -->
       <!-- ko component: { name: 'query-node-relation', params: {
-      relation: $data, relations: $component.relations }} --><!-- /ko -->
+      relation: $data, relations: $component.relations,
+      isQueryNew: $root.isQueryNew }} --><!-- /ko -->
     <!-- /ko -->
 
     <i class="ui disabled grey question circle outline icon
