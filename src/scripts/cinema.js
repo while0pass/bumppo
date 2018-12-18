@@ -48,7 +48,11 @@ class Film {
     element.css({ zIndex: 900 });
   }
   deactivateIFrame() {
-    this.element.css({ zIndex: -1000 });
+    if (window[';)'].debugVideo) {
+      this.element.css({ zIndex: 'auto' });
+    } else {
+      this.element.css({ zIndex: -1000 });
+    }
   }
   createFilm(cinema, element) {
     let film = new Plyr(element, plyrOpts);
@@ -107,7 +111,13 @@ class Cinema {
     return jQuery('#bmpp-videoPlayer');
   }
   get curtain() {
-    return jQuery(this.screen).find('.bmpp-videoCurtain');
+    let element = jQuery(this.screen).find('.bmpp-videoCurtain');
+    if (window[';)'].debugVideo) {
+      element.hide();
+      return jQuery();
+    } else {
+      return element;
+    }
   }
   get loader() {
     return jQuery(this.screen).find('.bmpp-videoLoader');

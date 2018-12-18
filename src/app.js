@@ -23,9 +23,16 @@ const searchEngineURL = (BUMPPO_ENV === 'production' ?
 /* eslint-enable no-undef,no-constant-condition */
 log('Search Engine:', searchEngineURL);
 
+const qs = window.URLSearchParams && (new URLSearchParams(document.location.search));
+window[';)'] = {
+  debug: qs && qs.has('debug') || false,
+  debugVideo: qs && qs.has('debugVideo') || false,
+};
+
 function viewModel() {
   let self = this;
   this.version = 'v' + 'BUMPPO_VERSION';
+  this.debug = window[';)'].debug;
 
   this.queryPane = Symbol.for('query'),
   this.subcorpusPane = Symbol.for('subcorpus'),
@@ -165,7 +172,7 @@ function viewModel() {
         self.resultsRawData(data);
         self.resultsError(null);
       }).fail((jqXHR, textStatus, errorThrown) => {
-        self.resultsRawData(testResultsRawData);
+        self.resultsRawData(self.debug ? testResultsRawData : null);
         self.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
       }).always(() => {
         self.isSearchInProgress(false);

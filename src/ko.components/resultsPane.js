@@ -27,9 +27,9 @@ const template = `
 
     <div class="bmpp-resultsInfo">
 
-      <!-- ko if: resultsData() && resultsData().version === 'test' -->
+      <!-- ko if: $root.resultsError -->
       <div style="margin-bottom: .33em; color: #a00;">
-        NB: Сервер поиска недоступен. Отображаются результаты условной выдачи!
+        Во время выполнения запроса произошла ошибка.
       </div>
       <!-- /ko -->
 
@@ -38,7 +38,7 @@ const template = `
           data-bind="text: $root.subcorpusBanner"></span>
       </div>
 
-      <!-- ko if: resultsData() && $root.queryTree.unitType() -->
+      <!-- ko if: $root.queryTree.unitType() -->
       <div style="margin-bottom: .33em;" data-bind="with: $root.queryTree">
         <em>Условие поиска:</em>&#x2002;<span data-bind="text:
         unitType().hasAbbr ? unitType().abbr : unitType().name"></span
@@ -83,19 +83,23 @@ const template = `
 
   <div class="bmpp-resultsPane_results" data-bind="if: resultsData">
 
-    <results-list params="resultsData: resultsData"></results-list>
-
-    <div style="padding: 1em; background-color: #eee; font-size: x-small;">
-      <header class="ui header">JSON ответа</header>
-      <code style="white-space: pre-wrap"
-        data-bind="text: $root.responseJSON"></code>
-    </div>
-
-    <div style="padding: 1em; font-size: x-small;">
+    <!-- ko if: $root.debug -->
+    <div style="padding: 1em; font-size: x-small; background-color: #eee;">
       <header class="ui header">JSON запроса</header>
       <code style="white-space: pre-wrap"
         data-bind="text: $root.queryJSON"></pre></code>
     </div>
+    <!-- /ko -->
+
+    <results-list params="resultsData: resultsData"></results-list>
+
+    <!-- ko if: $root.debug -->
+    <div style="padding: 1em; font-size: x-small; background-color: #eee;">
+      <header class="ui header">JSON ответа</header>
+      <code style="white-space: pre-wrap"
+        data-bind="text: $root.responseJSON"></code>
+    </div>
+    <!-- /ko -->
 
   </div>
 
