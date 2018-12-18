@@ -138,6 +138,7 @@ $videoHeight: 193px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow: hidden;
 
   &_video {
     border-bottom: 1px solid $bmppBorderColor;
