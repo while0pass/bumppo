@@ -183,7 +183,11 @@ class channelViewModel {
           cssClasses = `${self.channel.color} basic`;
         }
       } else {
-        cssClasses = self.channel.color;
+        if (!self.disabled || isMouseOver) {
+          cssClasses = self.channel.color;
+        } else {
+          cssClasses = `${self.channel.color} basic`;
+        }
       }
       return cssClasses;
     });
