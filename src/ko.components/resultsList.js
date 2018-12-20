@@ -15,18 +15,18 @@ const resultsTemplate = `
     </div>
 
     <!-- ko if: before -->
-    <div class="bmpp-time bmpp-context"
+    <div class="bmpp-time"
       data-bind="text: before.beginTime + '–' + before.endTime"></div>
-    <div class="bmpp-time bmpp-context" data-bind="text: before.duration"></div>
+    <div class="bmpp-duration" data-bind="text: before.duration"></div>
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: before.value"></div>
     <div class="bmpp-transcription bmpp-context"
       data-bind="html: before.transcription"></div>
     <!-- /ko -->
 
-    <div class="bmpp-time bmpp-context"
+    <div class="bmpp-time"
       data-bind="text: match.beginTime + '–' + match.endTime"></div>
-    <div class="bmpp-time bmpp-context" data-bind="text: match.duration"></div>
+    <div class="bmpp-duration" data-bind="text: match.duration"></div>
     <div class="bmpp-unitValue"
       data-bind="text: match.value, click: $component.cinema.showFilm
         .bind($component.cinema, record_id, filmType, $data)
@@ -38,9 +38,9 @@ const resultsTemplate = `
     </div>
 
     <!-- ko if: after -->
-    <div class="bmpp-time bmpp-context"
+    <div class="bmpp-time"
       data-bind="text: after.beginTime + '–' + after.endTime"></div>
-    <div class="bmpp-time bmpp-context" data-bind="text: after.duration"></div>
+    <div class="bmpp-duration" data-bind="text: after.duration"></div>
     <div class="bmpp-unitValue bmpp-context"
       data-bind="text: after.value"></div>
     <div class="bmpp-transcription bmpp-context"

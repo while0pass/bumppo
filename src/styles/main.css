@@ -541,19 +541,29 @@ $videoHeight: 193px;
     color: green;
     font-size: smaller;
     cursor: pointer;
+    grid-column: 3;
   }
   & .bmpp-transcription {
     cursor: pointer;
     padding-right: 7em;
+    grid-column: 4;
   }
   & .bmpp-context {
     color: grey;
     cursor: auto !important;
   }
-  & .bmpp-time {
+  & .bmpp-time,
+  & .bmpp-duration {
     font-size: smaller;
     color: grey;
     text-align: right;
+    cursor: auto;
+  }
+  & .bmpp-time {
+    grid-column: 1;
+  }
+  & .bmpp-duration {
+    grid-column: 2;
   }
 }
 
