@@ -38,6 +38,9 @@ const template = `
           <em data-bind="text: name"></em>:
           <span data-bind="text: banner"></span>
         <!-- /ko -->
+        <!-- ko if: !banner() && jsonProperties().length > 0 -->
+          Свойству присвоено значение по умолчанию
+        <!-- /ko -->
 
       </div>
       <div class="ui eight wide column"
