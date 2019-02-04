@@ -22,6 +22,12 @@ $videoHeight: 193px;
   align-items: stretch;
   overflow-y: scroll;
   padding-bottom: 3em;
+  position: relative;
+
+  &.no-pad {
+    overflow-y: hidden;
+    padding: 0;
+  }
 }
 
 .bmpp-mainWait {
@@ -99,7 +105,7 @@ $videoHeight: 193px;
 }
 
 .bmpp-propertiesPane {
-  $buttonsHeight: 2.2em;
+  $buttonsHeight: 4.4em;
   $dividerHeight: 1em;
   display: flex;
   flex-direction: column;
@@ -118,6 +124,7 @@ $videoHeight: 193px;
   &Buttons {
     height: $buttonsHeight;
     padding: 1em 0 0 6em;
+    box-sizing: border-box;
   }
 }
 

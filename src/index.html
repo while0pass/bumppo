@@ -94,7 +94,8 @@
       data-bind="text: version"></div>
   </div>
 
-  <div class="bmpp-main" style="position: relative">
+  <div class="bmpp-main"
+       data-bind="css: { 'no-pad': queryPaneView.arePropertiesVisible }">
 
     <div class="bmpp-mainWait" data-bind="visible: isSearchInProgress">
       <div class="ui loading basic segment"></div>
