@@ -1,6 +1,65 @@
 import jQuery from 'jquery';
 import ko from 'knockout';
 
+/*
+ *  type ::= interval | list |
+ *  name
+ *  id
+ *  help
+ *  tierTemplate
+ *  validChars
+ *  substitute
+ *  valuesSubstitute
+ *  virtualKeyboard
+ *
+ * * * *  type == 'interval'
+ *
+ *  min
+ *  max
+ *  step
+ *  units
+ *  unitsBanner
+ *
+ *  fromStep
+ *  fromPlaceholder
+ *  fromBanner
+ *  fromOnlyBanner
+ *  fromLabel
+ *
+ *  toStep
+ *  toPlaceholder
+ *  toBanner
+ *  toOnlyBanner
+ *  toLabel
+ *
+ *  fromToBanner
+ *  fromToEqualBanner
+ *
+ * * * *  type == 'list'
+ *
+ *  allIfEmpty
+ *  valueList
+ *  displayValues
+ *  isRegEx
+ *  addNameToChildNames
+ *
+ * * * *  type == 'text'
+ *
+ *  placeholder
+ *
+ */
+
+/* * * * valueList props
+ *
+ *  orValues
+ *  xorValues
+ *  name
+ *  value
+ *  disabledInChannels
+ *  editable
+ *
+ */
+
 const p_duration = {
   type: 'interval', name: 'Длительность', id: 'p_duration', step: 20,
   units: 'миллисекунд', unitsBanner: 'мс',
@@ -63,13 +122,20 @@ const p_mGeHandedness = {
 
 const p_mGeFunction = {
   type: 'list', name: 'Функциональный тип', id: 'p_mGeFunction',
-  tierTemplate: '{ p_participants }-mGeFunction',
+  tierTemplate: '{ p_participants }-mGeFunction', isRegEx: true,
   valueList: { orValues: [
     { name: 'Изобразительный жест', value: 'Depictive' },
     { name: 'Указательный жест', value: 'Pointing' },
     { name: 'Жестовое ударение', value: 'Beat' },
-    { name: 'Другое', value: 'Other' },
-    { name: 'Прагматический / метафорический жест', value: 'Pragmatic' },
+    { name: 'Прагматический / метафорический жест', addNameToChildNames: true,
+      value: 'Pragmatic', xorValues: [  // NOTE: Эталонный случай ##xorparuni##:
+        // На родительской галке присутствует значение, а дочерние галки
+        // образуют xor-список. Дочерние галки могут быть все выключены при
+        // включеной родительской.
+        { name: 'Без наложения на другие типы', value: 'Other.*Pragmatic' },
+        { name: 'С наложением на другие типы',
+          value: '(Depictive|Pointing|Beat).*Pragmatic' },
+      ]},
   ]}};
 
 const p_mGeTags = {
@@ -913,7 +979,7 @@ class ListProperty extends SearchUnitProperty {
       // Этот вызов необходим, чтобы, если измениться тип единицы, этот
       // computed вычислился повторно. Это важно, например, для свойств
       // со свойством allIfEmpty === true. Свойство p_participants
-      // чувствительно к типу канала, в окуломотрном канале часть калочек
+      // чувствительно к типу канала, в окуломотрном канале часть галочек
       // деактивируется. Поэтому если пользователь изменил текущую единицу
       // с окуломотрной фиксации на вокальную ЭДЕ и при этом никакие участники
       // у него не были выбраны, что эквивалентно использованию всех, то без
@@ -1057,6 +1123,9 @@ class ValueList {
   get hasNoChildList() {
     return this.items.every(item => !item.childList);
   }
+  areAllUnchecked() {
+    return this.items.every(item => !item.checked());
+  }
   invertSelection() {
     this.items.forEach(item => {
       item.checked(!item.checked());
@@ -1160,6 +1229,15 @@ class ValueListItem {
         if (this.checked()) {
           this.list.uncheckAllBut(this);
         }
+
+        // NOTE: см. ##xorparuni##
+        if (!this.checked() && this.isChangeStraightforward
+            && this.list.parentItem
+            && ko.unwrap(this.list.parentItem.value)
+            && this.list.areAllUnchecked()) {
+          this.list.listProperty.chosenValues.push(this.list.parentItem);
+        }
+
       }, this);
     }
   }
@@ -1181,7 +1259,13 @@ class ValueListItem {
           } else if (!checked
               && parentItem.checked.peek()
               && list.items.every(item => !item.checked.peek())) {
-            parentItem.checked(false);
+
+            if (list.isXOR && ko.unwrap(parentItem.value)) {
+              // NOTE: Случай ##xorparuni##
+              parentItem.checked(true);
+            } else {
+              parentItem.checked(false);
+            }
           }
         }
       }, this);
@@ -1191,12 +1275,15 @@ class ValueListItem {
     if (this.childList) {
       ko.computed(function () {
         let checked = this.checked(),
-            childList = this.childList;
+            childList = this.childList,
+            value = ko.unwrap(this.value);
         if (this.isChangeStraightforward) {
           if (checked && childList.isOR) {
             childList.checkAll();
-          } else if (checked && childList.isXOR) {
+          } else if (checked && childList.isXOR && !value) {
             childList.checkFirst();
+          } else if (checked && childList.isXOR && value) {  // NOTE: см. ##xorparuni##
+            // pass
           } else if (!checked) {
             childList.uncheckAll();
           }
@@ -1232,6 +1319,12 @@ class ValueListItem {
       disabled = ko.isObservable(disabled) ? disabled() : disabled;
       if (isImportant(this.value)) {
         chosenValues.remove(this);
+
+        // NOTE: см. ##xorparuni##
+        if (this.list.parentItem && ko.unwrap(this.list.parentItem.value)) {
+          chosenValues.remove(this.list.parentItem);
+        }
+
         if (checked && !disabled) {
           chosenValues.push(this);
           chosenValues.sort(sortTwoValueListItems);
