@@ -1123,8 +1123,8 @@ class ValueList {
   get hasNoChildList() {
     return this.items.every(item => !item.childList);
   }
-  areAllUnchecked() {
-    return this.items.every(item => !item.checked());
+  get areAllUnchecked() {
+    return this.items && this.items.every(item => !item.checked());
   }
   invertSelection() {
     this.items.forEach(item => {
@@ -1234,7 +1234,7 @@ class ValueListItem {
         if (!this.checked() && this.isChangeStraightforward
             && this.list.parentItem
             && ko.unwrap(this.list.parentItem.value)
-            && this.list.areAllUnchecked()) {
+            && this.list.areAllUnchecked) {
           this.list.listProperty.chosenValues.push(this.list.parentItem);
         }
 

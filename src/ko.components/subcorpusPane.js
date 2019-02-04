@@ -76,10 +76,10 @@ var viewModelFactory = (params, componentInfo) => {
   let records = params.records,
       recordPhases = params.recordPhases,
       subcorpusClearSelection = () => {
-        if (!records.areAllUnchecked()) {
+        if (!records.areAllUnchecked) {
           records.clearSelection();
         }
-        if (!recordPhases.areAllUnchecked()) {
+        if (!recordPhases.areAllUnchecked) {
           recordPhases.clearSelection();
         }
       },
