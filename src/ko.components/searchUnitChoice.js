@@ -231,7 +231,9 @@ class viewModel {
           params.isQueryNew(true);
         },
         isAnyUnitPropertySet = ko.computed(
-          () => node.unitProperties().some(prop => prop.value() !== null)
+          () => node.unitProperties().some(
+            prop => prop.value() !== null && prop.banner()
+          )
         ).extend({ rateLimit: 500 }),
         channelViewModels = [],
         channelHelpPopupOpts = {
