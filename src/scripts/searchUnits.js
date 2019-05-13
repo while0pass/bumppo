@@ -72,17 +72,10 @@ var data = [
         tierTemplate: '{ p_participants }-oFixation' },
     ]},
 
-  { id: 'facial',
-    name: 'Мимика',
-    unitsHeader: 'Единицы канала мимики',
-    color: 'yellow',
-    disabled: true,
-    types: []},
-
   { id: 'ceph',
     name: 'Жесты головы',
     unitsHeader: 'Единицы цефалической жестикуляции',
-    color: 'green',
+    color: 'yellow',
     disabled: true,
     types: [
       { name: 'Базовый уровень сегментации',
@@ -101,7 +94,7 @@ var data = [
   { id: 'manu',
     name: 'Жесты рук',
     unitsHeader: 'Единицы мануальной жестикуляции',
-    color: 'teal',
+    color: 'green',
     types: [
       { name: 'Первый уровень сегментации',
         types: [
@@ -137,20 +130,6 @@ var data = [
             tierTemplate: '{ p_participants }-mGestureChain' },
         ]},
     ]},
-
-  { id: 'torso',
-    name: 'Движения тела',
-    unitsHeader: 'Единицы жестикуляции тела',
-    color: 'blue',
-    disabled: true,
-    types: []},
-
-  { id: 'prox',
-    name: 'Проксемика',
-    unitsHeader: 'Единицы проксемики',
-    color: 'violet',
-    disabled: true,
-    types: []},
 ];
 
 class Unit {
