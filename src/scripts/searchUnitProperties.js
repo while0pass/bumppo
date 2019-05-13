@@ -2,7 +2,7 @@ import jQuery from 'jquery';
 import ko from 'knockout';
 
 /*
- *  type ::= interval | list |
+ *  type ::= interval | list | text
  *  name
  *  id
  *  help

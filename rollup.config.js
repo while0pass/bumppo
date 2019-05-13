@@ -47,11 +47,7 @@ export default {
       ],
     }),
     //builtins(),
-    resolve({
-      jsnext: true,
-      main: true,
-      browser: true,
-    }),
+    resolve({ mainFields: ['browser', 'jsnext:main', 'module', 'main'] }),
     commonjs(),
     //globals(),
     eslint({
