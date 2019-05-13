@@ -3,7 +3,6 @@ import log from './scripts/log.js';
 
 import jQuery from 'jquery';
 import ko from 'knockout';
-import page from 'page';
 
 import initKnockout from './scripts/init.knockout.js';
 import { TreeNode } from './scripts/queryTree.js';
@@ -15,11 +14,9 @@ import testResultsRawData from './results_data.js';
 
 /* eslint-disable no-undef,no-constant-condition */
 const searchEngineURL = (BUMPPO_ENV === 'production' ?
-        'http://multidiscourse.ru:8080/search_annotations/SearchAnnotations' :
-        (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
-          'http://localhost:8080/search_annotations/SearchAnnotations')),
-      baseURL = (BUMPPO_ENV !== 'production' ? '' :
-        ('BUMPPO_SHOWREEL' ? '/bumppo-ghpages/BUMPPO_SHOWREEL' : '/search/'));
+  'https://multidiscourse.ru:8080/search_annotations/SearchAnnotations' :
+  (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
+    'http://localhost:8080/search_annotations/SearchAnnotations'));
 /* eslint-enable no-undef,no-constant-condition */
 log('Search Engine:', searchEngineURL);
 
@@ -29,38 +26,44 @@ window[';)'] = {
   debugVideo: qs && qs.has('debugVideo') || false,
 };
 
+const QUERY_PANE = 'query',
+      SUBCORPUS_PANE = 'subcorpus',
+      RESULTS_PANE = 'results',
+      RESOPTS_PANE = 'resopts';
+
 function viewModel() {
   let self = this;
   this.version = 'v' + 'BUMPPO_VERSION';
   this.debug = window[';)'].debug;
 
-  this.queryPane = Symbol.for('query'),
-  this.subcorpusPane = Symbol.for('subcorpus'),
-  this.resultsPane = Symbol.for('results'),
-  this.resultsOptionsPane = Symbol.for('resoptions');
-  this.panes = [this.queryPane, this.subcorpusPane, this.resultsPane,
-                this.resultsOptionsPane];
-
   this.activePane = ko.observable();
-  this.switchOnQueryPane = () => { self.activePane(self.queryPane); };
-  this.switchOnSubcorpusPane = () => { self.activePane(self.subcorpusPane); };
-  this.switchOnResultsPane = () => { self.activePane(self.resultsPane); };
-  this.switchOnResultsOptionsPane = () => {
-    self.activePane(self.resultsOptionsPane); };
+  this.switchOnQueryPane = () => { self.activePane(QUERY_PANE); };
+  this.switchOnSubcorpusPane = () => { self.activePane(SUBCORPUS_PANE); };
+  this.switchOnResultsPane = () => { self.activePane(RESULTS_PANE); };
+  this.switchOnResultsOptionsPane = () => { self.activePane(RESOPTS_PANE); };
 
   this.isQueryPaneOn = ko.computed(
-    () => this.activePane() === self.queryPane);
+    () => this.activePane() === QUERY_PANE);
   this.isSubcorpusPaneOn = ko.computed(
-    () => this.activePane() === self.subcorpusPane);
+    () => this.activePane() === SUBCORPUS_PANE);
   this.isResultsPaneOn = ko.computed(
-    () => this.activePane() === self.resultsPane);
+    () => this.activePane() === RESULTS_PANE);
   this.isResultsOptionsPaneOn = ko.computed(
-    () => this.activePane() === self.resultsOptionsPane);
+    () => this.activePane() === RESOPTS_PANE);
 
-  ko.computed(() => {
-    var activePane = self.activePane();
-    if (activePane) {
-      page(`/${Symbol.keyFor(activePane)}`);
+  this.activePane.init = () => ko.computed(() => {
+    var activePane = self.activePane() || QUERY_PANE;
+    if ([QUERY_PANE, SUBCORPUS_PANE, RESOPTS_PANE].indexOf(activePane) > -1) {
+      window.history.replaceState({}, '', `#!/${activePane}`);
+      cinema.pauseAll();
+    }
+    if (activePane === RESOPTS_PANE) {
+      if (self.canViewResults()) {
+        self.activePane(RESULTS_PANE);
+      } else {
+        self.activePane(QUERY_PANE);
+      }
+      window.history.replaceState({}, '', `#!/${activePane}`);
       cinema.pauseAll();
     }
   });
@@ -201,25 +204,8 @@ function viewModel() {
 const vM = new viewModel();
 initKnockout(ko, vM);
 
-// Настройка клиентской маршрутизации
-const queryURL = Symbol.keyFor(vM.queryPane),
-      subcorpusURL = Symbol.keyFor(vM.subcorpusPane),
-      resultsURL = Symbol.keyFor(vM.resultsPane),
-      resultsOptionsURL = Symbol.keyFor(vM.resultsOptionsPane);
-
-page.base(baseURL);
-page('/', () => { vM.activePane(vM.queryPane); });
-page(`/${queryURL}`, () => { vM.activePane(vM.queryPane); });
-page(`/${subcorpusURL}`, () => { vM.activePane(vM.subcorpusPane); });
-page(`/${resultsURL}`, () => {
-  if (vM.canViewResults()) {
-    vM.activePane(vM.resultsPane);
-  } else {
-    vM.activePane(vM.queryPane);
-  }
-});
-page(`/${resultsOptionsURL}`, () => { vM.activePane(vM.resultsOptionsPane); });
-page({ hashbang: true });
+vM.activePane(window.location.hash.slice(3) || QUERY_PANE);
+vM.activePane.init();
 
 jQuery('.bmpp-sidePane_menuItem').mouseover(function () {
   if (!jQuery(this).hasClass('disabled')) {
