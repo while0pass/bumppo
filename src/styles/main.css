@@ -2,10 +2,11 @@ $bmppBorderColor: rgba(34, 36, 38, .15);
 $green: #21ba45;
 $blue: #2185d0;
 $grey: #767676;
+$red: #db2828;
 $black: #1c1b1d;
-$sidePaneWidth: 14vw;
-$mainWaitWidth: 86vw; /* = 100vw - $sidePaneWidth */
 $borderWidth: 0.3em;
+$sidePaneWidth: 14vw;
+$mainWaitWidth: calc(100vw - $sidePaneWidth - $borderWidth);
 $videoWidth: 342px;
 $videoHeight: 193px;
 
@@ -30,7 +31,8 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-mainWait {
+#bmpp-mainWait {
+  box-sizing: border-box;
   position: fixed;
   top: 0;
   right: 0;
@@ -38,13 +40,29 @@ $videoHeight: 193px;
   height: 100vh;
   z-index: 1001;
   border-left: $borderWidth solid transparent!important;
+  background-color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
 
-  & div {
-    position: absolute !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
+  & .button {
+    $colorChannels: 219, 40, 40;
+    flex: none;
+    position: absolute;
+    top: 40% !important;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: rgba($colorChannels, 0.5) !important;
+    box-shadow: 0 0 0 1px rgba($colorChannels, 0.5) inset,
+                0 0 1em 1em white !important;
+    transition: color .3s ease,
+                box-shadow .3s ease;
+
+    &:hover,
+    &:focus {
+      color: rgba($colorChannels, 1) !important;
+      box-shadow: 0 0 0 1px rgba($colorChannels, 1) inset,
+                  0 0 1em 1em white !important;
+    }
   }
 }
 

@@ -151,7 +151,7 @@ function viewModel() {
     if (self.canSearch()) {
       self.isSearchInProgress(true);
       cinema.clearActiveState();
-      jQuery.ajax(searchEngineURL, {
+      let request = jQuery.ajax(searchEngineURL, {
         data: { data: self.queryJSON() }
       }).done(data => {
         self.isQueryNew(false);
@@ -166,9 +166,18 @@ function viewModel() {
         self.canViewResults(true);
         self.switchOnResultsPane();
       });
+      self.lastRequest = request;
     }
   };
   this.isSearchInProgress = ko.observable(false);
+  this.abortLastRequest = () => {
+    let request = self.lastRequest;
+    if (request) {
+      request.abort();
+      self.lastRequest = null;
+    }
+    self.isSearchInProgress(false);
+  };
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);

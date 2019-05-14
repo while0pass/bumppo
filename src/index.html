@@ -18,7 +18,8 @@
   top: 0; bottom: 0; left: 0; right: 0;
   z-index: 10000;
 }
-#safetyCurtain:after {
+#safetyCurtain:after,
+#bmpp-mainWait:after {
   position: absolute;
   content: '';
   top: 33.3%;
@@ -97,8 +98,9 @@
   <div class="bmpp-main"
        data-bind="css: { 'no-pad': queryPaneView.arePropertiesVisible }">
 
-    <div class="bmpp-mainWait" data-bind="visible: isSearchInProgress">
-      <div class="ui loading basic segment"></div>
+    <div id="bmpp-mainWait" data-bind="visible: isSearchInProgress">
+      <div class="ui mini grey basic button"
+        data-bind="click: abortLastRequest">Отмена</div>
     </div>
 
     <!-- ko if: isQueryPaneOn -->
