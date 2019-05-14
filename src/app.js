@@ -4,10 +4,12 @@ import log from './scripts/log.js';
 import jQuery from 'jquery';
 import ko from 'knockout';
 
-import initKnockout from './scripts/init.knockout.js';
+import { init as initKnockout, preinit as preinitKnockout  }
+  from './scripts/init.knockout.js';
 import { TreeNode } from './scripts/queryTree.js';
 import getQueryJSON from './scripts/queryJSON.js';
 import cinema from './scripts/cinema.js';
+import { getHRef, hrefs } from './scripts/routing.js';
 
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 import testResultsRawData from './results_data.js';
@@ -18,7 +20,10 @@ const searchEngineURL = (BUMPPO_ENV === 'production' ?
   (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
     'http://localhost:8080/search_annotations/SearchAnnotations'));
 /* eslint-enable no-undef,no-constant-condition */
+
 log('Search Engine:', searchEngineURL);
+
+preinitKnockout(ko);
 
 const qs = window.URLSearchParams && (new URLSearchParams(document.location.search));
 window[';)'] = {
@@ -26,47 +31,26 @@ window[';)'] = {
   debugVideo: qs && qs.has('debugVideo') || false,
 };
 
-const QUERY_PANE = 'query',
-      SUBCORPUS_PANE = 'subcorpus',
-      RESULTS_PANE = 'results',
-      RESOPTS_PANE = 'resopts';
-
 function viewModel() {
   let self = this;
   this.version = 'v' + 'BUMPPO_VERSION';
   this.debug = window[';)'].debug;
 
-  this.activePane = ko.observable();
-  this.switchOnQueryPane = () => { self.activePane(QUERY_PANE); };
-  this.switchOnSubcorpusPane = () => { self.activePane(SUBCORPUS_PANE); };
-  this.switchOnResultsPane = () => { self.activePane(RESULTS_PANE); };
-  this.switchOnResultsOptionsPane = () => { self.activePane(RESOPTS_PANE); };
+  this.clientHRef = ko.observable(getHRef(window.location.hash))
+    .extend({ clientRouting: self });
+  this.switchOnQueryPane = () => { self.clientHRef(hrefs.QUERY_PANE); };
+  this.switchOnSubcorpusPane = () => { self.clientHRef(hrefs.SUBCORPUS_PANE); };
+  this.switchOnResultsPane = () => { self.clientHRef(hrefs.RESULTS_PANE); };
+  this.switchOnResultsOptionsPane = () => { self.clientHRef(hrefs.RESOPTS_PANE); };
 
   this.isQueryPaneOn = ko.computed(
-    () => this.activePane() === QUERY_PANE);
+    () => this.clientHRef() === hrefs.QUERY_PANE);
   this.isSubcorpusPaneOn = ko.computed(
-    () => this.activePane() === SUBCORPUS_PANE);
+    () => this.clientHRef() === hrefs.SUBCORPUS_PANE);
   this.isResultsPaneOn = ko.computed(
-    () => this.activePane() === RESULTS_PANE);
+    () => this.clientHRef() === hrefs.RESULTS_PANE);
   this.isResultsOptionsPaneOn = ko.computed(
-    () => this.activePane() === RESOPTS_PANE);
-
-  this.activePane.init = () => ko.computed(() => {
-    var activePane = self.activePane() || QUERY_PANE;
-    if ([QUERY_PANE, SUBCORPUS_PANE, RESOPTS_PANE].indexOf(activePane) > -1) {
-      window.history.replaceState({}, '', `#!/${activePane}`);
-      cinema.pauseAll();
-    }
-    if (activePane === RESOPTS_PANE) {
-      if (self.canViewResults()) {
-        self.activePane(RESULTS_PANE);
-      } else {
-        self.activePane(QUERY_PANE);
-      }
-      window.history.replaceState({}, '', `#!/${activePane}`);
-      cinema.pauseAll();
-    }
-  });
+    () => this.clientHRef() === hrefs.RESOPTS_PANE);
 
   this.queryPaneView = ko.observable(null);
   this.queryPaneView.isTreeVisible = ko.computed(
@@ -203,9 +187,6 @@ function viewModel() {
 }
 const vM = new viewModel();
 initKnockout(ko, vM);
-
-vM.activePane(window.location.hash.slice(3) || QUERY_PANE);
-vM.activePane.init();
 
 jQuery('.bmpp-sidePane_menuItem').mouseover(function () {
   if (!jQuery(this).hasClass('disabled')) {

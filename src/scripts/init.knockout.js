@@ -1,5 +1,6 @@
 import jQuery from 'jquery';
 import { escapeRegExp } from './searchUnitProperties.js';
+import { route, navigate } from './routing.js';
 
 import Checkbox from '../ko.components/checkbox.js';
 import IntervalProperty from '../ko.components/intervalProperty.js';
@@ -17,7 +18,33 @@ import SubcorpusPane from '../ko.components/subcorpusPane.js';
 import TextProperty from '../ko.components/textProperty.js';
 import ValueList from '../ko.components/valueList.js';
 
-export default function init(ko, viewModel) {
+export function preinit(ko) {
+  ko.extenders.clientRouting = function (target, viewModel) {
+    function writeValue(newHRef) {
+      let oldHRef = target(),
+          canViewResults = viewModel.canViewResults ?
+            viewModel.canViewResults() : false,
+          redirectedHRef = route(newHRef, canViewResults);
+      if (redirectedHRef !== oldHRef) {
+        target(redirectedHRef);
+      } else if (newHRef !== oldHRef) {
+        target.notifySubscribers(newHRef);
+      }
+    }
+    let result = ko.computed({
+      read: target,
+      write: writeValue
+    }).extend({ notify: 'always' });
+    ko.computed(() => {
+      let href = target();
+      navigate(href);
+    });
+    result(target());
+    return result;
+  };
+}
+
+export function init(ko, viewModel) {
   ko.bindingHandlers.popup = {
     init: function(element, valueAccessor, allBindings) {
       let content = ko.unwrap(valueAccessor()),
