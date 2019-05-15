@@ -153,28 +153,36 @@ function viewModel() {
       cinema.clearActiveState();
       let request = jQuery.ajax(searchEngineURL, {
         data: { data: self.queryJSON() }
-      }).done(data => {
-        self.isQueryNew(false);
-        self.isSubcorpusNew(false);
-        self.resultsRawData(data);
-        self.resultsError(null);
-      }).fail((jqXHR, textStatus, errorThrown) => {
-        self.resultsRawData(self.debug ? testResultsRawData : null);
-        self.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
-      }).always(() => {
-        self.isSearchInProgress(false);
-        self.canViewResults(true);
-        self.switchOnResultsPane();
       });
       self.lastRequest = request;
+      request.done(data => {
+        if (self.lastRequest) {
+          self.isQueryNew(false);
+          self.isSubcorpusNew(false);
+          self.resultsRawData(data);
+          self.resultsError(null);
+        }
+      }).fail((jqXHR, textStatus, errorThrown) => {
+        if (self.lastRequest) {
+          self.resultsRawData(self.debug ? testResultsRawData : null);
+          self.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
+        }
+      }).always(() => {
+        if (self.lastRequest) {
+          self.isSearchInProgress(false);
+          self.canViewResults(true);
+          self.switchOnResultsPane();
+          self.lastRequest = null;
+        }
+      });
     }
   };
   this.isSearchInProgress = ko.observable(false);
   this.abortLastRequest = () => {
     let request = self.lastRequest;
+    self.lastRequest = null;
     if (request) {
       request.abort();
-      self.lastRequest = null;
     }
     self.isSearchInProgress(false);
   };

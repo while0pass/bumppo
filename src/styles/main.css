@@ -48,7 +48,7 @@ $videoHeight: 193px;
     $colorChannels: 219, 40, 40;
     flex: none;
     position: absolute;
-    top: 40% !important;
+    top: calc(33.33% + 4em) !important;
     z-index: 1000;
     background-color: rgba(255, 255, 255, 1) !important;
     color: rgba($colorChannels, 0.5) !important;
