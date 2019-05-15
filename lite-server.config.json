@@ -1,9 +1,0 @@
-{
-  "port": 3000,
-  "server": {
-    "baseDir": "build"
-  },
-  "injectChanges": true,
-  "logLevel": "silent",
-  "browser": ["google-chrome"]
-}

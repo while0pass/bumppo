@@ -1,6 +1,6 @@
 {
   "name": "Bumppo",
-  "version": "0.8.38",
+  "version": "0.8.39",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
@@ -11,7 +11,7 @@
     "lint": "eslint",
     "lint-all": "clear; find src/ -name '*.js' | xargs eslint",
     "production": "rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production,BUMPPO_SHOWREEL:false",
-    "serve": "lite-server -c lite-server.config.json",
+    "serve": "lite-server -c lite-server.config.js",
     "showreel": "test -n \"$BUMPPO_SHOWREEL\" && { rm -fr build; gulp -f semantic/gulpfile.js build; rollup -c --environment BUMPPO_ENV:production; git --work-tree=../bumppo-ghpages --git-dir=../bumppo-ghpages/.git checkout gh-pages; rsync -av build/ ../bumppo-ghpages/$BUMPPO_SHOWREEL; } || echo $'\\n\\nЗадайте переменную окружения BUMPPO_SHOWREEL\\n'",
     "test": "echo 'Error: no test specified' && exit 1",
     "watch": "find -type f -path './src/*' -o -path './package.json' -o -path './rollup.config.js' | entr -s 'npm-run-all --silent --parallel lint-all build'"
@@ -30,6 +30,7 @@
     "@babel/preset-env": "^7.1.0",
     "cssnano": "^4.1.7",
     "gulp-cli": "^2.2.0",
+    "http-proxy-middleware": "^0.19.1",
     "lite-server": "^2.4.0",
     "postcss-cssnext": "^3.1.0",
     "postcss-inline": "^1.2.0",
