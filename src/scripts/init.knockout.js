@@ -37,9 +37,9 @@ export function preinit(ko) {
     }).extend({ notify: 'always' });
     ko.computed(() => {
       let href = target();
-      navigate(href);
       viewModel.cinema && viewModel.cinema.pauseAll();
       viewModel.abortLastRequest && viewModel.abortLastRequest();
+      navigate(href);
     });
     result(target());
     return result;
