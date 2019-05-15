@@ -40,28 +40,22 @@ $videoHeight: 193px;
   height: 100vh;
   z-index: 1001;
   border-left: $borderWidth solid transparent!important;
-  background-color: rgba(255, 255, 255, 0.85);
-  display: flex;
-  justify-content: center;
 
   & .button {
     $colorChannels: 219, 40, 40;
-    flex: none;
-    position: absolute;
-    top: calc(33.33% + 4em) !important;
-    z-index: 1000;
     background-color: rgba(255, 255, 255, 1) !important;
     color: rgba($colorChannels, 0.5) !important;
-    box-shadow: 0 0 0 1px rgba($colorChannels, 0.5) inset,
-                0 0 1em 1em white !important;
+    box-shadow: 0 0 0 1px rgba($colorChannels, 0.5) inset!important;
     transition: color .3s ease,
                 box-shadow .3s ease;
+    z-index: 1005;
+    position: absolute;
+    top: calc(50% + 4em);
 
     &:hover,
     &:focus {
       color: rgba($colorChannels, 1) !important;
-      box-shadow: 0 0 0 1px rgba($colorChannels, 1) inset,
-                  0 0 1em 1em white !important;
+      box-shadow: 0 0 0 1px rgba($colorChannels, 1) inset!important;
     }
   }
 }

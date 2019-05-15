@@ -150,17 +150,48 @@ function viewModel() {
   this.cinema = cinema;
   this.search = () => {
     if (self.canSearch()) {
+      self.searchStatus('Формирование запроса');
       self.isSearchInProgress(true);
+      self.canSearchBeAborted(true);
       self.cinema.clearActiveState();
       let request = jQuery.ajax(searchEngineURL, {
-        data: { data: self.queryJSON() }
+        data: { data: self.queryJSON() },
+        dataType: 'text',  // NOTE: Мы хотим обработывать JSON вручную
+        async: true,
+        xhr: () => {
+          let xhr = jQuery.ajaxSettings.xhr();
+          xhr.addEventListener('readystatechange', () => {
+            const NOT_SENT = 0, OPENED = 1, HEADERS_RECEIVED = 2;
+            if (xhr.readyState === NOT_SENT) {
+              self.searchStatus('Отправка запроса');
+            } else if (xhr.readyState === OPENED) {
+              self.searchStatus('Ожидание ответа');
+            } else if (xhr.readyState === HEADERS_RECEIVED) {
+              self.searchStatus('Ожидание данных');
+            }
+          });
+          xhr.addEventListener('progress', (event) => {
+            self.canSearchBeAborted(false);
+            let percent = '';
+            if (event.lengthComputable) {
+              percent = event.loaded / event.total * 100;
+              percent = percent.toFixed(0);
+              percent = ` ${ percent }%`;
+            }
+            self.searchStatus('Получение данных' + percent);
+          });
+          xhr.addEventListener('load', () => {
+            self.searchStatus('Обработка данных');
+          });
+          return xhr;
+        }
       });
       self.lastRequest = request;
       request.done(data => {
         if (self.lastRequest) {
           self.isQueryNew(false);
           self.isSubcorpusNew(false);
-          self.resultsRawData(data);
+          self.resultsRawData(JSON.parse(data));
           self.resultsError(null);
         }
       }).fail((jqXHR, textStatus, errorThrown) => {
@@ -179,6 +210,8 @@ function viewModel() {
     }
   };
   this.isSearchInProgress = ko.observable(false);
+  this.canSearchBeAborted = ko.observable(true);
+  this.searchStatus = ko.observable('');
   this.abortLastRequest = () => {
     let request = self.lastRequest;
     self.lastRequest = null;

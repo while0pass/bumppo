@@ -18,8 +18,7 @@
   top: 0; bottom: 0; left: 0; right: 0;
   z-index: 10000;
 }
-#safetyCurtain:after,
-#bmpp-mainWait:after {
+#safetyCurtain:after {
   position: absolute;
   content: '';
   top: 33.3%;
@@ -99,8 +98,13 @@
        data-bind="css: { 'no-pad': queryPaneView.arePropertiesVisible }">
 
     <div id="bmpp-mainWait" data-bind="visible: isSearchInProgress">
-      <div class="ui mini grey basic button"
-        data-bind="click: abortLastRequest">Отмена</div>
+      <div class="ui active inverted dimmer">
+        <div class="ui text loader" style="color: #767676"
+          data-bind="text: searchStatus"></div>
+        <button class="ui mini basic button"
+          data-bind="click: abortLastRequest, fadeVisible: canSearchBeAborted"
+          >Отмена</button>
+      </div>
     </div>
 
     <!-- ko if: isQueryPaneOn -->

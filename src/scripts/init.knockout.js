@@ -19,6 +19,16 @@ import TextProperty from '../ko.components/textProperty.js';
 import ValueList from '../ko.components/valueList.js';
 
 export function preinit(ko) {
+  ko.bindingHandlers.fadeVisible = {
+    init: function(element, valueAccessor) {
+      var value = valueAccessor();
+      jQuery(element).toggle(ko.unwrap(value));
+    },
+    update: function(element, valueAccessor) {
+      var value = valueAccessor();
+      ko.unwrap(value) ? jQuery(element).fadeIn() : jQuery(element).fadeOut();
+    }
+  };
   ko.extenders.clientRouting = function (target, viewModel) {
     function writeValue(newHRef) {
       let oldHRef = target(),
