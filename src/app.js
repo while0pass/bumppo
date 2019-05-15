@@ -16,9 +16,9 @@ import testResultsRawData from './results_data.js';
 
 /* eslint-disable no-undef,no-constant-condition */
 const searchEngineURL = (BUMPPO_ENV === 'production' ?
-  'https://multidiscourse.ru:8080/search_annotations/SearchAnnotations' :
+  BUMPPO_REMOTE_SERVER.origin + BUMPPO_REMOTE_SERVER.path:
   (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
-    'http://localhost:8080/search_annotations/SearchAnnotations'));
+    `http://localhost:${ LOCAL_PORT }${ BUMPPO_REMOTE_SERVER.path }`));
 /* eslint-enable no-undef,no-constant-condition */
 
 log('Search Engine:', searchEngineURL);

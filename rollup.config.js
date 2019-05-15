@@ -18,6 +18,8 @@ import cssnano from 'cssnano';
 
 const IS_PRODUCTION = process.env.BUMPPO_ENV === 'production',
       BUMPPO_VERSION = require('./package.json').version,
+      BUMPPO_REMOTE_SERVER = require('./lite-server.config.js').BUMPPO.REMOTE_SERVER,
+      LOCAL_PORT = require('./lite-server.config.js').port,
       terserOpts = IS_PRODUCTION ? { numWorkers: 1 } : {};
       // NOTE: Без numWorkers=1 terser не отрабатывает на нашем продакшене.
 
@@ -67,9 +69,11 @@ export default {
       BUMPPO_ENV: JSON.stringify(process.env.BUMPPO_ENV || 'development'),
       BUMPPO_HOSTING: process.env.BUMPPO_HOSTING || JSON.stringify(false),
       BUMPPO_LOCAL_SERVER: JSON.stringify(process.env.BUMPPO_LOCAL_SERVER || ''),
+      BUMPPO_REMOTE_SERVER: JSON.stringify(BUMPPO_REMOTE_SERVER),
       BUMPPO_SHOWREEL: (process.env.BUMPPO_SHOWREEL === 'false' ? '' :
         process.env.BUMPPO_SHOWREEL || ''),
       BUMPPO_VERSION: BUMPPO_VERSION,
+      LOCAL_PORT: LOCAL_PORT,
     }),
     IS_PRODUCTION && terser(terserOpts),
     copy({
