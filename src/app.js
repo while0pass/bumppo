@@ -147,10 +147,11 @@ function viewModel() {
     return self.lastQueryJSON;
   }).extend({ rateLimit: 500 });
 
+  this.cinema = cinema;
   this.search = () => {
     if (self.canSearch()) {
       self.isSearchInProgress(true);
-      cinema.clearActiveState();
+      self.cinema.clearActiveState();
       let request = jQuery.ajax(searchEngineURL, {
         data: { data: self.queryJSON() }
       });

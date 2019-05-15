@@ -38,6 +38,8 @@ export function preinit(ko) {
     ko.computed(() => {
       let href = target();
       navigate(href);
+      viewModel.cinema && viewModel.cinema.pauseAll();
+      viewModel.abortLastRequest && viewModel.abortLastRequest();
     });
     result(target());
     return result;

@@ -1,5 +1,3 @@
-import cinema from './cinema.js';
-
 const hrefs = {
   QUERY_PANE: 'query',
   SUBCORPUS_PANE: 'subcorpus',
@@ -9,7 +7,6 @@ const hrefs = {
 
 function navigate(href) {
   window.history.replaceState({}, '', makeHash(href));
-  cinema.pauseAll();
 }
 
 function route(href, canViewResults) {
