@@ -3,7 +3,7 @@ const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
   '$_CONFIG.BUMPPO_REMOTE_SERVER.origin' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path':
   ('$_CONFIG.BUMPPO_LOCAL_SERVER' ?
     '$_CONFIG.BUMPPO_LOCAL_SERVER' : 'http://localhost:' +
-    '$_CONFIG.LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
+    '$_CONFIG.BUMPPO_LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
 /* eslint-enable no-undef,no-constant-condition */
 
 var xhr;

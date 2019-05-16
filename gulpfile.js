@@ -5,6 +5,7 @@ const context = {
   BUMPPO_ENV: process.env.BUMPPO_ENV || 'development',
   BUMPPO_ENV_IS_PRODUCTION: process.env.BUMPPO_ENV === 'production',
   BUMPPO_LOCAL_PORT: _lsconf.port,
+  BUMPPO_LOCAL_SERVER: process.env.BUMPPO_LOCAL_SERVER || '',
   BUMPPO_REMOTE_SERVER: _lsconf.BUMPPO.REMOTE_SERVER,
   BUMPPO_VERSION: _pkgconf.version,
 };

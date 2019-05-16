@@ -18,9 +18,9 @@ module.exports = {
     middleware: { 1: proxy(BUMPPO_REMOTE_SERVER.path, proxyOpts) }
   },
   files: [
-    "build/index.html",
-    "build/bumppo.css",
-    "build/js/**/*.js}"
+    'build/index.html',
+    'build/bumppo.css',
+    'build/js/**/*.js}'
   ],
   injectChanges: false,
   reloadThrottle: 0,
