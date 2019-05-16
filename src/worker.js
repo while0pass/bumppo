@@ -60,13 +60,17 @@ function doQuery(data) {
   xhr.upload.addEventListener('progress', event => {
     if (event.lengthComputable) {
       let percent = (event.loaded / event.total * 100).toFixed(0);
-      postMessage(['status', `Отправка данных ${ percent }%`]);
+      if (percent < 100) {
+        postMessage(['status', `Отправка данных ${ percent }%`]);
+      }
     }
   });
   xhr.addEventListener('progress', event => {
     if (event.lengthComputable) {
       let percent = (event.loaded / event.total * 100).toFixed(0);
-      postMessage(['status', `Получение данных ${ percent }%`]);
+      if (percent < 100) {
+        postMessage(['status', `Получение данных ${ percent }%`]);
+      }
     }
   });
   xhr.addEventListener('abort', () => {
