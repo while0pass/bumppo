@@ -230,7 +230,7 @@ class ContextOrMatch {
   }
 }
 
-class Result {
+export class Result {
   constructor(data) {
     this.record_id = this.getRecordId(data[0] && data[0].record_id || '');
     this.participant = data[0] && data[0].participant || '';
@@ -285,17 +285,13 @@ class Result {
   }
 }
 
-export class Results {
-  constructor(data) {
-    this.version = data.version;
-    this.results = this.getResults(data.results);
-  }
-  getResults(list) {
-    let results = list.map(item => new Result(item));
-    results.forEach((item, index, array) => {
-      let previousItem = index > 0 ? array[index - 1] : null;
-      item.setPreviousItem(previousItem);
-    });
-    return results;
+
+export function getResults(list) {
+  let results = list.map(item => new Result(item));
+  results.forEach((item, index, array) => {
+    let previousItem = index > 0 ? array[index - 1] : null;
+    item.setPreviousItem(previousItem);
+  });
+  return results;
   }
 }

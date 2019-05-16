@@ -6,7 +6,7 @@ const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
     '$_CONFIG.BUMPPO_LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
 /* eslint-enable no-undef,no-constant-condition */
 
-var xhr;
+var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] };
 
 /*eslint-disable-next-line no-unused-vars */
 onmessage = (message) => {
@@ -45,11 +45,15 @@ function doQuery(data) {
     } else if (xhr.readyState === DONE) {
       if (xhr.status >= 200 && xhr.status < 300) {
         postMessage(['status', 'Обработка данных']);
-        let json = JSON.parse(xhr.responseText);
-        postMessage(['json', json]);
+        postMessage(['noabort', null]);
+        let rawData = JSON.parse(xhr.responseText);
+        searchData.sent = 0;
+        searchData.total = rawData.results.length;
+        searchData.results = rawData.results;
+        postMessage(['status', 'Отрисовка результатов']);
+        sendFirstResults();
       } else {
-        postMessage(['status', `В ходе выполнения запроса возникла ошибка:
-                                ${ xhr.status } ${ xhr.statusText }`]);
+        postMessage(['error', `${ xhr.status } ${ xhr.statusText }`]);
       }
     }
   });
@@ -70,4 +74,13 @@ function doQuery(data) {
   });
   xhr.open('POST', searchEngineURL, asynchronously);
   xhr.send(data);
+}
+
+function sendFirstResults() {
+  let firstResults = searchData.results.slice(0, searchData.inc);
+  postMessage(['results0', {
+    total: searchData.total,
+    results: firstResults
+  }]);
+  searchData.sent = firstResults.length;
 }

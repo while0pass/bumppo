@@ -7,7 +7,7 @@ import { TreeNode } from './scripts/queryTree.js';
 import getQueryJSON from './scripts/queryJSON.js';
 import cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
-
+import { concatResults, getResults } from './scripts/results.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
 preinitKnockout(ko);
@@ -76,7 +76,7 @@ function viewModel() {
   this.isQueryNew = ko.observable(true);
   this.isSubcorpusNew = ko.observable(false);
 
-  this.resultsRawData = ko.observable(null);
+  this.resultsData = ko.observableArray([]);
   this.subcorpus = {
     records: new CheckboxForm(records, this.isSubcorpusNew),
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
@@ -85,9 +85,6 @@ function viewModel() {
     let records = self.subcorpus.records,
         recordPhases = self.subcorpus.recordPhases,
         banner;
-    if (self.resultsRawData() && self.resultsRawData().version === 'test') {
-      return self.resultsRawData().subcorpus;
-    }
     if (records.areAllUnchecked || records.areAllChecked) {
       banner = 'все записи; ';
     } else {
@@ -141,7 +138,6 @@ function viewModel() {
     if (self.canSearch()) {
       self.searchStatus('Формирование запроса');
       self.isSearchInProgress(true);
-      self.isSearchAborted = false;
       self.canSearchBeAborted(true);
       self.cinema.clearActiveState();
       worker.postMessage(['query', self.queryJSON()]);
@@ -151,23 +147,15 @@ function viewModel() {
   this.canSearchBeAborted = ko.observable(true);
   this.searchStatus = ko.observable('');
   this.abortLastRequest = () => {
-    self.isSearchAborted = true;
     self.isSearchInProgress(false);
     worker.postMessage(['abort', null]);
   };
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
-  this.resultsNumber = ko.computed(function () {
-    let R = self.resultsRawData();
-    if (R && R.results instanceof Array) {
-      return R.results.length;
-    } else {
-      return null;
-    }
-  });
-  this.responseJSON = ko.computed(
-    () => self.resultsRawData() ? JSON.stringify(self.resultsRawData(), null, 4) : ''
+  this.resultsNumber = ko.observable(null);
+  this.responseJSON = ko.pureComputed(
+    () => self.resultsData() ? JSON.stringify(self.resultsData(), null, 4) : ''
   );
 
 }
@@ -176,21 +164,21 @@ initKnockout(ko, vM);
 
 worker.onmessage = message => {
   let [ messageType, data ] = message.data;
-  if (messageType === 'json') {
-    if (!vM.isSearchAborted) {
-      vM.isQueryNew(false);
-      vM.isSubcorpusNew(false);
-      vM.resultsRawData(data);
-      vM.resultsError(null);
-      vM.isSearchInProgress(false);
-      vM.canViewResults(true);
-      vM.switchOnResultsPane();
-    }
+  if (messageType === 'results0') {
+    vM.isQueryNew(false);
+    vM.isSubcorpusNew(false);
+    vM.resultsNumber(data.total);
+    vM.resultsData(getResults(data.results));
+    vM.resultsError(null);
+    vM.isSearchInProgress(false);
+    vM.canViewResults(true);
+    vM.switchOnResultsPane();
   } else if (messageType === 'status') {
     vM.searchStatus(data);
-    //let [textStatus, errorThrown] = data;
-    //vM.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
-    //vM.isSearchInProgress(false);
+  } else if (messageType === 'error') {
+    vM.resultsError(data);
+  } else if (messageType === 'noabort') {
+    vM.canSearchBeAborted(false);
   }
 };
 
