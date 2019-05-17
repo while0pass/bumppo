@@ -118,6 +118,7 @@ function assets() {
 function sync() {
   return merge(
     src('.build/**').pipe(dest('build')),
+    src('.semantic/**').pipe(dest('build/semantic')),
   );
 }
 
