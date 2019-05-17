@@ -78,8 +78,12 @@ function doQuery(data) {
   xhr.addEventListener('abort', () => {
     postMessage(['status', 'Запрос отменен']);
   });
-  xhr.open('POST', searchEngineURL, asynchronously);
-  xhr.send(data);
+  // eslint-disable-next-line no-undef
+  xhr.open('GET', searchEngineURL + '?data=' + encodeURIComponent(data),
+    asynchronously);
+  xhr.send();
+  //xhr.open('POST', searchEngineURL, asynchronously);
+  //xhr.send(data);
 }
 
 function sendFirstResults() {
