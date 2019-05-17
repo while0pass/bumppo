@@ -16,6 +16,8 @@ onmessage = (message) => {
     doQuery(data);
   } else if (messageType === 'abort') {
     doAbort(xhr);
+  } else if (messageType === 'results1') {
+    sendOtherResults();
   }
 };
 
@@ -87,4 +89,11 @@ function sendFirstResults() {
     results: firstResults
   }]);
   searchData.sent = firstResults.length;
+}
+
+function sendOtherResults() {
+  let { sent, inc, results } = searchData,
+      resultsPortion = results.slice(sent, sent + inc);
+  postMessage(['results1', resultsPortion]);
+  searchData.sent += resultsPortion.length;
 }

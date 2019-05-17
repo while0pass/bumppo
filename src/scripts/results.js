@@ -293,5 +293,13 @@ export function getResults(list) {
     item.setPreviousItem(previousItem);
   });
   return results;
+}
+
+export function concatResults(oldOnesKoObservable, newOnes) {
+  let n = oldOnesKoObservable().length;
+  if (n > 0) {
+    let previousItem = oldOnesKoObservable()[n - 1];
+    newOnes[0].setPreviousItem(previousItem);
   }
+  oldOnesKoObservable.splice(n, 0, ...newOnes);
 }

@@ -24,9 +24,15 @@ export function preinit(ko) {
       var value = valueAccessor();
       jQuery(element).toggle(ko.unwrap(value));
     },
-    update: function(element, valueAccessor) {
-      var value = valueAccessor();
-      ko.unwrap(value) ? jQuery(element).fadeIn() : jQuery(element).fadeOut();
+    update: function(element, valueAccessor, allBindings) {
+      var value = valueAccessor(),
+          fadeInDuration = allBindings.get('fadeInDuration') || 400,
+          fadeOutDuration = allBindings.get('fadeOutDuration') || 400;
+      if (ko.unwrap(value)) {
+        jQuery(element).fadeIn(fadeInDuration);
+      } else {
+        jQuery(element).fadeOut(fadeOutDuration);
+      }
     }
   };
   ko.extenders.clientRouting = function (target, viewModel) {

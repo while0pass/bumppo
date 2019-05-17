@@ -54,16 +54,54 @@ const resultsTemplate = `
 const template = `
 
   <div class="ui basic segment" data-bind="with: resultsData">
+
     ${ resultsTemplate }
+
+    <div id="bmpp-ResultsEndMarker" class="ui basic segment"
+      style="height: 5em"></div>
+
   </div>
 
 `;
 
 var viewModelFactory = function (params) {
+  var vM = params.viewModel,
+      resultsData = params.resultsData,
+      observer;
+
+  function callback() {
+    if (!vM.isLoadingNewDataPortion()) {
+      vM.loadNewDataPortion();
+      if (vM.resultsNumber() <= resultsData.results().length) {
+        observer.disconnect();
+        vM.isLoadingNewDataPortion(false);
+      }
+    }
+  }
+
+  function bindLazyLoad () {
+    var area = document.getElementById('bmpp-ResultsList'),
+        target = document.getElementById('bmpp-ResultsEndMarker'),
+        options = {
+          root: area,
+          rootMargin: '0px',
+          threshold: 0
+        };
+    observer = new IntersectionObserver(callback, options);
+    observer.observe(target);
+  }
+
+  if (vM.resultsNumber() > resultsData.results().length) {
+    setTimeout(bindLazyLoad, 5000);
+  }
+
   return {
-    resultsData: params.resultsData,
-    cinema: cinema
+    cinema: cinema,
+    resultsData: params.resultsData
   };
+};
+viewModelFactory.prototype.dispose = function () {
+  this.observer.disconnect && this.observer.disconnect();
 };
 
 export default {

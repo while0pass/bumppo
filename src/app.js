@@ -1,3 +1,4 @@
+import log from './scripts/log.js';
 import jQuery from 'jquery';
 import ko from 'knockout';
 
@@ -150,6 +151,11 @@ function viewModel() {
     self.isSearchInProgress(false);
     worker.postMessage(['abort', null]);
   };
+  this.isLoadingNewDataPortion = ko.observable(false);
+  this.loadNewDataPortion = () => {
+    self.isLoadingNewDataPortion(true);
+    worker.postMessage(['results1', null]);
+  };
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
@@ -173,6 +179,12 @@ worker.onmessage = message => {
     vM.isSearchInProgress(false);
     vM.canViewResults(true);
     vM.switchOnResultsPane();
+  } else if (messageType === 'results1') {
+    if (data && data.length) {
+      concatResults(vM.resultsData, getResults(data));
+    }
+    vM.isLoadingNewDataPortion(false);
+    log(`Got ${ vM.resultsData().length } / ${ vM.resultsNumber() } results`);
   } else if (messageType === 'status') {
     vM.searchStatus(data);
   } else if (messageType === 'error') {

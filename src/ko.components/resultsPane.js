@@ -79,7 +79,8 @@ const template = `
 
   </div>
 
-  <div class="bmpp-resultsPane_results" data-bind="if: resultsData.results">
+  <div id="bmpp-ResultsList" class="bmpp-resultsPane_results"
+    data-bind="if: resultsData.results">
 
     <!-- ko if: $root.debug -->
     <div style="padding: 1em; font-size: x-small; background-color: #eee;">
@@ -89,7 +90,8 @@ const template = `
     </div>
     <!-- /ko -->
 
-    <results-list params="resultsData: resultsData"></results-list>
+    <results-list params="resultsData: resultsData,
+      viewModel: $root"></results-list>
 
     <!-- ko if: $root.debug -->
     <div style="padding: 1em; font-size: x-small; background-color: #eee;">
@@ -98,6 +100,15 @@ const template = `
         data-bind="text: $root.responseJSON"></code>
     </div>
     <!-- /ko -->
+
+    <div class="ui basic segment" style="position: absolute;
+      bottom: 0; height: 3em; width: 5em">
+      <div class="ui active inverted dimmer"
+        data-bind="fadeVisible: $root.isLoadingNewDataPortion,
+          fadeInDuration: 0, fadeOutDuration: 2000">
+        <div class="ui small loader"></div>
+      </div>
+    </div>
 
   </div>
 
