@@ -1,6 +1,4 @@
-import ko from 'knockout';
 import cinema from '../scripts/cinema.js';
-import { Results } from '../scripts/results.js';
 
 const template = `
 
@@ -81,7 +79,8 @@ const template = `
 
   </div>
 
-  <div class="bmpp-resultsPane_results" data-bind="if: resultsData">
+  <div id="bmpp-ResultsList" class="bmpp-resultsPane_results"
+    data-bind="if: resultsData.results">
 
     <!-- ko if: $root.debug -->
     <div style="padding: 1em; font-size: x-small; background-color: #eee;">
@@ -91,7 +90,8 @@ const template = `
     </div>
     <!-- /ko -->
 
-    <results-list params="resultsData: resultsData"></results-list>
+    <results-list params="resultsData: resultsData,
+      viewModel: $root"></results-list>
 
     <!-- ko if: $root.debug -->
     <div style="padding: 1em; font-size: x-small; background-color: #eee;">
@@ -101,33 +101,25 @@ const template = `
     </div>
     <!-- /ko -->
 
+    <div class="ui basic segment" style="position: absolute;
+      bottom: 0; height: 3em; width: 5em">
+      <div class="ui active inverted dimmer"
+        data-bind="fadeVisible: $root.isLoadingNewDataPortion,
+          fadeInDuration: 0, fadeOutDuration: 2000">
+        <div class="ui small loader"></div>
+      </div>
+    </div>
+
   </div>
 
 `;
 
 function viewModelFactory(params) {
-  let oldData = null,
-      oldResults = null,
-      resultsData = ko.computed(function () {
-        let newData = params.resultsRawData();
-        if (newData !== null && newData !== oldData) {
-          let newResults = new Results(newData);
-          oldData = newData;
-          oldResults = newResults;
-        } else if (newData === null && newData !== oldData) {
-          oldData = null;
-          oldResults = null;
-        }
-        return oldResults;
-      });
   return {
-    resultsData: resultsData,
+    resultsData: { results: params.resultsData },
     cinema: cinema
   };
 }
-viewModelFactory.prototype.dispose = function () {
-  this.resultsData.dispose();
-};
 
 export default {
   viewModel: { createViewModel: viewModelFactory },

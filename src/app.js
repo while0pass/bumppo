@@ -1,6 +1,4 @@
-import './styles/main.css';
 import log from './scripts/log.js';
-
 import jQuery from 'jquery';
 import ko from 'knockout';
 
@@ -10,18 +8,8 @@ import { TreeNode } from './scripts/queryTree.js';
 import getQueryJSON from './scripts/queryJSON.js';
 import cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
-
+import { concatResults, getResults } from './scripts/results.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
-import testResultsRawData from './results_data.js';
-
-/* eslint-disable no-undef,no-constant-condition */
-const searchEngineURL = (BUMPPO_ENV === 'production' ?
-  BUMPPO_REMOTE_SERVER.origin + BUMPPO_REMOTE_SERVER.path:
-  (BUMPPO_LOCAL_SERVER ? BUMPPO_LOCAL_SERVER :
-    `http://localhost:${ LOCAL_PORT }${ BUMPPO_REMOTE_SERVER.path }`));
-/* eslint-enable no-undef,no-constant-condition */
-
-log('Search Engine:', searchEngineURL);
 
 preinitKnockout(ko);
 
@@ -31,9 +19,11 @@ window[';)'] = {
   debugVideo: qs && qs.has('debugVideo') || false,
 };
 
+const worker = new Worker('js/worker.js');
+
 function viewModel() {
   let self = this;
-  this.version = 'v' + 'BUMPPO_VERSION';
+  this.version = 'v' + '$_CONFIG.BUMPPO_VERSION';
   this.debug = window[';)'].debug;
 
   this.clientHRef = ko.observable(getHRef(window.location.hash))
@@ -87,7 +77,7 @@ function viewModel() {
   this.isQueryNew = ko.observable(true);
   this.isSubcorpusNew = ko.observable(false);
 
-  this.resultsRawData = ko.observable(null);
+  this.resultsData = ko.observableArray([]);
   this.subcorpus = {
     records: new CheckboxForm(records, this.isSubcorpusNew),
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
@@ -96,9 +86,6 @@ function viewModel() {
     let records = self.subcorpus.records,
         recordPhases = self.subcorpus.recordPhases,
         banner;
-    if (self.resultsRawData() && self.resultsRawData().version === 'test') {
-      return self.resultsRawData().subcorpus;
-    }
     if (records.areAllUnchecked || records.areAllChecked) {
       banner = 'все записи; ';
     } else {
@@ -154,90 +141,58 @@ function viewModel() {
       self.isSearchInProgress(true);
       self.canSearchBeAborted(true);
       self.cinema.clearActiveState();
-      let request = jQuery.ajax(searchEngineURL, {
-        data: { data: self.queryJSON() },
-        dataType: 'text',  // NOTE: Мы хотим обработывать JSON вручную
-        async: true,
-        xhr: () => {
-          let xhr = jQuery.ajaxSettings.xhr();
-          xhr.addEventListener('readystatechange', () => {
-            const NOT_SENT = 0, OPENED = 1, HEADERS_RECEIVED = 2;
-            if (xhr.readyState === NOT_SENT) {
-              self.searchStatus('Отправка запроса');
-            } else if (xhr.readyState === OPENED) {
-              self.searchStatus('Ожидание ответа');
-            } else if (xhr.readyState === HEADERS_RECEIVED) {
-              self.searchStatus('Ожидание данных');
-            }
-          });
-          xhr.addEventListener('progress', (event) => {
-            self.canSearchBeAborted(false);
-            let percent = '';
-            if (event.lengthComputable) {
-              percent = event.loaded / event.total * 100;
-              percent = percent.toFixed(0);
-              percent = ` ${ percent }%`;
-            }
-            self.searchStatus('Получение данных' + percent);
-          });
-          xhr.addEventListener('load', () => {
-            self.searchStatus('Обработка данных');
-          });
-          return xhr;
-        }
-      });
-      self.lastRequest = request;
-      request.done(data => {
-        if (self.lastRequest) {
-          self.isQueryNew(false);
-          self.isSubcorpusNew(false);
-          self.resultsRawData(JSON.parse(data));
-          self.resultsError(null);
-        }
-      }).fail((jqXHR, textStatus, errorThrown) => {
-        if (self.lastRequest) {
-          self.resultsRawData(self.debug ? testResultsRawData : null);
-          self.resultsError(`Ошибка: ${ textStatus } "${ errorThrown }"`);
-        }
-      }).always(() => {
-        if (self.lastRequest) {
-          self.isSearchInProgress(false);
-          self.canViewResults(true);
-          self.switchOnResultsPane();
-          self.lastRequest = null;
-        }
-      });
+      worker.postMessage(['query', self.queryJSON()]);
     }
   };
   this.isSearchInProgress = ko.observable(false);
   this.canSearchBeAborted = ko.observable(true);
   this.searchStatus = ko.observable('');
   this.abortLastRequest = () => {
-    let request = self.lastRequest;
-    self.lastRequest = null;
-    if (request) {
-      request.abort();
-    }
     self.isSearchInProgress(false);
+    worker.postMessage(['abort', null]);
+  };
+  this.isLoadingNewDataPortion = ko.observable(false);
+  this.loadNewDataPortion = () => {
+    self.isLoadingNewDataPortion(true);
+    worker.postMessage(['results1', null]);
   };
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
-  this.resultsNumber = ko.computed(function () {
-    let R = self.resultsRawData();
-    if (R && R.results instanceof Array) {
-      return R.results.length;
-    } else {
-      return null;
-    }
-  });
-  this.responseJSON = ko.computed(
-    () => self.resultsRawData() ? JSON.stringify(self.resultsRawData(), null, 4) : ''
+  this.resultsNumber = ko.observable(null);
+  this.responseJSON = ko.pureComputed(
+    () => self.resultsData() ? JSON.stringify(self.resultsData(), null, 4) : ''
   );
 
 }
 const vM = new viewModel();
 initKnockout(ko, vM);
+
+worker.onmessage = message => {
+  let [ messageType, data ] = message.data;
+  if (messageType === 'results0') {
+    vM.isQueryNew(false);
+    vM.isSubcorpusNew(false);
+    vM.resultsNumber(data.total);
+    vM.resultsData(getResults(data.results));
+    vM.resultsError(null);
+    vM.isSearchInProgress(false);
+    vM.canViewResults(true);
+    vM.switchOnResultsPane();
+  } else if (messageType === 'results1') {
+    if (data && data.length) {
+      concatResults(vM.resultsData, getResults(data));
+    }
+    vM.isLoadingNewDataPortion(false);
+    log(`Got ${ vM.resultsData().length } / ${ vM.resultsNumber() } results`);
+  } else if (messageType === 'status') {
+    vM.searchStatus(data);
+  } else if (messageType === 'error') {
+    vM.resultsError(data);
+  } else if (messageType === 'noabort') {
+    vM.canSearchBeAborted(false);
+  }
+};
 
 jQuery('.bmpp-sidePane_menuItem').mouseover(function () {
   if (!jQuery(this).hasClass('disabled')) {

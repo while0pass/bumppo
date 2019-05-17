@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="plyr.css">
+    <link rel="stylesheet" type="text/css" href="bumppo.css">
   </head>
   <body style="position: relative">
 
@@ -99,7 +100,7 @@
 
     <div id="bmpp-mainWait" data-bind="visible: isSearchInProgress">
       <div class="ui active inverted dimmer">
-        <div class="ui text loader" style="color: #767676"
+        <div class="ui text loader" style="color: #767676; font-size: smaller"
           data-bind="text: searchStatus"></div>
         <button class="ui mini basic button"
           data-bind="click: abortLastRequest, fadeVisible: canSearchBeAborted"
@@ -138,7 +139,7 @@
 
     <!-- ko if: isResultsPaneOn -->
     <div class="bmpp-resultsPane" data-bind="component: {
-        name: 'results-pane', params: { resultsRawData: resultsRawData }}"></div>
+        name: 'results-pane', params: { resultsData: resultsData }}"></div>
     <!-- /ko -->
 
   </div>

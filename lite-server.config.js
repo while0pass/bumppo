@@ -17,7 +17,15 @@ module.exports = {
     baseDir: 'build',
     middleware: { 1: proxy(BUMPPO_REMOTE_SERVER.path, proxyOpts) }
   },
-  injectChanges: true,
+  files: [
+    'build/index.html',
+    'build/bumppo.css',
+    'build/js/**/*.js}'
+  ],
+  injectChanges: false,
+  reloadThrottle: 0,
+  reloadDelay: 500,
+  reloadDebounce: 500,
   logLevel: 'silent',
   browser: ['google-chrome'],
 

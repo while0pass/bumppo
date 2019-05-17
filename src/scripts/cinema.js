@@ -5,7 +5,7 @@ import Plyr from 'plyr';
 import cinematheque from '../video_data.js';
 
 const plyrOpts = {
-  debug: BUMPPO_ENV !== 'production', // eslint-disable-line no-undef
+  debug: !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
   controls: [],
   clickToPlay: false,
   fullscreen: { enabled: false, fallback: false, iosNative: false },

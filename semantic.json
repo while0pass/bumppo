@@ -8,15 +8,15 @@
       "themes": "src/themes/"
     },
     "output": {
-      "packaged": "../build/semantic",
-      "uncompressed": "../build/semantic/components/",
-      "compressed": "../build/semantic/components/",
-      "themes": "../build/semantic/themes/"
+      "packaged": "../.build/semantic",
+      "uncompressed": "../.build/semantic/components/",
+      "compressed": "../.build/semantic/components/",
+      "themes": "../.build/semantic/themes/"
     },
-    "clean": "../build/semantic/"
+    "clean": "../.build/semantic/"
   },
   "permission": false,
   "autoInstall": true,
   "rtl": false,
-  "version": "2.4.2"
+  "version": "2.7.5"
 }
