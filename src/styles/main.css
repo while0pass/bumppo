@@ -188,6 +188,10 @@ $videoHeight: 193px;
   height: $videoHeight;
 }
 
+.plyr__video-wrapper {
+  padding-bottom: $videoHeight !important;
+}
+
 .bmpp-videoCurtain {
   position: absolute;
   top: -1em;
