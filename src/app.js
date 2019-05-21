@@ -163,6 +163,10 @@ function viewModel() {
   this.responseJSON = ko.pureComputed(
     () => self.resultsData() ? JSON.stringify(self.resultsData(), null, 4) : ''
   );
+  this.clearError = () => {
+    self.isSearchInProgress(false);
+    self.resultsError(null);
+  };
 
 }
 const vM = new viewModel();

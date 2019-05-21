@@ -55,7 +55,15 @@ function doQuery(data) {
         postMessage(['status', 'Отрисовка результатов']);
         sendFirstResults();
       } else {
-        postMessage(['error', `${ xhr.status } ${ xhr.statusText }`]);
+        let message;
+        if (xhr.status !== 0) {
+          message = `${ xhr.status } ${ xhr.statusText }`;
+        } else {
+          message = `Поисковый сервер недоступен или отвечает без учета <a
+            href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+            target="_blank">политики CORS</a>.`;
+        }
+        postMessage(['error', message]);
       }
     }
   });

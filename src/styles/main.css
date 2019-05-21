@@ -58,6 +58,15 @@ $videoHeight: 193px;
       box-shadow: 0 0 0 1px rgba($colorChannels, 1) inset!important;
     }
   }
+
+  & .negative.message a:link,
+  & .negative.message a:visited,
+  & .negative.message a:hover,
+  & .negative.message a:focus {
+    color: inherit;
+    display: inline-block;
+    border-bottom: 1px dotted #9f3a38;
+  }
 }
 
 .bmpp-sidePane {

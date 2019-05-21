@@ -25,12 +25,6 @@ const template = `
 
     <div class="bmpp-resultsInfo">
 
-      <!-- ko if: $root.resultsError -->
-      <div style="margin-bottom: .33em; color: #a00;">
-        Во время выполнения запроса произошла ошибка.
-      </div>
-      <!-- /ko -->
-
       <div style="margin-bottom: .33em;">
         <em>Область поиска:</em>&#x2002;<span
           data-bind="text: $root.subcorpusBanner"></span>
