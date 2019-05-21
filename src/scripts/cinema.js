@@ -9,6 +9,7 @@ const plyrOpts = {
   controls: [],
   clickToPlay: false,
   fullscreen: { enabled: false, fallback: false, iosNative: false },
+  ratio: '16:9',
 };
 
 
@@ -60,32 +61,6 @@ class Film {
     film.cinema = cinema;
     // NOTE: На плеере не стоит создавать дополнительный атрибут с element,
     // т.к. получить доступ к элементу можно через film.elements.container
-
-    film.on('ready', event => {
-      let film = event.detail.plyr;
-      film.muted = true;
-      film.rewind(0);
-      film.play();
-    });
-    film.on('pause', () => {
-      film.filmObject.deactivateIFrame();
-      cinema.curtain.show();
-      cinema.loader.hide();
-    });
-    film.on('seeking', () => {
-      film.filmObject.deactivateIFrame();
-      cinema.curtain.show();
-      cinema.loader.show();
-    });
-    film.on('seeked', event => {
-      let film = event.detail.plyr;
-      if (!film.$hidden) {
-        film.filmObject.activateIFrame();
-        cinema.loader.hide();
-        cinema.curtain.hide();
-      }
-    });
-
     return film;
   }
 }
@@ -135,76 +110,72 @@ class Cinema {
     this.activeDataItem(null);
   }
   showFilm(recordId, filmType, dataItem) {
+    const cinema = this;
     if (!dataItem || recordId === null || !filmType) return;
-    this.activeRecordId(recordId);
-    this.activeFilmType(filmType);
-    this.activeDataItem(dataItem);
+    cinema.pauseAll();
+    cinema.activeRecordId(recordId);
+    cinema.activeFilmType(filmType);
+    cinema.activeDataItem(dataItem);
     let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
         end = (dataItem.after? dataItem.after: dataItem.match).time.end,
-        film = this.getFilm(recordId, filmType).film;
-    const cinema = this,
-          logoHideTime = 0.8,
-          logoFirstHideTime = 2.5,
-          pauseFunction = event => {
+        [film, isCreated] = cinema.getFilm(recordId, filmType);
+    film = film.film;
+    begin /= 1000;
+    end /= 1000;
+
+    const pauseFunction = event => {
             let p = event.detail.plyr;
-            if (!p._playCount === 1) return;
             if (p.currentTime >= end - 1e-2) {
-              p.muted = false;
               p.off('timeupdate', p._pauseFunction);
               delete p._pauseFunction;
               p.pause();
-            } else if (p.currentTime >= begin - 1e-1) {
-              delete p.$hidden;
-              p.filmObject.activateIFrame();
-              p.muted = false;
-              cinema.loader.hide();
-              cinema.curtain.hide();
             }
+          },
+          play = () => {
+            film.currentTime = begin;
+            film.muted = false;
+            if (film._pauseFunction !== undefined) {
+              film.off('timeupdate', film._pauseFunction);
+            }
+            film._pauseFunction = pauseFunction;
+            film.on('timeupdate', film._pauseFunction);
+            film.play();
           };
-    cinema.curtain.show();
-    cinema.loader.show();
-    begin /= 1000;
-    end /= 1000;
-    film.$hidden = true;
-    if (film._playCount && film._playCount === 1) {
-      film.currentTime = begin - logoFirstHideTime;
-      film._playCount = 2;
-    } else if (film._playCount && film._playCount > 1) {
-      film.currentTime = begin - logoHideTime;
-      film._playCount = 3;
+    if (isCreated) {
+      film.once('ready', play);
     } else {
-      film._playCount = 1;
-      setTimeout(function () {
-        cinema.showFilm(recordId, filmType, dataItem);
-      }, 4000);
+      play();
     }
-    if (film._pauseFunction !== undefined) {
-      film.off('timeupdate', film._pauseFunction);
-    }
-    film._pauseFunction = pauseFunction;
-    film.on('timeupdate', film._pauseFunction);
-    film.muted = true;
-    film.play();
+    cinema.curtain.hide();
   }
   getFilm(recordId, filmType) {
-    var key = recordId + filmType,
-        film = key in this.films ?
-          this.films[key] :
-          new Film(this, { recordId: recordId, filmType: filmType });
+    const key = recordId + filmType,
+          isAvailable = key in this.films,
+          isCreated = !isAvailable,
+          film = isAvailable ? this.films[key] :
+            new Film(this, { recordId: recordId, filmType: filmType });
     this.films[key] = film;
     this.hideAllBut(key);
-    return film;
+    return [film, isCreated];
   }
   pauseAll() {
     let films = this.films;
-    Object.keys(films).forEach(key => films[key].film.pause());
+    Object.keys(films).forEach(key => {
+      films[key].film.pause();
+    });
+  }
+  deactivateAll() {
+    let films = this.films;
+    Object.keys(films).forEach(key => {
+      films[key].film.pause();
+      films[key].deactivateIFrame();
+    });
   }
   hideAllBut(showKey) {
     const films = this.films;
     Object.keys(films).forEach(key => {
-      if (showKey === key) {
-        films[key][showKey === key ? 'activateIFrame' : 'deactivateIFrame']();
-      }
+      let method = showKey === key ? 'activateIFrame' : 'deactivateIFrame';
+      films[key][method]();
     });
   }
 }
