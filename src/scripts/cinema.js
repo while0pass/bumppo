@@ -7,7 +7,7 @@ import cinematheque from '../video_data.js';
 const plyrOpts = {
   debug: !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
   controls: [],
-  clickToPlay: false,
+  clickToPlay: true,
   fullscreen: { enabled: false, fallback: false, iosNative: false },
   ratio: '16:9',
 };
