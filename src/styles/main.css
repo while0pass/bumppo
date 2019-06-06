@@ -59,13 +59,17 @@ $videoHeight: 193px;
     }
   }
 
-  & .negative.message a:link,
-  & .negative.message a:visited,
-  & .negative.message a:hover,
-  & .negative.message a:focus {
-    color: inherit;
-    display: inline-block;
-    border-bottom: 1px dotted #9f3a38;
+  & .negative.message {
+    padding-right: 2.5em;
+
+    & a:link,
+    & a:visited,
+    & a:hover,
+    & a:focus {
+      color: inherit;
+      display: inline-block;
+      border-bottom: 1px dotted #9f3a38;
+    }
   }
 }
 

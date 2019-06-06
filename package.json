@@ -1,6 +1,6 @@
 {
   "name": "Bumppo",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
@@ -12,7 +12,7 @@
     "production": "rm -fr build .build; BUMPPO_ENV=production gulp",
     "serve": "lite-server -c lite-server.config.js",
     "test": "echo 'Error: no test specified' && exit 1",
-    "watch": "find -type f -path './src/*' -o -path './package.json' -o -path './gulpfile.js' | entr -s 'npm-run-all --silent --parallel lint-all build'"
+    "watch": "find -type f -path './src/*' -o -path './package.json' -o -path './gulpfile.js' -o -path './lite-server.config.js' | entr -s 'npm-run-all --silent --parallel lint-all build'"
   },
   "dependencies": {
     "debug": "^4.1.0",
