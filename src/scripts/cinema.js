@@ -28,13 +28,14 @@ class Film {
     return cinematheque[filmData.recordId][filmData.filmType];
   }
   createElement(cinema, elementId, filmId) {
-    const ytParams = 'modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1',
-          element = jQuery(`
+    const element = jQuery(`
 
-  <div id="${ elementId }" style="position: absolute;">
-    <iframe src="https://www.youtube.com/embed/${ filmId }?${ ytParams }"
-      crossorigin></iframe>
+  <div id="${ elementId }" style="position: absolute; display: flex">
+    <video>
+      <source src="${ filmId }"></source>
+    </video>
   </div>
+
           `);
 
     jQuery(document.body).append(element);
@@ -56,7 +57,7 @@ class Film {
     }
   }
   createFilm(cinema, element) {
-    let film = new Plyr(element, plyrOpts);
+    let film = new Plyr(element.find('video'), plyrOpts);
     film.filmObject = this;
     film.cinema = cinema;
     // NOTE: На плеере не стоит создавать дополнительный атрибут с element,
@@ -88,10 +89,10 @@ class Cinema {
   get curtain() {
     let element = jQuery(this.screen).find('.bmpp-videoCurtain');
     if (window[';)'].debugVideo) {
-      element.hide();
-      return jQuery();
+      element.css('z-index', 0);
+      return { hide: () => null };
     } else {
-      return element;
+      return { hide: () => element.css('z-index', 0) };
     }
   }
   get loader() {
@@ -142,7 +143,7 @@ class Cinema {
             film.play();
           };
     if (isCreated) {
-      film.once('ready', play);
+      film.once('loadedmetadata', play);
     } else {
       play();
     }

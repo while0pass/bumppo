@@ -192,6 +192,10 @@ $videoHeight: 193px;
   height: $videoHeight;
 }
 
+.plyr--video {
+  width: $videoWidth;
+  height: $videoHeight;
+}
 .plyr__video-wrapper {
   padding-bottom: $videoHeight !important;
 }
