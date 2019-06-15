@@ -214,6 +214,12 @@ $videoHeight: 193px;
 .plyr__video-wrapper {
   padding-bottom: $videoHeight !important;
 }
+.plyr--video video {
+  background: radial-gradient(
+    ellipse at top right,
+    rgba(0,120,0,1) 0%,
+    rgba(0,36,0,1) 100%);
+}
 
 .bmpp-videoCurtain {
   position: absolute;
