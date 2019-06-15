@@ -195,6 +195,21 @@ $videoHeight: 193px;
 .plyr--video {
   width: $videoWidth;
   height: $videoHeight;
+
+  & .plyr__control.plyr__tab-focus,
+  & .plyr__control:hover,
+  & .plyr__control[aria-expanded=true] {
+    background-color: green;
+  }
+}
+.plyr--full-ui input[type=range] {
+  color: green;
+}
+.plyr__control.plyr__control--overlaid {
+  background-color: green;
+}
+.plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::before {
+  background-color: green;
 }
 .plyr__video-wrapper {
   padding-bottom: $videoHeight !important;
@@ -214,7 +229,7 @@ $videoHeight: 193px;
   z-index: 1001;
 }
 
-.bmpp-videoLoader {
+#bmpp-videoLoader {
   z-index: 10001;
   visibility: visible;
   position: absolute;

@@ -16,7 +16,6 @@ preinitKnockout(ko);
 const qs = window.URLSearchParams && (new URLSearchParams(document.location.search));
 window[';)'] = {
   debug: qs && qs.has('debug') || false,
-  debugVideo: qs && qs.has('debugVideo') || false,
 };
 
 const worker = new Worker('js/worker.js');
