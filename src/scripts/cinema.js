@@ -112,11 +112,17 @@ class Cinema {
     this.createHider();
   }
   get screen() {
-    if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
+    if (!this._screen || this._screenNotInDOM) {
+      this._screen = jQuery('#bmpp-videoPlayer');
+      this._screenNotInDOM = false;
+    }
     return this._screen;
   }
   get loader() {
-    if (!this._loader) this._loader = jQuery('#bmpp-videoLoader');
+    if (!this._loader || this._loaderNotInDOM) {
+      this._loader = jQuery('#bmpp-videoLoader');
+      this._loaderNotInDOM = false;
+    }
     return this._loader;
   }
   hideCurtain() {
@@ -195,6 +201,8 @@ class Cinema {
       films[key].film.pause();
       films[key].deactivateIFrame();
     });
+    this._screenNotInDOM = true;
+    this._loaderNotInDOM = true;
   }
   hideAllBut(showKey) {
     const films = this.films;
