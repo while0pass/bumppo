@@ -49,6 +49,7 @@ const calc = require('postcss-calc'),
 const rollupOutputOpts = {
   format: 'iife',
   globals: {
+    'dashjs': 'dashjs',
     'jquery': 'jQuery',
     'knockout': 'ko',
     'svg.js': 'SVG',
@@ -56,7 +57,7 @@ const rollupOutputOpts = {
 };
 
 const rollupInputOpts = {
-  external: ['jquery', 'semantic-ui', 'knockout', 'svg.js'],
+  external: ['dashjs', 'jquery', 'knockout', 'semantic-ui', 'svg.js'],
   plugins: [
     //builtins(),
     resolve({ mainFields: ['browser', 'jsnext:main', 'module', 'main'] }),

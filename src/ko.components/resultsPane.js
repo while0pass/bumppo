@@ -5,9 +5,8 @@ const template = `
   <div class="bmpp-resultsPane_video">
 
     <div id="bmpp-videoPlayer">
-      <div class="bmpp-videoCurtain">
-        <div class="bmpp-videoLoader" style="display: none;"></div>
-      </div>
+      <div id="bmpp-videoLoader" style="display: none"></div>
+      <div class="bmpp-videoCurtain"></div>
     </div>
 
     <div class="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">

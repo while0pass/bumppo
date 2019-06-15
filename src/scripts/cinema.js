@@ -1,3 +1,4 @@
+import dashjs from 'dashjs';
 import jQuery from 'jquery';
 import ko from 'knockout';
 import Plyr from 'plyr';
@@ -5,11 +6,14 @@ import Plyr from 'plyr';
 import cinematheque from '../video_data.js';
 
 const plyrOpts = {
-  debug: !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
-  controls: [],
   clickToPlay: true,
+  controls: ['play', 'current-time', 'mute', 'volume'],
+  debug: !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
+  invertTime: false,
   fullscreen: { enabled: false, fallback: false, iosNative: false },
   ratio: '16:9',
+  //settings: ['speed'],
+  //speed: { selected: 1, options: [0.5, 0.75, 1] },
 };
 
 
@@ -17,18 +21,21 @@ class Film {
   constructor(cinema, filmData) {
     this.cinema = cinema;
     this.elementId = this.getElementId(cinema, filmData);
-    this.filmId = this.getFilmId(filmData);
+    [this.filmId, this.isDash] = this.getFilmId(filmData);
     this.element = this.createElement(cinema, this.elementId, this.filmId);
-    this.film = this.createFilm(cinema, this.element);
+    this.film = this.createFilm(cinema, this);
   }
   getElementId(cinema, filmData) {
     return cinema.screen.attr('id') + filmData.recordId + filmData.filmType;
   }
   getFilmId(filmData) {
-    return cinematheque[filmData.recordId][filmData.filmType];
+    let filmId = cinematheque[filmData.recordId][filmData.filmType],
+        isDash = filmId.slice(-4).toLowerCase() === '.mpd';
+    return [filmId, isDash];
   }
   createElement(cinema, elementId, filmId) {
-    const element = jQuery(`
+    const self = this,
+          element = jQuery(`
 
   <div id="${ elementId }" style="position: absolute; display: flex">
     <video>
@@ -39,6 +46,13 @@ class Film {
           `);
 
     jQuery(document.body).append(element);
+    element.on('mouseenter', () => {
+      self.isMouseWithin = true;
+    });
+    element.on('mouseleave', () => {
+      self.isMouseWithin = false;
+      self.film && self.film.toggleControls(false);
+    });
     return element;
   }
   activateIFrame() {
@@ -50,18 +64,32 @@ class Film {
     element.css({ zIndex: 900 });
   }
   deactivateIFrame() {
-    if (window[';)'].debugVideo) {
-      this.element.css({ zIndex: 'auto' });
-    } else {
-      this.element.css({ zIndex: -1000 });
-    }
+    this.element.css({ zIndex: -1000 });
   }
-  createFilm(cinema, element) {
-    let film = new Plyr(element.find('video'), plyrOpts);
-    film.filmObject = this;
+  createFilm(cinema, filmContainer) {
+    const filmId = filmContainer.filmId,
+          videoElement = filmContainer.element.find('video').get(0);
+    if (filmContainer.isDash) {
+      const dash = dashjs.MediaPlayer().create(),
+            NO_AUTO_PLAY = false;
+      dash.initialize(videoElement, filmId, NO_AUTO_PLAY);
+      dash.setLiveDelay(1);
+      dash.setLowLatencyEnabled(true);
+    }
+    let film = new Plyr(videoElement, plyrOpts),
+        showLoader = () => { cinema.loader.show(); },
+        hideLoader = () => { cinema.loader.hide(); };
+    film.toggleControls(false);
+    showLoader();
     film.cinema = cinema;
-    // NOTE: На плеере не стоит создавать дополнительный атрибут с element,
-    // т.к. получить доступ к элементу можно через film.elements.container
+    film.on('stalled', showLoader);
+    film.on('seeking', showLoader);
+    film.on('waiting', showLoader);
+    film.on('seeked', hideLoader);
+    film.on('playing', hideLoader);
+    film.on('controlsshown', () => {
+      filmContainer.isMouseWithin || film.toggleControls(false);
+    });
     return film;
   }
 }
@@ -84,19 +112,16 @@ class Cinema {
     this.createHider();
   }
   get screen() {
-    return jQuery('#bmpp-videoPlayer');
-  }
-  get curtain() {
-    let element = jQuery(this.screen).find('.bmpp-videoCurtain');
-    if (window[';)'].debugVideo) {
-      element.css('z-index', 0);
-      return { hide: () => null };
-    } else {
-      return { hide: () => element.css('z-index', 0) };
-    }
+    if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
+    return this._screen;
   }
   get loader() {
-    return jQuery(this.screen).find('.bmpp-videoLoader');
+    if (!this._loader) this._loader = jQuery('#bmpp-videoLoader');
+    return this._loader;
+  }
+  hideCurtain() {
+    let element = jQuery(this.screen).find('.bmpp-videoCurtain');
+    element.css('z-index', 0);
   }
   createHider() {
     // Создаем шторку, за которой будут прятаться iframe'ы видео
@@ -134,7 +159,6 @@ class Cinema {
           },
           play = () => {
             film.currentTime = begin;
-            film.muted = false;
             if (film._pauseFunction !== undefined) {
               film.off('timeupdate', film._pauseFunction);
             }
@@ -147,7 +171,7 @@ class Cinema {
     } else {
       play();
     }
-    cinema.curtain.hide();
+    cinema.hideCurtain();
   }
   getFilm(recordId, filmType) {
     const key = recordId + filmType,
