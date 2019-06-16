@@ -22,8 +22,28 @@ class Film {
     this.cinema = cinema;
     this.elementId = this.getElementId(cinema, filmData);
     [this.filmId, this.isDash] = this.getFilmId(filmData);
-    this.element = this.createElement(cinema, this.elementId, this.filmId);
-    this.film = this.createFilm(cinema, this);
+
+    if (this.isDash && cinema.dashElement) {
+      this.element = cinema.dashElement;
+    } else {
+      this.element = this.createElement(cinema, this.elementId, this.filmId);
+      if (this.isDash) cinema.dashElement = this.element;
+    }
+
+    if (this.isDash) {
+      if (cinema.dash) {
+        cinema.changeDashSource(this.filmId);
+      } else {
+        cinema.initDash(this.filmId, this.element);
+      }
+    }
+
+    if (this.isDash && cinema.dashPlyr) {
+      this.film = cinema.dashPlyr;
+    } else {
+      this.film = this.createFilm(cinema, this);
+      if (this.isDash) cinema.dashPlyr = this.film;
+    }
   }
   getElementId(cinema, filmData) {
     return cinema.screen.attr('id') + filmData.recordId + filmData.filmType;
@@ -67,16 +87,7 @@ class Film {
     this.element.css({ zIndex: -1000 });
   }
   createFilm(cinema, filmContainer) {
-    const filmId = filmContainer.filmId,
-          videoElement = filmContainer.element.find('video').get(0);
-    if (filmContainer.isDash) {
-      const dash = dashjs.MediaPlayer().create(),
-            NO_AUTO_PLAY = false;
-      dash.initialize(videoElement, filmId, NO_AUTO_PLAY);
-      dash.setLiveDelay(1);
-      dash.setLowLatencyEnabled(true);
-    }
-    let film = new Plyr(videoElement, plyrOpts),
+    let film = new Plyr(filmContainer.element.find('video'), plyrOpts),
         showLoader = () => { cinema.loader.show(); },
         hideLoader = () => { cinema.loader.hide(); };
     film.toggleControls(false);
@@ -136,6 +147,18 @@ class Cinema {
       top: 0; left: 0; bottom: 0; right: 0; background-color: #fff;
       z-index: -800;"></div>`);
   }
+  initDash(filmId, element) {
+    const videoElement = element.find('video').get(0),
+          dash = dashjs.MediaPlayer().create(),
+          NO_AUTO_PLAY = false;
+    dash.initialize(videoElement, filmId, NO_AUTO_PLAY);
+    //dash.setLiveDelay(1);
+    //dash.setLowLatencyEnabled(true);
+    this.dash = dash;
+  }
+  changeDashSource(filmId) {
+    this.dash.attachSource(filmId);
+  }
   clearActiveState() {
     this.activeRecordId(null);
     this.activeFilmType(null);
@@ -150,29 +173,46 @@ class Cinema {
     cinema.activeDataItem(dataItem);
     let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
         end = (dataItem.after? dataItem.after: dataItem.match).time.end,
-        [film, isCreated] = cinema.getFilm(recordId, filmType);
+        [film, isCreatedOrDashSourceChange] = cinema.getFilm(recordId, filmType);
     film = film.film;
     begin /= 1000;
     end /= 1000;
 
-    const pauseFunction = event => {
-            let p = event.detail.plyr;
-            if (p.currentTime >= end - 1e-2) {
-              p.off('timeupdate', p._pauseFunction);
-              delete p._pauseFunction;
-              p.pause();
-            }
-          },
-          play = () => {
-            film.currentTime = begin;
-            if (film._pauseFunction !== undefined) {
-              film.off('timeupdate', film._pauseFunction);
-            }
-            film._pauseFunction = pauseFunction;
-            film.on('timeupdate', film._pauseFunction);
-            film.play();
-          };
-    if (isCreated) {
+    function pauseFunction(event) {
+      let p = event.detail.plyr;
+      if (p.currentTime >= end - 1e-2) {
+        p.off('timeupdate', p._pauseFunction);
+        delete p._pauseFunction;
+        p.pause();
+      }
+    }
+
+    //function clearFallback() {
+    //  if (film._fallback !== undefined) {
+    //    clearTimeout(film._fallback);
+    //    film.off('playing', clearFallback);
+    //  }
+    //}
+
+    //function setFallback() {
+    //  const waitInterval = 1000;
+    //  clearFallback();
+    //  film._fallback = setTimeout(play, waitInterval);
+    //  film.on('playing', clearFallback);
+    //}
+
+    function play() {
+      film.currentTime = begin;
+      if (film._pauseFunction !== undefined) {
+        film.off('timeupdate', film._pauseFunction);
+      }
+      film._pauseFunction = pauseFunction;
+      film.on('timeupdate', film._pauseFunction);
+      //setFallback();
+      film.play();
+    }
+
+    if (isCreatedOrDashSourceChange) {
       film.once('loadedmetadata', play);
     } else {
       play();
@@ -184,19 +224,26 @@ class Cinema {
           isAvailable = key in this.films,
           isCreated = !isAvailable,
           film = isAvailable ? this.films[key] :
-            new Film(this, { recordId: recordId, filmType: filmType });
+            new Film(this, { recordId: recordId, filmType: filmType }),
+          isDashSourceChanged = film.isDash && isAvailable
+            && this.dash.getSource() !== film.filmId;
     this.films[key] = film;
+    if (isDashSourceChanged) {
+      cinema.changeDashSource(film.filmId);
+    }
     this.hideAllBut(key);
-    return [film, isCreated];
+    return [film, isCreated || isDashSourceChanged];
   }
   pauseAll() {
     let films = this.films;
+    if (this.dash) this.dash.pause();
     Object.keys(films).forEach(key => {
       films[key].film.pause();
     });
   }
   deactivateAll() {
     let films = this.films;
+    if (this.dash) this.dash.pause();
     Object.keys(films).forEach(key => {
       films[key].film.pause();
       films[key].deactivateIFrame();
@@ -205,10 +252,14 @@ class Cinema {
     this._loaderNotInDOM = true;
   }
   hideAllBut(showKey) {
-    const films = this.films;
+    const films = this.films,
+          showDash = films.hasOwnProperty(showKey) && films[showKey].isDash;
     Object.keys(films).forEach(key => {
-      let method = showKey === key ? 'activateIFrame' : 'deactivateIFrame';
-      films[key][method]();
+      let film = films[key],
+          method = showKey === key ? 'activateIFrame' : 'deactivateIFrame';
+      if (!showDash || showKey === key || !film.isDash) {
+        film[method]();
+      }
     });
   }
 }
