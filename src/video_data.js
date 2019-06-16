@@ -1,5 +1,5 @@
 /* eslint-disable */
-let x = 'http://188.120.226.171/mdvideos/dash/Pears';
+let x = 'https://slavdict.ruslang.ru/mdvideos/dash/Pears';
 export default {
   '04': {
     'N-eyf': x + '04N-eyf.mpd',
