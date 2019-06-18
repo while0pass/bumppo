@@ -153,6 +153,9 @@ class Cinema {
           dash = dashjs.MediaPlayer().create(),
           NO_AUTO_PLAY = false;
     dash.initialize(videoElement, filmId, NO_AUTO_PLAY);
+    //let dashLogger = dash.getDebug();
+    //dashLogger.setLogLevel(dashjs.Debug.LOG_LEVEL_DEBUG);
+    //dashLogger.setLogToBrowserConsole(true);
     //dash.setLiveDelay(1);
     //dash.setLowLatencyEnabled(true);
     this.dash = dash;
