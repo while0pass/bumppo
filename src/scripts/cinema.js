@@ -77,6 +77,7 @@ class Film {
     film.on('waiting', showLoader);
     film.on('seeked', hideLoader);
     film.on('playing', hideLoader);
+    film.on('pause', hideLoader);
     film.on('controlsshown', () => {
       self.isMouseWithin || film.toggleControls(false);
     });
