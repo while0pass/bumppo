@@ -1,0 +1,3975 @@
+{
+  "version": "1.0",
+  "results": [
+    [
+      {
+        "is_main": true,
+        "record_id": "04",
+        "show_tiers": { "N-vSegmHTML": "{laugh 0.59}" },
+        "tier": "N-vSegm",
+        "time": { "begin": 14919, "end": 15510 },
+        "value": "N-vLg0001",
+
+        "c_1": {
+          "id": "N-vLg0001",
+          "value": "N-vLg0001",
+          "time": { "begin": 14919, "end": 15510 }
+        },
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0001",
+          "value": "Laugh",
+          "time": { "end": 15510 }
+        }
+      }
+    ],
+    [
+      {
+        "show_tiers": { "R-vSegmHTML": "{laugh 0.24}" },
+        "value": "R-vLg0001",
+        "tier": "R-vSegm",
+        "time": { "begin": 162131, "end": 162367 },
+        "record_id": "04",
+        "is_main": true,
+        "c_1": {
+          "id": "R-vLg0001",
+          "value": "R-vLg0001",
+          "time": { "begin": 162131, "end": 162367 }
+        },
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0001",
+          "value": "Laugh",
+          "time": { "end": 162367 }
+        }
+      }
+    ],
+    [
+      {
+        "show_tiers": { "R-vSegmHTML": "{laugh 0.67}" },
+        "value": "R-vLg0002",
+        "tier": "R-vSegm",
+        "time": { "begin": 202755, "end": 203423 },
+        "record_id": "04",
+        "is_main": true,
+        "c_1": {
+          "id": "R-vLg0002",
+          "value": "R-vLg0002",
+          "time": { "begin": 202755, "end": 203423 }
+        },
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0002",
+          "value": "Laugh",
+          "time": { "end": 203423 }
+        }
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.40}"
+        },
+        "value": "C-vLg0001",
+        "c_1": {
+          "id": "C-vLg0001",
+          "value": "C-vLg0001",
+          "time": {
+            "begin": 207319,
+            "end": 207724
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 207724
+          }
+        },
+        "time": {
+          "begin": 207319,
+          "end": 207724
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.63}"
+        },
+        "value": "R-vLg0003",
+        "c_1": {
+          "id": "R-vLg0003",
+          "value": "R-vLg0003",
+          "time": {
+            "begin": 332443,
+            "end": 333072
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 333072
+          }
+        },
+        "time": {
+          "begin": 332443,
+          "end": 333072
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.66}"
+        },
+        "value": "N-vLg0002",
+        "c_1": {
+          "id": "N-vLg0002",
+          "value": "N-vLg0002",
+          "time": {
+            "begin": 383673,
+            "end": 384336
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 384336
+          }
+        },
+        "time": {
+          "begin": 383673,
+          "end": 384336
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 1.49}"
+        },
+        "value": "N-vLg0003",
+        "c_1": {
+          "id": "N-vLg0003",
+          "value": "N-vLg0003",
+          "time": {
+            "begin": 399413,
+            "end": 400905
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 400905
+          }
+        },
+        "time": {
+          "begin": 399413,
+          "end": 400905
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.26}"
+        },
+        "value": "C-vLg0002",
+        "c_1": {
+          "id": "C-vLg0002",
+          "value": "C-vLg0002",
+          "time": {
+            "begin": 399497,
+            "end": 399752
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 399752
+          }
+        },
+        "time": {
+          "begin": 399497,
+          "end": 399752
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.50}"
+        },
+        "value": "R-vLg0004",
+        "c_1": {
+          "id": "R-vLg0004",
+          "value": "R-vLg0004",
+          "time": {
+            "begin": 401771,
+            "end": 402272
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 402272
+          }
+        },
+        "time": {
+          "begin": 401771,
+          "end": 402272
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.64}"
+        },
+        "value": "R-vLg0005",
+        "c_1": {
+          "id": "R-vLg0005",
+          "value": "R-vLg0005",
+          "time": {
+            "begin": 409149,
+            "end": 409786
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 409786
+          }
+        },
+        "time": {
+          "begin": 409149,
+          "end": 409786
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.22}"
+        },
+        "value": "C-vLg0003",
+        "c_1": {
+          "id": "C-vLg0003",
+          "value": "C-vLg0003",
+          "time": {
+            "begin": 554831,
+            "end": 555054
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 555054
+          }
+        },
+        "time": {
+          "begin": 554831,
+          "end": 555054
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.60}"
+        },
+        "value": "R-vLg0006",
+        "c_1": {
+          "id": "R-vLg0006",
+          "value": "R-vLg0006",
+          "time": {
+            "begin": 556343,
+            "end": 556946
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 556946
+          }
+        },
+        "time": {
+          "begin": 556343,
+          "end": 556946
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.79}"
+        },
+        "value": "N-vLg0004",
+        "c_1": {
+          "id": "N-vLg0004",
+          "value": "N-vLg0004",
+          "time": {
+            "begin": 559594,
+            "end": 560384
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 560384
+          }
+        },
+        "time": {
+          "begin": 559594,
+          "end": 560384
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 1.10}"
+        },
+        "value": "C-vLg0004",
+        "c_1": {
+          "id": "C-vLg0004",
+          "value": "C-vLg0004",
+          "time": {
+            "begin": 654272,
+            "end": 655372
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 655372
+          }
+        },
+        "time": {
+          "begin": 654272,
+          "end": 655372
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.84}"
+        },
+        "value": "R-vLg0007",
+        "c_1": {
+          "id": "R-vLg0007",
+          "value": "R-vLg0007",
+          "time": {
+            "begin": 654938,
+            "end": 655777
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 655777
+          }
+        },
+        "time": {
+          "begin": 654938,
+          "end": 655777
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.53}"
+        },
+        "value": "C-vLg0005",
+        "c_1": {
+          "id": "C-vLg0005",
+          "value": "C-vLg0005",
+          "time": {
+            "begin": 655708,
+            "end": 656243
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 656243
+          }
+        },
+        "time": {
+          "begin": 655708,
+          "end": 656243
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.58}"
+        },
+        "value": "N-vLg0005",
+        "c_1": {
+          "id": "N-vLg0005",
+          "value": "N-vLg0005",
+          "time": {
+            "begin": 670471,
+            "end": 671048
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 671048
+          }
+        },
+        "time": {
+          "begin": 670471,
+          "end": 671048
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 3.46}"
+        },
+        "value": "R-vLg0008",
+        "c_1": {
+          "id": "R-vLg0008",
+          "value": "R-vLg0008",
+          "time": {
+            "begin": 686181,
+            "end": 689642
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 689642
+          }
+        },
+        "time": {
+          "begin": 686181,
+          "end": 689642
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.23}"
+        },
+        "value": "C-vLg0006",
+        "c_1": {
+          "id": "C-vLg0006",
+          "value": "C-vLg0006",
+          "time": {
+            "begin": 689501,
+            "end": 689728
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 689728
+          }
+        },
+        "time": {
+          "begin": 689501,
+          "end": 689728
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.37}"
+        },
+        "value": "N-vLg0006",
+        "c_1": {
+          "id": "N-vLg0006",
+          "value": "N-vLg0006",
+          "time": {
+            "begin": 689658,
+            "end": 690033
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 690033
+          }
+        },
+        "time": {
+          "begin": 689658,
+          "end": 690033
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.89}"
+        },
+        "value": "R-vLg0009",
+        "c_1": {
+          "id": "R-vLg0009",
+          "value": "R-vLg0009",
+          "time": {
+            "begin": 734435,
+            "end": 735328
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 735328
+          }
+        },
+        "time": {
+          "begin": 734435,
+          "end": 735328
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.25}"
+        },
+        "value": "C-vLg0007",
+        "c_1": {
+          "id": "C-vLg0007",
+          "value": "C-vLg0007",
+          "time": {
+            "begin": 734957,
+            "end": 735207
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 735207
+          }
+        },
+        "time": {
+          "begin": 734957,
+          "end": 735207
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.47}"
+        },
+        "value": "R-vLg0010",
+        "c_1": {
+          "id": "R-vLg0010",
+          "value": "R-vLg0010",
+          "time": {
+            "begin": 736870,
+            "end": 737339
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 737339
+          }
+        },
+        "time": {
+          "begin": 736870,
+          "end": 737339
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.98}"
+        },
+        "value": "R-vLg0011",
+        "c_1": {
+          "id": "R-vLg0011",
+          "value": "R-vLg0011",
+          "time": {
+            "begin": 741183,
+            "end": 742162
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0011",
+          "value": "Laugh",
+          "time": {
+            "end": 742162
+          }
+        },
+        "time": {
+          "begin": 741183,
+          "end": 742162
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.48}"
+        },
+        "value": "C-vLg0008",
+        "c_1": {
+          "id": "C-vLg0008",
+          "value": "C-vLg0008",
+          "time": {
+            "begin": 741929,
+            "end": 742413
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 742413
+          }
+        },
+        "time": {
+          "begin": 741929,
+          "end": 742413
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.41}"
+        },
+        "value": "N-vLg0007",
+        "c_1": {
+          "id": "N-vLg0007",
+          "value": "N-vLg0007",
+          "time": {
+            "begin": 742143,
+            "end": 742550
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 742550
+          }
+        },
+        "time": {
+          "begin": 742143,
+          "end": 742550
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.83}"
+        },
+        "value": "R-vLg0012",
+        "c_1": {
+          "id": "R-vLg0012",
+          "value": "R-vLg0012",
+          "time": {
+            "begin": 781361,
+            "end": 783193
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0012",
+          "value": "Laugh",
+          "time": {
+            "end": 783193
+          }
+        },
+        "time": {
+          "begin": 781361,
+          "end": 783193
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.26}"
+        },
+        "value": "R-vLg0013",
+        "c_1": {
+          "id": "R-vLg0013",
+          "value": "R-vLg0013",
+          "time": {
+            "begin": 831729,
+            "end": 831990
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0013",
+          "value": "Laugh",
+          "time": {
+            "end": 831990
+          }
+        },
+        "time": {
+          "begin": 831729,
+          "end": 831990
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.84}"
+        },
+        "value": "R-vLg0014",
+        "c_1": {
+          "id": "R-vLg0014",
+          "value": "R-vLg0014",
+          "time": {
+            "begin": 833556,
+            "end": 834400
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0014",
+          "value": "Laugh",
+          "time": {
+            "end": 834400
+          }
+        },
+        "time": {
+          "begin": 833556,
+          "end": 834400
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.39}"
+        },
+        "value": "C-vLg0009",
+        "c_1": {
+          "id": "C-vLg0009",
+          "value": "C-vLg0009",
+          "time": {
+            "begin": 869949,
+            "end": 870335
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 870335
+          }
+        },
+        "time": {
+          "begin": 869949,
+          "end": 870335
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.73}"
+        },
+        "value": "R-vLg0015",
+        "c_1": {
+          "id": "R-vLg0015",
+          "value": "R-vLg0015",
+          "time": {
+            "begin": 893963,
+            "end": 895697
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0015",
+          "value": "Laugh",
+          "time": {
+            "end": 895697
+          }
+        },
+        "time": {
+          "begin": 893963,
+          "end": 895697
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.87}"
+        },
+        "value": "R-vLg0016",
+        "c_1": {
+          "id": "R-vLg0016",
+          "value": "R-vLg0016",
+          "time": {
+            "begin": 899937,
+            "end": 901810
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0016",
+          "value": "Laugh",
+          "time": {
+            "end": 901810
+          }
+        },
+        "time": {
+          "begin": 899937,
+          "end": 901810
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.90}"
+        },
+        "value": "R-vLg0017",
+        "c_1": {
+          "id": "R-vLg0017",
+          "value": "R-vLg0017",
+          "time": {
+            "begin": 902405,
+            "end": 903304
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0017",
+          "value": "Laugh",
+          "time": {
+            "end": 903304
+          }
+        },
+        "time": {
+          "begin": 902405,
+          "end": 903304
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.75}"
+        },
+        "value": "R-vLg0018",
+        "c_1": {
+          "id": "R-vLg0018",
+          "value": "R-vLg0018",
+          "time": {
+            "begin": 911970,
+            "end": 912716
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0018",
+          "value": "Laugh",
+          "time": {
+            "end": 912716
+          }
+        },
+        "time": {
+          "begin": 911970,
+          "end": 912716
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.22}"
+        },
+        "value": "C-vLg0010",
+        "c_1": {
+          "id": "C-vLg0010",
+          "value": "C-vLg0010",
+          "time": {
+            "begin": 935176,
+            "end": 935397
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 935397
+          }
+        },
+        "time": {
+          "begin": 935176,
+          "end": 935397
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.67}"
+        },
+        "value": "R-vLg0019",
+        "c_1": {
+          "id": "R-vLg0019",
+          "value": "R-vLg0019",
+          "time": {
+            "begin": 935675,
+            "end": 937348
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0019",
+          "value": "Laugh",
+          "time": {
+            "end": 937348
+          }
+        },
+        "time": {
+          "begin": 935675,
+          "end": 937348
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.90}"
+        },
+        "value": "R-vLg0020",
+        "c_1": {
+          "id": "R-vLg0020",
+          "value": "R-vLg0020",
+          "time": {
+            "begin": 993703,
+            "end": 994600
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0020",
+          "value": "Laugh",
+          "time": {
+            "end": 994600
+          }
+        },
+        "time": {
+          "begin": 993703,
+          "end": 994600
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.57}"
+        },
+        "value": "N-vLg0008",
+        "c_1": {
+          "id": "N-vLg0008",
+          "value": "N-vLg0008",
+          "time": {
+            "begin": 1002375,
+            "end": 1002948
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 1002948
+          }
+        },
+        "time": {
+          "begin": 1002375,
+          "end": 1002948
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.56}"
+        },
+        "value": "R-vLg0021",
+        "c_1": {
+          "id": "R-vLg0021",
+          "value": "R-vLg0021",
+          "time": {
+            "begin": 1003541,
+            "end": 1004098
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0021",
+          "value": "Laugh",
+          "time": {
+            "end": 1004098
+          }
+        },
+        "time": {
+          "begin": 1003541,
+          "end": 1004098
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.56}"
+        },
+        "value": "N-vLg0009",
+        "c_1": {
+          "id": "N-vLg0009",
+          "value": "N-vLg0009",
+          "time": {
+            "begin": 1013149,
+            "end": 1013707
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 1013707
+          }
+        },
+        "time": {
+          "begin": 1013149,
+          "end": 1013707
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.35}"
+        },
+        "value": "R-vLg0022",
+        "c_1": {
+          "id": "R-vLg0022",
+          "value": "R-vLg0022",
+          "time": {
+            "begin": 1016123,
+            "end": 1017472
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0022",
+          "value": "Laugh",
+          "time": {
+            "end": 1017472
+          }
+        },
+        "time": {
+          "begin": 1016123,
+          "end": 1017472
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.92}"
+        },
+        "value": "N-vLg0010",
+        "c_1": {
+          "id": "N-vLg0010",
+          "value": "N-vLg0010",
+          "time": {
+            "begin": 1016162,
+            "end": 1017083
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 1017083
+          }
+        },
+        "time": {
+          "begin": 1016162,
+          "end": 1017083
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.34}"
+        },
+        "value": "R-vLg0023",
+        "c_1": {
+          "id": "R-vLg0023",
+          "value": "R-vLg0023",
+          "time": {
+            "begin": 1020522,
+            "end": 1022861
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0023",
+          "value": "Laugh",
+          "time": {
+            "end": 1022861
+          }
+        },
+        "time": {
+          "begin": 1020522,
+          "end": 1022861
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.64}"
+        },
+        "value": "N-vLg0011",
+        "c_1": {
+          "id": "N-vLg0011",
+          "value": "N-vLg0011",
+          "time": {
+            "begin": 1021026,
+            "end": 1021664
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0011",
+          "value": "Laugh",
+          "time": {
+            "end": 1021664
+          }
+        },
+        "time": {
+          "begin": 1021026,
+          "end": 1021664
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.24}"
+        },
+        "value": "C-vLg0011",
+        "c_1": {
+          "id": "C-vLg0011",
+          "value": "C-vLg0011",
+          "time": {
+            "begin": 1022833,
+            "end": 1023078
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0011",
+          "value": "Laugh",
+          "time": {
+            "end": 1023078
+          }
+        },
+        "time": {
+          "begin": 1022833,
+          "end": 1023078
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.35}"
+        },
+        "value": "R-vLg0024",
+        "c_1": {
+          "id": "R-vLg0024",
+          "value": "R-vLg0024",
+          "time": {
+            "begin": 1045195,
+            "end": 1045544
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0024",
+          "value": "Laugh",
+          "time": {
+            "end": 1045544
+          }
+        },
+        "time": {
+          "begin": 1045195,
+          "end": 1045544
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.70}"
+        },
+        "value": "N-vLg0012",
+        "c_1": {
+          "id": "N-vLg0012",
+          "value": "N-vLg0012",
+          "time": {
+            "begin": 1047339,
+            "end": 1048041
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0012",
+          "value": "Laugh",
+          "time": {
+            "end": 1048041
+          }
+        },
+        "time": {
+          "begin": 1047339,
+          "end": 1048041
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.14}"
+        },
+        "value": "R-vLg0025",
+        "c_1": {
+          "id": "R-vLg0025",
+          "value": "R-vLg0025",
+          "time": {
+            "begin": 1075681,
+            "end": 1076821
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0025",
+          "value": "Laugh",
+          "time": {
+            "end": 1076821
+          }
+        },
+        "time": {
+          "begin": 1075681,
+          "end": 1076821
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.58}"
+        },
+        "value": "R-vLg0026",
+        "c_1": {
+          "id": "R-vLg0026",
+          "value": "R-vLg0026",
+          "time": {
+            "begin": 1095570,
+            "end": 1097146
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0026",
+          "value": "Laugh",
+          "time": {
+            "end": 1097146
+          }
+        },
+        "time": {
+          "begin": 1095570,
+          "end": 1097146
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.21}"
+        },
+        "value": "C-vLg0012",
+        "c_1": {
+          "id": "C-vLg0012",
+          "value": "C-vLg0012",
+          "time": {
+            "begin": 1165016,
+            "end": 1165222
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0012",
+          "value": "Laugh",
+          "time": {
+            "end": 1165222
+          }
+        },
+        "time": {
+          "begin": 1165016,
+          "end": 1165222
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.14}"
+        },
+        "value": "C-vLg0013",
+        "c_1": {
+          "id": "C-vLg0013",
+          "value": "C-vLg0013",
+          "time": {
+            "begin": 1221586,
+            "end": 1221726
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0013",
+          "value": "Laugh",
+          "time": {
+            "end": 1221726
+          }
+        },
+        "time": {
+          "begin": 1221586,
+          "end": 1221726
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.33}"
+        },
+        "value": "C-vLg0014",
+        "c_1": {
+          "id": "C-vLg0014",
+          "value": "C-vLg0014",
+          "time": {
+            "begin": 1272039,
+            "end": 1272372
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0014",
+          "value": "Laugh",
+          "time": {
+            "end": 1272372
+          }
+        },
+        "time": {
+          "begin": 1272039,
+          "end": 1272372
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.20}"
+        },
+        "value": "R-vLg0027",
+        "c_1": {
+          "id": "R-vLg0027",
+          "value": "R-vLg0027",
+          "time": {
+            "begin": 1404338,
+            "end": 1405537
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0027",
+          "value": "Laugh",
+          "time": {
+            "end": 1405537
+          }
+        },
+        "time": {
+          "begin": 1404338,
+          "end": 1405537
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.78}"
+        },
+        "value": "C-vLg0015",
+        "c_1": {
+          "id": "C-vLg0015",
+          "value": "C-vLg0015",
+          "time": {
+            "begin": 1406182,
+            "end": 1406960
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0015",
+          "value": "Laugh",
+          "time": {
+            "end": 1406960
+          }
+        },
+        "time": {
+          "begin": 1406182,
+          "end": 1406960
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.23}"
+        },
+        "value": "R-vLg0028",
+        "c_1": {
+          "id": "R-vLg0028",
+          "value": "R-vLg0028",
+          "time": {
+            "begin": 1407247,
+            "end": 1408475
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0028",
+          "value": "Laugh",
+          "time": {
+            "end": 1408475
+          }
+        },
+        "time": {
+          "begin": 1407247,
+          "end": 1408475
+        },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.99}"
+        },
+        "value": "R-vLg0001",
+        "c_1": {
+          "id": "R-vLg0001",
+          "value": "R-vLg0001",
+          "time": {
+            "begin": 48536,
+            "end": 50530
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 50530
+          }
+        },
+        "time": {
+          "begin": 48536,
+          "end": 50530
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.20}"
+        },
+        "value": "R-vLg0002",
+        "c_1": {
+          "id": "R-vLg0002",
+          "value": "R-vLg0002",
+          "time": {
+            "begin": 76119,
+            "end": 76321
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 76321
+          }
+        },
+        "time": {
+          "begin": 76119,
+          "end": 76321
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.33}"
+        },
+        "value": "R-vLg0003",
+        "c_1": {
+          "id": "R-vLg0003",
+          "value": "R-vLg0003",
+          "time": {
+            "begin": 117982,
+            "end": 119309
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 119309
+          }
+        },
+        "time": {
+          "begin": 117982,
+          "end": 119309
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.95}"
+        },
+        "value": "R-vLg0004",
+        "c_1": {
+          "id": "R-vLg0004",
+          "value": "R-vLg0004",
+          "time": {
+            "begin": 191650,
+            "end": 193600
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 193600
+          }
+        },
+        "time": {
+          "begin": 191650,
+          "end": 193600
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.71}"
+        },
+        "value": "R-vLg0005",
+        "c_1": {
+          "id": "R-vLg0005",
+          "value": "R-vLg0005",
+          "time": {
+            "begin": 282388,
+            "end": 283093
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 283093
+          }
+        },
+        "time": {
+          "begin": 282388,
+          "end": 283093
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.06}"
+        },
+        "value": "R-vLg0006",
+        "c_1": {
+          "id": "R-vLg0006",
+          "value": "R-vLg0006",
+          "time": {
+            "begin": 284260,
+            "end": 285322
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 285322
+          }
+        },
+        "time": {
+          "begin": 284260,
+          "end": 285322
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.44}"
+        },
+        "value": "N-vLg0001",
+        "c_1": {
+          "id": "N-vLg0001",
+          "value": "N-vLg0001",
+          "time": {
+            "begin": 284273,
+            "end": 284717
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 284717
+          }
+        },
+        "time": {
+          "begin": 284273,
+          "end": 284717
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.28}"
+        },
+        "value": "N-vLg0002",
+        "c_1": {
+          "id": "N-vLg0002",
+          "value": "N-vLg0002",
+          "time": {
+            "begin": 285653,
+            "end": 285932
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 285932
+          }
+        },
+        "time": {
+          "begin": 285653,
+          "end": 285932
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.52}"
+        },
+        "value": "N-vLg0003",
+        "c_1": {
+          "id": "N-vLg0003",
+          "value": "N-vLg0003",
+          "time": {
+            "begin": 320113,
+            "end": 320635
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 320635
+          }
+        },
+        "time": {
+          "begin": 320113,
+          "end": 320635
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.36}"
+        },
+        "value": "N-vLg0004",
+        "c_1": {
+          "id": "N-vLg0004",
+          "value": "N-vLg0004",
+          "time": {
+            "begin": 341488,
+            "end": 341847
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 341847
+          }
+        },
+        "time": {
+          "begin": 341488,
+          "end": 341847
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.29}"
+        },
+        "value": "R-vLg0007",
+        "c_1": {
+          "id": "R-vLg0007",
+          "value": "R-vLg0007",
+          "time": {
+            "begin": 393241,
+            "end": 393530
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 393530
+          }
+        },
+        "time": {
+          "begin": 393241,
+          "end": 393530
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 2.26}"
+        },
+        "value": "N-vLg0005",
+        "c_1": {
+          "id": "N-vLg0005",
+          "value": "N-vLg0005",
+          "time": {
+            "begin": 401688,
+            "end": 403946
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 403946
+          }
+        },
+        "time": {
+          "begin": 401688,
+          "end": 403946
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.00}"
+        },
+        "value": "R-vLg0008",
+        "c_1": {
+          "id": "R-vLg0008",
+          "value": "R-vLg0008",
+          "time": {
+            "begin": 402330,
+            "end": 404329
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 404329
+          }
+        },
+        "time": {
+          "begin": 402330,
+          "end": 404329
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.52}"
+        },
+        "value": "C-vLg0001",
+        "c_1": {
+          "id": "C-vLg0001",
+          "value": "C-vLg0001",
+          "time": {
+            "begin": 465015,
+            "end": 465540
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 465540
+          }
+        },
+        "time": {
+          "begin": 465015,
+          "end": 465540
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.61}"
+        },
+        "value": "R-vLg0009",
+        "c_1": {
+          "id": "R-vLg0009",
+          "value": "R-vLg0009",
+          "time": {
+            "begin": 473085,
+            "end": 473698
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 473698
+          }
+        },
+        "time": {
+          "begin": 473085,
+          "end": 473698
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 1.34}"
+        },
+        "value": "N-vLg0006",
+        "c_1": {
+          "id": "N-vLg0006",
+          "value": "N-vLg0006",
+          "time": {
+            "begin": 473206,
+            "end": 474546
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 474546
+          }
+        },
+        "time": {
+          "begin": 473206,
+          "end": 474546
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.47}"
+        },
+        "value": "R-vLg0010",
+        "c_1": {
+          "id": "R-vLg0010",
+          "value": "R-vLg0010",
+          "time": {
+            "begin": 475011,
+            "end": 475477
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 475477
+          }
+        },
+        "time": {
+          "begin": 475011,
+          "end": 475477
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.14}"
+        },
+        "value": "R-vLg0011",
+        "c_1": {
+          "id": "R-vLg0011",
+          "value": "R-vLg0011",
+          "time": {
+            "begin": 504727,
+            "end": 506869
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0011",
+          "value": "Laugh",
+          "time": {
+            "end": 506869
+          }
+        },
+        "time": {
+          "begin": 504727,
+          "end": 506869
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.64}"
+        },
+        "value": "N-vLg0007",
+        "c_1": {
+          "id": "N-vLg0007",
+          "value": "N-vLg0007",
+          "time": {
+            "begin": 506574,
+            "end": 507213
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 507213
+          }
+        },
+        "time": {
+          "begin": 506574,
+          "end": 507213
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.56}"
+        },
+        "value": "R-vLg0012",
+        "c_1": {
+          "id": "R-vLg0012",
+          "value": "R-vLg0012",
+          "time": {
+            "begin": 550651,
+            "end": 553211
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0012",
+          "value": "Laugh",
+          "time": {
+            "end": 553211
+          }
+        },
+        "time": {
+          "begin": 550651,
+          "end": 553211
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.43}"
+        },
+        "value": "N-vLg0008",
+        "c_1": {
+          "id": "N-vLg0008",
+          "value": "N-vLg0008",
+          "time": {
+            "begin": 552311,
+            "end": 552746
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 552746
+          }
+        },
+        "time": {
+          "begin": 552311,
+          "end": 552746
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.55}"
+        },
+        "value": "R-vLg0013",
+        "c_1": {
+          "id": "R-vLg0013",
+          "value": "R-vLg0013",
+          "time": {
+            "begin": 574212,
+            "end": 574764
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0013",
+          "value": "Laugh",
+          "time": {
+            "end": 574764
+          }
+        },
+        "time": {
+          "begin": 574212,
+          "end": 574764
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 1.12}"
+        },
+        "value": "N-vLg0009",
+        "c_1": {
+          "id": "N-vLg0009",
+          "value": "N-vLg0009",
+          "time": {
+            "begin": 574537,
+            "end": 575652
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 575652
+          }
+        },
+        "time": {
+          "begin": 574537,
+          "end": 575652
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.22}"
+        },
+        "value": "R-vLg0014",
+        "c_1": {
+          "id": "R-vLg0014",
+          "value": "R-vLg0014",
+          "time": {
+            "begin": 582974,
+            "end": 584192
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0014",
+          "value": "Laugh",
+          "time": {
+            "end": 584192
+          }
+        },
+        "time": {
+          "begin": 582974,
+          "end": 584192
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.20}"
+        },
+        "value": "N-vLg0010",
+        "c_1": {
+          "id": "N-vLg0010",
+          "value": "N-vLg0010",
+          "time": {
+            "begin": 583964,
+            "end": 584164
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 584164
+          }
+        },
+        "time": {
+          "begin": 583964,
+          "end": 584164
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.49}"
+        },
+        "value": "N-vLg0011",
+        "c_1": {
+          "id": "N-vLg0011",
+          "value": "N-vLg0011",
+          "time": {
+            "begin": 593475,
+            "end": 593960
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0011",
+          "value": "Laugh",
+          "time": {
+            "end": 593960
+          }
+        },
+        "time": {
+          "begin": 593475,
+          "end": 593960
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.71}"
+        },
+        "value": "R-vLg0015",
+        "c_1": {
+          "id": "R-vLg0015",
+          "value": "R-vLg0015",
+          "time": {
+            "begin": 593971,
+            "end": 594682
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0015",
+          "value": "Laugh",
+          "time": {
+            "end": 594682
+          }
+        },
+        "time": {
+          "begin": 593971,
+          "end": 594682
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.51}"
+        },
+        "value": "R-vLg0016",
+        "c_1": {
+          "id": "R-vLg0016",
+          "value": "R-vLg0016",
+          "time": {
+            "begin": 645316,
+            "end": 647825
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0016",
+          "value": "Laugh",
+          "time": {
+            "end": 647825
+          }
+        },
+        "time": {
+          "begin": 645316,
+          "end": 647825
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.79}"
+        },
+        "value": "R-vLg0017",
+        "c_1": {
+          "id": "R-vLg0017",
+          "value": "R-vLg0017",
+          "time": {
+            "begin": 649239,
+            "end": 652031
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0017",
+          "value": "Laugh",
+          "time": {
+            "end": 652031
+          }
+        },
+        "time": {
+          "begin": 649239,
+          "end": 652031
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 8.32}"
+        },
+        "value": "R-vLg0018",
+        "c_1": {
+          "id": "R-vLg0018",
+          "value": "R-vLg0018",
+          "time": {
+            "begin": 703301,
+            "end": 711619
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0018",
+          "value": "Laugh",
+          "time": {
+            "end": 711619
+          }
+        },
+        "time": {
+          "begin": 703301,
+          "end": 711619
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 2.10}"
+        },
+        "value": "R-vLg0019",
+        "c_1": {
+          "id": "R-vLg0019",
+          "value": "R-vLg0019",
+          "time": {
+            "begin": 733999,
+            "end": 736095
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0019",
+          "value": "Laugh",
+          "time": {
+            "end": 736095
+          }
+        },
+        "time": {
+          "begin": 733999,
+          "end": 736095
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.82}"
+        },
+        "value": "R-vLg0020",
+        "c_1": {
+          "id": "R-vLg0020",
+          "value": "R-vLg0020",
+          "time": {
+            "begin": 740851,
+            "end": 741667
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0020",
+          "value": "Laugh",
+          "time": {
+            "end": 741667
+          }
+        },
+        "time": {
+          "begin": 740851,
+          "end": 741667
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.37}"
+        },
+        "value": "C-vLg0002",
+        "c_1": {
+          "id": "C-vLg0002",
+          "value": "C-vLg0002",
+          "time": {
+            "begin": 741840,
+            "end": 742210
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 742210
+          }
+        },
+        "time": {
+          "begin": 741840,
+          "end": 742210
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.44}"
+        },
+        "value": "R-vLg0021",
+        "c_1": {
+          "id": "R-vLg0021",
+          "value": "R-vLg0021",
+          "time": {
+            "begin": 743663,
+            "end": 744101
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0021",
+          "value": "Laugh",
+          "time": {
+            "end": 744101
+          }
+        },
+        "time": {
+          "begin": 743663,
+          "end": 744101
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.16}"
+        },
+        "value": "R-vLg0022",
+        "c_1": {
+          "id": "R-vLg0022",
+          "value": "R-vLg0022",
+          "time": {
+            "begin": 745846,
+            "end": 747011
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0022",
+          "value": "Laugh",
+          "time": {
+            "end": 747011
+          }
+        },
+        "time": {
+          "begin": 745846,
+          "end": 747011
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.44}"
+        },
+        "value": "R-vLg0023",
+        "c_1": {
+          "id": "R-vLg0023",
+          "value": "R-vLg0023",
+          "time": {
+            "begin": 767077,
+            "end": 767521
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0023",
+          "value": "Laugh",
+          "time": {
+            "end": 767521
+          }
+        },
+        "time": {
+          "begin": 767077,
+          "end": 767521
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.71}"
+        },
+        "value": "R-vLg0024",
+        "c_1": {
+          "id": "R-vLg0024",
+          "value": "R-vLg0024",
+          "time": {
+            "begin": 824438,
+            "end": 825151
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0024",
+          "value": "Laugh",
+          "time": {
+            "end": 825151
+          }
+        },
+        "time": {
+          "begin": 824438,
+          "end": 825151
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.77}"
+        },
+        "value": "R-vLg0025",
+        "c_1": {
+          "id": "R-vLg0025",
+          "value": "R-vLg0025",
+          "time": {
+            "begin": 825944,
+            "end": 826716
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0025",
+          "value": "Laugh",
+          "time": {
+            "end": 826716
+          }
+        },
+        "time": {
+          "begin": 825944,
+          "end": 826716
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.49}"
+        },
+        "value": "C-vLg0003",
+        "c_1": {
+          "id": "C-vLg0003",
+          "value": "C-vLg0003",
+          "time": {
+            "begin": 922039,
+            "end": 922525
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 922525
+          }
+        },
+        "time": {
+          "begin": 922039,
+          "end": 922525
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 3.08}"
+        },
+        "value": "R-vLg0026",
+        "c_1": {
+          "id": "R-vLg0026",
+          "value": "R-vLg0026",
+          "time": {
+            "begin": 922272,
+            "end": 925354
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0026",
+          "value": "Laugh",
+          "time": {
+            "end": 925354
+          }
+        },
+        "time": {
+          "begin": 922272,
+          "end": 925354
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.51}"
+        },
+        "value": "R-vLg0027",
+        "c_1": {
+          "id": "R-vLg0027",
+          "value": "R-vLg0027",
+          "time": {
+            "begin": 925650,
+            "end": 926158
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0027",
+          "value": "Laugh",
+          "time": {
+            "end": 926158
+          }
+        },
+        "time": {
+          "begin": 925650,
+          "end": 926158
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.39}"
+        },
+        "value": "R-vLg0028",
+        "c_1": {
+          "id": "R-vLg0028",
+          "value": "R-vLg0028",
+          "time": {
+            "begin": 999988,
+            "end": 1000379
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0028",
+          "value": "Laugh",
+          "time": {
+            "end": 1000379
+          }
+        },
+        "time": {
+          "begin": 999988,
+          "end": 1000379
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.74}"
+        },
+        "value": "R-vLg0029",
+        "c_1": {
+          "id": "R-vLg0029",
+          "value": "R-vLg0029",
+          "time": {
+            "begin": 1000786,
+            "end": 1001527
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0029",
+          "value": "Laugh",
+          "time": {
+            "end": 1001527
+          }
+        },
+        "time": {
+          "begin": 1000786,
+          "end": 1001527
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.46}"
+        },
+        "value": "R-vLg0030",
+        "c_1": {
+          "id": "R-vLg0030",
+          "value": "R-vLg0030",
+          "time": {
+            "begin": 1064418,
+            "end": 1064873
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0030",
+          "value": "Laugh",
+          "time": {
+            "end": 1064873
+          }
+        },
+        "time": {
+          "begin": 1064418,
+          "end": 1064873
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 1.35}"
+        },
+        "value": "R-vLg0031",
+        "c_1": {
+          "id": "R-vLg0031",
+          "value": "R-vLg0031",
+          "time": {
+            "begin": 1070581,
+            "end": 1071935
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0031",
+          "value": "Laugh",
+          "time": {
+            "end": 1071935
+          }
+        },
+        "time": {
+          "begin": 1070581,
+          "end": 1071935
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.24}"
+        },
+        "value": "R-vLg0032",
+        "c_1": {
+          "id": "R-vLg0032",
+          "value": "R-vLg0032",
+          "time": {
+            "begin": 1079738,
+            "end": 1079978
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0032",
+          "value": "Laugh",
+          "time": {
+            "end": 1079978
+          }
+        },
+        "time": {
+          "begin": 1079738,
+          "end": 1079978
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.55}"
+        },
+        "value": "R-vLg0033",
+        "c_1": {
+          "id": "R-vLg0033",
+          "value": "R-vLg0033",
+          "time": {
+            "begin": 1085128,
+            "end": 1085682
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0033",
+          "value": "Laugh",
+          "time": {
+            "end": 1085682
+          }
+        },
+        "time": {
+          "begin": 1085128,
+          "end": 1085682
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.68}"
+        },
+        "value": "N-vLg0001",
+        "c_1": {
+          "id": "N-vLg0001",
+          "value": "N-vLg0001",
+          "time": {
+            "begin": 236779,
+            "end": 237459
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 237459
+          }
+        },
+        "time": {
+          "begin": 236779,
+          "end": 237459
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.28}"
+        },
+        "value": "N-vLg0002",
+        "c_1": {
+          "id": "N-vLg0002",
+          "value": "N-vLg0002",
+          "time": {
+            "begin": 310691,
+            "end": 310975
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 310975
+          }
+        },
+        "time": {
+          "begin": 310691,
+          "end": 310975
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.81}"
+        },
+        "value": "C-vLg0001",
+        "c_1": {
+          "id": "C-vLg0001",
+          "value": "C-vLg0001",
+          "time": {
+            "begin": 338706,
+            "end": 339513
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 339513
+          }
+        },
+        "time": {
+          "begin": 338706,
+          "end": 339513
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.31}"
+        },
+        "value": "N-vLg0003",
+        "c_1": {
+          "id": "N-vLg0003",
+          "value": "N-vLg0003",
+          "time": {
+            "begin": 378833,
+            "end": 379141
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 379141
+          }
+        },
+        "time": {
+          "begin": 378833,
+          "end": 379141
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTML": "{laugh 0.27}"
+        },
+        "value": "R-vLg0001",
+        "c_1": {
+          "id": "R-vLg0001",
+          "value": "R-vLg0001",
+          "time": {
+            "begin": 443695,
+            "end": 443967
+          }
+        },
+        "tier": "R-vSegm",
+        "c_1p0": {
+          "tier": "R_vSType",
+          "id": "R-vLg0001",
+          "value": "Laugh",
+          "time": {
+            "end": 443967
+          }
+        },
+        "time": {
+          "begin": 443695,
+          "end": 443967
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.18}"
+        },
+        "value": "N-vLg0004",
+        "c_1": {
+          "id": "N-vLg0004",
+          "value": "N-vLg0004",
+          "time": {
+            "begin": 498718,
+            "end": 498902
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 498902
+          }
+        },
+        "time": {
+          "begin": 498718,
+          "end": 498902
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.52}"
+        },
+        "value": "N-vLg0005",
+        "c_1": {
+          "id": "N-vLg0005",
+          "value": "N-vLg0005",
+          "time": {
+            "begin": 499116,
+            "end": 499639
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 499639
+          }
+        },
+        "time": {
+          "begin": 499116,
+          "end": 499639
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.27}"
+        },
+        "value": "C-vLg0002",
+        "c_1": {
+          "id": "C-vLg0002",
+          "value": "C-vLg0002",
+          "time": {
+            "begin": 499182,
+            "end": 499450
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0002",
+          "value": "Laugh",
+          "time": {
+            "end": 499450
+          }
+        },
+        "time": {
+          "begin": 499182,
+          "end": 499450
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.86}"
+        },
+        "value": "N-vLg0006",
+        "c_1": {
+          "id": "N-vLg0006",
+          "value": "N-vLg0006",
+          "time": {
+            "begin": 528195,
+            "end": 529055
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 529055
+          }
+        },
+        "time": {
+          "begin": 528195,
+          "end": 529055
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.73}"
+        },
+        "value": "N-vLg0007",
+        "c_1": {
+          "id": "N-vLg0007",
+          "value": "N-vLg0007",
+          "time": {
+            "begin": 558870,
+            "end": 559602
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 559602
+          }
+        },
+        "time": {
+          "begin": 558870,
+          "end": 559602
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.47}"
+        },
+        "value": "N-vLg0008",
+        "c_1": {
+          "id": "N-vLg0008",
+          "value": "N-vLg0008",
+          "time": {
+            "begin": 587309,
+            "end": 587783
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 587783
+          }
+        },
+        "time": {
+          "begin": 587309,
+          "end": 587783
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.53}"
+        },
+        "value": "C-vLg0003",
+        "c_1": {
+          "id": "C-vLg0003",
+          "value": "C-vLg0003",
+          "time": {
+            "begin": 590248,
+            "end": 590775
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0003",
+          "value": "Laugh",
+          "time": {
+            "end": 590775
+          }
+        },
+        "time": {
+          "begin": 590248,
+          "end": 590775
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.31}"
+        },
+        "value": "N-vLg0009",
+        "c_1": {
+          "id": "N-vLg0009",
+          "value": "N-vLg0009",
+          "time": {
+            "begin": 626477,
+            "end": 626784
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 626784
+          }
+        },
+        "time": {
+          "begin": 626477,
+          "end": 626784
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.53}"
+        },
+        "value": "C-vLg0004",
+        "c_1": {
+          "id": "C-vLg0004",
+          "value": "C-vLg0004",
+          "time": {
+            "begin": 670869,
+            "end": 671402
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0004",
+          "value": "Laugh",
+          "time": {
+            "end": 671402
+          }
+        },
+        "time": {
+          "begin": 670869,
+          "end": 671402
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.45}"
+        },
+        "value": "C-vLg0005",
+        "c_1": {
+          "id": "C-vLg0005",
+          "value": "C-vLg0005",
+          "time": {
+            "begin": 676803,
+            "end": 677254
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0005",
+          "value": "Laugh",
+          "time": {
+            "end": 677254
+          }
+        },
+        "time": {
+          "begin": 676803,
+          "end": 677254
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.22}"
+        },
+        "value": "C-vLg0006",
+        "c_1": {
+          "id": "C-vLg0006",
+          "value": "C-vLg0006",
+          "time": {
+            "begin": 689878,
+            "end": 690101
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0006",
+          "value": "Laugh",
+          "time": {
+            "end": 690101
+          }
+        },
+        "time": {
+          "begin": 689878,
+          "end": 690101
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.41}"
+        },
+        "value": "C-vLg0007",
+        "c_1": {
+          "id": "C-vLg0007",
+          "value": "C-vLg0007",
+          "time": {
+            "begin": 690954,
+            "end": 691366
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0007",
+          "value": "Laugh",
+          "time": {
+            "end": 691366
+          }
+        },
+        "time": {
+          "begin": 690954,
+          "end": 691366
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.74}"
+        },
+        "value": "N-vLg0010",
+        "c_1": {
+          "id": "N-vLg0010",
+          "value": "N-vLg0010",
+          "time": {
+            "begin": 713249,
+            "end": 713985
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 713985
+          }
+        },
+        "time": {
+          "begin": 713249,
+          "end": 713985
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.24}"
+        },
+        "value": "N-vLg0011",
+        "c_1": {
+          "id": "N-vLg0011",
+          "value": "N-vLg0011",
+          "time": {
+            "begin": 722973,
+            "end": 723211
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0011",
+          "value": "Laugh",
+          "time": {
+            "end": 723211
+          }
+        },
+        "time": {
+          "begin": 722973,
+          "end": 723211
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.52}"
+        },
+        "value": "C-vLg0008",
+        "c_1": {
+          "id": "C-vLg0008",
+          "value": "C-vLg0008",
+          "time": {
+            "begin": 845375,
+            "end": 845898
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0008",
+          "value": "Laugh",
+          "time": {
+            "end": 845898
+          }
+        },
+        "time": {
+          "begin": 845375,
+          "end": 845898
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.49}"
+        },
+        "value": "C-vLg0009",
+        "c_1": {
+          "id": "C-vLg0009",
+          "value": "C-vLg0009",
+          "time": {
+            "begin": 886946,
+            "end": 887431
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0009",
+          "value": "Laugh",
+          "time": {
+            "end": 887431
+          }
+        },
+        "time": {
+          "begin": 886946,
+          "end": 887431
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.40}"
+        },
+        "value": "N-vLg0012",
+        "c_1": {
+          "id": "N-vLg0012",
+          "value": "N-vLg0012",
+          "time": {
+            "begin": 888267,
+            "end": 888671
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0012",
+          "value": "Laugh",
+          "time": {
+            "end": 888671
+          }
+        },
+        "time": {
+          "begin": 888267,
+          "end": 888671
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.41}"
+        },
+        "value": "N-vLg0013",
+        "c_1": {
+          "id": "N-vLg0013",
+          "value": "N-vLg0013",
+          "time": {
+            "begin": 912912,
+            "end": 913318
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0013",
+          "value": "Laugh",
+          "time": {
+            "end": 913318
+          }
+        },
+        "time": {
+          "begin": 912912,
+          "end": 913318
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.17}"
+        },
+        "value": "N-vLg0014",
+        "c_1": {
+          "id": "N-vLg0014",
+          "value": "N-vLg0014",
+          "time": {
+            "begin": 915864,
+            "end": 916032
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0014",
+          "value": "Laugh",
+          "time": {
+            "end": 916032
+          }
+        },
+        "time": {
+          "begin": 915864,
+          "end": 916032
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.56}"
+        },
+        "value": "N-vLg0015",
+        "c_1": {
+          "id": "N-vLg0015",
+          "value": "N-vLg0015",
+          "time": {
+            "begin": 925002,
+            "end": 925563
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0015",
+          "value": "Laugh",
+          "time": {
+            "end": 925563
+          }
+        },
+        "time": {
+          "begin": 925002,
+          "end": 925563
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vSegmHTML": "{laugh 0.51}"
+        },
+        "value": "C-vLg0010",
+        "c_1": {
+          "id": "C-vLg0010",
+          "value": "C-vLg0010",
+          "time": {
+            "begin": 925096,
+            "end": 925608
+          }
+        },
+        "tier": "C-vSegm",
+        "c_1p0": {
+          "tier": "C_vSType",
+          "id": "C-vLg0010",
+          "value": "Laugh",
+          "time": {
+            "end": 925608
+          }
+        },
+        "time": {
+          "begin": 925096,
+          "end": 925608
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vSegmHTML": "{laugh 0.29}"
+        },
+        "value": "N-vLg0016",
+        "c_1": {
+          "id": "N-vLg0016",
+          "value": "N-vLg0016",
+          "time": {
+            "begin": 942183,
+            "end": 942471
+          }
+        },
+        "tier": "N-vSegm",
+        "c_1p0": {
+          "tier": "N_vSType",
+          "id": "N-vLg0016",
+          "value": "Laugh",
+          "time": {
+            "end": 942471
+          }
+        },
+        "time": {
+          "begin": 942183,
+          "end": 942471
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ]
+  ]
+}

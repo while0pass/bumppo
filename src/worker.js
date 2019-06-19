@@ -48,7 +48,17 @@ function doQuery(data) {
       if (xhr.status >= 200 && xhr.status < 300) {
         postMessage(['status', 'Обработка данных']);
         postMessage(['noabort', null]);
-        let rawData = JSON.parse(xhr.responseText);
+
+        try {
+          var rawData = JSON.parse(xhr.responseText);
+        }
+        catch (error) {
+          let message = `Полученные данные не соответствуют
+                         спецификации JSON: «${ error }».`;
+          postMessage(['error', message]);
+          return;
+        }
+
         searchData.sent = 0;
         searchData.total = rawData.results.length;
         searchData.results = rawData.results;

@@ -1,8 +1,8 @@
 'use strict';
 
 const BUMPPO_REMOTE_SERVER = {
-  origin: 'https://multidiscourse.ru:8080',
-  path: '/search_annotations/SearchAnnotations'
+  origin: 'https://multidiscourse.ru',
+  path: '/perform_search_sql/'
 };
 
 let proxy = require('http-proxy-middleware'),

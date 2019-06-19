@@ -233,8 +233,9 @@ class ContextOrMatch {
 export class Result {
   constructor(data) {
     this.record_id = this.getRecordId(data[0] && data[0].record_id || '');
-    this.participant = data[0] && data[0].participant || '';
     [this.before, this.match, this.after] = this.getMatchAndContext(data);
+    this.participant = data[0] && data[0].participant
+      || data[0].tier && data[0].tier[0] || '';
     this.filmType = this.getFilmType();
 
     this.setup();
