@@ -197,7 +197,7 @@ const tier2val = {
   'R-oLocus': m_oLocus,
 };
 
-class ContextOrMatch {
+class Match {
   constructor(data, result) {
     this.result = result;
     this.time = data.time;
@@ -232,10 +232,14 @@ class ContextOrMatch {
 
 export class Result {
   constructor(data) {
-    this.record_id = this.getRecordId(data[0] && data[0].record_id || '');
-    [this.before, this.match, this.after] = this.getMatchAndContext(data);
-    this.participant = data[0] && data[0].participant
-      || data[0].tier && data[0].tier[0] || '';
+    // NOTE: удалить после миграции на новую версию API результатов
+    if (Array.isArray(data)) {
+      data = data[0];
+    }
+
+    this.record_id = this.getRecordId(data && data.record_id || '');
+    this.match = new Match(data, this),
+    this.participant = data.participant || data.tier && data.tier[0] || '';
     this.filmType = this.getFilmType();
 
     this.setup();
@@ -252,33 +256,6 @@ export class Result {
   }
   setPreviousItem(item) {
     this.previousItem = item;
-  }
-  getMatchAndContext(data) {
-    let before = null, match = null, after = null;
-    if (data instanceof Array) {
-      if (data.length === 3) {
-        if (data[1].is_main) {
-          [before, match, after] = data;
-        } else if (data[0].is_main) {
-          [match, before, after] = data;
-        } else if (data[2].is_main) {
-          [before, after, match] = data;
-        }
-      } else if (data.length === 2) {
-        if (data[1].is_main) {
-          [before, match] = data;
-        } else if (data[0].is_main) {
-          [match, after] = data;
-        }
-      } else if (data.length === 1) {
-        match = data[0];
-      }
-    }
-    return [
-      before && new ContextOrMatch(before, this),
-      new ContextOrMatch(match, this),
-      after && new ContextOrMatch(after, this)
-    ];
   }
   getFilmType() {
     let filmType = this.match.tier.slice(-10) === '-oFixation' ? 'ey' : 'vi';
