@@ -576,26 +576,21 @@ $videoHeight: 193px;
 .bmpp-searchResult {
   width: 100%;
   display: grid;
-  grid-template-columns: auto auto auto 1fr;
+  grid-template-columns: auto auto auto 1fr auto;
   column-gap: 0.66em;
   align-items: baseline;
 
   & .divider {
-    grid-column: 1 / span 4;
+    grid-column: 1 / span 5;
     border: none;
     border-top: 1px solid $bmppBorderColor;
     padding: 0.5em 0 0 0;
     margin: 0.5em 0 0 0;
   }
   & .bmpp-recordLabel {
-    position: absolute !important;
-    right: 1em;
-    &.bmpp-initialRecordLabel {
-      top: 1em;
-    }
-    &.transparent {
-      opacity: 0.2;
-    }
+    position: sticky !important;
+    top: 1em;
+    grid-column: 5;
   }
   & .bmpp-unitValue {
     text-align: right;

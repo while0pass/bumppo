@@ -4,15 +4,7 @@ const resultsTemplate = `
 
   <div data-bind="foreach: results" class="bmpp-searchResult">
 
-    <div class="ui label bmpp-recordLabel bmpp-initialRecordLabel"
-      data-bind="text: 'Запись ' + record_id,
-        visible: $index() === 0"></div>
-
-    <div class="divider" data-bind="visible: $index() > 0">
-      <div class="ui label bmpp-recordLabel"
-        data-bind="text: 'Запись ' + record_id, css: { transparent:
-          previousItem && previousItem.record_id === record_id }"></div>
-    </div>
+    <div class="divider" data-bind="visible: previousItem"></div>
 
     <div class="bmpp-time"
       data-bind="text: match.beginTime + '–' + match.endTime"></div>
@@ -26,6 +18,11 @@ const resultsTemplate = `
         click: $component.cinema.showFilm.bind($component.cinema,
           record_id, filmType, $data)">
     </div>
+
+    <div class="ui label bmpp-recordLabel"
+      data-bind="text: 'Запись ' + record_id,
+        visible: !previousItem
+              || previousItem && previousItem.record_id !== record_id"></div>
 
   </div>
 
