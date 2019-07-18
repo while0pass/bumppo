@@ -1,0 +1,6 @@
+{
+    "record_id": "04",
+    "time": { "begin": 25700, "end": 26300 },
+    "type": "overlaps",
+    "tiers": [ "N-vSegm", "N-vSegmHTML", "N-vSType" ]
+}
