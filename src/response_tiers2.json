@@ -1,0 +1,107 @@
+{
+  "R-mLtStType": [
+    { "parent": "R-mLtSt001", "value": "Rest" }
+  ],
+  "R-mRtStillness": [
+    {
+      "value": "R-mRtSt001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "R-mRtStType": [
+    {
+      "parent": "R-mRtSt001",
+      "value": "Rest"
+    }
+  ],
+  "N-mLtStType": [
+    {
+      "parent": "N-mLtSt06",
+      "value": "Rest"
+    }
+  ],
+  "R-mPosture": [
+    {
+      "value": "R-mPr001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "R-vPause": [
+    {
+      "value": "R-vPs0002",
+      "time": { "start": 11262, "end": 11262 }
+    }
+  ],
+  "R-mLtStillness": [
+    {
+      "value": "R-mLtSt001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "C-mRtStillness": [
+    {
+      "value": "C-mRtSt001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "N-mLtStillness": [
+    {
+      "value": "N-mLtSt06",
+      "time": { "start": 17310, "end": 17310 }
+    }
+  ],
+  "C-vPause": [
+    {
+      "value": "C-vPs0001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "C-vPauseHTML": [
+    {
+      "parent": "C-vPs0001",
+      "value": "(219.74)"
+    }
+  ],
+  "C-vPauseInOutEDU": [
+    {
+      "parent": "C-vPs0001",
+      "value": "Out"
+    }
+  ],
+  "C-mLtStillness": [
+    {
+      "value": "C-mLtSt001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "C-mPosture": [
+    {
+      "value": "C-mPr001",
+      "time": { "start": 0, "end": 0 }
+    }
+  ],
+  "N-mPosture": [
+    {
+      "value": "N-mPr06",
+      "time": { "start": 20240, "end": 20240 }
+    }
+  ],
+  "C-mLtStType": [
+    {
+      "parent": "C-mLtSt001",
+      "value": "Rest"
+    }
+  ],
+  "C-mRtStType": [
+    {
+      "parent": "C-mRtSt001",
+      "value": "Rest"
+    }
+  ],
+  "Stage": [
+    {
+      "value": "1st_telling",
+      "time": { "start": 0, "end": 0 }
+    }
+  ]
+}

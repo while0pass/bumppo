@@ -1,0 +1,58 @@
+{
+    "version": "1.0",
+    "record_ids": [
+        "04",
+        "22",
+        "23"
+    ],
+    "conditions": {
+        "1": {
+            "type": "simple",
+            "is_regex": true,
+            "search": ".+",
+            "tiers": [
+                "C-vLine",
+                "N-vLine",
+                "R-vLine"
+            ]
+        },
+        "2": {
+            "type": "simple",
+            "is_regex": true,
+            "search": ".+",
+            "tiers": [
+                "N-oFixation",
+                "R-oFixation"
+            ]
+        },
+        "1p0": {
+            "type": "simple",
+            "is_regex": false,
+            "search": "EDU",
+            "tiers": [
+                "C-vLineType",
+                "N-vLineType",
+                "R-vLineType"
+            ]
+        },
+        "1.1p0": {
+            "type": "structural",
+            "first_condition_id": "1",
+            "second_condition_id": "1p0",
+            "distance_min": 0,
+            "distance_max": 0
+        },
+        "1-r1-2": {
+            "first_condition_id": "1",
+            "second_condition_id": "2",
+            "distance_min": 0,
+            "distance_max": 0,
+            "type": "begin_2_end_1"
+        }
+    },
+    "show_tiers": [
+        "C-vLineHTML",
+        "N-vLineHTML",
+        "R-vLineHTML"
+    ]
+}
