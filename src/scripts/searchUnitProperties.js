@@ -238,6 +238,7 @@ const p_vPausesCount = {
 
 const p_vFilledCount = {
   type: 'interval', name: 'Число заполненных пауз', id: 'p_vFilledCount',
+  tierTemplate: '{ p_participants }-vFilledCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vStartFilled = {
