@@ -134,7 +134,8 @@ export default function getQueryJSON(viewModel) {
       }
 
       let relationType = (prop instanceof ListProperty && value === false ?
-        'non_structural' : 'structural'); // Выбор non_structural для нулевых интервалов
+        'non_structural' : 'structural'); /* Выбор non_structural
+                                             для нулевых интервалов */
       query.conditions[`${ nodeKey }.${ propKey }`] = {
         type: relationType,
         first_condition_id: nodeKey,
@@ -155,7 +156,7 @@ export default function getQueryJSON(viewModel) {
       };
     }
 
-    // Дополнительные слои для разных типов корневой единицы
+    // Подбор дополнительных слоев для разных типов корневой единицы
     if (nodeIndex === 0) {
       let tiers = [],
           tierMap = {

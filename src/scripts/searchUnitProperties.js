@@ -398,6 +398,7 @@ const p_mStType = {
 
 const p_mStrokeHandedness = {
   type: 'list', name: 'Рукость', id: 'p_mStrokeHandedness',
+  // пока отсутсвует tierTemplate
   valueList: { orValues: [
     { name: 'Левая рука', value: 'L' },
     { name: 'Правая рука', value: 'R' },
@@ -407,6 +408,7 @@ const p_mStrokeHandedness = {
 
 const p_mStrokeLenType = {
   type: 'list', name: 'Тип длительности', id: 'p_mStrokeLenType',
+  // пока отсутсвует tierTemplate
   valueList: { orValues: [
     { name: 'Короткий', value: 's' },
     { name: 'Средний', value: 'm' },
@@ -1282,7 +1284,8 @@ class ValueListItem {
             childList.checkAll();
           } else if (checked && childList.isXOR && !value) {
             childList.checkFirst();
-          } else if (checked && childList.isXOR && value) {  // NOTE: см. ##xorparuni##
+          } else if (checked && childList.isXOR && value) {
+            // NOTE: см. ##xorparuni##
             // pass
           } else if (!checked) {
             childList.uncheckAll();

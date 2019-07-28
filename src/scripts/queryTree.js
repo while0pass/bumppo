@@ -11,7 +11,7 @@ export class TreeNode {
     this.level = ko.observable(0);
     this.serialNumber = ko.observable(0);
     this.negative = ko.observable(negative);
-    this.unitType = ko.observable(null);
+    this.unitType = ko.observable(null);  // см. searchUnits
     this.unitProperties = ko.observableArray([]);
     this.isEditStateForUnitType = ko.observable(true);
 
