@@ -12,11 +12,9 @@ const template = `
         data-bind="click: node.addChild.bind(node, false),
           visible: !node.negative() && node.unitType() !== null"></i>
 
-      <!--
       <i class="ui disabled red down arrow icon bmpp-addNegativeUnit"
         data-bind="click: node.addChild.bind(node, true),
           visible: !node.negative() && node.unitType() !== null"></i>
-      -->
 
       <i class="ui disabled grey close icon"
         title="Удалить единицу поиска со всеми зависимостями"
