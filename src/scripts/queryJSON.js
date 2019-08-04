@@ -72,19 +72,6 @@ export default function getQueryJSON(viewModel) {
       };
     }
 
-    // Отрицательные единицы
-    if (node.negative()) {
-      if (unitType.subtierTemplate) {
-        // Когде тип единицы определяется двумя слоями, отрицаем подусловие,
-        // т.е. отрицательным делаем условие на ограничивающий подслой
-        let subKey = nodeKey + 'p0';
-        query.conditions[subKey].negative = true;
-      } else {
-        // Когда тип определяется одним слоем, отрицаем главное условие
-        query.conditions[nodeKey].negative = true;
-      }
-    }
-
     // Выбранные свойства единицы
     let propIndex = 1;
     node.chosenUnitProperties().forEach(prop => {
@@ -128,10 +115,6 @@ export default function getQueryJSON(viewModel) {
         if ('max' in value) query.conditions[propKey].max_value = value.max;
       }
       query.conditions[propKey].tiers = tiers;
-      if (node.negative()) {
-        // Если единица поиска отрицательная, то отрицаем и текущее свойство
-        query.conditions[propKey].negative = true;
-      }
 
       let relationType = (prop instanceof ListProperty && value === false ?
         'non_structural' : 'structural'); /* Выбор non_structural

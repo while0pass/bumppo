@@ -2,7 +2,7 @@ import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists, SearchUnitProperty } from './searchUnitProperties.js';
 
 export class TreeNode {
-  constructor(parentNode=null, negative=false) {
+  constructor(parentNode=null) {
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
     this.relationsToParentNode = ko.observableArray([]);
@@ -10,7 +10,6 @@ export class TreeNode {
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
     this.serialNumber = ko.observable(0);
-    this.negative = ko.observable(negative);
     this.unitType = ko.observable(null);  // см. searchUnits
     this.unitProperties = ko.observableArray([]);
     this.isEditStateForUnitType = ko.observable(true);
@@ -66,8 +65,8 @@ export class TreeNode {
       return propsMap;
     });
   }
-  addChild(negative=false) {
-    var child = new TreeNode(this, negative);
+  addChild() {
+    var child = new TreeNode(this);
     this.childNodes.push(child);
   }
   addRelation() {
