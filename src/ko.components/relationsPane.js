@@ -1,53 +1,68 @@
-import log from '../scripts/log.js';
 const template = `
 
-  <header class="ui header">
+  <header class="ui header" style="display: grid;
+    grid-template: 't1 n1' 't2 n2' auto / auto 1fr">
 
-    Отношения между
+    <span style="grid-area: t1">
+      Отношения между
+    </span>
 
-    <!-- ko with: node1.unitType -->
+    <span style="grid-area: n1; margin-bottom: 0.5em" data-bind="if: node1">
 
-      <button class="ui button bmpp-channelSlug"
-        data-bind="css: channel.color, text: channel.id">
-      </button>
+      <span class="ui circular label" style="margin-top: 0; margin-right: .7em;"
+        data-bind="text: node1().serialNumber"></span>
 
-      <span class="bmpp-unitTypeAndGroup">
-        <!-- ko if: group -->
-          <span data-bind="textLowercaseFirstChar: group.name"
-            class="bmpp-unitTypeGroup"></span>
-        <!-- /ko -->
-        <span class="bmpp-unitType"
-        data-bind="css: { 'bmpp-unitTypeWithGroup': group }">
-          Тип единицы:
-          <strong data-bind="text: hasAbbr ? abbr : name"
-            style="padding-left: .5em;"></strong>
+      <!-- ko with: node1().unitType -->
+
+        <button class="ui mini button bmpp-channelSlug"
+          data-bind="css: channel.color, text: channel.id">
+        </button>
+
+        <span class="bmpp-unitTypeAndGroup">
+          <!-- ko if: group -->
+            <span data-bind="textLowercaseFirstChar: group.name"
+              class="bmpp-unitTypeGroup"></span>
+          <!-- /ko -->
+          <span class="bmpp-unitType"
+            data-bind="css: { 'bmpp-unitTypeWithGroup': group },
+              text: hasAbbr ? abbr : name">
+          </span>
         </span>
-      </span>
 
-    <!-- /ko -->
+      <!-- /ko -->
 
-    и
+    </span>
 
-    <!-- ko with: node2.unitType -->
+    <span style="grid-area: t2; text-align: right">
+      и
+    </span>
 
-      <button class="ui button bmpp-channelSlug"
-        data-bind="css: channel.color, text: channel.id">
-      </button>
+    <span style="grid-area: n2" data-bind="if: node2">
 
-      <span class="bmpp-unitTypeAndGroup">
-        <!-- ko if: group -->
-          <span data-bind="textLowercaseFirstChar: group.name"
-            class="bmpp-unitTypeGroup"></span>
-        <!-- /ko -->
-        <span class="bmpp-unitType"
-        data-bind="css: { 'bmpp-unitTypeWithGroup': group }">
-          Тип единицы:
-          <strong data-bind="text: hasAbbr ? abbr : name"
-            style="padding-left: .5em;"></strong>
+      <span class="ui circular label" style="margin-top: 0; margin-right: .7em;"
+        data-bind="text: node2().serialNumber"></span>
+
+      <!-- ko with: node2().unitType -->
+
+        <button class="ui mini button bmpp-channelSlug"
+          data-bind="css: channel.color, text: channel.id">
+        </button>
+
+        <span class="bmpp-unitTypeAndGroup">
+          <!-- ko if: group -->
+            <span data-bind="textLowercaseFirstChar: group.name"
+              class="bmpp-unitTypeGroup"></span>
+          <!-- /ko -->
+          <span class="bmpp-unitType"
+          data-bind="css: { 'bmpp-unitTypeWithGroup': group },
+            text: hasAbbr ? abbr : name">
+          </span>
         </span>
-      </span>
 
-    <!-- /ko -->
+      <!-- /ko -->
+
+    </span>
+
   </header>
 
   <!-- ko if: node1() && node2() -->
@@ -60,10 +75,6 @@ const template = `
 
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  log(0, params);
-  log(1, params.node1());
-  log(2, params.node2());
-  log(3, params.node2().getRelationGroup);
   return { node1: params.node1, node2: params.node2 };
 };
 
