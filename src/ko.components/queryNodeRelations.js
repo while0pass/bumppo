@@ -25,14 +25,24 @@ const template = `
     data-bind="css: { 'bmpp-queryDistances--toOtherElement':
                       $component.node.level() > 0 }">
 
-    <!-- ko foreach: relations -->
+    <!-- ko foreach: relationsToParentNode -->
       <!-- ko component: { name: 'query-node-relation', params: {
-      relation: $data, relations: $component.relations,
+      relation: $data, relationsToParentNode: $component.relationsToParentNode,
       isQueryNew: $root.isQueryNew }} --><!-- /ko -->
     <!-- /ko -->
 
     <i class="ui disabled grey question circle outline icon
               bmpp-queryDistanceHelp"></i>
+
+    <div style="position: absolute; bottom: 0.8em">
+      <span data-bind="click:
+          $root.queryPaneView.editNodeRelations.bind(null, node1, node2)"
+        class="bmpp-editUrl"
+        style="margin-left: 1em">
+        Изменить отношения между единицами
+      </span>
+    </div>
+
   </div>
 
 `;
@@ -52,9 +62,16 @@ var viewModelFactory = (params, componentInfo) => {
           jQuery(popup).attr('style', 'width: 35em!important');
         }
       };
+
   new RelationLine(params.draw, element, node);
   jQuery(element).find('.bmpp-queryDistanceHelp').popup(popupOpts);
-  return { relations: node.relationsToParentNode, node: node };
+
+  return {
+    node: node,
+    node1: node.parentNode,
+    node2: node,
+    relationsToParentNode: node.relationsToParentNode,
+  };
 };
 
 export default {

@@ -48,6 +48,9 @@ function viewModel() {
   this.queryPaneView.editNodeProperties = function (node) {
     self.queryPaneView(node);
   };
+  this.queryPaneView.editNodeRelations = function (node1, node2) {
+    self.queryPaneView([node1, node2]);
+  };
   this.queryPaneView.finishEditingNodeProperties = function () {
     let node = self.queryPaneView();
     if (node.arePropertiesChanged()) {
@@ -55,17 +58,41 @@ function viewModel() {
     }
     self.queryPaneView(null);
   };
+  this.queryPaneView.finishEditingNodeRelations = function () {
+    let [node1, node2] = self.queryPaneView();
+    if (node1.areRelationsChanged(node2)) {
+      self.isQueryNew(true);
+    }
+    self.queryPaneView(null);
+  };
   this.queryPaneView.arePropertiesVisible = ko.computed(
     () => self.queryPaneView() instanceof TreeNode
+  );
+  this.queryPaneView.areRelationsVisible = ko.computed(
+    () => self.queryPaneView() instanceof Array
   );
   this.queryPaneView.propertiesNode = ko.computed(function () {
     if (self.queryPaneView.arePropertiesVisible()) {
       return self.queryPaneView.peek();
     }
   });
+  this.queryPaneView.relationsNode1 = ko.computed(function () {
+    if (self.queryPaneView.areRelationsVisible()) {
+      return self.queryPaneView()[0];
+    }
+    return null;
+  });
+  this.queryPaneView.relationsNode2 = ko.computed(function () {
+    if (self.queryPaneView.areRelationsVisible()) {
+      return self.queryPaneView()[1];
+    }
+    return null;
+  });
 
-  this.queryPartsNonReadiness = ko.observableArray(
-    [this.queryPaneView.arePropertiesVisible]);
+  this.queryPartsNonReadiness = ko.observableArray([
+    self.queryPaneView.arePropertiesVisible,
+    self.queryPaneView.areRelationsVisible,
+  ]);
   this.isQueryReady = ko.computed(function () {
     for (let isQueryPartNotReady of self.queryPartsNonReadiness()) {
       if (isQueryPartNotReady()) { return false; }

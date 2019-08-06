@@ -129,24 +129,25 @@ $videoHeight: 193px;
   margin: 3em auto auto 6em !important;
 }
 
-.bmpp-propertiesPane {
+.bmpp-propertiesPane,
+.bmpp-relationsPane {
   $buttonsHeight: 4.4em;
   $dividerHeight: 1em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
-  &Props {
+  & .bmpp-paneProps {
     height: calc(100vh - $buttonsHeight - $dividerHeight);
     overflow-y: scroll;
     overflow-x: hidden;
 
   }
-  &Divider {
+  & .bmpp-paneDivider {
     height: $dividerHeight;
     border-bottom: 1px solid rgba(34, 36, 38, .05);
   }
-  &Buttons {
+  & .bmpp-paneButtons {
     height: $buttonsHeight;
     padding: 1em 0 0 6em;
     box-sizing: border-box;
@@ -549,7 +550,8 @@ $videoHeight: 193px;
   margin: 0.7em 0 0 2.4em;
 }
 
-.bmpp-propertyHeader {
+.bmpp-propertyHeader,
+.bmpp-relationHeader {
   user-select: none;
 
   &.clickable {

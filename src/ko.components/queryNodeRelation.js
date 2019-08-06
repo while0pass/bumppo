@@ -30,17 +30,17 @@ const template = `
       <div class="bmpp-queryTreeHandles bmpp-queryTreeHandles2">
 
         <i class="ui small disabled grey plus icon" data-bind="
-          visible: $index() === relations().length - 1 && unitsAreNotChosen(),
+          visible: $index() === relationsToParentNode().length - 1 && unitsAreNotChosen(),
           click: childNode.addRelation.bind(childNode)">
         </i>
 
         <i class="ui small icon"
-          data-bind="visible: $index() !== relations().length - 1">
+          data-bind="visible: $index() !== relationsToParentNode().length - 1">
         </i>
 
         <i class="ui small disabled grey close icon"
           data-bind="visible: $index() !== 0,
-            click: childNode.removeRelation.bind(childNode, relation)"></i>
+            click: childNode.removeRelation.bind(childNode, relationsToParentNode)"></i>
       </div>
 
       ${ numbersTemplate }
@@ -179,10 +179,10 @@ var viewModelFactory = (params, componentInfo) => {
   let canShowUnits = ko.computed(function () {
     let pUnitType = relation.parentNode.unitType(),
         cUnitType = relation.childNode.unitType(),
-        relations = params.relations();
+        relationsToParentNode = params.relationsToParentNode();
     if (!pUnitType || !cUnitType) return false;
     if (pUnitType.id !== cUnitType.id) return false;
-    if (relations.length > 1) return false;
+    if (relationsToParentNode.length > 1) return false;
 
     let a = relation.parentNode
       .getTiersFromTemplate(pUnitType.tierTemplate).sort().join('');
@@ -204,7 +204,7 @@ var viewModelFactory = (params, componentInfo) => {
   });
 
   return {
-    relations: params.relations,
+    relationsToParentNode: params.relationsToParentNode,
     relation: relation,
     from: from,
     to: to,

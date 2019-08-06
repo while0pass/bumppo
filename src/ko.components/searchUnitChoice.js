@@ -119,8 +119,8 @@ const chosenUnitTemplate = `
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
-      <span data-bind="click: goEditUnitProperties" class="bmpp-editUrl"
-        style="margin-left: 1em">
+      <span data-bind="click: $root.queryPaneView.editNodeProperties.bind(
+          null, node)" class="bmpp-editUrl" style="margin-left: 1em">
         <span data-bind="text: isAnyUnitPropertySet() ? 'Изменить' : 'Задать'">
         </span> свойства единицы
       </span>
@@ -222,9 +222,6 @@ class viewModel {
         goEditUnitType = function () {
           node.isEditStateForUnitType(true);
         },
-        goEditUnitProperties = function () {
-          params.editNodeProperties(node);
-        },
         iHaveChosenUnitType = function () {
           node.unitType(this);
           node.isEditStateForUnitType(false);
@@ -269,7 +266,6 @@ class viewModel {
     this.activeChannel = activeChannel;
     this.queryPartsNonReadiness = queryPartsNonReadiness;
     this.goEditUnitType = goEditUnitType;
-    this.goEditUnitProperties = goEditUnitProperties;
     this.iHaveChosenUnitType = iHaveChosenUnitType;
     this.isAnyUnitPropertySet = isAnyUnitPropertySet;
   }

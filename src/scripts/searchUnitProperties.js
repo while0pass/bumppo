@@ -79,13 +79,6 @@ const p_participants = {
     { name: 'Пересказчик', value: 'R' }
   ]}};
 
-const p_sameParticipant = { // eslint-disable-line no-unused-vars
-  type: 'list', name: 'Совпадение участников', id: 'same_participant',
-  valueList: { xorValues: [
-    { name: 'Да', value: true },
-    { name: 'Нет', value: false },
-  ]}};
-
 const p_mGeStructure = {
   type: 'list', name: 'Фазовая структура', id: 'p_mGeStructure',
   tierTemplate: '{ p_participants }-mGeStructure',
@@ -979,15 +972,15 @@ class ListProperty extends SearchUnitProperty {
           values = this.unwrapValues(this.chosenValues());
 
       this.unitType(); // Реагировать на изменение типа единицы поиска.
-      // Этот вызов необходим, чтобы, если измениться тип единицы, этот
+      // Этот вызов необходим, чтобы, если изменится тип единицы, этот
       // computed вычислился повторно. Это важно, например, для свойств
-      // со свойством allIfEmpty === true. Свойство p_participants
+      // с параметром allIfEmpty === true. Свойство p_participants
       // чувствительно к типу канала, в окуломотрном канале часть галочек
       // деактивируется. Поэтому если пользователь изменил текущую единицу
       // с окуломотрной фиксации на вокальную ЭДЕ и при этом никакие участники
       // у него не были выбраны, что эквивалентно использованию всех, то без
       // этого вызова число выбранных участников у него осталось бы прежним,
-      // меньшим нужного.
+      // т.е. меньшим нужного.
       if (this.allIfEmpty && values.length === 0) {
         values = this.getAllValues();
       }
@@ -1021,8 +1014,8 @@ class ListProperty extends SearchUnitProperty {
     return values.map(value => ko.isObservable(value) ? value() : value);
   }
   onHeaderClick() {
-    let valueList = this.valueList,
-        CLICK_IS_NOT_ON_CHECKBOX_LIST = -1;
+    const valueList = this.valueList,
+          CLICK_IS_NOT_ON_CHECKBOX_LIST = -1;
     this._lastActiveDepth = CLICK_IS_NOT_ON_CHECKBOX_LIST;
     if (this.isHeaderClickable) {
       if (valueList.isOR) {

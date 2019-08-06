@@ -1,11 +1,14 @@
 import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists, SearchUnitProperty } from './searchUnitProperties.js';
+import { NodesRelation, NodesRelationGroup } from './searchUnitRelations.js';
 
 export class TreeNode {
   constructor(parentNode=null) {
+    this.id = window.performance.now();
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
-    this.relationsToParentNode = ko.observableArray([]);
+    this.relationsToParentNode = ko.observableArray([]);  // NOTE: deprecated
+    this.relationGroups = {};
 
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
@@ -20,6 +23,7 @@ export class TreeNode {
   tuneRelations() {
     if (this.parentNode !== null) {
       this.addRelation();
+      this.addRelationGroup();
     }
   }
   tuneUnitProperties() {
@@ -68,6 +72,30 @@ export class TreeNode {
   addChild() {
     var child = new TreeNode(this);
     this.childNodes.push(child);
+  }
+  addRelationGroup() {
+    const node1 = this.parentNode,
+          node2 = this,
+          rg = new NodesRelationGroup(node1, node2);
+    node1.relationGroups[node2.id] = rg;
+    node2.relationGroups[node1.id] = rg;
+  }
+  getRelationGroup(node) {
+    return this.relationGroups[node.id];
+  }
+  resetAllRelations(node) {
+    const rg = this.getRelationGroup(node);
+    rg.resetToDefault();
+  }
+  areRelationsChanged(node) {
+    return Boolean(node); // STUB
+    /*
+    let before = this.$oldPropsSummary || '',
+        after = this.chosenUnitProperties()
+          .map(prop => ko.unwrap(prop.banner)).join('');
+    this.$oldPropsSummary = after;
+    return after !== before;
+    */
   }
   addRelation() {
     this.relationsToParentNode.push(new NodesRelation(this.parentNode, this));
@@ -136,41 +164,5 @@ export class TreeNode {
       tiers = tiers.concat(self.getTiersFromTemplate(template));
     });
     return tiers;
-  }
-}
-
-export class NodesRelation {
-  constructor(parentNode, childNode) {
-    this.parentNode = parentNode;
-    this.childNode = childNode;
-
-    this.from = ko.observable(0);
-    this.to = ko.observable(0);
-
-    this.units = ko.observable('ms');
-    this.parentNodeRefPoint = ko.observable('end');
-    this.childNodeRefPoint = ko.observable('begin');
-
-    this.tune();
-  }
-  tune() {
-    this.oldValues = {};
-    // Активация кнопки поиска при изменении значений в полях
-    ko.computed(function () {
-      let from = this.from(), to = this.to(), units = this.units(),
-          pNRefPoint = this.parentNodeRefPoint(),
-          cNRefPoint = this.childNodeRefPoint(),
-          oldValues = this.oldValues;
-      if (from !== oldValues.from || to !== oldValues.to ||
-        units !== oldValues.units || pNRefPoint !== oldValues.pNRefPoint ||
-        cNRefPoint !== oldValues.cNRefPoint) {
-        this.isQueryNew && this.isQueryNew(true);
-      }
-      this.oldValues.from = from;
-      this.oldValues.to = to;
-      this.oldValues.units = units;
-      this.oldValues.pNRefPoint = pNRefPoint;
-      this.oldValues.cNRefPoint = cNRefPoint;
-    }, this);
   }
 }
