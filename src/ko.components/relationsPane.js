@@ -42,6 +42,11 @@ const template = `
       <span class="ui circular label" style="margin-top: 0; margin-right: .7em;"
         data-bind="text: node2().serialNumber"></span>
 
+      <span data-bind="ifnot: node2().unitType"
+            style="font-weight: normal; font-size: smaller">
+        Тип единицы ещё не выбран
+      <span>
+
       <!-- ko with: node2().unitType -->
 
         <button class="ui mini button bmpp-channelSlug"
