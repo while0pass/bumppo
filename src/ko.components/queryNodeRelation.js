@@ -40,7 +40,7 @@ const template = `
 
         <i class="ui small disabled grey close icon"
           data-bind="visible: $index() !== 0,
-            click: childNode.removeRelation.bind(childNode, relationsToParentNode)"></i>
+            click: childNode.removeRelation.bind(childNode, relation)"></i>
       </div>
 
       ${ numbersTemplate }
