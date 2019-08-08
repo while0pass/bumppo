@@ -1,4 +1,6 @@
-const template = `
+import ko from 'knockout';
+
+const templateHeader = `
 
   <header class="ui header" style="display: grid;
     grid-template: 't1 n1' 't2 n2' auto / auto 1fr">
@@ -42,12 +44,14 @@ const template = `
       <span class="ui circular label" style="margin-top: 0; margin-right: .7em;"
         data-bind="text: node2().serialNumber"></span>
 
-      <span data-bind="ifnot: node2().unitType"
-            style="font-weight: normal; font-size: smaller">
+      <!-- ko ifnot: node2().unitType -->
+      <span style="font-weight: normal; font-size: smaller">
         Тип единицы ещё не выбран
-      <span>
+      </span>
+      <!-- /ko -->
 
-      <!-- ko with: node2().unitType -->
+      <!-- ko if: node2().unitType -->
+        <!-- ko with: node2().unitType -->
 
         <button class="ui mini button bmpp-channelSlug"
           data-bind="css: channel.color, text: channel.id">
@@ -64,23 +68,37 @@ const template = `
           </span>
         </span>
 
+        <!-- /ko -->
       <!-- /ko -->
 
     </span>
 
   </header>
 
-  <!-- ko if: node1() && node2() -->
-  <div data-bind="foreach: node2().getRelationGroup(node1())">
+`;
+
+const template = `
+
+  ${ templateHeader }
+
+  <div data-bind="foreach: relations">
     <search-unit-relation params="relation: $data"></search-unit-relation>
   </div>
-  <!-- /ko -->
 
 `;
 
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  return { node1: params.node1, node2: params.node2 };
+  const relations = ko.computed(function () {
+    const node1 = params.node1(),
+          node2 = params.node2();
+    return node1 && node2 ? node1.getRelationGroup(node2).relations : [];
+  });
+  return {
+    node1: params.node1,
+    node2: params.node2,
+    relations: relations,
+  };
 };
 
 export default {
