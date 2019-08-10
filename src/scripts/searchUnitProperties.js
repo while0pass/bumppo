@@ -719,13 +719,35 @@ function injectValue(template, value) {
   return template.replace('##', value.toString());
 }
 
+function injectNodeNumbers(template, node1, node2) {
+  if (!(/#[12]#/g).test(template)) {
+    return template;
+  }
+  return ko.computed(function () {
+    var sn1 = node1.serialNumber(),
+        sn2 = node2 && node2.serialNumber(),
+        text = template;
+    if (sn1 !== undefined) {
+      text = text.replace(/#1#/g,
+        `<span class="ui circular label">${ sn1 }</span>`);
+    }
+    if (sn2 !== undefined) {
+      text = text.replace(/#2#/g,
+        `<span class="ui circular label">${ sn2 }</span>`);
+    }
+    return text;
+  });
+}
+
 class SearchUnitProperty {
-  constructor(data, unitType) {
+  constructor(data, node1, node2) {
     this.type = data.type;
-    this.unitType = ko.observable(unitType);
+    this.node = node1;
+    this.node1 = this.node;
+    this.node2 = node2;
     this.id = data.id;
-    this.name = data.name;
-    this.help = data.help || '';
+    this.name = injectNodeNumbers(data.name, node1, node2);
+    this.help = data.help ? injectNodeNumbers(data.help, node1, node2) : '';
     this.value = ko.observable(null);
     this.virtualKeyboard = data.virtualKeyboard || false;
     this.isRegEx = data.isRegEx || false;
@@ -733,7 +755,7 @@ class SearchUnitProperty {
 
     this._SearchUnitProperty_tune(data);
   }
-  static createByType(data, unitType) {
+  static createByType(data, node1, node2) {
     let map = {
           'interval': IntervalProperty,
           'text': TextProperty,
@@ -741,7 +763,7 @@ class SearchUnitProperty {
         },
         Property = map[data.type];
     if (Property) {
-      return new Property(data, unitType);
+      return new Property(data, node1, node2);
     }
   }
   _SearchUnitProperty_tune(data) { // NOTE: Если использовать в качестве
@@ -752,9 +774,6 @@ class SearchUnitProperty {
     }
     this.validChars = data.validChars;
     this.validitySusbstitutions = this.getValueSubstitutions(data);
-  }
-  changeUnitType(unitType) {
-    this.unitType(unitType);
   }
   getValueSubstitutions(data) {
     let substitutions = [];
@@ -810,8 +829,8 @@ class SearchUnitProperty {
 }
 
 class IntervalProperty extends SearchUnitProperty {
-  constructor(data, unitType) {
-    super(data, unitType);
+  constructor(data, node1, node2) {
+    super(data, node1, node2);
 
     this.from = ko.observable(null);
     this.to = ko.observable(null);
@@ -918,8 +937,8 @@ class IntervalProperty extends SearchUnitProperty {
 }
 
 class TextProperty extends SearchUnitProperty {
-  constructor(data, unitType) {
-    super(data, unitType);
+  constructor(data, node1, node2) {
+    super(data, node1, node2);
     this.placeholder = data.placeholder || '';
     this.tune();
   }
@@ -952,8 +971,8 @@ function addRawValues(listItem, values) {
 }
 
 class ListProperty extends SearchUnitProperty {
-  constructor(data, unitType) {
-    super(data, unitType);
+  constructor(data, node1, node2) {
+    super(data, node1, node2);
     this.allIfEmpty = data.allIfEmpty || false;
     this.displayValues = data.displayValues || false;
     this.chosenValues = ko.observableArray([]);
@@ -971,7 +990,7 @@ class ListProperty extends SearchUnitProperty {
       let value = this.value,
           values = this.unwrapValues(this.chosenValues());
 
-      this.unitType(); // Реагировать на изменение типа единицы поиска.
+      this.node.unitType(); // Реагировать на изменение типа единицы поиска.
       // Этот вызов необходим, чтобы, если изменится тип единицы, этот
       // computed вычислился повторно. Это важно, например, для свойств
       // с параметром allIfEmpty === true. Свойство p_participants
@@ -1030,7 +1049,7 @@ class ListProperty extends SearchUnitProperty {
   }
   getBanner() {
     return ko.computed(function () {
-      return this.chosenValues().map(
+      let banner = this.chosenValues().map(
         item => {
           let prefix = '', postfix,
               parentItem = item.list.depth > 0 && item.list.parentItem;
@@ -1047,6 +1066,7 @@ class ListProperty extends SearchUnitProperty {
           return prefix + postfix;
         }
       ).join('; ');
+      return injectNodeNumbers(banner, this.node1, this.node2);
     }, this);
   }
   getAllValues() {
@@ -1166,7 +1186,8 @@ function sortTwoValueListItems(a, b) {
 class ValueListItem {
   constructor(data, list) {
     this.list = list;
-    this.name = data.name;
+    this.name = injectNodeNumbers(data.name,
+      list.listProperty.node1, list.listProperty.node2);
     this.checked = ko.observable(null);
     this.userChecked = this.getUserChecked();
     this.editable = data.editable || false;
@@ -1187,7 +1208,7 @@ class ValueListItem {
     let channelIds = this.disabledInChannels;
     if (channelIds && channelIds.length > 0) {
       return ko.computed(function () {
-        let channelId = this.list.listProperty.unitType().channel.id;
+        let channelId = this.list.listProperty.node.unitType().channel.id;
         return channelIds.indexOf(channelId) > -1;
       }, this);
     } else {
@@ -1340,5 +1361,5 @@ class ValueListItem {
 export {
   defaultPropertiesList, testPropertiesList, propertiesLists,
   SearchUnitProperty, IntervalProperty, TextProperty, ListProperty,
-  p_duration, escapeRegExp
+  p_duration, escapeRegExp, injectNodeNumbers
 };

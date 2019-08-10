@@ -27,8 +27,9 @@ export class TreeNode {
     }
   }
   tuneUnitProperties() {
-    let unitProperties = this.unitProperties;
-    this.unitType.subscribe(unitType => {
+    let self = this,
+        unitProperties = self.unitProperties;
+    self.unitType.subscribe(unitType => {
       if (unitType === null) {
         unitProperties([]);
       } else {
@@ -49,11 +50,10 @@ export class TreeNode {
                 prop => prop.id === newPropertyData.id
               );
           if (oldProperty) {
-            oldProperty.changeUnitType(unitType);
             newUnitTypeProperties.push(oldProperty);
           } else {
             let newProperty = SearchUnitProperty
-              .createByType(newPropertyData, unitType);
+              .createByType(newPropertyData, self);
             newUnitTypeProperties.push(newProperty);
           }
         }

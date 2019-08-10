@@ -2,8 +2,8 @@ const template = `
 
   <div class="ui top attached segment">
     <div class="ui top attached large label">
-      <header class="bmpp-relationHeader" data-bind="text: name,
-        click: onHeaderClick.bind($component),
+      <header class="bmpp-relationHeader" data-bind="html: name,
+        click: onHeaderClick && onHeaderClick.bind($component),
         css: { clickable: $component.isHeaderClickable }">
       </header>
       <!-- ko if: help -->

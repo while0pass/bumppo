@@ -557,6 +557,9 @@ $videoHeight: 193px;
   &.clickable {
     cursor: copy;
   }
+  & .ui.circular.label {
+    background-color: #ccc;
+  }
 }
 
 .bmpp-bannerPropname {

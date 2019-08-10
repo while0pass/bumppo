@@ -1,12 +1,38 @@
 import ko from 'knockout';
-import { ListProperty } from './searchUnitProperties.js';
+import { ListProperty, IntervalProperty } from './searchUnitProperties.js';
 
-const r_sameParticipant = { // eslint-disable-line no-unused-vars
+const r_sameParticipant = {
   type: 'list', name: 'Совпадение участников', id: 'sameParticipant',
+  help: 'Участники единиц #1# и #2# совпадают.',
   valueList: { xorValues: [
     { name: 'Да', value: true },
     { name: 'Нет', value: false },
   ]}};
+
+const rp_occurrence = {
+  type: 'list', name: 'Встречаемость', id: 'occurence',
+  valueList: { xorValues: [
+    { name: 'встречаются', value: true },
+    { name: 'не встречаются', value: false },
+  ]}};
+
+const END_BGN = 'begin_2_end_1',
+      BGN_END = 'end_2_begin_1',
+      BGN_BGN = 'begin_2_begin_1',
+      END_END = 'end_2_end_1';
+
+const rp_refPoints = {
+  type: 'list', name: 'Точки отсчета', id: 'refPoints',
+  valueList: { xorValues: [
+    { name: 'От конца #1# до начала #2#', value: END_BGN, icon: 'align center' },
+    { name: 'От начала #1# до конца #2#', value: BGN_END, icon: 'align justify' },
+    { name: 'От начала #1# до начала #2#', value: BGN_BGN, icon: 'align left' },
+    { name: 'От конца #1# до конца #2#', value: END_END, icon: 'align right' },
+  ]}};
+
+const rp_msDistance = {
+  type: 'interval', name: 'Расстояние в мс', id: 'msDistance',
+  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 class NodesRelation {
   constructor(parentNode, childNode) {
@@ -56,11 +82,13 @@ class OrGroup {
   }
 }
 
-class sameParticipant extends ListProperty {
+class DistanceInMs {
   constructor(node1, node2) {
-    super(r_sameParticipant, node2.unitType);
     this.node1 = node1;
     this.node2 = node2;
+    this.negtive = new ListProperty(rp_occurrence, node1, node2);
+    this.refPoints = new ListProperty(rp_refPoints, node1, node2);
+    this.interval = new IntervalProperty(rp_msDistance, node1, node2);
   }
 }
 
@@ -72,7 +100,8 @@ class NodesRelationGroup {
   }
   getRelations() {
     const defaultRelations = [
-      new sameParticipant(this.node1, this.node2),
+      new ListProperty(r_sameParticipant, this.node1, this.node2),
+      new DistanceInMs(this.node1, this.node2),
     ];
     return defaultRelations;
   }
