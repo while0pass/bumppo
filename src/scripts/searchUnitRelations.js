@@ -35,6 +35,10 @@ const rp_msDistance = {
   units: 'миллисекунд', unitsBanner: 'мс',
   fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##' };
 
+const rp_unitsDistance = {
+  type: 'interval', name: 'Расстояние в единицах', id: 'unitsDistance',
+  units: 'единиц', fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##' };
+
 class NodesRelation {
   constructor(parentNode, childNode) {
     this.parentNode = parentNode;
@@ -83,18 +87,35 @@ class OrGroup {
   }
 }
 
-class DistanceInMs {
+class Distance {
   constructor(node1, node2) {
-    this.name = 'Расстояние в мс';
-    this.help = '';
-    this.type = 'msDistance';
     this.node1 = node1;
     this.node2 = node2;
+    this.help = '';
+
+    this.onHeaderClick = undefined;
+    this.refPoints = undefined;
+  }
+}
+
+class DistanceInMs extends Distance {
+  constructor(node1, node2) {
+    super(node1, node2);
+    this.name = rp_msDistance.name;
+    this.type = rp_msDistance.id;
     this.negative = new ListProperty(rp_occurrence, node1, node2);
     this.refPoints = new ListProperty(rp_refPoints, node1, node2);
     this.interval = new IntervalProperty(rp_msDistance, node1, node2);
   }
-  onHeaderClick() {
+}
+
+class DistanceInUnits extends Distance {
+  constructor(node1, node2) {
+    super(node1, node2);
+    this.name = rp_unitsDistance.name;
+    this.type = rp_unitsDistance.id;
+    this.negative = new ListProperty(rp_occurrence, node1, node2);
+    this.interval = new IntervalProperty(rp_unitsDistance, node1, node2);
   }
 }
 
@@ -108,6 +129,7 @@ class NodesRelationGroup {
     const defaultRelations = [
       new ListProperty(r_sameParticipant, this.node1, this.node2),
       new DistanceInMs(this.node1, this.node2),
+      new DistanceInUnits(this.node1, this.node2),
     ];
     return defaultRelations;
   }

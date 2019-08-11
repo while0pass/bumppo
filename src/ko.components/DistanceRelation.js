@@ -1,7 +1,11 @@
 const template = `
 
   <list-property params="property: negative"></list-property>
-  <list-property params="property: refPoints"></list-property>
+
+  <!-- ko if: type === 'msDistance' -->
+    <list-property params="property: refPoints"></list-property>
+  <!-- /ko -->
+
   <interval-property params="property: interval"></interval-property>
 
 `;

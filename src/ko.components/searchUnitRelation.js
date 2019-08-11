@@ -17,8 +17,8 @@ const template = `
       <list-relation params="relation: $component"></list-relation>
     <!-- /ko -->
 
-    <!-- ko if: type === 'msDistance' -->
-      <ms-distance-relation params="relation: $component"></ms-distance-relation>
+    <!-- ko if: type === 'msDistance' || type === 'unitsDistance' -->
+      <distance-relation params="relation: $component"></distance-relation>
     <!-- /ko -->
   </div>
 
