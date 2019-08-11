@@ -6,6 +6,7 @@ import Checkbox from '../ko.components/checkbox.js';
 import IntervalProperty from '../ko.components/intervalProperty.js';
 import ListProperty from '../ko.components/listProperty.js';
 import ListRelation from '../ko.components/listRelation.js';
+import MsDistanceRelation from '../ko.components/msDistanceRelation.js';
 import PropertiesPane from '../ko.components/propertiesPane.js';
 import QueryNode from '../ko.components/queryNode.js';
 import QueryNodeRelation from '../ko.components/queryNodeRelation.js';
@@ -177,6 +178,7 @@ export function init(ko, viewModel) {
   ko.components.register('search-unit-property', SearchUnitProperty);
   ko.components.register('properties-pane', PropertiesPane);
   ko.components.register('list-relation', ListRelation);
+  ko.components.register('ms-distance-relation', MsDistanceRelation);
   ko.components.register('search-unit-relation', SearchUnitRelation);
   ko.components.register('relations-pane', RelationsPane);
   ko.components.register('bmpp-checkbox', Checkbox);

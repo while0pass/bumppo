@@ -32,7 +32,8 @@ const rp_refPoints = {
 
 const rp_msDistance = {
   type: 'interval', name: 'Расстояние в мс', id: 'msDistance',
-  fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
+  units: 'миллисекунд', unitsBanner: 'мс',
+  fromOnlyBanner: 'не менее ##', toOnlyBanner: 'не более ##' };
 
 class NodesRelation {
   constructor(parentNode, childNode) {
@@ -84,11 +85,16 @@ class OrGroup {
 
 class DistanceInMs {
   constructor(node1, node2) {
+    this.name = 'Расстояние в мс';
+    this.help = '';
+    this.type = 'msDistance';
     this.node1 = node1;
     this.node2 = node2;
-    this.negtive = new ListProperty(rp_occurrence, node1, node2);
+    this.negative = new ListProperty(rp_occurrence, node1, node2);
     this.refPoints = new ListProperty(rp_refPoints, node1, node2);
     this.interval = new IntervalProperty(rp_msDistance, node1, node2);
+  }
+  onHeaderClick() {
   }
 }
 
