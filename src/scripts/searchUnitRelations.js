@@ -11,7 +11,7 @@ const r_sameParticipant = {
 
 const rp_occurrence = {
   type: 'list', name: 'Встречаемость', id: 'occurence',
-  valueList: { xorValues: [
+  valueList: { radioButtons: true, xorValues: [
     { name: 'встречаются', value: true },
     { name: 'не встречаются', value: false },
   ]}};
@@ -23,11 +23,11 @@ const END_BGN = 'begin_2_end_1',
 
 const rp_refPoints = {
   type: 'list', name: 'Точки отсчета', id: 'refPoints',
-  valueList: { xorValues: [
-    { name: 'От конца #1# до начала #2#', value: END_BGN, icon: 'align center' },
-    { name: 'От начала #1# до конца #2#', value: BGN_END, icon: 'align justify' },
-    { name: 'От начала #1# до начала #2#', value: BGN_BGN, icon: 'align left' },
-    { name: 'От конца #1# до конца #2#', value: END_END, icon: 'align right' },
+  valueList: { radioButtons: true, xorValues: [
+    { name: 'От конца #1# до начала #2#', icon: 'align center', value: END_BGN },
+    { name: 'От начала #1# до конца #2#', icon: 'align justify', value: BGN_END },
+    { name: 'От начала #1# до начала #2#', icon: 'align left', value: BGN_BGN },
+    { name: 'От конца #1# до конца #2#', icon: 'align right', value: END_END },
   ]}};
 
 const rp_msDistance = {

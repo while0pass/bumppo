@@ -57,6 +57,7 @@ import ko from 'knockout';
  *  value
  *  disabledInChannels
  *  editable
+ *  radioButtons
  *
  */
 
@@ -1034,8 +1035,8 @@ class ListProperty extends SearchUnitProperty {
   }
   onHeaderClick() {
     const valueList = this.valueList,
-          CLICK_IS_NOT_ON_CHECKBOX_LIST = -1;
-    this._lastActiveDepth = CLICK_IS_NOT_ON_CHECKBOX_LIST;
+          CLICK_IS_NOT_ON_ANY_CHECKBOX = null;
+    this._lastActiveCheckbox = CLICK_IS_NOT_ON_ANY_CHECKBOX;
     if (this.isHeaderClickable) {
       if (valueList.isOR) {
         valueList.invertSelection();
@@ -1054,14 +1055,16 @@ class ListProperty extends SearchUnitProperty {
           let prefix = '', postfix,
               parentItem = item.list.depth > 0 && item.list.parentItem;
           while (parentItem && parentItem.addNameToChildNames) {
-            prefix = parentItem.name.slice(0, 1).toLowerCase() +
-              parentItem.name.slice(1) + ' ' + prefix;
+            let name = ko.unwrap(parentItem.name);
+            prefix = name.slice(0, 1).toLowerCase() +
+              name.slice(1) + ' ' + prefix;
             parentItem = parentItem.list.depth > 0 && parentItem.list.parentItem;
           }
           if (item.editable) {
             postfix = `«${ item.value() }»`;
           } else {
-            postfix = item.name.slice(0, 1).toLowerCase() + item.name.slice(1);
+            let name = ko.unwrap(item.name);
+            postfix = name.slice(0, 1).toLowerCase() + name.slice(1);
           }
           return prefix + postfix;
         }
@@ -1094,11 +1097,19 @@ class ValueList {
     this.depth = parentItem === null ? 0 : parentItem.list.depth + 1;
     this.isOR = !data.xorValues;
     this.isXOR = !data.orValues;
+    this.radioButtons = data.radioButtons;
     this.parentItem = parentItem;
     this.listProperty = property;
     this.items = (this.isOR ? data.orValues : data.xorValues).map(
       itemData => new ValueListItem(itemData, this)
     );
+
+    this.tune();
+  }
+  tune() {
+    if (this.isXOR && this.radioButtons) {
+      this.checkFirst();
+    }
   }
   checkAll() {
     this.items.forEach(item => {
@@ -1219,7 +1230,7 @@ class ValueListItem {
     return ko.computed({
       read: this.checked,
       write: function (newValue) {
-        this.list.listProperty._lastActiveDepth = this.list.depth;
+        this.list.listProperty._lastActiveCheckbox = this;
         this.checked(newValue);
       }
     }, this);
@@ -1243,12 +1254,21 @@ class ValueListItem {
   tuneXOR() {
     if (this.list.isXOR) {
       ko.computed(function () {
-        if (this.checked()) {
+        let checked = this.checked();
+
+        if (checked) {
           this.list.uncheckAllBut(this);
         }
 
+        if (!checked && this.isChangeStraightforward
+            && !this.list.parentItem
+            && this.list.radioButtons) {
+          this.checked(true);
+        }
+
         // NOTE: см. ##xorparuni##
-        if (!this.checked() && this.isChangeStraightforward
+        if (!checked && this.isChangeStraightforward
+            && !this.list.radioButtons
             && this.list.parentItem
             && ko.unwrap(this.list.parentItem.value)
             && this.list.areAllUnchecked) {
@@ -1263,7 +1283,7 @@ class ValueListItem {
     // непосредственно на нее действием пользователя. Если же галочка
     // устанавливается или снимается автоматически, например, при нажатии
     // на родительскую галочку, то возвращает false.
-    return this.list.listProperty._lastActiveDepth === this.list.depth;
+    return this.list.listProperty._lastActiveCheckbox === this;
   }
   tuneParentList() {
     if (this.list.depth > 0) {
