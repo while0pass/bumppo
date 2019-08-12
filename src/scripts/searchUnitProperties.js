@@ -19,6 +19,7 @@ import ko from 'knockout';
  *  step
  *  units
  *  unitsBanner
+ *  allowNegatives
  *
  *  fromStep
  *  fromPlaceholder
@@ -716,8 +717,27 @@ function isImportant(value) {
   return [null, undefined, ''].indexOf(value) < 0;
 }
 
-function injectValue(template, value) {
-  return template.replace('##', value.toString());
+function beautifyNumber(number) {
+  // Отбиваем в числе пробелами каждые три разряда, дефис заменяем на минус.
+  // Если бы можно было использовать regexp lookbehind assertions (они
+  // поддерживаются только в Chrome и Edge), то разбивку разрядов можно было
+  // бы сделать так:
+  //
+  //   txt = txt.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+  //
+  let txt = number.toString(), parts = [],
+      [sign, x] = txt[0] === '-' ? ['\u2212', txt.slice(1)] : ['', txt];
+
+  do {
+    parts.unshift(x.slice(-3));
+    x = x.slice(0, -3);
+  } while (x.length > 0);
+
+  return sign + parts.join('\u00a0');
+}
+
+function injectNumber(template, value) {
+  return template.replace('##', beautifyNumber(value));
 }
 
 function injectNodeNumbers(template, node1, node2) {
@@ -836,8 +856,11 @@ class IntervalProperty extends SearchUnitProperty {
     this.from = ko.observable(null);
     this.to = ko.observable(null);
     this.units = data.units || '';
+    this.allowNegatives = data.allowNegatives || false;
 
-    this.from.min = keepZero(data.fromMin, data.min, 0);
+    let aN = this.allowNegatives;
+
+    this.from.min = keepZero(data.fromMin, data.min, aN ? null : 0);
     this.from.max = keepZero(data.fromMax, data.max, null);
     this.from.step = data.fromStep || data.step || 1;
     this.from.placeholder = data.fromPlaceholder || '';
@@ -845,7 +868,7 @@ class IntervalProperty extends SearchUnitProperty {
     this.from.banner = data.fromBanner || 'от ##';
     this.from.onlyBanner = data.fromOnlyBanner || this.from.banner;
 
-    this.to.min = keepZero(data.toMin, data.min, 0);
+    this.to.min = keepZero(data.toMin, data.min, aN ? null : 0);
     this.to.max = keepZero(data.toMax, data.max, null);
     this.to.step = data.toStep || data.step || 1;
     this.to.placeholder = data.toPlaceholder || '';
@@ -912,7 +935,9 @@ class IntervalProperty extends SearchUnitProperty {
   }
   getValueSubstitutions(data) {
     let ss = super.getValueSubstitutions(data);
-    ss.push([/[^\d]/g, '']);
+    ss.push([/\u2212/g, '-']);  // Заменить все минусы на "минусы" (дефисы)
+    ss.push([/[^-\d]/g, '']);  // Удалить всё кроме цифр и знаков минуса
+    ss.push([/\b-/g, '']);  // Удалить все знаки минуса внутри цифр
     return ss;
   }
   getBanner() {
@@ -920,16 +945,16 @@ class IntervalProperty extends SearchUnitProperty {
       let from = this.from(), to = this.to(), banner = '';
       if (isImportant(from) && isImportant(to)) {
         if (from === to) {
-          banner = injectValue(this.fromToEqualBanner, from);
+          banner = injectNumber(this.fromToEqualBanner, from);
         } else {
-          banner = injectValue(injectValue(this.fromToBanner, from), to);
+          banner = injectNumber(injectNumber(this.fromToBanner, from), to);
         }
       }
       if (isImportant(from) && !isImportant(to)) {
-        banner = injectValue(this.from.onlyBanner, from);
+        banner = injectNumber(this.from.onlyBanner, from);
       }
       if (!isImportant(from) && isImportant(to)) {
-        banner = injectValue(this.to.onlyBanner, to);
+        banner = injectNumber(this.to.onlyBanner, to);
       }
       if (banner && this.unitsBanner) { banner += ' ' + this.unitsBanner; }
       return banner;
@@ -1382,5 +1407,5 @@ class ValueListItem {
 export {
   defaultPropertiesList, testPropertiesList, propertiesLists,
   SearchUnitProperty, IntervalProperty, TextProperty, ListProperty,
-  p_duration, escapeRegExp, injectNodeNumbers
+  p_duration, escapeRegExp, injectNodeNumbers, beautifyNumber
 };
