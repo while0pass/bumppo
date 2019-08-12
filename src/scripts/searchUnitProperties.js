@@ -1199,6 +1199,7 @@ class ValueListItem {
     this.list = list;
     this.name = injectNodeNumbers(data.name,
       list.listProperty.node1, list.listProperty.node2);
+    this.icon = data.icon;
     this.checked = ko.observable(null);
     this.userChecked = this.getUserChecked();
     this.editable = data.editable || false;
