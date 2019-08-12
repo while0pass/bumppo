@@ -41,11 +41,12 @@ const rp_referencePoints = {
   ]}};
 
 const rp_msDistance = {
-  type: 'interval', name: 'Расстояние в мс', step: 20, allowNegatives: true };
+  type: 'interval', name: 'Расстояние в мс',
+  step: 20, allowNegatives: true, neverEmpty: true };
 
 const rp_unitsDistance = {
   type: 'interval', name: 'Расстояние в единицах',
-  step: 1, allowNegatives: true };
+  step: 1, allowNegatives: true, neverEmpty: true };
 
 class NodesRelation {
   constructor(parentNode, childNode) {

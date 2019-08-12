@@ -20,6 +20,7 @@ import ko from 'knockout';
  *  units
  *  unitsBanner
  *  allowNegatives
+ *  neverEmpty
  *
  *  fromStep
  *  fromPlaceholder
@@ -857,6 +858,7 @@ class IntervalProperty extends SearchUnitProperty {
     this.to = ko.observable(null);
     this.units = data.units || '';
     this.allowNegatives = data.allowNegatives || false;
+    this.neverEmpty = data.neverEmpty || false;
 
     let aN = this.allowNegatives;
 
@@ -889,6 +891,14 @@ class IntervalProperty extends SearchUnitProperty {
     this.banner = this.getBanner();
   }
   tuneValue() {
+    if (this.neverEmpty) {
+      ko.computed(function () {
+        let from = this.from, to = this.to;
+        if (from() === null) from(Math.max(0, from.min));
+        if (to() === null) to(Math.min(0, from.max));
+      }, this);
+    }
+
     // from не должно быть больше to
     ko.computed(function () {
       let from = this.from(), to = this.to.peek();

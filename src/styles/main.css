@@ -366,8 +366,12 @@ $videoHeight: 193px;
   align-items: baseline;
   margin-right: 1em;
 
-  label {
+  & label {
     margin-right: 1em;
+  }
+
+  & input {
+    padding-right: 2.5em !important;
   }
 
   & .bmpp-numberControls {
@@ -389,12 +393,15 @@ $videoHeight: 193px;
                   font-size .1s ease !important;
       position: absolute;
       overflow: hidden;
+
       &:hover {
         font-size: large !important;
       }
-      &:last-of-type {
+
+      &.sort.down {
         top: 50%;
       }
+
       &::before {
         position: absolute;
         top: 5%;
@@ -403,7 +410,8 @@ $videoHeight: 193px;
         right: 0;
         line-height: 0!important;
       }
-      &:first-of-type::before {
+
+      &.sort.up::before {
         bottom: 5%;
         top: 95%;
       }
