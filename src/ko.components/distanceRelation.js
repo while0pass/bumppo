@@ -1,12 +1,29 @@
 const template = `
 
-  <list-property params="property: negative"></list-property>
+  <div>
 
-  <!-- ko if: type === 'msDistance' -->
-    <list-property params="property: refPoints"></list-property>
-  <!-- /ko -->
+    <!-- ko if: units.value() === 'ms' -->
+      <interval-property params="property: intervalInMs"></interval-property>
+    <!-- /ko -->
+    <!-- ko ifnot: units.value() === 'ms' -->
+      <interval-property params="property: intervalInUnits"></interval-property>
+    <!-- /ko -->
 
-  <interval-property params="property: interval"></interval-property>
+    <list-property params="property: units"></list-property>
+
+  </div>
+
+
+  <div style="margin-top: 1em">
+
+    <list-property params="property: occurrence"></list-property>
+
+    <!-- ko if: units.value() === 'ms' -->
+      <list-property params="property: referencePoints"
+        style="margin-left: 1em"></list-property>
+    <!-- /ko -->
+
+  </div>
 
 `;
 
