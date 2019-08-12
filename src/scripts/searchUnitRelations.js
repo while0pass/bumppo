@@ -111,6 +111,26 @@ class Distance {
 
     this.onHeaderClick = undefined;
     this.refPoints = undefined;
+    this.unitsFirstValueName = rp_units.valueList.xorValues[0].name;
+    this.sameTypeNodes = ko.computed(function () {
+      return this.node1.unitType() === this.node2.unitType();
+    }, this);
+    this.sameTypeNodes.subscribe(function (value) {
+      if (!value) {
+        this.units.valueList.checkFirstAsIfByUser();  // (*)
+
+        // TODO: Если между единицами задано более одного условия на расстояние
+        // и присутствует хотя бы одно условие, где расстояние задано в мс, то
+        // вместо (*) все расстояния в единицах (но не миллисекундах) надо
+        // удалить и оставить только расстояния в мс. Если же ни одного
+        // расстояния в мс не задано, то удалить все расстояния, кроме одного,
+        // где выставить в качестве единиц миллисекунды.
+
+      }
+    }, this);
+    this.measureInMs = ko.computed(function () {
+      return this.units.value() === MILLISECONDS;
+    }, this);
   }
 }
 

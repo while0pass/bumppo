@@ -1157,6 +1157,9 @@ class ValueList {
       childList.checkFirst();
     }
   }
+  checkFirstAsIfByUser() {
+    this.items[0].userChecked(true);
+  }
   uncheckAll() {
     this.items.forEach(item => {
       item.checked(false);

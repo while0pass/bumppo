@@ -2,14 +2,19 @@ const template = `
 
   <div>
 
-    <!-- ko if: units.value() === 'ms' -->
+    <!-- ko if: measureInMs -->
       <interval-property params="property: intervalInMs"></interval-property>
     <!-- /ko -->
-    <!-- ko ifnot: units.value() === 'ms' -->
+    <!-- ko ifnot: measureInMs -->
       <interval-property params="property: intervalInUnits"></interval-property>
     <!-- /ko -->
 
-    <list-property params="property: units"></list-property>
+    <!-- ko if: sameTypeNodes -->
+      <list-property params="property: units"></list-property>
+    <!-- /ko -->
+    <!-- ko ifnot: sameTypeNodes -->
+      <span data-bind="text: unitsFirstValueName"></span>
+    <!-- /ko -->
 
   </div>
 
