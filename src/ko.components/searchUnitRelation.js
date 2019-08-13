@@ -1,6 +1,6 @@
 const template = `
 
-  <div class="ui top attached segment">
+  <div class="ui segment" style="margin-bottom: 1em">
     <div class="ui top attached large label">
       <header class="bmpp-relationHeader" data-bind="html: name,
         click: onHeaderClick && onHeaderClick.bind($component),
