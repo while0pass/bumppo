@@ -742,13 +742,13 @@ function injectNumber(template, value) {
 }
 
 function injectNodeNumbers(template, node1, node2) {
-  if (!(/#[12]#/g).test(template)) {
+  if (!(/#[12]#/g).test(ko.unwrap(template))) {
     return template;
   }
   return ko.computed(function () {
     var sn1 = node1.serialNumber(),
         sn2 = node2 && node2.serialNumber(),
-        text = template;
+        text = ko.unwrap(template);
     if (sn1 !== undefined) {
       text = text.replace(/#1#/g,
         `<span class="ui circular label">${ sn1 }</span>`);

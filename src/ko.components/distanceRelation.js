@@ -1,5 +1,7 @@
 const template = `
 
+  <div class="bmpp-relationBanner" data-bind="html: banner"></div>
+
   <div>
 
     <!-- ko if: measureInMs -->
@@ -10,7 +12,8 @@ const template = `
     <!-- /ko -->
 
     <!-- ko if: sameTypeNodes -->
-      <list-property params="property: units"></list-property>
+      <list-property params="property: units"
+          class="bmpp-unitsRadioButtons"></list-property>
     <!-- /ko -->
     <!-- ko ifnot: sameTypeNodes -->
       <span data-bind="text: unitsFirstValueName"></span>

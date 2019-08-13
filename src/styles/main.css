@@ -667,3 +667,28 @@ $videoHeight: 193px;
     }
   }
 }
+
+.bmpp-relationBanner {
+  background-color: #f8ffff;
+  color: #276f86;
+  margin: -1.5em -1em 0;
+  padding: 1.2em 1em 1.5em;
+  position: relative;
+
+  &::after {
+    $height: 1.5em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -$height;
+    height: $height;
+    content: '';
+    background: linear-gradient(180deg, #f8ffff 0%,  /* ##grad## */
+                                        rgba(248, 255, 255, 0) 100%);
+  }
+}
+
+.bmpp-unitsRadioButtons {
+  position: relative; /* Необходимо для того, чтобы градиент ##grad## был под
+    кнопками, а не поверх них. */
+}

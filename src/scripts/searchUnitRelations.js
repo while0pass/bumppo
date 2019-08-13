@@ -1,16 +1,17 @@
 import ko from 'knockout';
-import { ListProperty, IntervalProperty } from './searchUnitProperties.js';
+import { ListProperty, IntervalProperty,
+  injectNodeNumbers } from './searchUnitProperties.js';
 
 const r_sameParticipant = {
   type: 'list', name: 'Совпадение участников', id: 'sameParticipant',
   help: 'Участники единиц #1# и #2# совпадают.',
   valueList: { xorValues: [
-    { name: 'Да', value: true },
-    { name: 'Нет', value: false },
+    { name: 'Участники #1# и #2# совпадают', value: true },
+    { name: 'Не совпадают', value: false },
   ]}};
 
 const rp_occurrence = {
-  type: 'list', name: 'Встречаемость', id: 'occurence',
+  type: 'list', name: 'Встречаемость', id: 'occurrence',
   valueList: { radioButtons: true, xorValues: [
     { name: 'встречаются', value: true },
     { name: 'не встречаются', value: false },
@@ -41,11 +42,11 @@ const rp_referencePoints = {
   ]}};
 
 const rp_msDistance = {
-  type: 'interval', name: 'Расстояние в мс',
+  type: 'interval', name: 'Расстояние в мс', unitsBanner: 'мс',
   step: 20, allowNegatives: true, neverEmpty: true };
 
 const rp_unitsDistance = {
-  type: 'interval', name: 'Расстояние в единицах',
+  type: 'interval', name: 'Расстояние в единицах', unitsBanner: 'ед.',
   step: 1, allowNegatives: true, neverEmpty: true };
 
 class NodesRelation {
@@ -113,10 +114,15 @@ class Distance {
     this.onHeaderClick = undefined;
     this.refPoints = undefined;
     this.unitsFirstValueName = rp_units.valueList.xorValues[0].name;
-    this.sameTypeNodes = ko.computed(function () {
+    this.sameTypeNodes = this.getSameNodeTypeIndicator();
+    this.measureInMs = this.getMeasureInMsIndicator();
+    this.banner = this.getBanner();
+  }
+  getSameNodeTypeIndicator() {
+    let x = ko.computed(function () {
       return this.node1.unitType() === this.node2.unitType();
     }, this);
-    this.sameTypeNodes.subscribe(function (value) {
+    x.subscribe(function (value) {
       if (!value) {
         this.units.valueList.checkFirstAsIfByUser();  // (*)
 
@@ -129,11 +135,35 @@ class Distance {
 
       }
     }, this);
-    this.measureInMs = ko.computed(function () {
+    return x;
+  }
+  getMeasureInMsIndicator() {
+    return ko.computed(function () {
       return this.units.value() === MILLISECONDS;
     }, this);
   }
+  getBanner() {
+    const REF_POINTS = rp_referencePoints.valueList.xorValues.reduce(
+      (obj, x) => { obj[x.value] = x.name; return obj; }, {});
+    let banner = ko.computed(function () {
+      let measureInMs = this.measureInMs(),
+          msDistance = ko.unwrap(this.intervalInMs.banner),
+          unitsDistance = ko.unwrap(this.intervalInUnits.banner),
+          distance = measureInMs ? msDistance : unitsDistance,
+          referencePoints = REF_POINTS[this.referencePoints.value()],
+          occurrence = this.occurrence.value() ? 'встречаются' : 'не встречаются',
+          banner = `
+
+            Такие #1#, что на расстоянии ${ distance } ${ referencePoints }
+            ${ occurrence } #2#
+
+          `;
+      return banner;
+    }, this);
+    return injectNodeNumbers(banner, this.node1, this.node2);
+  }
 }
+
 
 class NodesRelationGroup {
   constructor(node1, node2) {
