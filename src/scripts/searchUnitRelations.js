@@ -2,8 +2,10 @@ import ko from 'knockout';
 import { ListProperty, IntervalProperty,
   injectNodeNumbers } from './searchUnitProperties.js';
 
+const SAME_PARTICIPANT_RELATION_ID = Symbol('sameParticipant');
+
 const r_sameParticipant = {
-  type: 'list', name: 'Совпадение участников', id: 'sameParticipant',
+  type: 'list', name: 'Совпадение участников', id: SAME_PARTICIPANT_RELATION_ID,
   help: 'Участники единиц #1# и #2# совпадают.',
   valueList: { xorValues: [
     { name: 'Участники #1# и #2# совпадают', value: true },
@@ -49,42 +51,6 @@ const rp_unitsDistance = {
   type: 'interval', name: 'Расстояние в единицах', unitsBanner: 'ед.',
   step: 1, allowNegatives: true, neverEmpty: true };
 
-class NodesRelation {
-  constructor(parentNode, childNode) {
-    this.parentNode = parentNode;
-    this.childNode = childNode;
-
-    this.from = ko.observable(0);
-    this.to = ko.observable(0);
-
-    this.units = ko.observable('ms');
-    this.parentNodeRefPoint = ko.observable('end');
-    this.childNodeRefPoint = ko.observable('begin');
-
-    this.tune();
-  }
-  tune() {
-    this.oldValues = {};
-    // Активация кнопки поиска при изменении значений в полях
-    ko.computed(function () {
-      let from = this.from(), to = this.to(), units = this.units(),
-          pNRefPoint = this.parentNodeRefPoint(),
-          cNRefPoint = this.childNodeRefPoint(),
-          oldValues = this.oldValues;
-      if (from !== oldValues.from || to !== oldValues.to ||
-        units !== oldValues.units || pNRefPoint !== oldValues.pNRefPoint ||
-        cNRefPoint !== oldValues.cNRefPoint) {
-        this.isQueryNew && this.isQueryNew(true);
-      }
-      this.oldValues.from = from;
-      this.oldValues.to = to;
-      this.oldValues.units = units;
-      this.oldValues.pNRefPoint = pNRefPoint;
-      this.oldValues.cNRefPoint = cNRefPoint;
-    }, this);
-  }
-}
-
 const AND = Symbol('and');
 
 class Connective {
@@ -95,7 +61,8 @@ class Connective {
 }
 
 
-const distanceHelp = `
+const DISTANCE_RELATION_TYPE = Symbol('distance'),
+      distanceHelp = `
 
   <header class="ui header">Условие на расстояние</header>
 
@@ -117,7 +84,7 @@ class Distance {
   constructor(node1, node2) {
     this.node1 = node1;
     this.node2 = node2;
-    this.type = 'distance';
+    this.type = DISTANCE_RELATION_TYPE;
     this.name = 'Расстояние';
     this.help = distanceHelp;
 
@@ -207,4 +174,6 @@ class NodesRelationFormula {
   }
 }
 
-export { NodesRelation, NodesRelationFormula, Connective };
+export { NodesRelationFormula, Connective,
+  SAME_PARTICIPANT_RELATION_ID,
+  DISTANCE_RELATION_TYPE };

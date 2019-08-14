@@ -1,6 +1,8 @@
 import linearizeTree from './linearizeTree.js';
 import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
+import { SAME_PARTICIPANT_RELATION_ID,
+  DISTANCE_RELATION_TYPE } from './searchUnitRelations.js';
 
 function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
@@ -173,28 +175,49 @@ export default function getQueryJSON(viewModel) {
       query.show_tiers = showTiers;
     }
 
-    // Ограничения на расстояние между единицами поиска
+    // Ограничения на расстояние между единицами поиска,
+    // на совпадение участников.
     if (nodeIndex > 0) {
       let n1 = node.parentNode,
           n2 = node,
           id1 = n1.serialNumber().toString(),
           id2 = n2.serialNumber().toString(),
-          relations = n2.relationsToParentNode();
+          relations = n1.getRelationFormula(n2).chosenRelations();
 
       for (let rIndex = 0; rIndex < relations.length; rIndex++) {
         let relation = relations[rIndex],
             complexCond = {
               first_condition_id: id1,
               second_condition_id: id2,
-              distance_min: relation.from(),
-              distance_max: relation.to(),
             };
-        if (relation.units() === 'u') {
-          complexCond.type = 'structural';
-        } else {
-          complexCond.type = `${ relation.childNodeRefPoint() }_2_${
-            relation.parentNodeRefPoint() }_1`;
+
+        if (relation.id === SAME_PARTICIPANT_RELATION_ID) {
+
+          complexCond.type = 'same_participant';
+          if (!relation.value()) {
+            complexCond.negative = true;
+          }
+
+        } else if (relation.type === DISTANCE_RELATION_TYPE) {
+
+          let interval, type;
+          if (relation.measureInMs()) {
+            type = relation.referencePoints.value();
+            interval = relation.intervalInMs;
+          } else {
+            type = 'structural';
+            interval = relation.intervalInUnits;
+          }
+          complexCond.type = type;
+          complexCond.distance_min = interval.from();
+          complexCond.distance_max = interval.to();
+
+          if (!relation.occurrence.value()) {
+            complexCond.negative = true;
+          }
+
         }
+
         query.conditions[`${ id1 }-r${ rIndex + 1 }-${ id2 }`] = complexCond;
       }
     }

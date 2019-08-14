@@ -1,14 +1,13 @@
 import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists,
   SearchUnitProperty } from './searchUnitProperties.js';
-import { NodesRelation, NodesRelationFormula } from './searchUnitRelations.js';
+import { NodesRelationFormula } from './searchUnitRelations.js';
 
 export class TreeNode {
   constructor(parentNode=null) {
     this.id = window.performance.now();
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
-    this.relationsToParentNode = ko.observableArray([]);  // NOTE: deprecated
     this.relationFormulas = {};
 
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
@@ -23,7 +22,6 @@ export class TreeNode {
   }
   tuneRelations() {
     if (this.parentNode !== null) {
-      this.addRelation();
       this.addRelationFormula();
     }
   }
@@ -77,38 +75,34 @@ export class TreeNode {
   addRelationFormula() {
     const node1 = this.parentNode,
           node2 = this,
-          rg = new NodesRelationFormula(node1, node2);
-    node1.relationFormulas[node2.id] = rg;
-    node2.relationFormulas[node1.id] = rg;
+          rf = new NodesRelationFormula(node1, node2);
+    node1.relationFormulas[node2.id] = rf;
+    node2.relationFormulas[node1.id] = rf;
   }
   getRelationFormula(node) {
     return this.relationFormulas[node.id];
   }
+  removeRelationFormula(node) {
+    delete node.relationFormulas[this.id];
+    delete this.relationFormulas[node.id];
+  }
   resetAllRelations(node) {
-    const rg = this.getRelationFormula(node);
-    rg.resetToDefault();
+    const rf = this.getRelationFormula(node);
+    rf.resetToDefault();
   }
   areRelationsChanged(node) {
-    return Boolean(node); // STUB
-    /*
-    let before = this.$oldPropsSummary || '',
-        after = this.chosenUnitProperties()
-          .map(prop => ko.unwrap(prop.banner)).join('');
-    this.$oldPropsSummary = after;
+    let rf = this.getRelationFormula(node),
+        before = rf.$oldRelationsSummary || '',
+        after = rf.chosenRelations()
+          .map(rel => ko.unwrap(rel.banner)).join('');
+    this.$oldRelationsSummary = after;
     return after !== before;
-    */
-  }
-  addRelation() {
-    this.relationsToParentNode.push(new NodesRelation(this.parentNode, this));
-  }
-  removeRelation(relation) {
-    this.relationsToParentNode.remove(relation);
   }
   seppuku() {
     for (let childNode of this.childNodes()) {
       childNode.seppuku();
     }
-    this.relationsToParentNode.removeAll();
+    this.removeRelationFormula(this.parentNode);
     this.childNodes.removeAll();
     this.unitType(null);
     if (this.parentNode) {
