@@ -35,10 +35,10 @@ const END_BGN = 'begin_2_end_1',
 const rp_referencePoints = {
   type: 'list', name: 'Точки отсчета', id: 'refPoints',
   valueList: { radioButtons: true, xorValues: [
-    { name: 'От конца #1# до начала #2#', icon: 'align center', value: END_BGN },
-    { name: 'От начала #1# до конца #2#', icon: 'align justify', value: BGN_END },
-    { name: 'От начала #1# до начала #2#', icon: 'align left', value: BGN_BGN },
-    { name: 'От конца #1# до конца #2#', icon: 'align right', value: END_END },
+    { name: 'от конца #1# до начала #2#', icon: 'align center', value: END_BGN },
+    { name: 'от начала #1# до конца #2#', icon: 'align justify', value: BGN_END },
+    { name: 'от начала #1# до начала #2#', icon: 'align left', value: BGN_BGN },
+    { name: 'от конца #1# до конца #2#', icon: 'align right', value: END_END },
   ]}};
 
 const rp_msDistance = {
@@ -85,17 +85,33 @@ class NodesRelation {
   }
 }
 
-class AndGroup {
-  constructor(relations) {
-    this.terms = ko.observableArray(relations);
+const AND = Symbol('and');
+
+class Connective {
+  constructor(relationsOrConnectives) {
+    this.type = AND;
+    this.atoms = ko.observableArray(relationsOrConnectives);
   }
 }
 
-class OrGroup {
-  constructor(relations) {
-    this.terms = ko.observableArray(relations);
-  }
-}
+
+const distanceHelp = `
+
+  <header class="ui header">Условие на расстояние</header>
+
+  <p>В качестве условий можно по отдельности указывать интервалы расстояний
+  между началами (левыми границами) и концами (правыми границами) единиц.
+  Например, если задать условие «от&nbsp;50 до&nbsp;100&nbsp;мс между началом
+  X и началом Y», будут найдены контексты, в которых левая граница
+  X располагается от 50 до 100&nbsp;мс правее левой границы Y.</p>
+
+  <p>Если для условия указано только одно значение, ограничения с другой
+  стороны не накладывается. Если не указано ни одно значение, это
+  интерпретируется как интервал «от&nbsp;0 до&nbsp;0». Значения задаются
+  в миллисекундах. Если X и Y являются единицам одного типа, между началом
+  X и концом Y можно задать расстояние в терминах единицы данного типа.</p>
+
+`;
 
 class Distance {
   constructor(node1, node2) {
@@ -103,7 +119,7 @@ class Distance {
     this.node2 = node2;
     this.type = 'distance';
     this.name = 'Расстояние';
-    this.help = '';
+    this.help = distanceHelp;
 
     this.units = new ListProperty(rp_units, node1, node2);
     this.intervalInMs = new IntervalProperty(rp_msDistance, node1, node2);
@@ -165,11 +181,12 @@ class Distance {
 }
 
 
-class NodesRelationGroup {
+class NodesRelationFormula {
   constructor(node1, node2) {
     this.node1 = node1;
     this.node2 = node2;
     this.relations = this.getRelations();
+    this.chosenRelations = this.getChosenRelations();
   }
   getRelations() {
     const defaultRelations = [
@@ -183,6 +200,11 @@ class NodesRelationGroup {
     this.relations = this.getRelations();
     //# remove old_relations
   }
+  getChosenRelations() {
+    return ko.computed(
+      () => this.relations.filter(prop => ko.unwrap(prop.banner)),
+      this);
+  }
 }
 
-export { NodesRelation, NodesRelationGroup, AndGroup, OrGroup };
+export { NodesRelation, NodesRelationFormula, Connective };

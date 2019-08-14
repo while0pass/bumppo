@@ -10,9 +10,9 @@ const svgDrawElementId = 'svgQueryTree',
     </div>
     <div class="bmpp-query" data-bind="foreach: linearizedQueryTree">
 
-      <query-node-relations params="node: $data, draw: $component.svgDraw"
+      <relations-formula params="node: $data, draw: $component.svgDraw"
         data-bind="visible: $data.parentNode">
-      </query-node-relations>
+      </relations-formula>
 
       <query-node params="node: $data, draw: $component.svgDraw"></query-node>
 

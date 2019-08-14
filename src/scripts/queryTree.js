@@ -1,6 +1,7 @@
 import ko from 'knockout';
-import { defaultPropertiesList, propertiesLists, SearchUnitProperty } from './searchUnitProperties.js';
-import { NodesRelation, NodesRelationGroup } from './searchUnitRelations.js';
+import { defaultPropertiesList, propertiesLists,
+  SearchUnitProperty } from './searchUnitProperties.js';
+import { NodesRelation, NodesRelationFormula } from './searchUnitRelations.js';
 
 export class TreeNode {
   constructor(parentNode=null) {
@@ -8,7 +9,7 @@ export class TreeNode {
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
     this.relationsToParentNode = ko.observableArray([]);  // NOTE: deprecated
-    this.relationGroups = {};
+    this.relationFormulas = {};
 
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
@@ -23,7 +24,7 @@ export class TreeNode {
   tuneRelations() {
     if (this.parentNode !== null) {
       this.addRelation();
-      this.addRelationGroup();
+      this.addRelationFormula();
     }
   }
   tuneUnitProperties() {
@@ -73,18 +74,18 @@ export class TreeNode {
     var child = new TreeNode(this);
     this.childNodes.push(child);
   }
-  addRelationGroup() {
+  addRelationFormula() {
     const node1 = this.parentNode,
           node2 = this,
-          rg = new NodesRelationGroup(node1, node2);
-    node1.relationGroups[node2.id] = rg;
-    node2.relationGroups[node1.id] = rg;
+          rg = new NodesRelationFormula(node1, node2);
+    node1.relationFormulas[node2.id] = rg;
+    node2.relationFormulas[node1.id] = rg;
   }
-  getRelationGroup(node) {
-    return this.relationGroups[node.id];
+  getRelationFormula(node) {
+    return this.relationFormulas[node.id];
   }
   resetAllRelations(node) {
-    const rg = this.getRelationGroup(node);
+    const rg = this.getRelationFormula(node);
     rg.resetToDefault();
   }
   areRelationsChanged(node) {

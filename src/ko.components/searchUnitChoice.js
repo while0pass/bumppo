@@ -105,11 +105,11 @@ const chosenUnitTemplate = `
     <div data-bind="foreach: node.chosenUnitProperties"
       style="margin: 1.5em 0 2.5em 0"
       ><!-- ko if: $index() === 0 --><span class="bmpp-bannerPropname"
-      data-bind="text: name"></span><span class="bmpp-bannerText"
+      data-bind="html: name"></span><span class="bmpp-bannerText"
       >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
       class="bmpp-bannerPropname" data-bind="textLowercaseFirstChar: name"
       ></span><span class="bmpp-bannerText">:&#x2002;</span><!-- /ko --><span
-      data-bind="text: banner" class="bmpp-bannerPropvalue"></span><span
+      data-bind="html: banner" class="bmpp-bannerPropvalue"></span><span
       class="bmpp-bannerText" data-bind="text: $index() &lt; $parent.node.
       chosenUnitProperties().length - 1 ? ';&#x2002;' : '.'"></span
     ></div>

@@ -36,7 +36,7 @@ const template = `
         <!-- /ko -->
         <!-- ko if: banner -->
           <em data-bind="text: name"></em>:
-          <span data-bind="text: banner"></span>
+          <span data-bind="html: banner"></span>
         <!-- /ko -->
         <!-- ko if: !banner() && jsonProperties().length > 0 -->
           Свойству присвоено значение по умолчанию
