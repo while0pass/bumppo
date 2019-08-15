@@ -92,7 +92,7 @@ var viewModelFactory = (params, componentInfo) => {
   const relations = ko.computed(function () {
     const node1 = params.node1(),
           node2 = params.node2();
-    return node1 && node2 ? node1.getRelationFormula(node2).relations : [];
+    return node1 && node2 ? node1.getRelationFormula(node2).relations() : [];
   });
   return {
     node1: params.node1,

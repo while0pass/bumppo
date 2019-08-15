@@ -1,6 +1,6 @@
 {
   "name": "Bumppo",
-  "version": "0.10.22",
+  "version": "0.10.23",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",

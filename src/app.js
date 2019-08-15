@@ -88,6 +88,11 @@ function viewModel() {
     }
     return null;
   });
+  this.queryPaneView.resetRelations = () => {
+    let node1 = self.queryPaneView.relationsNode1(),
+        node2 = self.queryPaneView.relationsNode2();
+    node1.resetAllRelations(node2);
+  };
 
   this.queryPartsNonReadiness = ko.observableArray([
     self.queryPaneView.arePropertiesVisible,

@@ -152,7 +152,7 @@ class NodesRelationFormula {
   constructor(node1, node2) {
     this.node1 = node1;
     this.node2 = node2;
-    this.relations = this.getRelations();
+    this.relations = ko.observableArray(this.getRelations());
     this.chosenRelations = this.getChosenRelations();
   }
   getRelations() {
@@ -163,13 +163,11 @@ class NodesRelationFormula {
     return defaultRelations;
   }
   resetToDefault() {
-    // let old_relations = this.relations;
-    this.relations = this.getRelations();
-    //# remove old_relations
+    this.relations(this.getRelations());
   }
   getChosenRelations() {
     return ko.computed(
-      () => this.relations.filter(prop => ko.unwrap(prop.banner)),
+      () => this.relations().filter(prop => ko.unwrap(prop.banner)),
       this);
   }
 }

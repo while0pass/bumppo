@@ -152,14 +152,10 @@
         <div class="bmpp-paneDivider"></div>
         <div class="bmpp-paneButtons">
             <button class="ui small button"
-              data-bind="click: queryPaneView.finishEditingNodeRelations
-                .bind(queryPaneView.relationsNode1(),
-                      queryPaneView.relationsNode2())"
+              data-bind="click: queryPaneView.finishEditingNodeRelations"
               >ОК</button>
-            <button class="ui small button" data-bind="click:
-              queryPaneView.relationsNode1().resetAllRelations
-                .bind(queryPaneView.relationsNode1(),
-                      queryPaneView.relationsNode2())"
+            <button class="ui small button"
+              data-bind="click: queryPaneView.resetRelations"
               >Сбросить к значениям по умолчанию</button>
         </div>
       </div>
