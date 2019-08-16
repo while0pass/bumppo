@@ -1,8 +1,13 @@
 $bmppBorderColor: rgba(34, 36, 38, .15);
 $green: #21ba45;
+$darkGreen: #2c662d;
+$teal: #009c95;
+$tealBlue: #276f86;
 $blue: #2185d0;
+$lightGrey: #ccc;
 $grey: #767676;
 $red: #db2828;
+$darkRed: #9f3a38;
 $black: #1c1b1d;
 $borderWidth: 0.3em;
 $sidePaneWidth: 14vw;
@@ -68,7 +73,7 @@ $videoHeight: 193px;
     & a:focus {
       color: inherit;
       display: inline-block;
-      border-bottom: 1px dotted #9f3a38;
+      border-bottom: 1px dotted $darkRed;
     }
   }
 }
@@ -511,7 +516,7 @@ $videoHeight: 193px;
 }
 
 .bmpp-listItemValue {
-  color: #2c662d;
+  color: $darkGreen;
   padding: 0 0.1em;
 }
 
@@ -528,7 +533,7 @@ $videoHeight: 193px;
     cursor: copy;
   }
   & .ui.circular.label {
-    background-color: #ccc;
+    background-color: $lightGrey;
   }
 }
 
@@ -632,7 +637,7 @@ $videoHeight: 193px;
 
 .bmpp-relationBanner {
   background-color: #f8ffff;
-  color: #276f86;
+  color: $tealBlue;
   margin: -1.5em -1em 0;
   padding: 1.2em 1em 1.5em;
   position: relative;
@@ -653,4 +658,55 @@ $videoHeight: 193px;
 .bmpp-unitsRadioButtons {
   position: relative; /* Необходимо для того, чтобы градиент ##grad## был под
     кнопками, а не поверх них. */
+}
+
+.bmpp-relation {
+  margin-bottom: 1em !important;
+}
+.bmpp-relationItem {
+  padding-top: 1.5em !important;
+}
+
+.ui.basic.icon.button {
+
+  &.bmpp-addButton {
+    position: absolute;
+    right: .1rem;
+    bottom: .2rem;
+    box-shadow: 0 0 0 1px $lightGrey inset!important;
+
+    & .icon {
+      color: $lightGrey !important;
+    }
+
+    &:hover {
+      box-shadow: none !important;
+      background-color: $tealBlue !important;
+      opacity: 0.8;
+
+      & .icon {
+        color: white !important;
+      }
+    }
+  }
+
+  &.bmpp-removeButton {
+    position: absolute;
+    right: .05rem;
+    top: 1rem;
+    box-shadow: none !important;
+    background-color: transparent !important;
+
+    & .icon {
+      color: $lightGrey !important;
+    }
+
+    &:hover .icon {
+      color: $red !important;
+    }
+
+    &.bmpp-removeButton1 {
+      top: 3.5rem;
+    }
+  }
 }

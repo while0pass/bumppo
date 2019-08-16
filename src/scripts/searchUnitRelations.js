@@ -51,12 +51,40 @@ const rp_unitsDistance = {
   type: 'interval', name: 'Расстояние в единицах', unitsBanner: 'ед.',
   step: 1, allowNegatives: true, neverEmpty: true };
 
-const AND = Symbol('and');
+const AND_TYPE = Symbol('and');
 
 class Connective {
-  constructor(relationsOrConnectives) {
-    this.type = AND;
-    this.atoms = ko.observableArray(relationsOrConnectives);
+  constructor(Relation, ...args) {
+    this.type = AND_TYPE;
+    this.name = (new Relation(...args)).name;
+    this.Relation = Relation;
+    this.args = args;
+    this.relationsOrConnectives = ko.observableArray([ this.addRelation() ]);
+    this.banner = this.getBanner();
+  }
+  addRelation() {
+    let relation = new this.Relation(...this.args);
+    relation = this.tuneRelation(relation);
+    if (this.relationsOrConnectives) {
+      this.relationsOrConnectives.push(relation);
+    } else {
+      return relation;
+    }
+  }
+  tuneRelation(relation) {
+    relation.$connective = this;
+    relation.$$addRelation = $data => $data.$connective.addRelation();
+    relation.$$removeRelation = $data => $data.$connective.removeRelation($data);
+    return relation;
+  }
+  removeRelation(relation) {
+    this.relationsOrConnectives.remove(relation);
+  }
+  getBanner() {
+    return ko.computed(() => {
+      return this.relationsOrConnectives()
+        .map(rel => ko.unwrap(rel.banner)).join('.\u2002');
+    }, this);
   }
 }
 
@@ -158,7 +186,7 @@ class NodesRelationFormula {
   getRelations() {
     const defaultRelations = [
       new ListProperty(r_sameParticipant, this.node1, this.node2),
-      new Distance(this.node1, this.node2),
+      new Connective(Distance, this.node1, this.node2),
     ];
     return defaultRelations;
   }
@@ -174,4 +202,4 @@ class NodesRelationFormula {
 
 export { NodesRelationFormula, Connective,
   SAME_PARTICIPANT_RELATION_ID,
-  DISTANCE_RELATION_TYPE };
+  DISTANCE_RELATION_TYPE, AND_TYPE };
