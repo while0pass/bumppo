@@ -19,6 +19,8 @@ import ko from 'knockout';
  *  step
  *  units
  *  unitsBanner
+ *  allowNegatives
+ *  neverEmpty
  *
  *  fromStep
  *  fromPlaceholder
@@ -57,6 +59,7 @@ import ko from 'knockout';
  *  value
  *  disabledInChannels
  *  editable
+ *  radioButtons
  *
  */
 
@@ -77,13 +80,6 @@ const p_participants = {
     { name: 'Рассказчик', value: 'N' },
     { name: 'Комментатор', value: 'C', disabledInChannels: ['ocul'] },
     { name: 'Пересказчик', value: 'R' }
-  ]}};
-
-const p_sameParticipant = { // eslint-disable-line no-unused-vars
-  type: 'list', name: 'Совпадение участников', id: 'same_participant',
-  valueList: { xorValues: [
-    { name: 'Да', value: true },
-    { name: 'Нет', value: false },
   ]}};
 
 const p_mGeStructure = {
@@ -238,6 +234,7 @@ const p_vPausesCount = {
 
 const p_vFilledCount = {
   type: 'interval', name: 'Число заполненных пауз', id: 'p_vFilledCount',
+  tierTemplate: '{ p_participants }-vFilledCount',
   fromOnlyBanner: '## и более', toOnlyBanner: '## и менее' };
 
 const p_vStartFilled = {
@@ -398,6 +395,7 @@ const p_mStType = {
 
 const p_mStrokeHandedness = {
   type: 'list', name: 'Рукость', id: 'p_mStrokeHandedness',
+  // пока отсутсвует tierTemplate
   valueList: { orValues: [
     { name: 'Левая рука', value: 'L' },
     { name: 'Правая рука', value: 'R' },
@@ -407,6 +405,7 @@ const p_mStrokeHandedness = {
 
 const p_mStrokeLenType = {
   type: 'list', name: 'Тип длительности', id: 'p_mStrokeLenType',
+  // пока отсутсвует tierTemplate
   valueList: { orValues: [
     { name: 'Короткий', value: 's' },
     { name: 'Средний', value: 'm' },
@@ -719,17 +718,58 @@ function isImportant(value) {
   return [null, undefined, ''].indexOf(value) < 0;
 }
 
-function injectValue(template, value) {
-  return template.replace('##', value.toString());
+function beautifyNumber(number) {
+  // Отбиваем в числе пробелами каждые три разряда, дефис заменяем на минус.
+  // Если бы можно было использовать regexp lookbehind assertions (они
+  // поддерживаются только в Chrome и Edge), то разбивку разрядов можно было
+  // бы сделать так:
+  //
+  //   txt = txt.replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+  //
+  let txt = number.toString(), parts = [],
+      [sign, x] = txt[0] === '-' ? ['\u2212', txt.slice(1)] : ['', txt];
+
+  do {
+    parts.unshift(x.slice(-3));
+    x = x.slice(0, -3);
+  } while (x.length > 0);
+
+  return sign + parts.join('\u00a0');
+}
+
+function injectNumber(template, value) {
+  return template.replace('##', beautifyNumber(value));
+}
+
+function injectNodeNumbers(template, node1, node2) {
+  if (!(/#[12]#/g).test(ko.unwrap(template))) {
+    return template;
+  }
+  return ko.computed(function () {
+    var sn1 = node1.serialNumber(),
+        sn2 = node2 && node2.serialNumber(),
+        text = ko.unwrap(template);
+    if (sn1 !== undefined) {
+      text = text.replace(/#1#/g,
+        `<span class="ui circular label">${ sn1 }</span>`);
+    }
+    if (sn2 !== undefined) {
+      text = text.replace(/#2#/g,
+        `<span class="ui circular label">${ sn2 }</span>`);
+    }
+    return text;
+  });
 }
 
 class SearchUnitProperty {
-  constructor(data, unitType) {
+  constructor(data, node1, node2) {
     this.type = data.type;
-    this.unitType = ko.observable(unitType);
+    this.node = node1;
+    this.node1 = this.node;
+    this.node2 = node2;
     this.id = data.id;
-    this.name = data.name;
-    this.help = data.help || '';
+    this.name = injectNodeNumbers(data.name, node1, node2);
+    this.help = data.help ? injectNodeNumbers(data.help, node1, node2) : '';
     this.value = ko.observable(null);
     this.virtualKeyboard = data.virtualKeyboard || false;
     this.isRegEx = data.isRegEx || false;
@@ -737,7 +777,7 @@ class SearchUnitProperty {
 
     this._SearchUnitProperty_tune(data);
   }
-  static createByType(data, unitType) {
+  static createByType(data, node1, node2) {
     let map = {
           'interval': IntervalProperty,
           'text': TextProperty,
@@ -745,7 +785,7 @@ class SearchUnitProperty {
         },
         Property = map[data.type];
     if (Property) {
-      return new Property(data, unitType);
+      return new Property(data, node1, node2);
     }
   }
   _SearchUnitProperty_tune(data) { // NOTE: Если использовать в качестве
@@ -756,9 +796,6 @@ class SearchUnitProperty {
     }
     this.validChars = data.validChars;
     this.validitySusbstitutions = this.getValueSubstitutions(data);
-  }
-  changeUnitType(unitType) {
-    this.unitType(unitType);
   }
   getValueSubstitutions(data) {
     let substitutions = [];
@@ -814,14 +851,18 @@ class SearchUnitProperty {
 }
 
 class IntervalProperty extends SearchUnitProperty {
-  constructor(data, unitType) {
-    super(data, unitType);
+  constructor(data, node1, node2) {
+    super(data, node1, node2);
 
     this.from = ko.observable(null);
     this.to = ko.observable(null);
     this.units = data.units || '';
+    this.allowNegatives = data.allowNegatives || false;
+    this.neverEmpty = data.neverEmpty || false;
 
-    this.from.min = keepZero(data.fromMin, data.min, 0);
+    let aN = this.allowNegatives;
+
+    this.from.min = keepZero(data.fromMin, data.min, aN ? null : 0);
     this.from.max = keepZero(data.fromMax, data.max, null);
     this.from.step = data.fromStep || data.step || 1;
     this.from.placeholder = data.fromPlaceholder || '';
@@ -829,7 +870,7 @@ class IntervalProperty extends SearchUnitProperty {
     this.from.banner = data.fromBanner || 'от ##';
     this.from.onlyBanner = data.fromOnlyBanner || this.from.banner;
 
-    this.to.min = keepZero(data.toMin, data.min, 0);
+    this.to.min = keepZero(data.toMin, data.min, aN ? null : 0);
     this.to.max = keepZero(data.toMax, data.max, null);
     this.to.step = data.toStep || data.step || 1;
     this.to.placeholder = data.toPlaceholder || '';
@@ -850,6 +891,14 @@ class IntervalProperty extends SearchUnitProperty {
     this.banner = this.getBanner();
   }
   tuneValue() {
+    if (this.neverEmpty) {
+      ko.computed(function () {
+        let from = this.from, to = this.to;
+        if (from() === null) from(Math.max(0, from.min));
+        if (to() === null) to(Math.min(0, from.max));
+      }, this);
+    }
+
     // from не должно быть больше to
     ko.computed(function () {
       let from = this.from(), to = this.to.peek();
@@ -896,7 +945,9 @@ class IntervalProperty extends SearchUnitProperty {
   }
   getValueSubstitutions(data) {
     let ss = super.getValueSubstitutions(data);
-    ss.push([/[^\d]/g, '']);
+    ss.push([/\u2212/g, '-']);  // Заменить все минусы на "минусы" (дефисы)
+    ss.push([/[^-\d]/g, '']);  // Удалить всё кроме цифр и знаков минуса
+    ss.push([/\b-/g, '']);  // Удалить все знаки минуса внутри цифр
     return ss;
   }
   getBanner() {
@@ -904,16 +955,16 @@ class IntervalProperty extends SearchUnitProperty {
       let from = this.from(), to = this.to(), banner = '';
       if (isImportant(from) && isImportant(to)) {
         if (from === to) {
-          banner = injectValue(this.fromToEqualBanner, from);
+          banner = injectNumber(this.fromToEqualBanner, from);
         } else {
-          banner = injectValue(injectValue(this.fromToBanner, from), to);
+          banner = injectNumber(injectNumber(this.fromToBanner, from), to);
         }
       }
       if (isImportant(from) && !isImportant(to)) {
-        banner = injectValue(this.from.onlyBanner, from);
+        banner = injectNumber(this.from.onlyBanner, from);
       }
       if (!isImportant(from) && isImportant(to)) {
-        banner = injectValue(this.to.onlyBanner, to);
+        banner = injectNumber(this.to.onlyBanner, to);
       }
       if (banner && this.unitsBanner) { banner += ' ' + this.unitsBanner; }
       return banner;
@@ -922,8 +973,8 @@ class IntervalProperty extends SearchUnitProperty {
 }
 
 class TextProperty extends SearchUnitProperty {
-  constructor(data, unitType) {
-    super(data, unitType);
+  constructor(data, node1, node2) {
+    super(data, node1, node2);
     this.placeholder = data.placeholder || '';
     this.tune();
   }
@@ -956,8 +1007,8 @@ function addRawValues(listItem, values) {
 }
 
 class ListProperty extends SearchUnitProperty {
-  constructor(data, unitType) {
-    super(data, unitType);
+  constructor(data, node1, node2) {
+    super(data, node1, node2);
     this.allIfEmpty = data.allIfEmpty || false;
     this.displayValues = data.displayValues || false;
     this.chosenValues = ko.observableArray([]);
@@ -975,16 +1026,16 @@ class ListProperty extends SearchUnitProperty {
       let value = this.value,
           values = this.unwrapValues(this.chosenValues());
 
-      this.unitType(); // Реагировать на изменение типа единицы поиска.
-      // Этот вызов необходим, чтобы, если измениться тип единицы, этот
+      this.node.unitType(); // Реагировать на изменение типа единицы поиска.
+      // Этот вызов необходим, чтобы, если изменится тип единицы, этот
       // computed вычислился повторно. Это важно, например, для свойств
-      // со свойством allIfEmpty === true. Свойство p_participants
+      // с параметром allIfEmpty === true. Свойство p_participants
       // чувствительно к типу канала, в окуломотрном канале часть галочек
       // деактивируется. Поэтому если пользователь изменил текущую единицу
       // с окуломотрной фиксации на вокальную ЭДЕ и при этом никакие участники
       // у него не были выбраны, что эквивалентно использованию всех, то без
       // этого вызова число выбранных участников у него осталось бы прежним,
-      // меньшим нужного.
+      // т.е. меньшим нужного.
       if (this.allIfEmpty && values.length === 0) {
         values = this.getAllValues();
       }
@@ -1018,9 +1069,9 @@ class ListProperty extends SearchUnitProperty {
     return values.map(value => ko.isObservable(value) ? value() : value);
   }
   onHeaderClick() {
-    let valueList = this.valueList,
-        CLICK_IS_NOT_ON_CHECKBOX_LIST = -1;
-    this._lastActiveDepth = CLICK_IS_NOT_ON_CHECKBOX_LIST;
+    const valueList = this.valueList,
+          CLICK_IS_NOT_ON_ANY_CHECKBOX = null;
+    this._lastActiveCheckbox = CLICK_IS_NOT_ON_ANY_CHECKBOX;
     if (this.isHeaderClickable) {
       if (valueList.isOR) {
         valueList.invertSelection();
@@ -1034,23 +1085,26 @@ class ListProperty extends SearchUnitProperty {
   }
   getBanner() {
     return ko.computed(function () {
-      return this.chosenValues().map(
+      let banner = this.chosenValues().map(
         item => {
           let prefix = '', postfix,
               parentItem = item.list.depth > 0 && item.list.parentItem;
           while (parentItem && parentItem.addNameToChildNames) {
-            prefix = parentItem.name.slice(0, 1).toLowerCase() +
-              parentItem.name.slice(1) + ' ' + prefix;
+            let name = ko.unwrap(parentItem.name);
+            prefix = name.slice(0, 1).toLowerCase() +
+              name.slice(1) + ' ' + prefix;
             parentItem = parentItem.list.depth > 0 && parentItem.list.parentItem;
           }
           if (item.editable) {
             postfix = `«${ item.value() }»`;
           } else {
-            postfix = item.name.slice(0, 1).toLowerCase() + item.name.slice(1);
+            let name = ko.unwrap(item.name);
+            postfix = name.slice(0, 1).toLowerCase() + name.slice(1);
           }
           return prefix + postfix;
         }
       ).join('; ');
+      return injectNodeNumbers(banner, this.node1, this.node2);
     }, this);
   }
   getAllValues() {
@@ -1078,11 +1132,19 @@ class ValueList {
     this.depth = parentItem === null ? 0 : parentItem.list.depth + 1;
     this.isOR = !data.xorValues;
     this.isXOR = !data.orValues;
+    this.radioButtons = data.radioButtons;
     this.parentItem = parentItem;
     this.listProperty = property;
     this.items = (this.isOR ? data.orValues : data.xorValues).map(
       itemData => new ValueListItem(itemData, this)
     );
+
+    this.tune();
+  }
+  tune() {
+    if (this.isXOR && this.radioButtons) {
+      this.checkFirst();
+    }
   }
   checkAll() {
     this.items.forEach(item => {
@@ -1104,6 +1166,9 @@ class ValueList {
     } else if (childList && childList.isXOR) {
       childList.checkFirst();
     }
+  }
+  checkFirstAsIfByUser() {
+    this.items[0].userChecked(true);
   }
   uncheckAll() {
     this.items.forEach(item => {
@@ -1170,7 +1235,9 @@ function sortTwoValueListItems(a, b) {
 class ValueListItem {
   constructor(data, list) {
     this.list = list;
-    this.name = data.name;
+    this.name = injectNodeNumbers(data.name,
+      list.listProperty.node1, list.listProperty.node2);
+    this.icon = data.icon;
     this.checked = ko.observable(null);
     this.userChecked = this.getUserChecked();
     this.editable = data.editable || false;
@@ -1191,8 +1258,9 @@ class ValueListItem {
     let channelIds = this.disabledInChannels;
     if (channelIds && channelIds.length > 0) {
       return ko.computed(function () {
-        let channelId = this.list.listProperty.unitType().channel.id;
-        return channelIds.indexOf(channelId) > -1;
+        let unitType = this.list.listProperty.node.unitType(),
+            channelId = unitType && unitType.channel.id;
+        return channelId && channelIds.indexOf(channelId) > -1;
       }, this);
     } else {
       return false;
@@ -1202,7 +1270,7 @@ class ValueListItem {
     return ko.computed({
       read: this.checked,
       write: function (newValue) {
-        this.list.listProperty._lastActiveDepth = this.list.depth;
+        this.list.listProperty._lastActiveCheckbox = this;
         this.checked(newValue);
       }
     }, this);
@@ -1226,12 +1294,21 @@ class ValueListItem {
   tuneXOR() {
     if (this.list.isXOR) {
       ko.computed(function () {
-        if (this.checked()) {
+        let checked = this.checked();
+
+        if (checked) {
           this.list.uncheckAllBut(this);
         }
 
+        if (!checked && this.isChangeStraightforward
+            && !this.list.parentItem
+            && this.list.radioButtons) {
+          this.checked(true);
+        }
+
         // NOTE: см. ##xorparuni##
-        if (!this.checked() && this.isChangeStraightforward
+        if (!checked && this.isChangeStraightforward
+            && !this.list.radioButtons
             && this.list.parentItem
             && ko.unwrap(this.list.parentItem.value)
             && this.list.areAllUnchecked) {
@@ -1246,7 +1323,7 @@ class ValueListItem {
     // непосредственно на нее действием пользователя. Если же галочка
     // устанавливается или снимается автоматически, например, при нажатии
     // на родительскую галочку, то возвращает false.
-    return this.list.listProperty._lastActiveDepth === this.list.depth;
+    return this.list.listProperty._lastActiveCheckbox === this;
   }
   tuneParentList() {
     if (this.list.depth > 0) {
@@ -1282,7 +1359,8 @@ class ValueListItem {
             childList.checkAll();
           } else if (checked && childList.isXOR && !value) {
             childList.checkFirst();
-          } else if (checked && childList.isXOR && value) {  // NOTE: см. ##xorparuni##
+          } else if (checked && childList.isXOR && value) {
+            // NOTE: см. ##xorparuni##
             // pass
           } else if (!checked) {
             childList.uncheckAll();
@@ -1343,5 +1421,5 @@ class ValueListItem {
 export {
   defaultPropertiesList, testPropertiesList, propertiesLists,
   SearchUnitProperty, IntervalProperty, TextProperty, ListProperty,
-  p_duration, escapeRegExp
+  p_duration, escapeRegExp, injectNodeNumbers, beautifyNumber
 };

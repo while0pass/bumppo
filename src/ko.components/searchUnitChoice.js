@@ -105,11 +105,11 @@ const chosenUnitTemplate = `
     <div data-bind="foreach: node.chosenUnitProperties"
       style="margin: 1.5em 0 2.5em 0"
       ><!-- ko if: $index() === 0 --><span class="bmpp-bannerPropname"
-      data-bind="text: name"></span><span class="bmpp-bannerText"
+      data-bind="html: name"></span><span class="bmpp-bannerText"
       >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
       class="bmpp-bannerPropname" data-bind="textLowercaseFirstChar: name"
       ></span><span class="bmpp-bannerText">:&#x2002;</span><!-- /ko --><span
-      data-bind="text: banner" class="bmpp-bannerPropvalue"></span><span
+      data-bind="html: banner" class="bmpp-bannerPropvalue"></span><span
       class="bmpp-bannerText" data-bind="text: $index() &lt; $parent.node.
       chosenUnitProperties().length - 1 ? ';&#x2002;' : '.'"></span
     ></div>
@@ -119,8 +119,8 @@ const chosenUnitTemplate = `
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
-      <span data-bind="click: goEditUnitProperties" class="bmpp-editUrl"
-        style="margin-left: 1em">
+      <span data-bind="click: $root.queryPaneView.editNodeProperties.bind(
+          null, node)" class="bmpp-editUrl" style="margin-left: 1em">
         <span data-bind="text: isAnyUnitPropertySet() ? 'Изменить' : 'Задать'">
         </span> свойства единицы
       </span>
@@ -128,7 +128,7 @@ const chosenUnitTemplate = `
 
     <div data-bind="click: node.seppuku.bind(node),
                      visible: node.depth() === 0 && node.unitType()"
-      style="position: absolute; right: 1.5em; bottom: 1.1em; color: #a00;
+      style="position: absolute; right: 1.5em; top: 1.5em; color: #a00;
       border-bottom-color: #a00; line-height: 1.3em;"
       class="bmpp-editUrl">
       Очистить запрос
@@ -222,9 +222,6 @@ class viewModel {
         goEditUnitType = function () {
           node.isEditStateForUnitType(true);
         },
-        goEditUnitProperties = function () {
-          params.editNodeProperties(node);
-        },
         iHaveChosenUnitType = function () {
           node.unitType(this);
           node.isEditStateForUnitType(false);
@@ -269,7 +266,6 @@ class viewModel {
     this.activeChannel = activeChannel;
     this.queryPartsNonReadiness = queryPartsNonReadiness;
     this.goEditUnitType = goEditUnitType;
-    this.goEditUnitProperties = goEditUnitProperties;
     this.iHaveChosenUnitType = iHaveChosenUnitType;
     this.isAnyUnitPropertySet = isAnyUnitPropertySet;
   }

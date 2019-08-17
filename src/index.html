@@ -127,12 +127,12 @@
       <!-- /ko -->
       <!-- ko if: queryPaneView.arePropertiesVisible -->
       <div class="bmpp-propertiesPane">
-        <div class="bmpp-propertiesPaneProps"><div class="bmpp-paddedPane">
+        <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
             <properties-pane params="node: queryPaneView.propertiesNode"
               ></properties-pane>
         </div></div>
-        <div class="bmpp-propertiesPaneDivider"></div>
-        <div class="bmpp-propertiesPaneButtons">
+        <div class="bmpp-paneDivider"></div>
+        <div class="bmpp-paneButtons">
             <button class="ui small button"
               data-bind="click: queryPaneView.finishEditingNodeProperties"
               >ОК</button>
@@ -140,6 +140,23 @@
               queryPaneView.propertiesNode().clearAllProperties
                 .bind(queryPaneView.propertiesNode())"
               >Очистить</button>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: queryPaneView.areRelationsVisible -->
+      <div class="bmpp-relationsPane">
+        <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
+            <relations-pane params="node1: queryPaneView.relationsNode1,
+            node2: queryPaneView.relationsNode2"></relations-pane>
+        </div></div>
+        <div class="bmpp-paneDivider"></div>
+        <div class="bmpp-paneButtons">
+            <button class="ui small button"
+              data-bind="click: queryPaneView.finishEditingNodeRelations"
+              >ОК</button>
+            <button class="ui small button"
+              data-bind="click: queryPaneView.resetRelations"
+              >Сбросить к значениям по умолчанию</button>
         </div>
       </div>
       <!-- /ko -->
@@ -164,7 +181,7 @@
       crossorigin="anonymous"></script>
     <script src="semantic/semantic.min.js" crossorigin="anonymous"></script>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"
+      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"
       crossorigin="anonymous"></script>
     <script src="js/libs/svg.min.js"></script>
     <script src="js/libs/jquery.initialize.min.js"></script>

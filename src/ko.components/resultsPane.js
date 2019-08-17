@@ -39,7 +39,7 @@ const template = `
         data-bind="textLowercaseFirstChar: name"></span><span
         >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
         data-bind="textLowercaseFirstChar: name"></span><span
-        >:&#x2002;</span><!-- /ko --><span data-bind="text: banner"></span
+        >:&#x2002;</span><!-- /ko --><span data-bind="html: banner"></span
         ><span data-bind="text:
         $index() &lt; $root.queryTree.chosenUnitProperties().length - 1 ?
         ';&#x2002;' : '.'"></span></span><!-- /ko --><!-- ko if:

@@ -1,8 +1,13 @@
 $bmppBorderColor: rgba(34, 36, 38, .15);
 $green: #21ba45;
+$darkGreen: #2c662d;
+$teal: #009c95;
+$tealBlue: #276f86;
 $blue: #2185d0;
+$lightGrey: #ccc;
 $grey: #767676;
 $red: #db2828;
+$darkRed: #9f3a38;
 $black: #1c1b1d;
 $borderWidth: 0.3em;
 $sidePaneWidth: 14vw;
@@ -68,7 +73,7 @@ $videoHeight: 193px;
     & a:focus {
       color: inherit;
       display: inline-block;
-      border-bottom: 1px dotted #9f3a38;
+      border-bottom: 1px dotted $darkRed;
     }
   }
 }
@@ -129,24 +134,25 @@ $videoHeight: 193px;
   margin: 3em auto auto 6em !important;
 }
 
-.bmpp-propertiesPane {
+.bmpp-propertiesPane,
+.bmpp-relationsPane {
   $buttonsHeight: 4.4em;
   $dividerHeight: 1em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
-  &Props {
+  & .bmpp-paneProps {
     height: calc(100vh - $buttonsHeight - $dividerHeight);
     overflow-y: scroll;
     overflow-x: hidden;
 
   }
-  &Divider {
+  & .bmpp-paneDivider {
     height: $dividerHeight;
     border-bottom: 1px solid rgba(34, 36, 38, .05);
   }
-  &Buttons {
+  & .bmpp-paneButtons {
     height: $buttonsHeight;
     padding: 1em 0 0 6em;
     box-sizing: border-box;
@@ -343,30 +349,18 @@ $videoHeight: 193px;
   min-height: 10em;
 }
 
-.bmpp-queryTreeHandles {
-  position: absolute;
-  right: auto;
-  left: 100%;
-  top: 0.45em;
-  width: 6em;
-  padding-left: 1em;
-
-  & .ui.icon {
-    cursor: pointer;
-  }
-  &.bmpp-queryTreeHandles2 {
-    left: calc(100% + 1em);
-  }
-}
-
 .bmpp-number {
   display: flex;
   flex-flow: row nowrap;
   align-items: baseline;
   margin-right: 1em;
 
-  label {
+  & label {
     margin-right: 1em;
+  }
+
+  & input {
+    padding-right: 2.5em !important;
   }
 
   & .bmpp-numberControls {
@@ -388,12 +382,15 @@ $videoHeight: 193px;
                   font-size .1s ease !important;
       position: absolute;
       overflow: hidden;
+
       &:hover {
         font-size: large !important;
       }
-      &:last-of-type {
+
+      &.sort.down {
         top: 50%;
       }
+
       &::before {
         position: absolute;
         top: 5%;
@@ -402,7 +399,8 @@ $videoHeight: 193px;
         right: 0;
         line-height: 0!important;
       }
-      &:first-of-type::before {
+
+      &.sort.up::before {
         bottom: 5%;
         top: 95%;
       }
@@ -410,52 +408,14 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-queryDistances {
+.bmpp-relationsFormula1 {
   margin: 1em auto !important;
   position: relative;
+  padding-bottom: 2.6em !important;
 
-  &--toOtherElement {
-    margin-top: 3em !important;
-  }
-
-  .bmpp-queryDistance {
-    min-height: 4em;
-
-    & .ui.form {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-
-      & .field {
-        margin-right: 1em;
-        &.bmpp-units {
-          width: 8em !important;
-        }
-        &.bmpp-points {
-          width: 14em !important;
-        }
-      }
-
-      & .bmpp-units .text {
-        border-bottom: 1px grey dashed !important;
-      }
-
-      & input[type="number"] {
-        width: 6em !important;
-      }
-
-      & .ui.selection.dropdown {
-        height: 2em !important;
-        padding-top: .5em !important;
-      }
-    }
-  }
-
-  .bmpp-queryDistanceHelp {
-    position: absolute;
-    top: 1em !important;
-    right: .5em !important;
-  }
+}
+.bmpp-relationsFormula2 {
+  margin-top: 3em !important;
 }
 
 .bmpp-subcorpusForm {
@@ -525,10 +485,6 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-negativeNode {
-  padding-top: 3.4em!important;
-}
-
 .bmpp-valueList {
   margin: 0;
   padding: 0;
@@ -544,7 +500,7 @@ $videoHeight: 193px;
 }
 
 .bmpp-listItemValue {
-  color: #2c662d;
+  color: $darkGreen;
   padding: 0 0.1em;
 }
 
@@ -553,11 +509,15 @@ $videoHeight: 193px;
   margin: 0.7em 0 0 2.4em;
 }
 
-.bmpp-propertyHeader {
+.bmpp-propertyHeader,
+.bmpp-relationHeader {
   user-select: none;
 
   &.clickable {
     cursor: copy;
+  }
+  & .ui.circular.label {
+    background-color: $lightGrey;
   }
 }
 
@@ -655,6 +615,92 @@ $videoHeight: 193px;
       font-size: x-small;
       top: -1em;
       left: 1em;
+    }
+  }
+}
+
+.bmpp-relationBanner {
+  background-color: #f8ffff;
+  color: $tealBlue;
+  margin: -1.5em -1em 0;
+  padding: 1.2em 1em 1.5em;
+  position: relative;
+
+  &::after {
+    $height: 1.5em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -$height;
+    height: $height;
+    content: '';
+    background: linear-gradient(180deg, #f8ffff 0%,  /* ##grad## */
+                                        rgba(248, 255, 255, 0) 100%);
+  }
+}
+
+.bmpp-unitsRadioButtons {
+  position: relative; /* Необходимо для того, чтобы градиент ##grad## был под
+    кнопками, а не поверх них. */
+}
+
+.bmpp-relation {
+  margin-bottom: 1em !important;
+}
+.bmpp-relationItem {
+  padding-top: 1.5em !important;
+}
+
+.ui.basic.icon.button {
+
+  &.bmpp-addButton {
+    position: absolute;
+    right: 0.1rem;
+    bottom: 0.2rem;
+    box-shadow: 0 0 0 1px $lightGrey inset!important;
+
+    & .icon {
+      color: $lightGrey !important;
+    }
+
+    &:hover {
+      box-shadow: none !important;
+      background-color: $tealBlue !important;
+      opacity: 0.8;
+
+      & .icon {
+        color: white !important;
+      }
+    }
+
+    .bmpp-queryElement & {
+      right: 1rem;
+      bottom: 0.5rem;
+    }
+  }
+
+  &.bmpp-removeButton {
+    position: absolute;
+    right: 0.05rem;
+    top: 1rem;
+    box-shadow: none !important;
+    background-color: transparent !important;
+
+    & .icon {
+      color: $lightGrey !important;
+    }
+
+    &:hover .icon {
+      color: $red !important;
+    }
+
+    &.bmpp-removeButton1 {
+      top: 3.5rem;
+    }
+
+    .bmpp-queryElement & {
+      top: 0.7rem;
+      right: 0.4rem;
     }
   }
 }

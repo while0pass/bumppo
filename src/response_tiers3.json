@@ -1,0 +1,6182 @@
+{
+  "N-vStops": [
+    {
+      "parent": "N-vW0067",
+      "value": "Asp-en"
+    },
+    {
+      "parent": "N-vW0068",
+      "value": "Gl-st"
+    }
+  ],
+  "N-vTruncated": [
+    {
+      "parent": "N-vW0083",
+      "value": "Truncated"
+    }
+  ],
+  "R-vSegm": [
+    {
+      "value": "R-vW0004",
+      "time": {
+        "start": 45254,
+        "end": 45254
+      }
+    }
+  ],
+  "R-vFilledCount": [
+    {
+      "parent": "R-vE004",
+      "value": "0"
+    }
+  ],
+  "R-vPauseHTML": [
+    {
+      "parent": "R-vPs0004",
+      "value": "(25.25)"
+    },
+    {
+      "parent": "R-vPs0005",
+      "value": "(8.03)"
+    }
+  ],
+  "R-oInterlocutor": [
+    {
+      "parent": "R-oF0020",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0021",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0022",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0023",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0024",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0025",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0026",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0027",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0028",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0029",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0030",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0031",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0032",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0033",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0034",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0035",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0036",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0037",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0038",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0039",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0040",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0041",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0042",
+      "value": "N"
+    },
+    {
+      "parent": "R-oF0043",
+      "value": "N"
+    }
+  ],
+  "N-vInterruptCount": [
+    {
+      "parent": "N-vE012",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "0"
+    }
+  ],
+  "N-vPauseInOutEDU": [
+    {
+      "parent": "N-vPs0011",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vPs0012",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vPs0013",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vPs0014",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vPs0015",
+      "value": "In"
+    },
+    {
+      "parent": "N-vPs0016",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vPs0017",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vPs0018",
+      "value": "In"
+    }
+  ],
+  "N-vMainAccents": [
+    {
+      "parent": "N-vE012",
+      "value": "F"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "F"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "Rl"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "FR"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "Rr"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "R"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "R"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "R"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "F"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "Rr"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "R"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "R"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "FL"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "fR"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "L"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "R"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "Rf"
+    }
+  ],
+  "N-mRtStType": [
+    {
+      "parent": "N-mRtSt04",
+      "value": "Rest"
+    }
+  ],
+  "R-mAdaptor": [
+    {
+      "value": "R-mAd004",
+      "time": {
+        "start": 43150,
+        "end": 43150
+      }
+    }
+  ],
+  "R-vSForm": [
+    {
+      "parent": "R-vW0004",
+      "value": "угу"
+    }
+  ],
+  "R-mPosture": [
+    {
+      "value": "R-mPr006",
+      "time": {
+        "start": 19700,
+        "end": 19700
+      }
+    }
+  ],
+  "N-mLtMtType": [
+    {
+      "parent": "N-mLtMt031",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt032",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt033",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt034",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt035",
+      "value": "R"
+    },
+    {
+      "parent": "N-mLtMt036",
+      "value": "U"
+    },
+    {
+      "parent": "N-mLtMt037",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt038",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt039",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt040",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt041",
+      "value": "R"
+    },
+    {
+      "parent": "N-mLtMt042",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt043",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt044",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt045",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt046",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt047",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt048",
+      "value": "R"
+    },
+    {
+      "parent": "N-mLtMt049",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt050",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt051",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt052",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt053",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt054",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt055",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt056",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt057",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt058",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt059",
+      "value": "R"
+    },
+    {
+      "parent": "N-mLtMt060",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt061",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt062",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt063",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt064",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt065",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt066",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt067",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt068",
+      "value": "R"
+    },
+    {
+      "parent": "N-mLtMt069",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt070",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt071",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt072",
+      "value": "S"
+    },
+    {
+      "parent": "N-mLtMt073",
+      "value": "P"
+    },
+    {
+      "parent": "N-mLtMt074",
+      "value": "S"
+    }
+  ],
+  "R-vTempo": [
+    {
+      "parent": "R-vW0004",
+      "value": "Neutral"
+    }
+  ],
+  "R-mLtStType": [
+    {
+      "parent": "R-mLtSt008",
+      "value": "Rest"
+    },
+    {
+      "parent": "R-mLtSt009",
+      "value": "Rest"
+    }
+  ],
+  "N-vSegmHTML": [
+    {
+      "parent": "N-vW0045",
+      "value": "большую"
+    },
+    {
+      "parent": "N-vW0046",
+      "value": "зелёную"
+    },
+    {
+      "parent": "N-vW0047",
+      "value": "\\гр<u>у</u>шу"
+    },
+    {
+      "parent": "N-vHp0003",
+      "value": "(ɥ 0.35)"
+    },
+    {
+      "parent": "N-vW0048",
+      "value": "С"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "\\д<u>е</u>рева"
+    },
+    {
+      "parent": "N-vHp0004",
+      "value": "(ɥ 0.38)"
+    },
+    {
+      "parent": "N-vFd0006",
+      "value": "(ə 0.68)"
+    },
+    {
+      "parent": "N-vW0050",
+      "value": "/↑М˗мужчина˗а"
+    },
+    {
+      "parent": "N-vFd0007",
+      "value": "(ˀ 0.10)"
+    },
+    {
+      "parent": "N-vW0051",
+      "value": "где-то"
+    },
+    {
+      "parent": "N-vW0052",
+      "value": "лет"
+    },
+    {
+      "parent": "N-vW0053",
+      "value": "сорока-"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "/→пят<u>и</u>десяти˗и"
+    },
+    {
+      "parent": "N-vW0055",
+      "value": "собирает"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "\\/урож<u>а</u>й"
+    },
+    {
+      "parent": "N-vW0057",
+      "value": "собирает"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "/↑гр<u>у</u>ши"
+    },
+    {
+      "parent": "N-vHp0005",
+      "value": "(ɥ 0.54)"
+    },
+    {
+      "parent": "N-vFd0008",
+      "value": "(əɯ 0.72)"
+    },
+    {
+      "parent": "N-vW0059",
+      "value": "он˗н"
+    },
+    {
+      "parent": "N-vFd0009",
+      "value": "(ə 0.43)"
+    },
+    {
+      "parent": "N-vW0060",
+      "value": "в"
+    },
+    {
+      "parent": "N-vW0061",
+      "value": "соломенной"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "/шл<u>я</u>пе"
+    },
+    {
+      "parent": "N-vW0063",
+      "value": "у"
+    },
+    {
+      "parent": "N-vW0064",
+      "value": "него"
+    },
+    {
+      "parent": "N-vW0065",
+      "value": "\\красный"
+    },
+    {
+      "parent": "N-vW0066",
+      "value": "такой"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "/плат<u>о</u>к<sup>h</sup>"
+    },
+    {
+      "parent": "N-vFd0010",
+      "value": "(ˀ 0.21)"
+    },
+    {
+      "parent": "N-vW0068",
+      "value": "<sup>ˀ</sup>и"
+    },
+    {
+      "parent": "N-vW0069",
+      "value": "на"
+    },
+    {
+      "parent": "N-vW0070",
+      "value": "/нём"
+    },
+    {
+      "parent": "N-vW0071",
+      "value": "такой"
+    },
+    {
+      "parent": "N-vW0072",
+      "value": "белый"
+    },
+    {
+      "parent": "N-vW0073",
+      "value": "большой"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "/ф<u>а</u>ртук"
+    },
+    {
+      "parent": "N-vW0075",
+      "value": "в_который"
+    },
+    {
+      "parent": "N-vW0076",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0077",
+      "value": "собирает"
+    },
+    {
+      "parent": "N-vW0078",
+      "value": "эти"
+    },
+    {
+      "parent": "N-vW0079",
+      "value": "самые"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "\\гр<u>у</u>ши"
+    },
+    {
+      "parent": "N-vW0081",
+      "value": "Он"
+    },
+    {
+      "parent": "N-vW0082",
+      "value": "столит"
+    },
+    {
+      "parent": "N-vW0083",
+      "value": "н="
+    },
+    {
+      "parent": "N-vW0084",
+      "value": "стоит"
+    },
+    {
+      "parent": "N-vW0085",
+      "value": "на"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "/↑л<u>е</u>стнице"
+    },
+    {
+      "parent": "N-vW0087",
+      "value": "как"
+    },
+    {
+      "parent": "N-vW0088",
+      "value": "только"
+    },
+    {
+      "parent": "N-vW0089",
+      "value": "у"
+    },
+    {
+      "parent": "N-vW0090",
+      "value": "него"
+    },
+    {
+      "parent": "N-vW0091",
+      "value": "наполняется"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "/ф<u>а</u>ртук"
+    },
+    {
+      "parent": "N-vW0093",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "/спуск<u>а</u>ется"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "\\–м<u>е</u>дленно"
+    },
+    {
+      "parent": "N-vFd0011",
+      "value": "(ə 0.08)"
+    },
+    {
+      "parent": "N-vW0096",
+      "value": "лестница"
+    },
+    {
+      "parent": "N-vW0097",
+      "value": "очен˗нь"
+    },
+    {
+      "parent": "N-vHp0006",
+      "value": "(ɥ 0.43)"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "↓/хруст<u>и</u>т"
+    },
+    {
+      "parent": "N-vOth0001",
+      "value": "{sf 0.41}"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "–гр<u>о</u>мко"
+    },
+    {
+      "parent": "N-vW0100",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "/спуск<u>а</u>ется"
+    },
+    {
+      "parent": "N-vW0102",
+      "value": "внизу"
+    },
+    {
+      "parent": "N-vW0103",
+      "value": "стоит"
+    },
+    {
+      "parent": "N-vW0104",
+      "value": "три"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "/↓корз<u>и</u>ны˗ы"
+    }
+  ],
+  "N-vTempo": [
+    {
+      "parent": "N-vW0045",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0046",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0047",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0048",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0050",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0051",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0052",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0053",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0055",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0057",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0059",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0060",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0061",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0063",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0064",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0065",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0066",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0068",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0069",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0070",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0071",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0072",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0073",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0075",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0076",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0077",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0078",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0079",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0081",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0082",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0083",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0084",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0085",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0087",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0088",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0089",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0090",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0091",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0093",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0096",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0097",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0100",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0102",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0103",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0104",
+      "value": "Neutral"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "Neutral"
+    }
+  ],
+  "N-vMainAccentsCount": [
+    {
+      "parent": "N-vE012",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "1"
+    }
+  ],
+  "N-vAccentsCount": [
+    {
+      "parent": "N-vE012",
+      "value": "3"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "1"
+    }
+  ],
+  "C-vPause": [
+    {
+      "value": "C-vPs0001",
+      "time": {
+        "start": 0,
+        "end": 0
+      }
+    }
+  ],
+  "N-vFilledCount": [
+    {
+      "parent": "N-vE012",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "0"
+    }
+  ],
+  "C-vPauseHTML": [
+    {
+      "parent": "C-vPs0001",
+      "value": "(229.80)"
+    }
+  ],
+  "R-vAccentsCount": [
+    {
+      "parent": "R-vE004",
+      "value": "1"
+    }
+  ],
+  "R-vIllocPhase": [
+    {
+      "parent": "R-vE004",
+      "value": "Period"
+    }
+  ],
+  "N-vParenth": [
+    {
+      "parent": "N-vE014",
+      "value": "Enter"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "Full"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "Return"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "Enter"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "Full"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "Return, Enter"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "Full"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "Return"
+    }
+  ],
+  "R-vSType": [
+    {
+      "parent": "R-vW0004",
+      "value": "Word"
+    }
+  ],
+  "N-vInterrupt": [
+    {
+      "parent": "N-vW0083",
+      "value": "Mild"
+    }
+  ],
+  "N-mGeTags": [
+    {
+      "parent": "N-mGe016",
+      "value": "Repeat"
+    },
+    {
+      "parent": "N-mGe018",
+      "value": "Repeat"
+    },
+    {
+      "parent": "N-mGe026",
+      "value": "Multi-S"
+    },
+    {
+      "parent": "N-mGe028",
+      "value": "Repeat"
+    },
+    {
+      "parent": "N-mGe029",
+      "value": "Multi-S"
+    },
+    {
+      "parent": "N-mGe030",
+      "value": "Multi-S"
+    },
+    {
+      "parent": "N-mGe031",
+      "value": "Multi-S"
+    },
+    {
+      "parent": "N-mGe032",
+      "value": "Multi-S"
+    }
+  ],
+  "R-vMainAccents": [
+    {
+      "parent": "R-vE004",
+      "value": "fR"
+    }
+  ],
+  "R-vPausesCount": [
+    {
+      "parent": "R-vE004",
+      "value": "0"
+    }
+  ],
+  "R-mAdType": [
+    {
+      "parent": "R-mAd004",
+      "value": "Adaptor2"
+    }
+  ],
+  "R-mRtStillness": [
+    {
+      "value": "R-mRtSt001",
+      "time": {
+        "start": 0,
+        "end": 0
+      }
+    }
+  ],
+  "R-vLineHTML": [
+    {
+      "parent": "R-vE004",
+      "value": "↓/Уг<u>у</u>."
+    }
+  ],
+  "N-vAccents": [
+    {
+      "parent": "N-vW0047",
+      "value": "F"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "F"
+    },
+    {
+      "parent": "N-vW0050",
+      "value": "Rr"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "Rl"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "FR"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "Rr"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0065",
+      "value": "F"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0070",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "F"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "Rr"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "FL"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "fR"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "L"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "R"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "Rf"
+    }
+  ],
+  "R-mLtMtType": [
+    {
+      "parent": "R-mLtMt008",
+      "value": "U"
+    }
+  ],
+  "R-vPauseInOutEDU": [
+    {
+      "parent": "R-vPs0004",
+      "value": "Out"
+    },
+    {
+      "parent": "R-vPs0005",
+      "value": "Out"
+    }
+  ],
+  "R-vLine": [
+    {
+      "value": "R-vE004",
+      "time": {
+        "start": 45254,
+        "end": 45254
+      }
+    }
+  ],
+  "N-vLineHTML": [
+    {
+      "parent": "N-vE012",
+      "value": "мужские /руки /–срывают большую зелёную \\гр<u>у</u>шу."
+    },
+    {
+      "parent": "N-vN003",
+      "value": "(ɥ 0.35)"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "С \\д<u>е</u>рева."
+    },
+    {
+      "parent": "N-vN004",
+      "value": "(ɥ 0.38)"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "(ə 0.68) /↑М˗мужчина˗а —"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "(ˀ 0.10) где-то лет сорока- /→пят<u>и</u>десяти˗и,"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "— собирает (0.19) \\/урож<u>а</u>й,"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "собирает /↑гр<u>у</u>ши,"
+    },
+    {
+      "parent": "N-vN005",
+      "value": "(ɥ 0.54)"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "(əɯ 0.72) он˗н (ə 0.43) в соломенной /шл<u>я</u>пе,"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "у него \\красный такой /плат<u>о</u>к<sup>h</sup>,"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "(ˀ 0.21) <sup>ˀ</sup>и на /нём такой белый большой /ф<u>а</u>ртук,"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "в_который он собирает эти самые \\гр<u>у</u>ши."
+    },
+    {
+      "parent": "N-vE022",
+      "value": "Он столит н= || (0.06) стоит на /↑л<u>е</u>стнице,"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "как только у него наполняется /ф<u>а</u>ртук,"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "он /спуск<u>а</u>ется,"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "(\\–м<u>е</u>дленно,)"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "(ə 0.08) лестница очен˗нь (ɥ 0.43) ↓/хруст<u>и</u>т,"
+    },
+    {
+      "parent": "N-vN006",
+      "value": "{sf 0.41}"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "(–гр<u>о</u>мко,)"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "он /спуск<u>а</u>ется,"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "внизу стоит три /↓корз<u>и</u>ны˗ы,"
+    }
+  ],
+  "R-mLtStillness": [
+    {
+      "value": "R-mLtSt008",
+      "time": {
+        "start": 19700,
+        "end": 19700
+      }
+    },
+    {
+      "value": "R-mLtSt009",
+      "time": {
+        "start": 44610,
+        "end": 44610
+      }
+    }
+  ],
+  "N-vCollat": [
+    {
+      "value": "N-vCol005",
+      "time": {
+        "start": 27395,
+        "end": 27395
+      }
+    },
+    {
+      "value": "N-vCol006",
+      "time": {
+        "start": 33902,
+        "end": 33902
+      }
+    },
+    {
+      "value": "N-vCol007",
+      "time": {
+        "start": 45229,
+        "end": 45229
+      }
+    },
+    {
+      "value": "N-vCol008",
+      "time": {
+        "start": 46850,
+        "end": 46850
+      }
+    }
+  ],
+  "C-mLtStillness": [
+    {
+      "value": "C-mLtSt03",
+      "time": {
+        "start": 12330,
+        "end": 12330
+      }
+    }
+  ],
+  "Stage": [
+    {
+      "value": "1st_telling",
+      "time": {
+        "start": 0,
+        "end": 0
+      }
+    }
+  ],
+  "N-mLtStType": [
+    {
+      "parent": "N-mLtSt02",
+      "value": "Rest"
+    }
+  ],
+  "N-mGestureChain": [
+    {
+      "value": "N-mGeCn02",
+      "time": {
+        "start": 22230,
+        "end": 22230
+      }
+    },
+    {
+      "value": "N-mGeCn03",
+      "time": {
+        "start": 31270,
+        "end": 31270
+      }
+    },
+    {
+      "value": "N-mGeCn04",
+      "time": {
+        "start": 34480,
+        "end": 34480
+      }
+    }
+  ],
+  "N-mMovementChain": [
+    {
+      "value": "N-mMtCn02",
+      "time": {
+        "start": 18760,
+        "end": 18760
+      }
+    },
+    {
+      "value": "N-mMtCn03",
+      "time": {
+        "start": 34480,
+        "end": 34480
+      }
+    }
+  ],
+  "N-mRtStillness": [
+    {
+      "value": "N-mRtSt04",
+      "time": {
+        "start": 33500,
+        "end": 33500
+      }
+    }
+  ],
+  "N-vPausesCount": [
+    {
+      "parent": "N-vE012",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "0"
+    }
+  ],
+  "C-vPauseInOutEDU": [
+    {
+      "parent": "C-vPs0001",
+      "value": "Out"
+    }
+  ],
+  "N-vMainAccent": [
+    {
+      "parent": "N-vW0047",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "Main"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "Main"
+    }
+  ],
+  "N-vCollatForm": [
+    {
+      "parent": "N-vCol005",
+      "value": "{creaky}"
+    },
+    {
+      "parent": "N-vCol006",
+      "value": "{creaky}"
+    },
+    {
+      "parent": "N-vCol007",
+      "value": "{creaky}"
+    },
+    {
+      "parent": "N-vCol008",
+      "value": "{smile}"
+    }
+  ],
+  "R-vWordsCount": [
+    {
+      "parent": "R-vE004",
+      "value": "1"
+    }
+  ],
+  "R-vLineType": [
+    {
+      "parent": "R-vE004",
+      "value": "EDU"
+    }
+  ],
+  "N-vLineType": [
+    {
+      "parent": "N-vE012",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vN003",
+      "value": "NonVerbal"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vN004",
+      "value": "NonVerbal"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vN005",
+      "value": "NonVerbal"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vN006",
+      "value": "NonVerbal"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "EDU"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "EDU"
+    }
+  ],
+  "N-mRtMtType": [
+    {
+      "parent": "N-mRtMt028",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt029",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt030",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt031",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt032",
+      "value": "R"
+    },
+    {
+      "parent": "N-mRtMt033",
+      "value": "U"
+    },
+    {
+      "parent": "N-mRtMt034",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt035",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt036",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt037",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt038",
+      "value": "R"
+    },
+    {
+      "parent": "N-mRtMt039",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt040",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt041",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt042",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt043",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt044",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt045",
+      "value": "R"
+    },
+    {
+      "parent": "N-mRtMt046",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt047",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt048",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt049",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt050",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt051",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt052",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt053",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt054",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt055",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt056",
+      "value": "R"
+    },
+    {
+      "parent": "N-mRtMt057",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt058",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt059",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt060",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt061",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt062",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt063",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt064",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt065",
+      "value": "R"
+    },
+    {
+      "parent": "N-mRtMt066",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt067",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt068",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt069",
+      "value": "S"
+    },
+    {
+      "parent": "N-mRtMt070",
+      "value": "P"
+    },
+    {
+      "parent": "N-mRtMt071",
+      "value": "S"
+    }
+  ],
+  "N-oInterlocutor": [
+    {
+      "parent": "N-oF0039",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0040",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0041",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0042",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0043",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0044",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0045",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0046",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0047",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0048",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0049",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0050",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0051",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0052",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0053",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0054",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0055",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0056",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0057",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0058",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0059",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0060",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0061",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0062",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0063",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0064",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0065",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0066",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0067",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0068",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0069",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0070",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0071",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0072",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0073",
+      "value": "R"
+    },
+    {
+      "parent": "N-oF0074",
+      "value": "R"
+    }
+  ],
+  "R-vInterruptCount": [
+    {
+      "parent": "R-vE004",
+      "value": "0"
+    }
+  ],
+  "N-oLocus": [
+    {
+      "parent": "N-oF0039",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0040",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0041",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0042",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0043",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0044",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0045",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0046",
+      "value": "Other"
+    },
+    {
+      "parent": "N-oF0047",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0048",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0049",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0050",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0051",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0052",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0053",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0054",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0055",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0056",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0057",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0058",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0059",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0060",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0061",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0062",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0063",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0064",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0065",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0066",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0067",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0068",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0069",
+      "value": "Face"
+    },
+    {
+      "parent": "N-oF0070",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0071",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0072",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0073",
+      "value": "Body"
+    },
+    {
+      "parent": "N-oF0074",
+      "value": "Body"
+    }
+  ],
+  "N-mPrPhase": [
+    {
+      "value": "Transition",
+      "time": {
+        "start": 22230,
+        "end": 22230
+      }
+    },
+    {
+      "value": "Transition",
+      "time": {
+        "start": 31270,
+        "end": 31270
+      }
+    },
+    {
+      "value": "Transition",
+      "time": {
+        "start": 34480,
+        "end": 34480
+      }
+    }
+  ],
+  "N-vAccentsAfterMainCount": [
+    {
+      "parent": "N-vE012",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "0"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "0"
+    }
+  ],
+  "R-vMainAccent": [
+    {
+      "parent": "R-vW0004",
+      "value": "Main"
+    }
+  ],
+  "R-vAccentsAfterMainCount": [
+    {
+      "parent": "R-vE004",
+      "value": "0"
+    }
+  ],
+  "R-mMovementChain": [
+    {
+      "value": "R-mMtCn008",
+      "time": {
+        "start": 43150,
+        "end": 43150
+      }
+    }
+  ],
+  "N-vInOutEDU": [
+    {
+      "parent": "N-vHp0003",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vHp0004",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vFd0006",
+      "value": "In"
+    },
+    {
+      "parent": "N-vFd0007",
+      "value": "In"
+    },
+    {
+      "parent": "N-vHp0005",
+      "value": "Out"
+    },
+    {
+      "parent": "N-vFd0008",
+      "value": "In"
+    },
+    {
+      "parent": "N-vFd0009",
+      "value": "In"
+    },
+    {
+      "parent": "N-vFd0010",
+      "value": "In"
+    },
+    {
+      "parent": "N-vFd0011",
+      "value": "In"
+    },
+    {
+      "parent": "N-vHp0006",
+      "value": "In"
+    },
+    {
+      "parent": "N-vOth0001",
+      "value": "Out"
+    }
+  ],
+  "N-vLength": [
+    {
+      "parent": "N-vW0050",
+      "value": "Len"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "Len"
+    },
+    {
+      "parent": "N-vW0059",
+      "value": "Len"
+    },
+    {
+      "parent": "N-vW0097",
+      "value": "Len"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "Len"
+    }
+  ],
+  "N-vLine": [
+    {
+      "value": "N-vE012",
+      "time": {
+        "start": 23529,
+        "end": 23529
+      }
+    },
+    {
+      "value": "N-vN003",
+      "time": {
+        "start": 25952,
+        "end": 25952
+      }
+    },
+    {
+      "value": "N-vE013",
+      "time": {
+        "start": 26305,
+        "end": 26305
+      }
+    },
+    {
+      "value": "N-vN004",
+      "time": {
+        "start": 26834,
+        "end": 26834
+      }
+    },
+    {
+      "value": "N-vE014",
+      "time": {
+        "start": 27395,
+        "end": 27395
+      }
+    },
+    {
+      "value": "N-vE015",
+      "time": {
+        "start": 29302,
+        "end": 29302
+      }
+    },
+    {
+      "value": "N-vE016",
+      "time": {
+        "start": 31068,
+        "end": 31068
+      }
+    },
+    {
+      "value": "N-vE017",
+      "time": {
+        "start": 32400,
+        "end": 32400
+      }
+    },
+    {
+      "value": "N-vN005",
+      "time": {
+        "start": 33257,
+        "end": 33257
+      }
+    },
+    {
+      "value": "N-vE018",
+      "time": {
+        "start": 33902,
+        "end": 33902
+      }
+    },
+    {
+      "value": "N-vE019",
+      "time": {
+        "start": 36373,
+        "end": 36373
+      }
+    },
+    {
+      "value": "N-vE020",
+      "time": {
+        "start": 37857,
+        "end": 37857
+      }
+    },
+    {
+      "value": "N-vE021",
+      "time": {
+        "start": 39643,
+        "end": 39643
+      }
+    },
+    {
+      "value": "N-vE022",
+      "time": {
+        "start": 41206,
+        "end": 41206
+      }
+    },
+    {
+      "value": "N-vE023",
+      "time": {
+        "start": 42587,
+        "end": 42587
+      }
+    },
+    {
+      "value": "N-vE024",
+      "time": {
+        "start": 44067,
+        "end": 44067
+      }
+    },
+    {
+      "value": "N-vE025",
+      "time": {
+        "start": 44694,
+        "end": 44694
+      }
+    },
+    {
+      "value": "N-vE026",
+      "time": {
+        "start": 45266,
+        "end": 45266
+      }
+    },
+    {
+      "value": "N-vN006",
+      "time": {
+        "start": 47257,
+        "end": 47257
+      }
+    },
+    {
+      "value": "N-vE027",
+      "time": {
+        "start": 47667,
+        "end": 47667
+      }
+    },
+    {
+      "value": "N-vE028",
+      "time": {
+        "start": 48100,
+        "end": 48100
+      }
+    },
+    {
+      "value": "N-vE029",
+      "time": {
+        "start": 48957,
+        "end": 48957
+      }
+    }
+  ],
+  "N-mGeStructure": [
+    {
+      "parent": "N-mGe015",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe016",
+      "value": "P S R"
+    },
+    {
+      "parent": "N-mGe017",
+      "value": "P S H"
+    },
+    {
+      "parent": "N-mGe018",
+      "value": "P S R"
+    },
+    {
+      "parent": "N-mGe019",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe020",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe021",
+      "value": "P S R"
+    },
+    {
+      "parent": "N-mGe022",
+      "value": "S"
+    },
+    {
+      "parent": "N-mGe023",
+      "value": "P-S"
+    },
+    {
+      "parent": "N-mGe024",
+      "value": "S"
+    },
+    {
+      "parent": "N-mGe025",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe026",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe027",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe028",
+      "value": "S R"
+    },
+    {
+      "parent": "N-mGe029",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe030",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe031",
+      "value": "P S R"
+    },
+    {
+      "parent": "N-mGe032",
+      "value": "P S R"
+    },
+    {
+      "parent": "N-mGe033",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe034",
+      "value": "P S"
+    },
+    {
+      "parent": "N-mGe035",
+      "value": "P S"
+    }
+  ],
+  "N-mRtMovement": [
+    {
+      "value": "N-mRtMt028",
+      "time": {
+        "start": 24930,
+        "end": 24930
+      }
+    },
+    {
+      "value": "N-mRtMt029",
+      "time": {
+        "start": 25230,
+        "end": 25230
+      }
+    },
+    {
+      "value": "N-mRtMt030",
+      "time": {
+        "start": 25630,
+        "end": 25630
+      }
+    },
+    {
+      "value": "N-mRtMt031",
+      "time": {
+        "start": 25920,
+        "end": 25920
+      }
+    },
+    {
+      "value": "N-mRtMt032",
+      "time": {
+        "start": 26260,
+        "end": 26260
+      }
+    },
+    {
+      "value": "N-mRtMt033",
+      "time": {
+        "start": 28200,
+        "end": 28200
+      }
+    },
+    {
+      "value": "N-mRtMt034",
+      "time": {
+        "start": 31270,
+        "end": 31270
+      }
+    },
+    {
+      "value": "N-mRtMt035",
+      "time": {
+        "start": 31630,
+        "end": 31630
+      }
+    },
+    {
+      "value": "N-mRtMt036",
+      "time": {
+        "start": 32140,
+        "end": 32140
+      }
+    },
+    {
+      "value": "N-mRtMt037",
+      "time": {
+        "start": 32570,
+        "end": 32570
+      }
+    },
+    {
+      "value": "N-mRtMt038",
+      "time": {
+        "start": 33000,
+        "end": 33000
+      }
+    },
+    {
+      "value": "N-mRtMt039",
+      "time": {
+        "start": 34480,
+        "end": 34480
+      }
+    },
+    {
+      "value": "N-mRtMt040",
+      "time": {
+        "start": 35610,
+        "end": 35610
+      }
+    },
+    {
+      "value": "N-mRtMt041",
+      "time": {
+        "start": 35900,
+        "end": 35900
+      }
+    },
+    {
+      "value": "N-mRtMt042",
+      "time": {
+        "start": 36310,
+        "end": 36310
+      }
+    },
+    {
+      "value": "N-mRtMt043",
+      "time": {
+        "start": 36570,
+        "end": 36570
+      }
+    },
+    {
+      "value": "N-mRtMt044",
+      "time": {
+        "start": 37040,
+        "end": 37040
+      }
+    },
+    {
+      "value": "N-mRtMt045",
+      "time": {
+        "start": 37300,
+        "end": 37300
+      }
+    },
+    {
+      "value": "N-mRtMt046",
+      "time": {
+        "start": 37840,
+        "end": 37840
+      }
+    },
+    {
+      "value": "N-mRtMt047",
+      "time": {
+        "start": 38290,
+        "end": 38290
+      }
+    },
+    {
+      "value": "N-mRtMt048",
+      "time": {
+        "start": 39000,
+        "end": 39000
+      }
+    },
+    {
+      "value": "N-mRtMt049",
+      "time": {
+        "start": 39370,
+        "end": 39370
+      }
+    },
+    {
+      "value": "N-mRtMt050",
+      "time": {
+        "start": 39750,
+        "end": 39750
+      }
+    },
+    {
+      "value": "N-mRtMt051",
+      "time": {
+        "start": 40120,
+        "end": 40120
+      }
+    },
+    {
+      "value": "N-mRtMt052",
+      "time": {
+        "start": 40370,
+        "end": 40370
+      }
+    },
+    {
+      "value": "N-mRtMt053",
+      "time": {
+        "start": 41120,
+        "end": 41120
+      }
+    },
+    {
+      "value": "N-mRtMt054",
+      "time": {
+        "start": 41610,
+        "end": 41610
+      }
+    },
+    {
+      "value": "N-mRtMt055",
+      "time": {
+        "start": 41900,
+        "end": 41900
+      }
+    },
+    {
+      "value": "N-mRtMt056",
+      "time": {
+        "start": 42180,
+        "end": 42180
+      }
+    },
+    {
+      "value": "N-mRtMt057",
+      "time": {
+        "start": 42410,
+        "end": 42410
+      }
+    },
+    {
+      "value": "N-mRtMt058",
+      "time": {
+        "start": 43000,
+        "end": 43000
+      }
+    },
+    {
+      "value": "N-mRtMt059",
+      "time": {
+        "start": 43900,
+        "end": 43900
+      }
+    },
+    {
+      "value": "N-mRtMt060",
+      "time": {
+        "start": 44290,
+        "end": 44290
+      }
+    },
+    {
+      "value": "N-mRtMt061",
+      "time": {
+        "start": 45010,
+        "end": 45010
+      }
+    },
+    {
+      "value": "N-mRtMt062",
+      "time": {
+        "start": 45420,
+        "end": 45420
+      }
+    },
+    {
+      "value": "N-mRtMt063",
+      "time": {
+        "start": 45620,
+        "end": 45620
+      }
+    },
+    {
+      "value": "N-mRtMt064",
+      "time": {
+        "start": 45790,
+        "end": 45790
+      }
+    },
+    {
+      "value": "N-mRtMt065",
+      "time": {
+        "start": 46460,
+        "end": 46460
+      }
+    },
+    {
+      "value": "N-mRtMt066",
+      "time": {
+        "start": 46810,
+        "end": 46810
+      }
+    },
+    {
+      "value": "N-mRtMt067",
+      "time": {
+        "start": 46990,
+        "end": 46990
+      }
+    },
+    {
+      "value": "N-mRtMt068",
+      "time": {
+        "start": 47710,
+        "end": 47710
+      }
+    },
+    {
+      "value": "N-mRtMt069",
+      "time": {
+        "start": 48040,
+        "end": 48040
+      }
+    },
+    {
+      "value": "N-mRtMt070",
+      "time": {
+        "start": 48580,
+        "end": 48580
+      }
+    },
+    {
+      "value": "N-mRtMt071",
+      "time": {
+        "start": 49200,
+        "end": 49200
+      }
+    }
+  ],
+  "N-vSType": [
+    {
+      "parent": "N-vW0045",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0046",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0047",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vHp0003",
+      "value": "HPause"
+    },
+    {
+      "parent": "N-vW0048",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vHp0004",
+      "value": "HPause"
+    },
+    {
+      "parent": "N-vFd0006",
+      "value": "Filled"
+    },
+    {
+      "parent": "N-vW0050",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vFd0007",
+      "value": "Filled"
+    },
+    {
+      "parent": "N-vW0051",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0052",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0053",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0055",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0057",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vHp0005",
+      "value": "HPause"
+    },
+    {
+      "parent": "N-vFd0008",
+      "value": "Filled"
+    },
+    {
+      "parent": "N-vW0059",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vFd0009",
+      "value": "Filled"
+    },
+    {
+      "parent": "N-vW0060",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0061",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0063",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0064",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0065",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0066",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vFd0010",
+      "value": "Filled"
+    },
+    {
+      "parent": "N-vW0068",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0069",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0070",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0071",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0072",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0073",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0075",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0076",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0077",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0078",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0079",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0081",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0082",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0083",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0084",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0085",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0087",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0088",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0089",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0090",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0091",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0093",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vFd0011",
+      "value": "Filled"
+    },
+    {
+      "parent": "N-vW0096",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0097",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vHp0006",
+      "value": "HPause"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vOth0001",
+      "value": "Other"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0100",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0102",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0103",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0104",
+      "value": "Word"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "Word"
+    }
+  ],
+  "N-mGeHandedness": [
+    {
+      "parent": "N-mGe015",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe016",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe017",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe018",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe019",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe020",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe021",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe022",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe023",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe024",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe025",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe026",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe027",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe028",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe029",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe030",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe031",
+      "value": "Bh-dif"
+    },
+    {
+      "parent": "N-mGe032",
+      "value": "Bh-id"
+    },
+    {
+      "parent": "N-mGe033",
+      "value": "Bh-dif"
+    },
+    {
+      "parent": "N-mGe034",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "N-mGe035",
+      "value": "Bh-sym"
+    }
+  ],
+  "C-mPosture": [
+    {
+      "value": "C-mPr02",
+      "time": {
+        "start": 10530,
+        "end": 10530
+      }
+    }
+  ],
+  "N-vSForm": [
+    {
+      "parent": "N-vW0045",
+      "value": "большую"
+    },
+    {
+      "parent": "N-vW0046",
+      "value": "зелёную"
+    },
+    {
+      "parent": "N-vW0047",
+      "value": "грушу"
+    },
+    {
+      "parent": "N-vHp0003",
+      "value": "(ɥ)"
+    },
+    {
+      "parent": "N-vW0048",
+      "value": "с"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "дерева"
+    },
+    {
+      "parent": "N-vHp0004",
+      "value": "(ɥ)"
+    },
+    {
+      "parent": "N-vFd0006",
+      "value": "(ə)"
+    },
+    {
+      "parent": "N-vW0050",
+      "value": "мужчина"
+    },
+    {
+      "parent": "N-vFd0007",
+      "value": "(ˀ)"
+    },
+    {
+      "parent": "N-vW0051",
+      "value": "где-то"
+    },
+    {
+      "parent": "N-vW0052",
+      "value": "лет"
+    },
+    {
+      "parent": "N-vW0053",
+      "value": "сорока-"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "пятидесяти"
+    },
+    {
+      "parent": "N-vW0055",
+      "value": "собирает"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "урожай"
+    },
+    {
+      "parent": "N-vW0057",
+      "value": "собирает"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "груши"
+    },
+    {
+      "parent": "N-vHp0005",
+      "value": "(ɥ)"
+    },
+    {
+      "parent": "N-vFd0008",
+      "value": "(əɯ)"
+    },
+    {
+      "parent": "N-vW0059",
+      "value": "он"
+    },
+    {
+      "parent": "N-vFd0009",
+      "value": "(ə)"
+    },
+    {
+      "parent": "N-vW0060",
+      "value": "в"
+    },
+    {
+      "parent": "N-vW0061",
+      "value": "соломенной"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "шляпе"
+    },
+    {
+      "parent": "N-vW0063",
+      "value": "у"
+    },
+    {
+      "parent": "N-vW0064",
+      "value": "него"
+    },
+    {
+      "parent": "N-vW0065",
+      "value": "красный"
+    },
+    {
+      "parent": "N-vW0066",
+      "value": "такой"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "платок"
+    },
+    {
+      "parent": "N-vFd0010",
+      "value": "(ˀ)"
+    },
+    {
+      "parent": "N-vW0068",
+      "value": "и"
+    },
+    {
+      "parent": "N-vW0069",
+      "value": "на"
+    },
+    {
+      "parent": "N-vW0070",
+      "value": "нём"
+    },
+    {
+      "parent": "N-vW0071",
+      "value": "такой"
+    },
+    {
+      "parent": "N-vW0072",
+      "value": "белый"
+    },
+    {
+      "parent": "N-vW0073",
+      "value": "большой"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "фартук"
+    },
+    {
+      "parent": "N-vW0075",
+      "value": "в_который"
+    },
+    {
+      "parent": "N-vW0076",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0077",
+      "value": "собирает"
+    },
+    {
+      "parent": "N-vW0078",
+      "value": "эти"
+    },
+    {
+      "parent": "N-vW0079",
+      "value": "самые"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "груши"
+    },
+    {
+      "parent": "N-vW0081",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0082",
+      "value": "столит"
+    },
+    {
+      "parent": "N-vW0083",
+      "value": "н="
+    },
+    {
+      "parent": "N-vW0084",
+      "value": "стоит"
+    },
+    {
+      "parent": "N-vW0085",
+      "value": "на"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "лестнице"
+    },
+    {
+      "parent": "N-vW0087",
+      "value": "как"
+    },
+    {
+      "parent": "N-vW0088",
+      "value": "только"
+    },
+    {
+      "parent": "N-vW0089",
+      "value": "у"
+    },
+    {
+      "parent": "N-vW0090",
+      "value": "него"
+    },
+    {
+      "parent": "N-vW0091",
+      "value": "наполняется"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "фартук"
+    },
+    {
+      "parent": "N-vW0093",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "спускается"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "медленно"
+    },
+    {
+      "parent": "N-vFd0011",
+      "value": "(ə)"
+    },
+    {
+      "parent": "N-vW0096",
+      "value": "лестница"
+    },
+    {
+      "parent": "N-vW0097",
+      "value": "очень"
+    },
+    {
+      "parent": "N-vHp0006",
+      "value": "(ɥ)"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "хрустит"
+    },
+    {
+      "parent": "N-vOth0001",
+      "value": "{sf}"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "громко"
+    },
+    {
+      "parent": "N-vW0100",
+      "value": "он"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "спускается"
+    },
+    {
+      "parent": "N-vW0102",
+      "value": "внизу"
+    },
+    {
+      "parent": "N-vW0103",
+      "value": "стоит"
+    },
+    {
+      "parent": "N-vW0104",
+      "value": "три"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "корзины"
+    }
+  ],
+  "N-mLtMovement": [
+    {
+      "value": "N-mLtMt031",
+      "time": {
+        "start": 24930,
+        "end": 24930
+      }
+    },
+    {
+      "value": "N-mLtMt032",
+      "time": {
+        "start": 25230,
+        "end": 25230
+      }
+    },
+    {
+      "value": "N-mLtMt033",
+      "time": {
+        "start": 25630,
+        "end": 25630
+      }
+    },
+    {
+      "value": "N-mLtMt034",
+      "time": {
+        "start": 25920,
+        "end": 25920
+      }
+    },
+    {
+      "value": "N-mLtMt035",
+      "time": {
+        "start": 26260,
+        "end": 26260
+      }
+    },
+    {
+      "value": "N-mLtMt036",
+      "time": {
+        "start": 28200,
+        "end": 28200
+      }
+    },
+    {
+      "value": "N-mLtMt037",
+      "time": {
+        "start": 31270,
+        "end": 31270
+      }
+    },
+    {
+      "value": "N-mLtMt038",
+      "time": {
+        "start": 31630,
+        "end": 31630
+      }
+    },
+    {
+      "value": "N-mLtMt039",
+      "time": {
+        "start": 32140,
+        "end": 32140
+      }
+    },
+    {
+      "value": "N-mLtMt040",
+      "time": {
+        "start": 32570,
+        "end": 32570
+      }
+    },
+    {
+      "value": "N-mLtMt041",
+      "time": {
+        "start": 33000,
+        "end": 33000
+      }
+    },
+    {
+      "value": "N-mLtMt042",
+      "time": {
+        "start": 34650,
+        "end": 34650
+      }
+    },
+    {
+      "value": "N-mLtMt043",
+      "time": {
+        "start": 35610,
+        "end": 35610
+      }
+    },
+    {
+      "value": "N-mLtMt044",
+      "time": {
+        "start": 35900,
+        "end": 35900
+      }
+    },
+    {
+      "value": "N-mLtMt045",
+      "time": {
+        "start": 36310,
+        "end": 36310
+      }
+    },
+    {
+      "value": "N-mLtMt046",
+      "time": {
+        "start": 36570,
+        "end": 36570
+      }
+    },
+    {
+      "value": "N-mLtMt047",
+      "time": {
+        "start": 37040,
+        "end": 37040
+      }
+    },
+    {
+      "value": "N-mLtMt048",
+      "time": {
+        "start": 37300,
+        "end": 37300
+      }
+    },
+    {
+      "value": "N-mLtMt049",
+      "time": {
+        "start": 37840,
+        "end": 37840
+      }
+    },
+    {
+      "value": "N-mLtMt050",
+      "time": {
+        "start": 38290,
+        "end": 38290
+      }
+    },
+    {
+      "value": "N-mLtMt051",
+      "time": {
+        "start": 39000,
+        "end": 39000
+      }
+    },
+    {
+      "value": "N-mLtMt052",
+      "time": {
+        "start": 39370,
+        "end": 39370
+      }
+    },
+    {
+      "value": "N-mLtMt053",
+      "time": {
+        "start": 39750,
+        "end": 39750
+      }
+    },
+    {
+      "value": "N-mLtMt054",
+      "time": {
+        "start": 40120,
+        "end": 40120
+      }
+    },
+    {
+      "value": "N-mLtMt055",
+      "time": {
+        "start": 40370,
+        "end": 40370
+      }
+    },
+    {
+      "value": "N-mLtMt056",
+      "time": {
+        "start": 41120,
+        "end": 41120
+      }
+    },
+    {
+      "value": "N-mLtMt057",
+      "time": {
+        "start": 41610,
+        "end": 41610
+      }
+    },
+    {
+      "value": "N-mLtMt058",
+      "time": {
+        "start": 41900,
+        "end": 41900
+      }
+    },
+    {
+      "value": "N-mLtMt059",
+      "time": {
+        "start": 42180,
+        "end": 42180
+      }
+    },
+    {
+      "value": "N-mLtMt060",
+      "time": {
+        "start": 42410,
+        "end": 42410
+      }
+    },
+    {
+      "value": "N-mLtMt061",
+      "time": {
+        "start": 43000,
+        "end": 43000
+      }
+    },
+    {
+      "value": "N-mLtMt062",
+      "time": {
+        "start": 43900,
+        "end": 43900
+      }
+    },
+    {
+      "value": "N-mLtMt063",
+      "time": {
+        "start": 44290,
+        "end": 44290
+      }
+    },
+    {
+      "value": "N-mLtMt064",
+      "time": {
+        "start": 45010,
+        "end": 45010
+      }
+    },
+    {
+      "value": "N-mLtMt065",
+      "time": {
+        "start": 45280,
+        "end": 45280
+      }
+    },
+    {
+      "value": "N-mLtMt066",
+      "time": {
+        "start": 45580,
+        "end": 45580
+      }
+    },
+    {
+      "value": "N-mLtMt067",
+      "time": {
+        "start": 45790,
+        "end": 45790
+      }
+    },
+    {
+      "value": "N-mLtMt068",
+      "time": {
+        "start": 46360,
+        "end": 46360
+      }
+    },
+    {
+      "value": "N-mLtMt069",
+      "time": {
+        "start": 46810,
+        "end": 46810
+      }
+    },
+    {
+      "value": "N-mLtMt070",
+      "time": {
+        "start": 47050,
+        "end": 47050
+      }
+    },
+    {
+      "value": "N-mLtMt071",
+      "time": {
+        "start": 47600,
+        "end": 47600
+      }
+    },
+    {
+      "value": "N-mLtMt072",
+      "time": {
+        "start": 48040,
+        "end": 48040
+      }
+    },
+    {
+      "value": "N-mLtMt073",
+      "time": {
+        "start": 48580,
+        "end": 48580
+      }
+    },
+    {
+      "value": "N-mLtMt074",
+      "time": {
+        "start": 49200,
+        "end": 49200
+      }
+    }
+  ],
+  "R-vSegmHTML": [
+    {
+      "parent": "R-vW0004",
+      "value": "↓/Уг<u>у</u>"
+    }
+  ],
+  "R-vNearPause": [
+    {
+      "parent": "R-vW0004",
+      "value": "Between"
+    }
+  ],
+  "R-mRtStType": [
+    {
+      "parent": "R-mRtSt001",
+      "value": "Rest"
+    }
+  ],
+  "R-vAccents": [
+    {
+      "parent": "R-vW0004",
+      "value": "fR"
+    }
+  ],
+  "N-vWordsCount": [
+    {
+      "parent": "N-vE012",
+      "value": "6"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "4"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "4"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "5"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "7"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "6"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "6"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "6"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "3"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "1"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "2"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "4"
+    }
+  ],
+  "N-vInSplit": [
+    {
+      "parent": "N-vE014",
+      "value": "InSplit"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "InSplit"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "InSplit"
+    }
+  ],
+  "N-vStartFilled": [
+    {
+      "parent": "N-vE014",
+      "value": "Yes"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "Yes"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "Yes"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "Yes"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "Yes"
+    }
+  ],
+  "N-vPauseHTML": [
+    {
+      "parent": "N-vPs0011",
+      "value": "(0.21)"
+    },
+    {
+      "parent": "N-vPs0012",
+      "value": "(0.1)"
+    },
+    {
+      "parent": "N-vPs0013",
+      "value": "(0.18)"
+    },
+    {
+      "parent": "N-vPs0014",
+      "value": "(0.32)"
+    },
+    {
+      "parent": "N-vPs0015",
+      "value": "(0.19)"
+    },
+    {
+      "parent": "N-vPs0016",
+      "value": "(0.07)"
+    },
+    {
+      "parent": "N-vPs0017",
+      "value": "(0.11)"
+    },
+    {
+      "parent": "N-vPs0018",
+      "value": "(0.06)"
+    }
+  ],
+  "R-oFixation": [
+    {
+      "value": "R-oF0020",
+      "time": {
+        "start": 23203,
+        "end": 23203
+      }
+    },
+    {
+      "value": "R-oF0021",
+      "time": {
+        "start": 26842,
+        "end": 26842
+      }
+    },
+    {
+      "value": "R-oF0022",
+      "time": {
+        "start": 27642,
+        "end": 27642
+      }
+    },
+    {
+      "value": "R-oF0023",
+      "time": {
+        "start": 27822,
+        "end": 27822
+      }
+    },
+    {
+      "value": "R-oF0024",
+      "time": {
+        "start": 28522,
+        "end": 28522
+      }
+    },
+    {
+      "value": "R-oF0025",
+      "time": {
+        "start": 28802,
+        "end": 28802
+      }
+    },
+    {
+      "value": "R-oF0026",
+      "time": {
+        "start": 28942,
+        "end": 28942
+      }
+    },
+    {
+      "value": "R-oF0027",
+      "time": {
+        "start": 30182,
+        "end": 30182
+      }
+    },
+    {
+      "value": "R-oF0028",
+      "time": {
+        "start": 32502,
+        "end": 32502
+      }
+    },
+    {
+      "value": "R-oF0029",
+      "time": {
+        "start": 35979,
+        "end": 35979
+      }
+    },
+    {
+      "value": "R-oF0030",
+      "time": {
+        "start": 37377,
+        "end": 37377
+      }
+    },
+    {
+      "value": "R-oF0031",
+      "time": {
+        "start": 39357,
+        "end": 39357
+      }
+    },
+    {
+      "value": "R-oF0032",
+      "time": {
+        "start": 42117,
+        "end": 42117
+      }
+    },
+    {
+      "value": "R-oF0033",
+      "time": {
+        "start": 42457,
+        "end": 42457
+      }
+    },
+    {
+      "value": "R-oF0034",
+      "time": {
+        "start": 42737,
+        "end": 42737
+      }
+    },
+    {
+      "value": "R-oF0035",
+      "time": {
+        "start": 42917,
+        "end": 42917
+      }
+    },
+    {
+      "value": "R-oF0036",
+      "time": {
+        "start": 43297,
+        "end": 43297
+      }
+    },
+    {
+      "value": "R-oF0037",
+      "time": {
+        "start": 43517,
+        "end": 43517
+      }
+    },
+    {
+      "value": "R-oF0038",
+      "time": {
+        "start": 43617,
+        "end": 43617
+      }
+    },
+    {
+      "value": "R-oF0039",
+      "time": {
+        "start": 44417,
+        "end": 44417
+      }
+    },
+    {
+      "value": "R-oF0040",
+      "time": {
+        "start": 46416,
+        "end": 46416
+      }
+    },
+    {
+      "value": "R-oF0041",
+      "time": {
+        "start": 47916,
+        "end": 47916
+      }
+    },
+    {
+      "value": "R-oF0042",
+      "time": {
+        "start": 49396,
+        "end": 49396
+      }
+    },
+    {
+      "value": "R-oF0043",
+      "time": {
+        "start": 49676,
+        "end": 49676
+      }
+    }
+  ],
+  "N-mGesture": [
+    {
+      "value": "N-mGe015",
+      "time": {
+        "start": 24930,
+        "end": 24930
+      }
+    },
+    {
+      "value": "N-mGe016",
+      "time": {
+        "start": 25630,
+        "end": 25630
+      }
+    },
+    {
+      "value": "N-mGe017",
+      "time": {
+        "start": 31270,
+        "end": 31270
+      }
+    },
+    {
+      "value": "N-mGe018",
+      "time": {
+        "start": 32140,
+        "end": 32140
+      }
+    },
+    {
+      "value": "N-mGe019",
+      "time": {
+        "start": 34480,
+        "end": 34480
+      }
+    },
+    {
+      "value": "N-mGe020",
+      "time": {
+        "start": 35900,
+        "end": 35900
+      }
+    },
+    {
+      "value": "N-mGe021",
+      "time": {
+        "start": 36570,
+        "end": 36570
+      }
+    },
+    {
+      "value": "N-mGe022",
+      "time": {
+        "start": 37840,
+        "end": 37840
+      }
+    },
+    {
+      "value": "N-mGe023",
+      "time": {
+        "start": 38290,
+        "end": 38290
+      }
+    },
+    {
+      "value": "N-mGe024",
+      "time": {
+        "start": 39000,
+        "end": 39000
+      }
+    },
+    {
+      "value": "N-mGe025",
+      "time": {
+        "start": 39370,
+        "end": 39370
+      }
+    },
+    {
+      "value": "N-mGe026",
+      "time": {
+        "start": 40120,
+        "end": 40120
+      }
+    },
+    {
+      "value": "N-mGe027",
+      "time": {
+        "start": 41120,
+        "end": 41120
+      }
+    },
+    {
+      "value": "N-mGe028",
+      "time": {
+        "start": 41900,
+        "end": 41900
+      }
+    },
+    {
+      "value": "N-mGe029",
+      "time": {
+        "start": 42410,
+        "end": 42410
+      }
+    },
+    {
+      "value": "N-mGe030",
+      "time": {
+        "start": 43900,
+        "end": 43900
+      }
+    },
+    {
+      "value": "N-mGe031",
+      "time": {
+        "start": 45010,
+        "end": 45010
+      }
+    },
+    {
+      "value": "N-mGe032",
+      "time": {
+        "start": 45620,
+        "end": 45620
+      }
+    },
+    {
+      "value": "N-mGe033",
+      "time": {
+        "start": 46810,
+        "end": 46810
+      }
+    },
+    {
+      "value": "N-mGe034",
+      "time": {
+        "start": 47710,
+        "end": 47710
+      }
+    },
+    {
+      "value": "N-mGe035",
+      "time": {
+        "start": 48580,
+        "end": 48580
+      }
+    }
+  ],
+  "N-mAdType": [
+    {
+      "parent": "N-mAd005",
+      "value": "Adaptor2"
+    }
+  ],
+  "N-vSegm": [
+    {
+      "value": "N-vW0045",
+      "time": {
+        "start": 24673,
+        "end": 24673
+      }
+    },
+    {
+      "value": "N-vW0046",
+      "time": {
+        "start": 25003,
+        "end": 25003
+      }
+    },
+    {
+      "value": "N-vW0047",
+      "time": {
+        "start": 25400,
+        "end": 25400
+      }
+    },
+    {
+      "value": "N-vHp0003",
+      "time": {
+        "start": 25952,
+        "end": 25952
+      }
+    },
+    {
+      "value": "N-vW0048",
+      "time": {
+        "start": 26305,
+        "end": 26305
+      }
+    },
+    {
+      "value": "N-vW0049",
+      "time": {
+        "start": 26356,
+        "end": 26356
+      }
+    },
+    {
+      "value": "N-vHp0004",
+      "time": {
+        "start": 26834,
+        "end": 26834
+      }
+    },
+    {
+      "value": "N-vFd0006",
+      "time": {
+        "start": 27395,
+        "end": 27395
+      }
+    },
+    {
+      "value": "N-vW0050",
+      "time": {
+        "start": 28079,
+        "end": 28079
+      }
+    },
+    {
+      "value": "N-vFd0007",
+      "time": {
+        "start": 29302,
+        "end": 29302
+      }
+    },
+    {
+      "value": "N-vW0051",
+      "time": {
+        "start": 29403,
+        "end": 29403
+      }
+    },
+    {
+      "value": "N-vW0052",
+      "time": {
+        "start": 29803,
+        "end": 29803
+      }
+    },
+    {
+      "value": "N-vW0053",
+      "time": {
+        "start": 29958,
+        "end": 29958
+      }
+    },
+    {
+      "value": "N-vW0054",
+      "time": {
+        "start": 30313,
+        "end": 30313
+      }
+    },
+    {
+      "value": "N-vW0055",
+      "time": {
+        "start": 31068,
+        "end": 31068
+      }
+    },
+    {
+      "value": "N-vW0056",
+      "time": {
+        "start": 31920,
+        "end": 31920
+      }
+    },
+    {
+      "value": "N-vW0057",
+      "time": {
+        "start": 32400,
+        "end": 32400
+      }
+    },
+    {
+      "value": "N-vW0058",
+      "time": {
+        "start": 32766,
+        "end": 32766
+      }
+    },
+    {
+      "value": "N-vHp0005",
+      "time": {
+        "start": 33257,
+        "end": 33257
+      }
+    },
+    {
+      "value": "N-vFd0008",
+      "time": {
+        "start": 33902,
+        "end": 33902
+      }
+    },
+    {
+      "value": "N-vW0059",
+      "time": {
+        "start": 34627,
+        "end": 34627
+      }
+    },
+    {
+      "value": "N-vFd0009",
+      "time": {
+        "start": 34957,
+        "end": 34957
+      }
+    },
+    {
+      "value": "N-vW0060",
+      "time": {
+        "start": 35385,
+        "end": 35385
+      }
+    },
+    {
+      "value": "N-vW0061",
+      "time": {
+        "start": 35504,
+        "end": 35504
+      }
+    },
+    {
+      "value": "N-vW0062",
+      "time": {
+        "start": 35987,
+        "end": 35987
+      }
+    },
+    {
+      "value": "N-vW0063",
+      "time": {
+        "start": 36373,
+        "end": 36373
+      }
+    },
+    {
+      "value": "N-vW0064",
+      "time": {
+        "start": 36437,
+        "end": 36437
+      }
+    },
+    {
+      "value": "N-vW0065",
+      "time": {
+        "start": 36646,
+        "end": 36646
+      }
+    },
+    {
+      "value": "N-vW0066",
+      "time": {
+        "start": 37007,
+        "end": 37007
+      }
+    },
+    {
+      "value": "N-vW0067",
+      "time": {
+        "start": 37232,
+        "end": 37232
+      }
+    },
+    {
+      "value": "N-vFd0010",
+      "time": {
+        "start": 37857,
+        "end": 37857
+      }
+    },
+    {
+      "value": "N-vW0068",
+      "time": {
+        "start": 38063,
+        "end": 38063
+      }
+    },
+    {
+      "value": "N-vW0069",
+      "time": {
+        "start": 38166,
+        "end": 38166
+      }
+    },
+    {
+      "value": "N-vW0070",
+      "time": {
+        "start": 38275,
+        "end": 38275
+      }
+    },
+    {
+      "value": "N-vW0071",
+      "time": {
+        "start": 38467,
+        "end": 38467
+      }
+    },
+    {
+      "value": "N-vW0072",
+      "time": {
+        "start": 38736,
+        "end": 38736
+      }
+    },
+    {
+      "value": "N-vW0073",
+      "time": {
+        "start": 39032,
+        "end": 39032
+      }
+    },
+    {
+      "value": "N-vW0074",
+      "time": {
+        "start": 39297,
+        "end": 39297
+      }
+    },
+    {
+      "value": "N-vW0075",
+      "time": {
+        "start": 39643,
+        "end": 39643
+      }
+    },
+    {
+      "value": "N-vW0076",
+      "time": {
+        "start": 39999,
+        "end": 39999
+      }
+    },
+    {
+      "value": "N-vW0077",
+      "time": {
+        "start": 40076,
+        "end": 40076
+      }
+    },
+    {
+      "value": "N-vW0078",
+      "time": {
+        "start": 40481,
+        "end": 40481
+      }
+    },
+    {
+      "value": "N-vW0079",
+      "time": {
+        "start": 40587,
+        "end": 40587
+      }
+    },
+    {
+      "value": "N-vW0080",
+      "time": {
+        "start": 40933,
+        "end": 40933
+      }
+    },
+    {
+      "value": "N-vW0081",
+      "time": {
+        "start": 41206,
+        "end": 41206
+      }
+    },
+    {
+      "value": "N-vW0082",
+      "time": {
+        "start": 41305,
+        "end": 41305
+      }
+    },
+    {
+      "value": "N-vW0083",
+      "time": {
+        "start": 41621,
+        "end": 41621
+      }
+    },
+    {
+      "value": "N-vW0084",
+      "time": {
+        "start": 41780,
+        "end": 41780
+      }
+    },
+    {
+      "value": "N-vW0085",
+      "time": {
+        "start": 42082,
+        "end": 42082
+      }
+    },
+    {
+      "value": "N-vW0086",
+      "time": {
+        "start": 42162,
+        "end": 42162
+      }
+    },
+    {
+      "value": "N-vW0087",
+      "time": {
+        "start": 42587,
+        "end": 42587
+      }
+    },
+    {
+      "value": "N-vW0088",
+      "time": {
+        "start": 42750,
+        "end": 42750
+      }
+    },
+    {
+      "value": "N-vW0089",
+      "time": {
+        "start": 43026,
+        "end": 43026
+      }
+    },
+    {
+      "value": "N-vW0090",
+      "time": {
+        "start": 43063,
+        "end": 43063
+      }
+    },
+    {
+      "value": "N-vW0091",
+      "time": {
+        "start": 43217,
+        "end": 43217
+      }
+    },
+    {
+      "value": "N-vW0092",
+      "time": {
+        "start": 43690,
+        "end": 43690
+      }
+    },
+    {
+      "value": "N-vW0093",
+      "time": {
+        "start": 44067,
+        "end": 44067
+      }
+    },
+    {
+      "value": "N-vW0094",
+      "time": {
+        "start": 44138,
+        "end": 44138
+      }
+    },
+    {
+      "value": "N-vW0095",
+      "time": {
+        "start": 44694,
+        "end": 44694
+      }
+    },
+    {
+      "value": "N-vFd0011",
+      "time": {
+        "start": 45266,
+        "end": 45266
+      }
+    },
+    {
+      "value": "N-vW0096",
+      "time": {
+        "start": 45350,
+        "end": 45350
+      }
+    },
+    {
+      "value": "N-vW0097",
+      "time": {
+        "start": 45744,
+        "end": 45744
+      }
+    },
+    {
+      "value": "N-vHp0006",
+      "time": {
+        "start": 46416,
+        "end": 46416
+      }
+    },
+    {
+      "value": "N-vW0098",
+      "time": {
+        "start": 46850,
+        "end": 46850
+      }
+    },
+    {
+      "value": "N-vOth0001",
+      "time": {
+        "start": 47257,
+        "end": 47257
+      }
+    },
+    {
+      "value": "N-vW0099",
+      "time": {
+        "start": 47667,
+        "end": 47667
+      }
+    },
+    {
+      "value": "N-vW0100",
+      "time": {
+        "start": 48100,
+        "end": 48100
+      }
+    },
+    {
+      "value": "N-vW0101",
+      "time": {
+        "start": 48226,
+        "end": 48226
+      }
+    },
+    {
+      "value": "N-vW0102",
+      "time": {
+        "start": 48957,
+        "end": 48957
+      }
+    },
+    {
+      "value": "N-vW0103",
+      "time": {
+        "start": 49216,
+        "end": 49216
+      }
+    },
+    {
+      "value": "N-vW0104",
+      "time": {
+        "start": 49457,
+        "end": 49457
+      }
+    },
+    {
+      "value": "N-vW0105",
+      "time": {
+        "start": 49638,
+        "end": 49638
+      }
+    }
+  ],
+  "N-vPause": [
+    {
+      "value": "N-vPs0011",
+      "time": {
+        "start": 25741,
+        "end": 25741
+      }
+    },
+    {
+      "value": "N-vPs0012",
+      "time": {
+        "start": 26733,
+        "end": 26733
+      }
+    },
+    {
+      "value": "N-vPs0013",
+      "time": {
+        "start": 27217,
+        "end": 27217
+      }
+    },
+    {
+      "value": "N-vPs0014",
+      "time": {
+        "start": 28977,
+        "end": 28977
+      }
+    },
+    {
+      "value": "N-vPs0015",
+      "time": {
+        "start": 31728,
+        "end": 31728
+      }
+    },
+    {
+      "value": "N-vPs0016",
+      "time": {
+        "start": 32329,
+        "end": 32329
+      }
+    },
+    {
+      "value": "N-vPs0017",
+      "time": {
+        "start": 33794,
+        "end": 33794
+      }
+    },
+    {
+      "value": "N-vPs0018",
+      "time": {
+        "start": 41721,
+        "end": 41721
+      }
+    }
+  ],
+  "N-vIllocPhase": [
+    {
+      "parent": "N-vE012",
+      "value": "Period"
+    },
+    {
+      "parent": "N-vE013",
+      "value": "Period"
+    },
+    {
+      "parent": "N-vE014",
+      "value": "Split"
+    },
+    {
+      "parent": "N-vE015",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE016",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE017",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE018",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE019",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE020",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE021",
+      "value": "Period"
+    },
+    {
+      "parent": "N-vE022",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE023",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE024",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE025",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE026",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE027",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE028",
+      "value": "Comma"
+    },
+    {
+      "parent": "N-vE029",
+      "value": "Comma"
+    }
+  ],
+  "C-mRtStillness": [
+    {
+      "value": "C-mRtSt01",
+      "time": {
+        "start": 0,
+        "end": 0
+      }
+    }
+  ],
+  "N-mLtStillness": [
+    {
+      "value": "N-mLtSt02",
+      "time": {
+        "start": 33500,
+        "end": 33500
+      }
+    }
+  ],
+  "R-oLocus": [
+    {
+      "parent": "R-oF0020",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0021",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0022",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0023",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0024",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0025",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0026",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0027",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0028",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0029",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0030",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0031",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0032",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0033",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0034",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0035",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0036",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0037",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0038",
+      "value": "Other"
+    },
+    {
+      "parent": "R-oF0039",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0040",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0041",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0042",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0043",
+      "value": "Hands"
+    }
+  ],
+  "N-mComments": [
+    {
+      "value": "В правой руке длинная ретракция, так как мешает провод.",
+      "time": {
+        "start": 26260,
+        "end": 26260
+      }
+    }
+  ],
+  "C-mRtStType": [
+    {
+      "parent": "C-mRtSt01",
+      "value": "Rest"
+    }
+  ],
+  "R-mLtMovement": [
+    {
+      "value": "R-mLtMt008",
+      "time": {
+        "start": 43150,
+        "end": 43150
+      }
+    }
+  ],
+  "C-mLtStType": [
+    {
+      "parent": "C-mLtSt03",
+      "value": "Rest"
+    }
+  ],
+  "N-vNearPause": [
+    {
+      "parent": "N-vW0045",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0046",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0047",
+      "value": "Before"
+    },
+    {
+      "parent": "N-vHp0003",
+      "value": "After"
+    },
+    {
+      "parent": "N-vW0048",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0049",
+      "value": "Before"
+    },
+    {
+      "parent": "N-vHp0004",
+      "value": "Between"
+    },
+    {
+      "parent": "N-vFd0006",
+      "value": "After"
+    },
+    {
+      "parent": "N-vW0050",
+      "value": "Before"
+    },
+    {
+      "parent": "N-vFd0007",
+      "value": "After"
+    },
+    {
+      "parent": "N-vW0051",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0052",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0053",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0054",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0055",
+      "value": "Before"
+    },
+    {
+      "parent": "N-vW0056",
+      "value": "Between"
+    },
+    {
+      "parent": "N-vW0057",
+      "value": "After"
+    },
+    {
+      "parent": "N-vW0058",
+      "value": "None"
+    },
+    {
+      "parent": "N-vHp0005",
+      "value": "Before"
+    },
+    {
+      "parent": "N-vFd0008",
+      "value": "After"
+    },
+    {
+      "parent": "N-vW0059",
+      "value": "None"
+    },
+    {
+      "parent": "N-vFd0009",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0060",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0061",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0062",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0063",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0064",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0065",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0066",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0067",
+      "value": "None"
+    },
+    {
+      "parent": "N-vFd0010",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0068",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0069",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0070",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0071",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0072",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0073",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0074",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0075",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0076",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0077",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0078",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0079",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0080",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0081",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0082",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0083",
+      "value": "Before"
+    },
+    {
+      "parent": "N-vW0084",
+      "value": "After"
+    },
+    {
+      "parent": "N-vW0085",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0086",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0087",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0088",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0089",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0090",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0091",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0092",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0093",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0094",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0095",
+      "value": "None"
+    },
+    {
+      "parent": "N-vFd0011",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0096",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0097",
+      "value": "None"
+    },
+    {
+      "parent": "N-vHp0006",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0098",
+      "value": "None"
+    },
+    {
+      "parent": "N-vOth0001",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0099",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0100",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0101",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0102",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0103",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0104",
+      "value": "None"
+    },
+    {
+      "parent": "N-vW0105",
+      "value": "None"
+    }
+  ],
+  "R-vPause": [
+    {
+      "value": "R-vPs0004",
+      "time": {
+        "start": 20004,
+        "end": 20004
+      }
+    },
+    {
+      "value": "R-vPs0005",
+      "time": {
+        "start": 45453,
+        "end": 45453
+      }
+    }
+  ],
+  "N-mAdaptor": [
+    {
+      "value": "N-mAd005",
+      "time": {
+        "start": 28200,
+        "end": 28200
+      }
+    }
+  ],
+  "R-vMainAccentsCount": [
+    {
+      "parent": "R-vE004",
+      "value": "1"
+    }
+  ],
+  "N-oFixation": [
+    {
+      "value": "N-oF0039",
+      "time": {
+        "start": 23013,
+        "end": 23013
+      }
+    },
+    {
+      "value": "N-oF0040",
+      "time": {
+        "start": 25792,
+        "end": 25792
+      }
+    },
+    {
+      "value": "N-oF0041",
+      "time": {
+        "start": 26992,
+        "end": 26992
+      }
+    },
+    {
+      "value": "N-oF0042",
+      "time": {
+        "start": 27692,
+        "end": 27692
+      }
+    },
+    {
+      "value": "N-oF0043",
+      "time": {
+        "start": 28272,
+        "end": 28272
+      }
+    },
+    {
+      "value": "N-oF0044",
+      "time": {
+        "start": 28810,
+        "end": 28810
+      }
+    },
+    {
+      "value": "N-oF0045",
+      "time": {
+        "start": 29390,
+        "end": 29390
+      }
+    },
+    {
+      "value": "N-oF0046",
+      "time": {
+        "start": 30769,
+        "end": 30769
+      }
+    },
+    {
+      "value": "N-oF0047",
+      "time": {
+        "start": 31249,
+        "end": 31249
+      }
+    },
+    {
+      "value": "N-oF0048",
+      "time": {
+        "start": 31809,
+        "end": 31809
+      }
+    },
+    {
+      "value": "N-oF0049",
+      "time": {
+        "start": 33009,
+        "end": 33009
+      }
+    },
+    {
+      "value": "N-oF0050",
+      "time": {
+        "start": 33289,
+        "end": 33289
+      }
+    },
+    {
+      "value": "N-oF0051",
+      "time": {
+        "start": 33769,
+        "end": 33769
+      }
+    },
+    {
+      "value": "N-oF0052",
+      "time": {
+        "start": 35689,
+        "end": 35689
+      }
+    },
+    {
+      "value": "N-oF0053",
+      "time": {
+        "start": 36789,
+        "end": 36789
+      }
+    },
+    {
+      "value": "N-oF0054",
+      "time": {
+        "start": 37908,
+        "end": 37908
+      }
+    },
+    {
+      "value": "N-oF0055",
+      "time": {
+        "start": 38228,
+        "end": 38228
+      }
+    },
+    {
+      "value": "N-oF0056",
+      "time": {
+        "start": 38568,
+        "end": 38568
+      }
+    },
+    {
+      "value": "N-oF0057",
+      "time": {
+        "start": 38788,
+        "end": 38788
+      }
+    },
+    {
+      "value": "N-oF0058",
+      "time": {
+        "start": 39208,
+        "end": 39208
+      }
+    },
+    {
+      "value": "N-oF0059",
+      "time": {
+        "start": 39328,
+        "end": 39328
+      }
+    },
+    {
+      "value": "N-oF0060",
+      "time": {
+        "start": 39588,
+        "end": 39588
+      }
+    },
+    {
+      "value": "N-oF0061",
+      "time": {
+        "start": 40268,
+        "end": 40268
+      }
+    },
+    {
+      "value": "N-oF0062",
+      "time": {
+        "start": 41628,
+        "end": 41628
+      }
+    },
+    {
+      "value": "N-oF0063",
+      "time": {
+        "start": 41788,
+        "end": 41788
+      }
+    },
+    {
+      "value": "N-oF0064",
+      "time": {
+        "start": 42645,
+        "end": 42645
+      }
+    },
+    {
+      "value": "N-oF0065",
+      "time": {
+        "start": 43085,
+        "end": 43085
+      }
+    },
+    {
+      "value": "N-oF0066",
+      "time": {
+        "start": 43925,
+        "end": 43925
+      }
+    },
+    {
+      "value": "N-oF0067",
+      "time": {
+        "start": 45345,
+        "end": 45345
+      }
+    },
+    {
+      "value": "N-oF0068",
+      "time": {
+        "start": 46945,
+        "end": 46945
+      }
+    },
+    {
+      "value": "N-oF0069",
+      "time": {
+        "start": 47305,
+        "end": 47305
+      }
+    },
+    {
+      "value": "N-oF0070",
+      "time": {
+        "start": 47645,
+        "end": 47645
+      }
+    },
+    {
+      "value": "N-oF0071",
+      "time": {
+        "start": 48005,
+        "end": 48005
+      }
+    },
+    {
+      "value": "N-oF0072",
+      "time": {
+        "start": 48345,
+        "end": 48345
+      }
+    },
+    {
+      "value": "N-oF0073",
+      "time": {
+        "start": 48945,
+        "end": 48945
+      }
+    },
+    {
+      "value": "N-oF0074",
+      "time": {
+        "start": 49205,
+        "end": 49205
+      }
+    }
+  ],
+  "N-mPosture": [
+    {
+      "value": "N-mPr003",
+      "time": {
+        "start": 20460,
+        "end": 20460
+      }
+    },
+    {
+      "value": "N-mPr004",
+      "time": {
+        "start": 28200,
+        "end": 28200
+      }
+    },
+    {
+      "value": "N-mPr005",
+      "time": {
+        "start": 33500,
+        "end": 33500
+      }
+    }
+  ],
+  "N-mGeFunction": [
+    {
+      "parent": "N-mGe015",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe016",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe017",
+      "value": "Other, Pragmatic"
+    },
+    {
+      "parent": "N-mGe018",
+      "value": "Other, Pragmatic"
+    },
+    {
+      "parent": "N-mGe019",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe020",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe021",
+      "value": "Other, Pragmatic"
+    },
+    {
+      "parent": "N-mGe022",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe023",
+      "value": "Depictive, Pragmatic"
+    },
+    {
+      "parent": "N-mGe024",
+      "value": "Depictive, Pragmatic"
+    },
+    {
+      "parent": "N-mGe025",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe026",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe027",
+      "value": "Depictive, Pragmatic"
+    },
+    {
+      "parent": "N-mGe028",
+      "value": "Depictive, Pragmatic"
+    },
+    {
+      "parent": "N-mGe029",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe030",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe031",
+      "value": "Other, Pragmatic"
+    },
+    {
+      "parent": "N-mGe032",
+      "value": "Other, Pragmatic"
+    },
+    {
+      "parent": "N-mGe033",
+      "value": "Depictive, Pragmatic"
+    },
+    {
+      "parent": "N-mGe034",
+      "value": "Depictive"
+    },
+    {
+      "parent": "N-mGe035",
+      "value": "Depictive"
+    }
+  ]
+}
