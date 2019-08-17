@@ -4,6 +4,7 @@ $darkGreen: #2c662d;
 $teal: #009c95;
 $tealBlue: #276f86;
 $blue: #2185d0;
+$cyan: #f8ffff;
 $lightGrey: #ccc;
 $grey: #767676;
 $red: #db2828;
@@ -620,7 +621,7 @@ $videoHeight: 193px;
 }
 
 .bmpp-relationBanner {
-  background-color: #f8ffff;
+  background-color: $cyan;
   color: $tealBlue;
   margin: -1.5em -1em 0;
   padding: 1.2em 1em 1.5em;
@@ -634,9 +635,27 @@ $videoHeight: 193px;
     bottom: -$height;
     height: $height;
     content: '';
-    background: linear-gradient(180deg, #f8ffff 0%,  /* ##grad## */
-                                        rgba(248, 255, 255, 0) 100%);
+    background: linear-gradient(180deg, $cyan 0%,  /* ##grad## */
+                                        color($cyan a(0)) 100%);
   }
+
+  & .ui.circular.label {
+    color: $tealBlue;
+    background-color: transparent;
+    border: 1px solid $tealBlue;
+    padding: 0.4em 0 0 !important;
+  }
+}
+
+search-unit-property .ui.circular.label,
+search-unit-relation .ui.circular.label {
+}
+
+relations-formula .ui.circular.label {
+    color: color($black a(0.4));
+    background-color: transparent;
+    border: 1px solid color($black a(0.4));
+    padding: 0.4em 0 0 !important;
 }
 
 .bmpp-unitsRadioButtons {
