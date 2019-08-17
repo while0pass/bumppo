@@ -347,7 +347,7 @@ $videoHeight: 193px;
 }
 
 .bmpp-queryElement {
-  min-height: 10em;
+  min-height: 8em;
 }
 
 .bmpp-number {
@@ -410,13 +410,40 @@ $videoHeight: 193px;
 }
 
 .bmpp-relationsFormula1 {
-  margin: 1em auto !important;
+  $x: 1em;
+  $x2: 1.5em;
+  $color: rgba(212, 212, 212, 0.2);
+  margin: calc($x - $x) 1em;
   position: relative;
-  padding-bottom: 2.6em !important;
+  padding: calc(1em + $x) $x2 calc(2.6em + $x);
+  background-color: $color;
 
+  & .bmpp-relationsEdit {
+    position: absolute;
+    bottom: calc(0.8em + $x);
+    left: 0.2em;
+
+    & .bmpp-editUrl {
+        margin-left: $x2;
+    }
+  }
 }
 .bmpp-relationsFormula2 {
-  margin-top: 3em !important;
+  position: relative;
+  margin-top: 5em;
+  padding-top: 1em;
+
+  &:before {
+    $height: 3em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -$height;
+    height: $height;
+    content: '';
+    background: linear-gradient(0deg, $color 0%,
+                                      color($color a(0)) 100%);
+  }
 }
 
 .bmpp-subcorpusForm {

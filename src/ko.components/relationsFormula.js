@@ -3,7 +3,7 @@ import { RelationLine } from '../scripts/drawQueryTree.js';
 const template = `
 
   <!-- ko if: node1 -->
-  <div class="ui secondary segment bmpp-relationsFormula1"
+  <div class="bmpp-relationsFormula1"
     data-bind="css: { 'bmpp-relationsFormula2': $component.node.level() > 0 }">
 
     <!-- ko foreach: relationsFormula.chosenRelations -->
@@ -20,13 +20,9 @@ const template = `
       </div>
     <!-- /ko -->
 
-    <div style="position: absolute; bottom: 0.8em; left: 0.2em">
-      <span data-bind="click:
-          $root.queryPaneView.editNodeRelations.bind(null, node1, node2)"
-        class="bmpp-editUrl"
-        style="margin-left: 1em">
-        Изменить отношения между единицами
-      </span>
+    <div class="bmpp-relationsEdit">
+      <span data-bind="click: $root.queryPaneView.editNodeRelations"
+        class="bmpp-editUrl">Изменить отношения между единицами</span>
     </div>
 
   </div>

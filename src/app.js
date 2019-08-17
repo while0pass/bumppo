@@ -45,11 +45,11 @@ function viewModel() {
   this.queryPaneView.isTreeVisible = ko.computed(
     () => self.queryPaneView() === null
   );
-  this.queryPaneView.editNodeProperties = function (node) {
-    self.queryPaneView(node);
+  this.queryPaneView.editNodeProperties = function ($data) {
+    self.queryPaneView($data.node);
   };
-  this.queryPaneView.editNodeRelations = function (node1, node2) {
-    self.queryPaneView([node1, node2]);
+  this.queryPaneView.editNodeRelations = function ($data) {
+    self.queryPaneView([$data.node1, $data.node2]);
   };
   this.queryPaneView.finishEditingNodeProperties = function () {
     let node = self.queryPaneView();

@@ -119,8 +119,8 @@ const chosenUnitTemplate = `
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
-      <span data-bind="click: $root.queryPaneView.editNodeProperties.bind(
-          null, node)" class="bmpp-editUrl" style="margin-left: 1em">
+      <span data-bind="click: $root.queryPaneView.editNodeProperties"
+        class="bmpp-editUrl" style="margin-left: 1em">
         <span data-bind="text: isAnyUnitPropertySet() ? 'Изменить' : 'Задать'">
         </span> свойства единицы
       </span>
