@@ -145,6 +145,7 @@ function viewModel() {
   }, this);
 
   this.queryTree = new TreeNode();
+  this.linearizedQueryTree = this.queryTree.linear6n;
 
   this.canSearch = ko.computed(function () {
     let isQueryReady = self.isQueryReady(),
@@ -160,7 +161,7 @@ function viewModel() {
   this.lastQueryJSON = '';
   this.queryJSON = ko.computed(function () {
     if (self.canSearch()) {
-      self.lastQueryJSON = getQueryJSON(self);
+      self.lastQueryJSON = getQueryJSON(self, self.linearizedQueryTree());
     }
     return self.lastQueryJSON;
   }).extend({ rateLimit: 500 });

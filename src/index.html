@@ -123,7 +123,8 @@
 
     <!-- ko if: isQueryPaneOn -->
       <!-- ko if: queryPaneView.isTreeVisible -->
-        <query-pane params="queryTree: queryTree"></query-pane>
+        <query-pane
+          params="linearizedQueryTree: linearizedQueryTree"></query-pane>
       <!-- /ko -->
       <!-- ko if: queryPaneView.arePropertiesVisible -->
       <div class="bmpp-propertiesPane">

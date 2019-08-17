@@ -18,9 +18,18 @@ const template = `
     </button>
 
     <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+        data-content="Добавить единицу поиска"
         data-bind="click: node.addChild.bind(node, false),
                    visible: node.unitType() !== null">
       <i class="ui plus icon"></i>
+    </button>
+
+    <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+        style="right: 4.5em"
+        data-content="Добавить ссылку на другую единицу поиска"
+        data-bind="click: node.addChildProxy.bind(node, false),
+                   visible: node.unitType() !== null && node.refOpts().length > 0">
+      <i class="ui linkify icon"></i>
     </button>
 
   </div>
@@ -30,7 +39,6 @@ const template = `
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
       addUnitPopupOpts = {
-        content: 'Добавить единицу поиска',
         variation: 'basic',
         position: 'bottom right',
         transition: 'fade',

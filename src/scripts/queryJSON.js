@@ -1,4 +1,3 @@
-import linearizeTree from './linearizeTree.js';
 import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
 import { SAME_PARTICIPANT_RELATION_ID,
@@ -10,6 +9,7 @@ function escapeRegExpELAN(string) {
 
 export default function getQueryJSON(viewModel) {
   let stages = viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
+      ltree = viewModel.linearizedQueryTree(),
       shouldFilterStages = stages.length > 0 && stages.length < 3,
       stagesKeyAndTier = 'Stage',
       query = {
@@ -17,8 +17,7 @@ export default function getQueryJSON(viewModel) {
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
         conditions: {}
       },
-      showTiers = [],
-      ltree = linearizeTree(viewModel.queryTree);
+      showTiers = [];
 
   if (shouldFilterStages) {
     let reTemplate = stages.join('|');

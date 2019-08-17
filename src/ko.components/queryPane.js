@@ -1,6 +1,4 @@
-import ko from 'knockout';
 import SVG from 'svg.js';
-import linearizeTree from '../scripts/linearizeTree.js';
 
 const svgDrawElementId = 'svgQueryTree',
       template = `
@@ -24,7 +22,10 @@ const svgDrawElementId = 'svgQueryTree',
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
 
-  var redrawTree = (linearizedTree) => {
+  let linearizedQueryTree = params.linearizedQueryTree,
+      svgDraw = SVG(svgDrawElementId).size('100%', '100%');
+
+  let redrawTree = (linearizedTree) => {
     for (let treeNode of linearizedTree) {
       if (treeNode.svgSlug) {
         treeNode.svgSlug.position();
@@ -37,16 +38,9 @@ var viewModelFactory = (params, componentInfo) => {
     }
   };
 
-  var linearizedQueryTree = ko.computed(() => {
-    let tree = linearizeTree(params.queryTree, []);
-    for (let node of tree) {
-      node.childNodes();
-    }
-    return tree;
-  });
   linearizedQueryTree.subscribe(redrawTree);
 
-  var domObserver = new MutationObserver(function() {
+  let domObserver = new MutationObserver(function() {
     if (redrawTree.timeoutID !== undefined) {
       clearTimeout(redrawTree.timeoutID);
     }
@@ -55,16 +49,12 @@ var viewModelFactory = (params, componentInfo) => {
     }, 30);
     return true;
   });
+
   domObserver.observe(componentInfo.element, { childList: true, subtree: true,
     attributes: false, characterData: false, attributeOldValue: false,
     characterDataOldValue: false });
 
-  let viewModel = {
-    linearizedQueryTree: linearizedQueryTree,
-    svgDraw: SVG(svgDrawElementId).size('100%', '100%')
-  };
-
-  return viewModel;
+  return { linearizedQueryTree, svgDraw };
 };
 
 // KnockoutJS component

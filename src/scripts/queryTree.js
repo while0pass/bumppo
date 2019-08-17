@@ -2,6 +2,8 @@ import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists,
   SearchUnitProperty } from './searchUnitProperties.js';
 import { NodesRelationFormula } from './searchUnitRelations.js';
+import linearizeTree from './linearizeTree.js';
+import log from './log.js';
 
 export class TreeNode {
   constructor(parentNode=null) {
@@ -16,6 +18,8 @@ export class TreeNode {
     this.unitType = ko.observable(null);  // см. searchUnits
     this.unitProperties = ko.observableArray([]);
     this.isEditStateForUnitType = ko.observable(true);
+    this.linear6n = parentNode ? parentNode.linear6n : this.getLinear6n();
+    this.refOpts = this.getReferenceOptions();
 
     this.tuneRelations();
     this.tuneUnitProperties();
@@ -70,6 +74,12 @@ export class TreeNode {
   }
   addChild() {
     var child = new TreeNode(this);
+    this.childNodes.push(child);
+  }
+  addChildProxy() {
+    var refOpts = this.refOpts(),
+        proxyFor = refOpts.length === 1 ? refOpts[0] : null,
+        child = new TreeNodeProxy(this, proxyFor);
     this.childNodes.push(child);
   }
   addRelationFormula() {
@@ -158,5 +168,37 @@ export class TreeNode {
       tiers = tiers.concat(self.getTiersFromTemplate(template));
     });
     return tiers;
+  }
+  getLinear6n() {
+    return ko.computed(function () {
+      let tree = linearizeTree(this);
+      for (let node of tree) {
+        node.childNodes && node.childNodes();
+      }
+      return tree;
+    }, this);
+  }
+  getReferenceOptions() {
+    return ko.computed(() => {
+      let node1 = this,
+          childCheck = child =>
+            node1 !== (child instanceof TreeNodeProxy ? child.node() : child),
+          noAdjacentNodes = node2 => node2 !== node1
+            && (!node2.parentNode || node2.parentNode !== node1)
+            && node2.childNodes && node2.childNodes.peek().every(childCheck),
+          refOpts = this.linear6n().filter(noAdjacentNodes);
+
+      node1.serialNumber() && log('Node', node1.serialNumber(), '-->',
+        refOpts.map(x => x.serialNumber().toString()).join(', '));
+
+      return refOpts;
+    }, this);
+  }
+}
+
+export class TreeNodeProxy {
+  constructor(parentNode, node=null) {
+    this.parentNode = parentNode;
+    this.node = ko.observable(node);
   }
 }
