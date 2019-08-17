@@ -104,7 +104,6 @@ export class TreeNode {
     }
     this.removeRelationFormula(this.parentNode);
     this.childNodes.removeAll();
-    this.unitType(null);
     if (this.parentNode) {
       this.parentNode.childNodes.remove(this);
     }

@@ -1258,8 +1258,9 @@ class ValueListItem {
     let channelIds = this.disabledInChannels;
     if (channelIds && channelIds.length > 0) {
       return ko.computed(function () {
-        let channelId = this.list.listProperty.node.unitType().channel.id;
-        return channelIds.indexOf(channelId) > -1;
+        let unitType = this.list.listProperty.node.unitType(),
+            channelId = unitType && unitType.channel.id;
+        return channelId && channelIds.indexOf(channelId) > -1;
       }, this);
     } else {
       return false;
