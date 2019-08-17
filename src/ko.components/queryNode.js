@@ -5,25 +5,23 @@ const template = `
 
   <div class="bmpp-queryElement ui segment">
 
-    <div class="bmpp-queryTreeHandles">
-
-      <i class="ui disabled green down arrow icon bmpp-addUnit"
-        data-bind="click: node.addChild.bind(node, false),
-          visible: node.unitType() !== null"></i>
-
-      <i class="ui disabled grey close icon"
-        title="Удалить единицу поиска со всеми зависимостями"
-        data-bind="visible: node.depth() > 0,
-          click: function () {
-                   node.seppuku();
-                   $root.isQueryNew(true);
-                 }"></i>
-    </div>
-
     <search-unit-choice params="node: node,
       queryPartsNonReadiness: $root.queryPartsNonReadiness,
       isQueryNew: $root.isQueryNew">
     </search-unit-choice>
+
+    <button class="ui tiny basic icon button bmpp-removeButton"
+      title="Удалить единицу поиска со всеми зависимостями"
+      data-bind="visible: node.depth() > 0,
+        click: function () { node.seppuku(); $root.isQueryNew(true); }">
+      <i class="ui close icon"></i>
+    </button>
+
+    <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+        data-bind="click: node.addChild.bind(node, false),
+                   visible: node.unitType() !== null">
+      <i class="ui plus icon"></i>
+    </button>
 
   </div>
 

@@ -349,22 +349,6 @@ $videoHeight: 193px;
   min-height: 10em;
 }
 
-.bmpp-queryTreeHandles {
-  position: absolute;
-  right: auto;
-  left: 100%;
-  top: 0.45em;
-  width: 6em;
-  padding-left: 1em;
-
-  & .ui.icon {
-    cursor: pointer;
-  }
-  &.bmpp-queryTreeHandles2 {
-    left: calc(100% + 1em);
-  }
-}
-
 .bmpp-number {
   display: flex;
   flex-flow: row nowrap;
@@ -671,8 +655,8 @@ $videoHeight: 193px;
 
   &.bmpp-addButton {
     position: absolute;
-    right: .1rem;
-    bottom: .2rem;
+    right: 0.1rem;
+    bottom: 0.2rem;
     box-shadow: 0 0 0 1px $lightGrey inset!important;
 
     & .icon {
@@ -688,11 +672,16 @@ $videoHeight: 193px;
         color: white !important;
       }
     }
+
+    .bmpp-queryElement & {
+      right: 1rem;
+      bottom: 0.5rem;
+    }
   }
 
   &.bmpp-removeButton {
     position: absolute;
-    right: .05rem;
+    right: 0.05rem;
     top: 1rem;
     box-shadow: none !important;
     background-color: transparent !important;
@@ -707,6 +696,11 @@ $videoHeight: 193px;
 
     &.bmpp-removeButton1 {
       top: 3.5rem;
+    }
+
+    .bmpp-queryElement & {
+      top: 0.7rem;
+      right: 0.4rem;
     }
   }
 }
