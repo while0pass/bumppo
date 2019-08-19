@@ -192,7 +192,7 @@ export class TreeNode {
         refOpts.map(x => x.serialNumber().toString()).join(', '));
 
       return refOpts;
-    }, this);
+    }, this).extend({ rateLimit: 500 });
   }
 }
 
