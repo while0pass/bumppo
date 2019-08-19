@@ -1,3 +1,4 @@
+import ko from 'knockout';
 import jQuery from 'jquery';
 import { Slug } from '../scripts/drawQueryTree.js';
 
@@ -47,18 +48,25 @@ const nodeProxyTemplate = `
 
 const template = `
 
-  <div class="bmpp-queryElement ui segment"
-    data-bind="css: { tertiary: node.isProxy }">
+  <!-- ko ifnot: node.isProxy -->
+    <div class="bmpp-queryElement ui segment">
+      ${ nodeTemplate }
+    </div>
+  <!-- /ko -->
 
-    <!-- ko ifnot: node.isProxy -->${ nodeTemplate }<!-- /ko -->
-    <!-- ko if: node.isProxy -->${ nodeProxyTemplate }<!-- /ko -->
-
-  </div>
+  <!-- ko if: node.isProxy -->
+    <div class="bmpp-queryElement bmpp-compact ui tertiary segment"
+      data-bind="css: { 'bmpp-compact': noProxyOptions }">
+      ${ nodeProxyTemplate }
+    </div>
+  <!-- /ko -->
 
 `;
 
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
+      noProxyOptions = ko.computed(() => node.isProxy &&
+        node.parentNode.refOpts().length === 0),
       addUnitPopupOpts = {
         variation: 'basic',
         position: 'bottom right',
@@ -82,7 +90,7 @@ var viewModelFactory = (params, componentInfo) => {
     let x = jQuery(componentInfo.element);
     x.find('.bmpp-addUnit').popup(addUnitPopupOpts);
   });
-  return { node };
+  return { node, noProxyOptions };
 };
 
 export default {

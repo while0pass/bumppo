@@ -19,8 +19,9 @@ const chosenRefTemplate = `
 
   <!-- /ko -->
 
-  <span data-bind="visible: nodeProxy.parentNode.refOpts().length > 0,
-    click: showOptions" class="bmpp-editUrl">Выбрать другой узел</span>
+  <span data-bind="visible: canChoose, click: showOptions"
+    style="position: absolute; bottom: 0.8em; left: 1em"
+    class="bmpp-editUrl">Выбрать другой узел</span>
 
 `;
 
@@ -28,8 +29,8 @@ const choseRefTemplate = `
 
   Выберите узел, на который хотите сослаться:
   <!-- ko foreach: options -->
-    <span class="ui circular label" data-bind="text: serialNumber,
-      click: $component.choseRef"></span>
+    <span class="ui grey circular label" data-bind="text: serialNumber,
+      click: $component.chooseRef"></span>
   <!-- /ko -->
 
 `;
@@ -53,6 +54,7 @@ var viewModelFactory = params => {
   let nodeProxy = params.node,
       node = nodeProxy,  // Это имя требуется для импортированных шаблонов
       isProxyBound = nodeProxy.node,
+      canChoose = ko.computed(() => nodeProxy.parentNode.refOpts().length > 0),
       options = ko.computed(function () {
         let ref = nodeProxy.node.peek(),
             options = nodeProxy.parentNode.refOpts();
@@ -63,9 +65,10 @@ var viewModelFactory = params => {
         return options;
       }),
       showOptions = () => nodeProxy.node(null),
-      choseRef = $data => nodeProxy.node($data);
+      chooseRef = $data => nodeProxy.node($data);
   return {
-    choseRef,
+    canChoose,
+    chooseRef,
     isProxyBound,
     node,
     nodeProxy,

@@ -16,6 +16,10 @@ $mainWaitWidth: calc(100vw - $sidePaneWidth - $borderWidth);
 $videoWidth: 342px;
 $videoHeight: 193px;
 
+* {
+  user-select: none;
+}
+
 .bmpp-uiLayout {
   display: flex;
   width: 100vw;
@@ -348,18 +352,23 @@ $videoHeight: 193px;
 
 .bmpp-queryElement {
   min-height: 8em;
+  transition: min-height 1s;
 
-  &.tertiary {
+  &.bmpp-compact {
     min-height: 3.5em;
 
-    & .ui.basic.icon.button.bmpp-removeButton {
-      & .icon {
-        color: #aaa !important;
-      }
+    & .bmpp-unitProps {
+      margin: 1.5em 0 0 0;
+    }
+  }
 
-      &:hover .icon {
-        color: $red !important;
-      }
+  &.tertiary .ui.basic.icon.button.bmpp-removeButton {
+    & .icon {
+      color: #aaa !important;
+    }
+
+    &:hover .icon {
+      color: $red !important;
     }
   }
 }
@@ -763,4 +772,12 @@ relations-formula .ui.circular.label {
       right: 0.4rem;
     }
   }
+}
+
+unit-proxy .ui.grey.circular.label {
+  cursor: pointer;
+}
+
+.bmpp-unitProps {
+  margin: 1.5em 0 2.5em 0;
 }

@@ -102,8 +102,7 @@ const unitPropsTemplate = `
 
   <!-- ko if: node.chosenUnitProperties().length > 0 -->
 
-    <div data-bind="foreach: node.chosenUnitProperties"
-      style="margin: 1.5em 0 2.5em 0"
+    <div data-bind="foreach: node.chosenUnitProperties" class="bmpp-unitProps"
       ><!-- ko if: $index() === 0 --><span class="bmpp-bannerPropname"
       data-bind="html: name"></span><span class="bmpp-bannerText"
       >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
