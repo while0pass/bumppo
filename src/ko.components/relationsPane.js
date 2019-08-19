@@ -9,12 +9,12 @@ const templateHeader = `
       Отношения между
     </span>
 
-    <span style="grid-area: n1; margin-bottom: 0.5em" data-bind="if: node1">
+    <span style="grid-area: n1; margin-bottom: 0.5em">
 
       <span class="ui circular label" style="margin-top: 0; margin-right: .7em;"
-        data-bind="text: node1().serialNumber"></span>
+        data-bind="text: node1.serialNumber"></span>
 
-      <!-- ko with: node1().unitType -->
+      <!-- ko with: node1.unitType -->
 
         <button class="ui mini button bmpp-channelSlug"
           data-bind="css: channel.color, text: channel.id">
@@ -39,19 +39,19 @@ const templateHeader = `
       и
     </span>
 
-    <span style="grid-area: n2" data-bind="if: node2">
+    <span style="grid-area: n2">
 
       <span class="ui circular label" style="margin-top: 0; margin-right: .7em;"
-        data-bind="text: node2().serialNumber"></span>
+        data-bind="text: node2.serialNumber"></span>
 
-      <!-- ko ifnot: node2().unitType -->
+      <!-- ko ifnot: node2.unitType -->
       <span style="font-weight: normal; font-size: smaller">
         Тип единицы ещё не выбран
       </span>
       <!-- /ko -->
 
-      <!-- ko if: node2().unitType -->
-        <!-- ko with: node2().unitType -->
+      <!-- ko if: node2.unitType -->
+        <!-- ko with: node2.unitType -->
 
         <button class="ui mini button bmpp-channelSlug"
           data-bind="css: channel.color, text: channel.id">
@@ -92,11 +92,11 @@ var viewModelFactory = (params, componentInfo) => {
   const relations = ko.computed(function () {
     const node1 = params.node1(),
           node2 = params.node2();
-    return node1 && node2 ? node1.getRelationFormula(node2).relations() : [];
+    return !node1 || !node2 ? [] : node2.relationsFormula.relations();
   });
   return {
-    node1: params.node1,
-    node2: params.node2,
+    node1: params.node1(),
+    node2: params.node2(),
     relations: relations,
   };
 };

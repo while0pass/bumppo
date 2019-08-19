@@ -131,7 +131,9 @@ class Distance {
   }
   getSameNodeTypeIndicator() {
     let x = ko.computed(function () {
-      return this.node1.unitType() === this.node2.unitType();
+      let node1 = this.node1,
+          node2 = this.node2;
+      return node2.unitType && node1.unitType() === node2.unitType();
     }, this);
     x.subscribe(function (value) {
       if (!value) {
@@ -176,7 +178,7 @@ class Distance {
 }
 
 
-class NodesRelationFormula {
+class NodesRelationsFormula {
   constructor(node1, node2) {
     this.node1 = node1;
     this.node2 = node2;
@@ -198,8 +200,15 @@ class NodesRelationFormula {
       () => this.relations().filter(prop => ko.unwrap(prop.banner)),
       this);
   }
+  seppuku() {
+    delete this.node1;
+    delete this.node2;
+    this.relations.removeAll();
+    delete this.relations;
+    delete this.chosenRelations;
+  }
 }
 
-export { NodesRelationFormula, Connective,
+export { NodesRelationsFormula, Connective,
   SAME_PARTICIPANT_RELATION_ID,
   DISTANCE_RELATION_TYPE, AND_TYPE };

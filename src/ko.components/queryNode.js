@@ -1,36 +1,57 @@
 import jQuery from 'jquery';
 import { Slug } from '../scripts/drawQueryTree.js';
 
+const nodeTemplate = `
+
+  <search-unit-choice params="node: node,
+    queryPartsNonReadiness: $root.queryPartsNonReadiness,
+    isQueryNew: $root.isQueryNew">
+  </search-unit-choice>
+
+  <button class="ui tiny basic icon button bmpp-removeButton"
+    data-content="Удалить единицу поиска со всеми зависимостями"
+    data-bind="visible: node.depth() > 0,
+      click: function () { node.seppuku(); $root.isQueryNew(true); }">
+    <i class="ui close icon"></i>
+  </button>
+
+  <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+      data-content="Добавить единицу поиска"
+      data-bind="click: node.addChild.bind(node, false),
+                 visible: node.unitType() !== null">
+    <i class="ui plus icon"></i>
+  </button>
+
+  <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+      style="right: 4.5em"
+      data-content="Добавить ссылку на другую единицу поиска"
+      data-bind="click: node.addChildProxy.bind(node, false),
+        visible: node.unitType() !== null && node.refOpts().length > 0">
+    <i class="ui linkify icon"></i>
+  </button>
+
+`;
+
+const nodeProxyTemplate = `
+
+  <unit-proxy params="node: node"></unit-proxy>
+
+  <button class="ui tiny basic icon button bmpp-removeButton"
+    data-content="Удалить ссылку на единицу поиска"
+    data-bind="visible: node.depth() > 0,
+      click: function () { node.seppuku(); $root.isQueryNew(true); }">
+    <i class="ui close icon"></i>
+  </button>
+
+`;
+
 const template = `
 
-  <div class="bmpp-queryElement ui segment">
+  <div class="bmpp-queryElement ui segment"
+    data-bind="css: { tertiary: node.isProxy }">
 
-    <search-unit-choice params="node: node,
-      queryPartsNonReadiness: $root.queryPartsNonReadiness,
-      isQueryNew: $root.isQueryNew">
-    </search-unit-choice>
-
-    <button class="ui tiny basic icon button bmpp-removeButton"
-      title="Удалить единицу поиска со всеми зависимостями"
-      data-bind="visible: node.depth() > 0,
-        click: function () { node.seppuku(); $root.isQueryNew(true); }">
-      <i class="ui close icon"></i>
-    </button>
-
-    <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
-        data-content="Добавить единицу поиска"
-        data-bind="click: node.addChild.bind(node, false),
-                   visible: node.unitType() !== null">
-      <i class="ui plus icon"></i>
-    </button>
-
-    <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
-        style="right: 4.5em"
-        data-content="Добавить ссылку на другую единицу поиска"
-        data-bind="click: node.addChildProxy.bind(node, false),
-                   visible: node.unitType() !== null && node.refOpts().length > 0">
-      <i class="ui linkify icon"></i>
-    </button>
+    <!-- ko ifnot: node.isProxy -->${ nodeTemplate }<!-- /ko -->
+    <!-- ko if: node.isProxy -->${ nodeProxyTemplate }<!-- /ko -->
 
   </div>
 
@@ -61,7 +82,7 @@ var viewModelFactory = (params, componentInfo) => {
     let x = jQuery(componentInfo.element);
     x.find('.bmpp-addUnit').popup(addUnitPopupOpts);
   });
-  return { node: node };
+  return { node };
 };
 
 export default {

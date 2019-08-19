@@ -20,6 +20,7 @@ import SearchUnitProperty from '../ko.components/searchUnitProperty.js';
 import SearchUnitRelation from '../ko.components/searchUnitRelation.js';
 import SubcorpusPane from '../ko.components/subcorpusPane.js';
 import TextProperty from '../ko.components/textProperty.js';
+import UnitProxy from '../ko.components/unitProxy.js';
 import ValueList from '../ko.components/valueList.js';
 
 export function preinit(ko) {
@@ -188,6 +189,7 @@ export function init(ko, viewModel) {
   ko.components.register('query-node', QueryNode);
   ko.components.register('relations-formula', RelationsFormula);
   ko.components.register('search-unit-choice', SearchUnitChoice);
+  ko.components.register('unit-proxy', UnitProxy);
   ko.components.register('results-list', ResultsList);
   ko.components.register('results-pane', ResultsPane);
   ko.applyBindings(viewModel);

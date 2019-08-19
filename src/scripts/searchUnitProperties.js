@@ -747,7 +747,7 @@ function injectNodeNumbers(template, node1, node2) {
   }
   return ko.computed(function () {
     var sn1 = node1.serialNumber(),
-        sn2 = node2 && node2.serialNumber(),
+        sn2 = node2 && node2.serialNumber && node2.serialNumber() || '',
         text = ko.unwrap(template);
     if (sn1 !== undefined) {
       text = text.replace(/#1#/g,
@@ -764,8 +764,7 @@ function injectNodeNumbers(template, node1, node2) {
 class SearchUnitProperty {
   constructor(data, node1, node2) {
     this.type = data.type;
-    this.node = node1;
-    this.node1 = this.node;
+    this.node1 = node1;
     this.node2 = node2;
     this.id = data.id;
     this.name = injectNodeNumbers(data.name, node1, node2);
@@ -1026,7 +1025,7 @@ class ListProperty extends SearchUnitProperty {
       let value = this.value,
           values = this.unwrapValues(this.chosenValues());
 
-      this.node.unitType(); // Реагировать на изменение типа единицы поиска.
+      this.node1.unitType(); // Реагировать на изменение типа единицы поиска.
       // Этот вызов необходим, чтобы, если изменится тип единицы, этот
       // computed вычислился повторно. Это важно, например, для свойств
       // с параметром allIfEmpty === true. Свойство p_participants
@@ -1258,7 +1257,7 @@ class ValueListItem {
     let channelIds = this.disabledInChannels;
     if (channelIds && channelIds.length > 0) {
       return ko.computed(function () {
-        let unitType = this.list.listProperty.node.unitType(),
+        let unitType = this.list.listProperty.node1.unitType(),
             channelId = unitType && unitType.channel.id;
         return channelId && channelIds.indexOf(channelId) > -1;
       }, this);

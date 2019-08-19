@@ -16,10 +16,12 @@ export default function linearizeTree(node, treeLinearForm=[], isFirstChild=true
     levels[depth] = mx + 1;
   }
   node.level(levels.slice(-1)[0]);
-  node.serialNumber(linearizeTree.serialNumber);
-  linearizeTree.serialNumber += 1;
+  if (!node.isProxy) {
+    node.serialNumber(linearizeTree.serialNumber);
+    linearizeTree.serialNumber += 1;
+  }
   treeLinearForm.push(node);
-  if (node.childNodes().length > 0) {
+  if (!node.isProxy && node.childNodes().length > 0) {
     for (let i = 0; i < node.childNodes().length; i++) {
       let childNode = node.childNodes()[i],
           isFirstChild = i == 0;

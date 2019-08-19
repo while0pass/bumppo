@@ -1,7 +1,7 @@
 import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists,
   SearchUnitProperty } from './searchUnitProperties.js';
-import { NodesRelationFormula } from './searchUnitRelations.js';
+import { NodesRelationsFormula } from './searchUnitRelations.js';
 import linearizeTree from './linearizeTree.js';
 import log from './log.js';
 
@@ -10,7 +10,7 @@ export class TreeNode {
     this.id = window.performance.now();
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
-    this.relationFormulas = {};
+    this.proxyChildNodes = [];
 
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
@@ -21,13 +21,14 @@ export class TreeNode {
     this.linear6n = parentNode ? parentNode.linear6n : this.getLinear6n();
     this.refOpts = this.getReferenceOptions();
 
-    this.tuneRelations();
     this.tuneUnitProperties();
+    this.relationsFormula = this.getRelationsFormula();
   }
-  tuneRelations() {
+  getRelationsFormula() {
     if (this.parentNode !== null) {
-      this.addRelationFormula();
+      return new NodesRelationsFormula(this.parentNode, this);
     }
+    return null;
   }
   tuneUnitProperties() {
     let self = this,
@@ -82,26 +83,11 @@ export class TreeNode {
         child = new TreeNodeProxy(this, proxyFor);
     this.childNodes.push(child);
   }
-  addRelationFormula() {
-    const node1 = this.parentNode,
-          node2 = this,
-          rf = new NodesRelationFormula(node1, node2);
-    node1.relationFormulas[node2.id] = rf;
-    node2.relationFormulas[node1.id] = rf;
+  resetRelationsFormula() {
+    this.relationsFormula.resetToDefault();
   }
-  getRelationFormula(node) {
-    return this.relationFormulas[node.id];
-  }
-  removeRelationFormula(node) {
-    delete node.relationFormulas[this.id];
-    delete this.relationFormulas[node.id];
-  }
-  resetAllRelations(node) {
-    const rf = this.getRelationFormula(node);
-    rf.resetToDefault();
-  }
-  areRelationsChanged(node) {
-    let rf = this.getRelationFormula(node),
+  areRelationsChanged() {
+    let rf = this.relationsFormula,
         before = rf.$oldRelationsSummary || '',
         after = rf.chosenRelations()
           .map(rel => ko.unwrap(rel.banner)).join('');
@@ -109,14 +95,20 @@ export class TreeNode {
     return after !== before;
   }
   seppuku() {
+    for (let proxyChildNode of this.proxyChildNodes) {
+      proxyChildNode.seppuku();
+    }
+
     for (let childNode of this.childNodes()) {
       childNode.seppuku();
     }
-    this.removeRelationFormula(this.parentNode);
     this.childNodes.removeAll();
+
     if (this.parentNode) {
       this.parentNode.childNodes.remove(this);
     }
+
+    this.relationsFormula.seppuku();
   }
   clearAllProperties() {
     this.chosenUnitProperties().forEach(prop => prop.clear());
@@ -181,11 +173,19 @@ export class TreeNode {
   getReferenceOptions() {
     return ko.computed(() => {
       let node1 = this,
-          childCheck = child =>
-            node1 !== (child instanceof TreeNodeProxy ? child.node() : child),
-          noAdjacentNodes = node2 => node2 !== node1
-            && (!node2.parentNode || node2.parentNode !== node1)
-            && node2.childNodes && node2.childNodes.peek().every(childCheck),
+          noCoincide = (x, y) => x != y,
+          noProxy = x => !x.isProxy,
+          isNotChild = (x, y) => !y.childNodes || y.childNodes.peek()
+            .every(child => x !== (child.isProxy ? child.node() : child)),
+          isNotProxyChild = (x, y) => !y.proxyChildNodes || y.proxyChildNodes
+            .every(proxyChild => x !== proxyChild.parentNode),
+          isNotParent = (x, y) => !y.parentNode || x !== y.parentNode,
+          noAdjacentNodes = node2 =>
+            noCoincide(node1, node2)
+            && noProxy(node2)
+            && isNotParent(node1, node2)
+            && isNotChild(node1, node2)
+            && isNotProxyChild(node1, node2),
           refOpts = this.linear6n().filter(noAdjacentNodes);
 
       node1.serialNumber() && log('Node', node1.serialNumber(), '-->',
@@ -196,9 +196,65 @@ export class TreeNode {
   }
 }
 
+
 export class TreeNodeProxy {
   constructor(parentNode, node=null) {
     this.parentNode = parentNode;
-    this.node = ko.observable(node);
+    this.node = this.trackNode(node);
+    this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
+    this.level = ko.observable(0);
+    this.relationsFormula = new NodesRelationsFormula(parentNode, this);
   }
+  trackNode(node) {
+    let proxiedNode = ko.observable();
+    proxiedNode.subscribe(this.nodeDisposal, this, 'beforeChange');
+    proxiedNode.subscribe(this.nodeAdd, this, 'change');
+    proxiedNode(node);
+    return proxiedNode;
+  }
+  nodeDisposal(node) {
+    if (node) {
+      let ix = node.proxyChildNodes.indexOf(this);
+      if (ix > -1) {
+        node.proxyChildNodes.splice(ix, 1);
+      }
+    }
+  }
+  nodeAdd(node) {
+    if (node) {
+      let ix = node.proxyChildNodes.indexOf(this);
+      if (ix === -1) {
+        node.proxyChildNodes.push(this);
+      }
+    }
+  }
+  dispose() {
+    let node = this.node();
+    this.nodeDisposal(node);
+  }
+  seppuku() {
+    this.dispose();
+    this.parentNode.childNodes.remove(this);
+    this.relationsFormula.seppuku();
+  }
+}
+
+TreeNode.prototype.isProxy = false;
+TreeNodeProxy.prototype.isProxy = true;
+
+// Проксирование свойств и методов TreeNode в TreeNodeProxy
+const PROXIED_PROPS = [
+  'chosenUnitProperties',
+  'serialNumber',
+  'unitType',
+  'unitProperties',
+];
+
+for (let prop of PROXIED_PROPS) {
+  Object.defineProperty(TreeNodeProxy.prototype, prop, {
+    get: function () {
+      let node = this.node();
+      return node && node[prop] || undefined;
+    }
+  });
 }

@@ -348,6 +348,20 @@ $videoHeight: 193px;
 
 .bmpp-queryElement {
   min-height: 8em;
+
+  &.tertiary {
+    min-height: 3.5em;
+
+    & .ui.basic.icon.button.bmpp-removeButton {
+      & .icon {
+        color: #aaa !important;
+      }
+
+      &:hover .icon {
+        color: $red !important;
+      }
+    }
+  }
 }
 
 .bmpp-number {

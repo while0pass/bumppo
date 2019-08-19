@@ -77,16 +77,10 @@ const unitChoiceTemplate = `
 
 `;
 
-const chosenUnitTemplate = `
-  <div>
-    <!-- ko with: activeChannel -->
-    <button class="ui button bmpp-channelSlug"
-      data-bind="css: channel.color, text: channel.id,
-        popup: tooltip, popupOpts: channelPopupOpts">
-    </button>
-    <!-- /ko -->
+const unitTypeTemplate = `
 
-    <!-- ko with: node.unitType -->
+  <!-- ko with: node.unitType -->
+
     <span class="bmpp-unitTypeAndGroup">
       <!-- ko if: group -->
         <span data-bind="textLowercaseFirstChar: group.name"
@@ -99,9 +93,15 @@ const chosenUnitTemplate = `
           style="padding-left: .5em;"></strong>
       </span>
     </span>
-    <!-- /ko -->
 
-    <!-- ko if: node.chosenUnitProperties().length > 0 -->
+  <!-- /ko -->
+
+`;
+
+const unitPropsTemplate = `
+
+  <!-- ko if: node.chosenUnitProperties().length > 0 -->
+
     <div data-bind="foreach: node.chosenUnitProperties"
       style="margin: 1.5em 0 2.5em 0"
       ><!-- ko if: $index() === 0 --><span class="bmpp-bannerPropname"
@@ -113,7 +113,23 @@ const chosenUnitTemplate = `
       class="bmpp-bannerText" data-bind="text: $index() &lt; $parent.node.
       chosenUnitProperties().length - 1 ? ';&#x2002;' : '.'"></span
     ></div>
+
+  <!-- /ko -->
+
+`;
+
+const chosenUnitTemplate = `
+  <div>
+    <!-- ko with: activeChannel -->
+    <button class="ui button bmpp-channelSlug"
+      data-bind="css: channel.color, text: channel.id,
+        popup: tooltip, popupOpts: channelPopupOpts">
+    </button>
     <!-- /ko -->
+
+    ${ unitTypeTemplate }
+
+    ${ unitPropsTemplate }
 
     <div style="position: absolute; bottom: 0.8em">
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
@@ -274,7 +290,5 @@ class viewModel {
   }
 }
 
-export default {
-  viewModel: viewModel,
-  template: template
-};
+export default { viewModel: viewModel, template: template };
+export { unitTypeTemplate, unitPropsTemplate };

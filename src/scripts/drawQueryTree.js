@@ -8,8 +8,9 @@ const circRadius = 15,
 
 export class Slug {
   constructor(draw, element, treeNode) {
-    let svgCircle = this.drawCircle(draw);
-    let svgText = this.drawText(draw, treeNode.serialNumber());
+    let text = treeNode.serialNumber && treeNode.serialNumber() || '?',
+        svgCircle = this.drawCircle(draw),
+        svgText = this.drawText(draw, text);
 
     this.draw = draw;
     this.element = element;
@@ -32,9 +33,15 @@ export class Slug {
   }
   fineTune() {
     this.position();
-    this.treeNode.serialNumber.subscribe((value) => {
-      this.changeText(value);
-    });
+    if (this.treeNode.isProxy) {
+      ko.computed(function () {
+        let node = this.treeNode.node(),
+            text = !node ? '?' : node.serialNumber();
+        this.changeText(text);
+      }, this);
+    } else {
+      this.treeNode.serialNumber.subscribe(value => this.changeText(value));
+    }
     ko.utils.domNodeDisposal.addDisposeCallback(this.element, () => {
       this.dispose();
     });

@@ -59,8 +59,8 @@ function viewModel() {
     self.queryPaneView(null);
   };
   this.queryPaneView.finishEditingNodeRelations = function () {
-    let [node1, node2] = self.queryPaneView();
-    if (node1.areRelationsChanged(node2)) {
+    let node2 = self.queryPaneView.relationsNode2();
+    if (node2.areRelationsChanged()) {
       self.isQueryNew(true);
     }
     self.queryPaneView(null);
@@ -89,9 +89,8 @@ function viewModel() {
     return null;
   });
   this.queryPaneView.resetRelations = () => {
-    let node1 = self.queryPaneView.relationsNode1(),
-        node2 = self.queryPaneView.relationsNode2();
-    node1.resetAllRelations(node2);
+    let node2 = self.queryPaneView.relationsNode2();
+    node2.resetRelationsFormula();
   };
 
   this.queryPartsNonReadiness = ko.observableArray([
