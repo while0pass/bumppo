@@ -1,7 +1,7 @@
 import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
 import { SAME_PARTICIPANT_RELATION_ID,
-  DISTANCE_RELATION_TYPE } from './searchUnitRelations.js';
+  DISTANCE_RELATION_TYPE, Connective } from './searchUnitRelations.js';
 
 function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
@@ -123,7 +123,7 @@ export default function getQueryJSON(viewModel) {
         let relationType = (prop instanceof ListProperty && value === false ?
           'non_structural' : 'structural'); /* Выбор non_structural
                                                для нулевых интервалов */
-        query.conditions[`${ nodeKey }.${ propKey }`] = {
+        query.conditions[`${ nodeKey }:${ propKey }`] = {
           type: relationType,
           first_condition_id: nodeKey,
           second_condition_id: propKey,
@@ -186,43 +186,51 @@ export default function getQueryJSON(viewModel) {
           n2 = nodeOrProxy,
           id1 = n1.serialNumber().toString(),
           id2 = n2.serialNumber().toString(),
-          relations = nodeOrProxy.relationsFormula.chosenRelations();
+          acc = 0,
+          relationsOrConnectives = nodeOrProxy
+            .relationsFormula.chosenRelations();
 
-      for (let rIndex = 0; rIndex < relations.length; rIndex++) {
-        let relation = relations[rIndex],
-            complexCond = {
-              first_condition_id: id1,
-              second_condition_id: id2,
-            };
+      for (let roc of relationsOrConnectives) {
+        let relations = roc instanceof Connective ?
+          roc.relationsOrConnectives() : [roc];
+        relations.forEach((relation, ix) => {
 
-        if (relation.id === SAME_PARTICIPANT_RELATION_ID) {
+          let complexCond = {
+            first_condition_id: id1,
+            second_condition_id: id2,
+          };
 
-          complexCond.type = 'same_participant';
-          if (!relation.value()) {
-            complexCond.negative = true;
+          if (relation.id === SAME_PARTICIPANT_RELATION_ID) {
+
+            complexCond.type = 'same_participant';
+            if (!relation.value()) {
+              complexCond.negative = true;
+            }
+
+          } else if (relation.type === DISTANCE_RELATION_TYPE) {
+
+            let interval, type;
+            if (relation.measureInMs()) {
+              type = relation.referencePoints.value();
+              interval = relation.intervalInMs;
+            } else {
+              type = 'structural';
+              interval = relation.intervalInUnits;
+            }
+            complexCond.type = type;
+            complexCond.distance_min = interval.from();
+            complexCond.distance_max = interval.to();
+
+            if (!relation.occurrence.value()) {
+              complexCond.negative = true;
+            }
+
           }
 
-        } else if (relation.type === DISTANCE_RELATION_TYPE) {
+          query.conditions[`${ id1 }:${ id2 }:r${ acc + ix + 1 }`] = complexCond;
 
-          let interval, type;
-          if (relation.measureInMs()) {
-            type = relation.referencePoints.value();
-            interval = relation.intervalInMs;
-          } else {
-            type = 'structural';
-            interval = relation.intervalInUnits;
-          }
-          complexCond.type = type;
-          complexCond.distance_min = interval.from();
-          complexCond.distance_max = interval.to();
-
-          if (!relation.occurrence.value()) {
-            complexCond.negative = true;
-          }
-
-        }
-
-        query.conditions[`${ id1 }-r${ rIndex + 1 }-${ id2 }`] = complexCond;
+        });
+        acc += relations.length;
       }
     }
   }

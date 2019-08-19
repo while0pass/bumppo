@@ -244,6 +244,7 @@ TreeNodeProxy.prototype.isProxy = true;
 
 // Проксирование свойств и методов TreeNode в TreeNodeProxy
 const PROXIED_PROPS = [
+  'areRelationsChanged',
   'chosenUnitProperties',
   'serialNumber',
   'unitType',
