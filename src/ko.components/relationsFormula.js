@@ -1,4 +1,5 @@
-import { RelationLine } from '../scripts/drawQueryTree.js';
+import ko from 'knockout';
+import { RelationLine, ReferenceLine } from '../scripts/drawQueryTree.js';
 
 const template = `
 
@@ -39,7 +40,14 @@ var viewModelFactory = (params, componentInfo) => {
         isProxyBound = !nodeOrProxy.isProxy || nodeOrProxy.node,
         relationsFormula = node1 ? nodeOrProxy.relationsFormula : [],
         element = componentInfo.element;
-  new RelationLine(params.draw, element, node2);
+  node1 && new RelationLine(params.draw, element, node2);
+  if (!node2.isProxy) {
+    new ReferenceLine(params.draw, element, node2);
+    ko.computed(function () {
+      node2.proxyChildNodes();
+      node2.svgReferenceLine.redrawLine();
+    }).extend({ rateLimit: { method: 'notifyWhenChangesStop', timeout: 400 } });
+  }
   return { node1, node2, relationsFormula, isProxyBound };
 };
 

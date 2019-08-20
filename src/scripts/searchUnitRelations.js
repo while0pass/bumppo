@@ -196,16 +196,16 @@ class NodesRelationsFormula {
     this.relations(this.getRelations());
   }
   getChosenRelations() {
-    return ko.computed(
-      () => this.relations().filter(prop => ko.unwrap(prop.banner)),
-      this);
+    return ko.computed(function () {
+      return this.relations && this.relations().filter(
+        prop => ko.unwrap(prop.banner));
+    }, this);
   }
   seppuku() {
     delete this.node1;
     delete this.node2;
-    this.relations.removeAll();
-    delete this.relations;
     delete this.chosenRelations;
+    delete this.relations;
   }
 }
 

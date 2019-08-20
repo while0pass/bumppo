@@ -55,8 +55,7 @@ const template = `
   <!-- /ko -->
 
   <!-- ko if: node.isProxy -->
-    <div class="bmpp-queryElement bmpp-compact ui tertiary segment"
-      data-bind="css: { 'bmpp-compact': noProxyOptions }">
+    <div class="bmpp-queryElement ui tertiary segment">
       ${ nodeProxyTemplate }
     </div>
   <!-- /ko -->

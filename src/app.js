@@ -143,6 +143,28 @@ function viewModel() {
     return banner;
   }, this);
 
+  /*
+  let n1 = new TreeNode();
+  n1.addChild();
+  let n2 = n1.childNodes()[0];
+  n2.addChild();
+  let n3 = n2.childNodes()[0];
+  n3.addChild();
+  let n4 = n3.childNodes()[0];
+  n3.addChildProxy();
+  n3.childNodes()[1].node(n1);
+  n2.addChildProxy();
+  n2.childNodes()[1].node(n4);
+  n1.addChild();
+  let n5 = n1.childNodes()[1];
+  n5.addChildProxy();
+  n5.addChildProxy();
+  n5.childNodes()[0].node(n4); //n2
+  n5.childNodes()[1].node(n3);
+  n1.addChild();
+  n1.addChild();
+  */
+
   this.queryTree = new TreeNode();
   this.linearizedQueryTree = this.queryTree.linear6n;
 

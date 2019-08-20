@@ -27,14 +27,11 @@ var viewModelFactory = (params, componentInfo) => {
 
   let redrawTree = (linearizedTree) => {
     for (let treeNode of linearizedTree) {
-      if (treeNode.svgSlug) {
-        treeNode.svgSlug.position();
-      }
+      treeNode.svgSlug && treeNode.svgSlug.position();
     }
-    for (let treeNode of linearizedTree.slice(1)) {
-      if (treeNode.svgRelationLine) {
-        treeNode.svgRelationLine.redrawLine();
-      }
+    for (let treeNode of linearizedTree) {
+      treeNode.svgRelationLine && treeNode.svgRelationLine.redrawLine();
+      treeNode.svgReferenceLine && treeNode.svgReferenceLine.redrawLine();
     }
   };
 

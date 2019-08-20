@@ -10,7 +10,7 @@ export class TreeNode {
     this.id = window.performance.now();
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
-    this.proxyChildNodes = [];
+    this.proxyChildNodes = ko.observableArray([]);
 
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
@@ -19,6 +19,7 @@ export class TreeNode {
     this.unitProperties = ko.observableArray([]);
     this.isEditStateForUnitType = ko.observable(true);
     this.linear6n = parentNode ? parentNode.linear6n : this.getLinear6n();
+    this.refOrigins = parentNode ? parentNode.refOrigins : this.getRefOrigins();
     this.refOpts = this.getReferenceOptions();
 
     this.tuneUnitProperties();
@@ -95,20 +96,20 @@ export class TreeNode {
     return after !== before;
   }
   seppuku() {
-    for (let proxyChildNode of this.proxyChildNodes) {
+    for (let proxyChildNode of this.proxyChildNodes().slice()) {
       proxyChildNode.seppuku();
     }
 
-    for (let childNode of this.childNodes()) {
+    for (let childNode of this.childNodes().slice()) {
       childNode.seppuku();
     }
-    this.childNodes.removeAll();
 
     if (this.parentNode) {
       this.parentNode.childNodes.remove(this);
     }
 
-    this.relationsFormula.seppuku();
+    this.relationsFormula && this.relationsFormula.seppuku();
+    this.unitType(null);
   }
   clearAllProperties() {
     this.chosenUnitProperties().forEach(prop => prop.clear());
@@ -170,29 +171,36 @@ export class TreeNode {
       return tree;
     }, this);
   }
+  getRefOrigins() {
+    return ko.computed(function () {
+      return this.linear6n().filter(
+        x => !x.isProxy && x.proxyChildNodes().length > 0);
+    }, this);
+  }
   getReferenceOptions() {
     return ko.computed(() => {
       let node1 = this,
           noCoincide = (x, y) => x != y,
-          noProxy = x => !x.isProxy,
+          isNotProxy = x => !x.isProxy,
           isNotChild = (x, y) => !y.childNodes || y.childNodes.peek()
-            .every(child => x !== (child.isProxy ? child.node() : child)),
-          isNotProxyChild = (x, y) => !y.proxyChildNodes || y.proxyChildNodes
-            .every(proxyChild => x !== proxyChild.parentNode),
+            .every(child => x !== (child.isProxy ? child.node.peek() : child)),
+          isNotProxyChild = (x, y) => !y.proxyChildNodes ||
+            y.proxyChildNodes.peek()
+              .every(proxyChild => x !== proxyChild.parentNode),
           isNotParent = (x, y) => !y.parentNode || x !== y.parentNode,
           noAdjacentNodes = node2 =>
             noCoincide(node1, node2)
-            && noProxy(node2)
+            && isNotProxy(node2)
             && isNotParent(node1, node2)
             && isNotChild(node1, node2)
             && isNotProxyChild(node1, node2),
           refOpts = this.linear6n().filter(noAdjacentNodes);
 
-      node1.serialNumber() && log('Node', node1.serialNumber(), '-->',
-        refOpts.map(x => x.serialNumber().toString()).join(', '));
+      node1.serialNumber.peek() && log('Node', node1.serialNumber.peek(), '-->',
+        refOpts.map(x => x.serialNumber.peek().toString()).join(', '));
 
       return refOpts;
-    }, this).extend({ rateLimit: 500 });
+    }, this).extend({ rateLimit: 400 });
   }
 }
 
@@ -207,20 +215,15 @@ export class TreeNodeProxy {
   }
   trackNode(node) {
     let proxiedNode = ko.observable();
-    proxiedNode.subscribe(this.nodeDisposal, this, 'beforeChange');
-    proxiedNode.subscribe(this.nodeAdd, this, 'change');
+    proxiedNode.subscribe(this.nodeUnlink, this, 'beforeChange');
+    proxiedNode.subscribe(this.nodeLink, this, 'change');
     proxiedNode(node);
     return proxiedNode;
   }
-  nodeDisposal(node) {
-    if (node) {
-      let ix = node.proxyChildNodes.indexOf(this);
-      if (ix > -1) {
-        node.proxyChildNodes.splice(ix, 1);
-      }
-    }
+  nodeUnlink(node) {
+    node && node.proxyChildNodes.remove(this);
   }
-  nodeAdd(node) {
+  nodeLink(node) {
     if (node) {
       let ix = node.proxyChildNodes.indexOf(this);
       if (ix === -1) {
@@ -228,12 +231,8 @@ export class TreeNodeProxy {
       }
     }
   }
-  dispose() {
-    let node = this.node();
-    this.nodeDisposal(node);
-  }
   seppuku() {
-    this.dispose();
+    this.nodeUnlink(this.node());
     this.parentNode.childNodes.remove(this);
     this.relationsFormula.seppuku();
   }
