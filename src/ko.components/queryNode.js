@@ -35,7 +35,8 @@ const nodeTemplate = `
 
 const nodeProxyTemplate = `
 
-  <unit-proxy params="node: node"></unit-proxy>
+  <unit-proxy params="node: node,
+    queryPartsNonReadiness: $root.queryPartsNonReadiness"></unit-proxy>
 
   <button class="ui tiny basic icon button bmpp-removeButton"
     data-content="Удалить ссылку на единицу поиска"

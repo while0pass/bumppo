@@ -37,8 +37,8 @@ const choseRefTemplate = `
 
 const template = `
 
-  <!-- ko if: isProxyBound -->${ chosenRefTemplate }<!-- /ko -->
-  <!-- ko ifnot: isProxyBound -->${ choseRefTemplate }<!-- /ko -->
+  <!-- ko if: isProxyUnbound -->${ choseRefTemplate }<!-- /ko -->
+  <!-- ko ifnot: isProxyUnbound -->${ chosenRefTemplate }<!-- /ko -->
 
 `;
 
@@ -50,34 +50,40 @@ function compareBySerialNumber(a, b) {
   return 0;
 }
 
-var viewModelFactory = params => {
-  let nodeProxy = params.node,
-      node = nodeProxy,  // Это имя требуется для импортированных шаблонов
-      isProxyBound = nodeProxy.node,
-      canChoose = ko.computed(() => nodeProxy.parentNode.refOpts().length > 0),
-      options = ko.computed(function () {
-        let ref = nodeProxy.node.peek(),
-            options = nodeProxy.parentNode.refOpts();
-        if (ref && options.indexOf(ref) === -1) {
-          options = options.concat(ref);
-        }
-        options.sort(compareBySerialNumber);
-        return options;
-      }),
-      showOptions = () => nodeProxy.node(null),
-      chooseRef = $data => nodeProxy.node($data);
-  return {
-    canChoose,
-    chooseRef,
-    isProxyBound,
-    node,
-    nodeProxy,
-    options,
-    showOptions,
-  };
-};
+class viewModel {
+  constructor(params) {
+    this.nodeProxy = params.node;
+    this.node = this.nodeProxy;  // Требуется для импортированных шаблонов
+    this.isProxyUnbound = this.getUnboundCheck();
+    this.canChoose = this.getCanChoose();
+    this.options = this.getOptions();
+    this.showOptions = () => this.nodeProxy.node(null);
+    this.chooseRef = $data => this.nodeProxy.node($data);
+    this.queryPartsNonReadiness = params.queryPartsNonReadiness;
 
-export default {
-  viewModel: { createViewModel: viewModelFactory },
-  template: template
-};
+    this.queryPartsNonReadiness.push(this.isProxyUnbound);
+  }
+  getUnboundCheck() {
+    return ko.computed(() => !this.nodeProxy.node());
+  }
+  getCanChoose() {
+    let nodeProxy = this.nodeProxy;
+    return ko.computed(() => nodeProxy.parentNode.refOpts().length > 0);
+  }
+  getOptions() {
+    return ko.computed(function () {
+      let ref = this.nodeProxy.node.peek(),
+          options = this.nodeProxy.parentNode.refOpts();
+      if (ref && options.indexOf(ref) === -1) {
+        options = options.concat(ref);
+      }
+      options.sort(compareBySerialNumber);
+      return options;
+    }, this);
+  }
+  dispose() {
+    this.queryPartsNonReadiness.remove(this.isProxyUnbound);
+  }
+}
+
+export default { viewModel: viewModel, template: template };
