@@ -4,6 +4,9 @@ const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
   ('$_CONFIG.BUMPPO_LOCAL_SERVER' ?
     '$_CONFIG.BUMPPO_LOCAL_SERVER' : 'http://localhost:' +
     '$_CONFIG.BUMPPO_LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
+
+const notSameOrigin = self.location.origin !==
+  (new URL('$_CONFIG.BUMPPO_REMOTE_SERVER.origin')).origin;
 /* eslint-enable no-undef,no-constant-condition */
 
 var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] };
@@ -69,9 +72,13 @@ function doQuery(data) {
         if (xhr.status !== 0) {
           message = `${ xhr.status } ${ xhr.statusText }`;
         } else {
-          message = `Поисковый сервер недоступен или отвечает без учета <a
-            href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
-            target="_blank">политики CORS</a>.`;
+          message = 'Поисковый сервер недоступен';
+          if (notSameOrigin) {
+            message += ` или отвечает без учета <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+              target="_blank">политики CORS</a>`;
+          }
+          message += '.';
         }
         postMessage(['error', message]);
       }
