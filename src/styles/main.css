@@ -631,7 +631,6 @@ $videoHeight: 193px;
   }
   & .bmpp-transcription {
     cursor: pointer;
-    padding-right: 7em;
     grid-column: 4;
   }
   & .bmpp-context {
