@@ -6,7 +6,8 @@ const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
     '$_CONFIG.BUMPPO_LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
 /* eslint-enable no-undef,no-constant-condition */
 
-var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] };
+var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] },
+    aborted = false;
 
 /*eslint-disable-next-line no-unused-vars */
 onmessage = (message) => {
@@ -23,6 +24,8 @@ onmessage = (message) => {
 
 function doAbort(xhr) {
   if (xhr) {
+    aborted = true;
+    setTimeout(function () { aborted = false; }, 2000);
     xhr.abort();
   }
 }
@@ -73,7 +76,9 @@ function doQuery(data) {
             href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
             target="_blank">политики CORS</a>.`;
         }
-        postMessage(['error', message]);
+        if (!aborted) {
+          postMessage(['error', message]);
+        }
       }
     }
   });
