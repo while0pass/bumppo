@@ -57,7 +57,7 @@ var viewModelFactory = function (params) {
   }
 
   function bindLazyLoad () {
-    var area = document.getElementById('bmpp-ResultsList'),
+    var area = document.getElementById('bmpp-results'),
         target = document.getElementById('bmpp-ResultsEndMarker'),
         options = {
           root: area,

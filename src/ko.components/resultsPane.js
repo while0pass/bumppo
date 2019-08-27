@@ -1,15 +1,15 @@
 import cinema from '../scripts/cinema.js';
 
-const template = `
+const videoTemplate = `
 
-  <div class="bmpp-resultsPane_video">
+  <div id="bmpp-video">
 
     <div id="bmpp-videoPlayer">
       <div id="bmpp-videoLoader" style="display: none"></div>
       <div class="bmpp-videoCurtain"></div>
     </div>
 
-    <div class="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">
+    <div id="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">
       <div data-bind="
         text: id,
         css: {
@@ -22,58 +22,65 @@ const template = `
         "></div>
     </div>
 
-    <div class="bmpp-resultsInfo">
+  </div>
 
-      <div style="margin-bottom: .33em;">
-        <em>Область поиска:</em>&#x2002;<span
-          data-bind="text: $root.subcorpusBanner"></span>
-      </div>
+`;
 
-      <!-- ko if: $root.queryTree.unitType() -->
-      <div style="margin-bottom: .33em;" data-bind="with: $root.queryTree">
-        <em>Условие поиска:</em>&#x2002;<span data-bind="text:
-        unitType().hasAbbr ? unitType().abbr : unitType().name"></span
-        ><!-- ko if: chosenUnitProperties().length > 0 -->, со следующими
-        свойствами: <span data-bind="foreach: chosenUnitProperties"
-        ><!-- ko if: $index() === 0 --><span
-        data-bind="textLowercaseFirstChar: name"></span><span
-        >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
-        data-bind="textLowercaseFirstChar: name"></span><span
-        >:&#x2002;</span><!-- /ko --><span data-bind="html: banner"></span
-        ><span data-bind="text:
-        $index() &lt; $root.queryTree.chosenUnitProperties().length - 1 ?
-        ';&#x2002;' : '.'"></span></span><!-- /ko --><!-- ko if:
-        chosenUnitProperties().length === 0 -->.<!-- /ko -->
-        <!-- ko if: childNodes().length > 0 -->
-        <span style="color: grey; font-style: italic;">[…] Подробнее см.
-        вкладку «Запрос».</span>
-        <!-- /ko -->
-      </div>
+const queryInfoTemplate = `
+
+  <div id="bmpp-resultsInfo">
+
+    <div style="margin-bottom: .33em;">
+      <em>Область поиска:</em>&#x2002;<span
+        data-bind="text: $root.subcorpusBanner"></span>
+    </div>
+
+    <!-- ko if: $root.queryTree.unitType() -->
+    <div style="margin-bottom: .33em;" data-bind="with: $root.queryTree">
+      <em>Условие поиска:</em>&#x2002;<span data-bind="text:
+      unitType().hasAbbr ? unitType().abbr : unitType().name"></span
+      ><!-- ko if: chosenUnitProperties().length > 0 -->, со следующими
+      свойствами: <span data-bind="foreach: chosenUnitProperties"
+      ><!-- ko if: $index() === 0 --><span
+      data-bind="textLowercaseFirstChar: name"></span><span
+      >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
+      data-bind="textLowercaseFirstChar: name"></span><span
+      >:&#x2002;</span><!-- /ko --><span data-bind="html: banner"></span
+      ><span data-bind="text:
+      $index() &lt; $root.queryTree.chosenUnitProperties().length - 1 ?
+      ';&#x2002;' : '.'"></span></span><!-- /ko --><!-- ko if:
+      chosenUnitProperties().length === 0 -->.<!-- /ko -->
+      <!-- ko if: childNodes().length > 0 -->
+      <span style="color: grey; font-style: italic;">[…] Подробнее см.
+      вкладку «Запрос».</span>
       <!-- /ko -->
+    </div>
+    <!-- /ko -->
 
-      <div data-bind="if: $root.resultsNumber() !== null">
-        <em>Всего найдено:</em>&#x2002;<span
-          data-bind="text: $root.resultsNumber"></span>
-        <!-- ko if: $root.resultsNumber() % 100 - $root.resultsNumber() % 10 === 10
-          || [5, 6, 7, 8, 9, 0].indexOf($root.resultsNumber() % 10) > 0 -->
-          совпадений.
-        <!-- /ko -->
-        <!-- ko if: $root.resultsNumber() % 100 - $root.resultsNumber() % 10 !== 10
-          && $root.resultsNumber() % 10 === 1 -->
-          совпадение.
-        <!-- /ko -->
-        <!-- ko if: $root.resultsNumber() % 100 - $root.resultsNumber() % 10 !== 10
-          && [2, 3, 4].indexOf($root.resultsNumber() % 10) > 0 -->
-          совпадения.
-        <!-- /ko -->
-      </div>
-
+    <div data-bind="if: $root.resultsNumber() !== null">
+      <em>Всего найдено:</em>&#x2002;<span
+        data-bind="text: $root.resultsNumber"></span>
+      <!-- ko if: $root.resultsNumber() % 100 - $root.resultsNumber() % 10 === 10
+        || [5, 6, 7, 8, 9, 0].indexOf($root.resultsNumber() % 10) > 0 -->
+        совпадений.
+      <!-- /ko -->
+      <!-- ko if: $root.resultsNumber() % 100 - $root.resultsNumber() % 10 !== 10
+        && $root.resultsNumber() % 10 === 1 -->
+        совпадение.
+      <!-- /ko -->
+      <!-- ko if: $root.resultsNumber() % 100 - $root.resultsNumber() % 10 !== 10
+        && [2, 3, 4].indexOf($root.resultsNumber() % 10) > 0 -->
+        совпадения.
+      <!-- /ko -->
     </div>
 
   </div>
 
-  <div id="bmpp-ResultsList" class="bmpp-resultsPane_results"
-    data-bind="if: resultsData.results">
+`;
+
+const resultsTemplate = `
+
+  <div id="bmpp-results" data-bind="if: resultsData.results">
 
     <!-- ko if: $root.debug -->
     <div style="padding: 1em; font-size: x-small; background-color: #eee;">
@@ -106,6 +113,17 @@ const template = `
   </div>
 
 `;
+
+const layersTemplate = `
+
+  <div id="bmpp-layers">
+
+  </div>
+
+`;
+
+const template = videoTemplate +
+  queryInfoTemplate + resultsTemplate + layersTemplate;
 
 function viewModelFactory(params) {
   return {

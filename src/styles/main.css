@@ -178,21 +178,47 @@ $videoHeight: 193px;
 }
 
 .bmpp-resultsPane {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  display: grid;
+  grid-template-areas: "video  results info"
+                       "layers layers  layers";
+  grid-template-rows: $videoHeight auto;
+  grid-template-columns: auto 1fr auto;
   overflow: hidden;
 
-  &_video {
+  & #bmpp-video {
+    grid-area: video;
     border-bottom: 1px solid $bmppBorderColor;
     background-color: white;
     display: flex;
     height: $videoHeight !important;
-    flex: 0 0 auto;
     overflow: hidden;
   }
-  &_results {
+  & #bmpp-results {
+    grid-area: results;
+    border-bottom: 1px solid $bmppBorderColor;
+    border-right: 1px solid $bmppBorderColor;
     overflow-y: scroll;
+    position: relative;
+
+    &::after {
+      display: block;
+      content: '';
+      height: 2em;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(
+        to top,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,1) 40%,
+        rgba(255,255,255,0) 100%
+      );
+    }
+  }
+
+  & #bmpp-layers {
+    overflow: hidden;
   }
 }
 
@@ -271,11 +297,13 @@ $videoHeight: 193px;
   border-color: #ffcc00 #880088 #008800 #008800cc;
 }
 
-.bmpp-resultsInfo {
+#bmpp-resultsInfo {
+  grid-area: info;
   max-width: 40em;
   padding: 0.7em 1em;
   font-size: smaller;
   position: relative;
+  border-bottom: 1px solid $bmppBorderColor;
 
   &::after {
     display: block;
@@ -293,7 +321,7 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-videoChoices {
+#bmpp-videoChoices {
   display: flex;
   flex-flow: column nowrap;
   border-right: 1px solid $bmppBorderColor;
@@ -447,7 +475,7 @@ $videoHeight: 193px;
   margin-top: 5em;
   padding-top: 1em;
 
-  &:before {
+  &::before {
     $height: 3em;
     position: absolute;
     left: 0;
