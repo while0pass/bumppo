@@ -9,7 +9,8 @@ const notSameOrigin = self.location.origin !==
   (new URL('$_CONFIG.BUMPPO_REMOTE_SERVER.origin')).origin;
 /* eslint-enable no-undef,no-constant-condition */
 
-var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] };
+var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] },
+    aborted = false;
 
 /*eslint-disable-next-line no-unused-vars */
 onmessage = (message) => {
@@ -26,6 +27,8 @@ onmessage = (message) => {
 
 function doAbort(xhr) {
   if (xhr) {
+    aborted = true;
+    setTimeout(function () { aborted = false; }, 2000);
     xhr.abort();
   }
 }
@@ -80,7 +83,9 @@ function doQuery(data) {
           }
           message += '.';
         }
-        postMessage(['error', message]);
+        if (!aborted) {
+          postMessage(['error', message]);
+        }
       }
     }
   });
