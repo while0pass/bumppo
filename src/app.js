@@ -45,8 +45,11 @@ function viewModel() {
   this.queryPaneView.isTreeVisible = ko.computed(
     () => self.queryPaneView() === null
   );
-  this.queryPaneView.editNodeProperties = function (node) {
-    self.queryPaneView(node);
+  this.queryPaneView.editNodeProperties = function ($data) {
+    self.queryPaneView($data.node);
+  };
+  this.queryPaneView.editNodeRelations = function ($data) {
+    self.queryPaneView([$data.node1, $data.node2]);
   };
   this.queryPaneView.finishEditingNodeProperties = function () {
     let node = self.queryPaneView();
@@ -55,17 +58,45 @@ function viewModel() {
     }
     self.queryPaneView(null);
   };
+  this.queryPaneView.finishEditingNodeRelations = function () {
+    let node2 = self.queryPaneView.relationsNode2();
+    if (node2.areRelationsChanged()) {
+      self.isQueryNew(true);
+    }
+    self.queryPaneView(null);
+  };
   this.queryPaneView.arePropertiesVisible = ko.computed(
     () => self.queryPaneView() instanceof TreeNode
+  );
+  this.queryPaneView.areRelationsVisible = ko.computed(
+    () => self.queryPaneView() instanceof Array
   );
   this.queryPaneView.propertiesNode = ko.computed(function () {
     if (self.queryPaneView.arePropertiesVisible()) {
       return self.queryPaneView.peek();
     }
   });
+  this.queryPaneView.relationsNode1 = ko.computed(function () {
+    if (self.queryPaneView.areRelationsVisible()) {
+      return self.queryPaneView()[0];
+    }
+    return null;
+  });
+  this.queryPaneView.relationsNode2 = ko.computed(function () {
+    if (self.queryPaneView.areRelationsVisible()) {
+      return self.queryPaneView()[1];
+    }
+    return null;
+  });
+  this.queryPaneView.resetRelations = () => {
+    let node2 = self.queryPaneView.relationsNode2();
+    node2.resetRelationsFormula();
+  };
 
-  this.queryPartsNonReadiness = ko.observableArray(
-    [this.queryPaneView.arePropertiesVisible]);
+  this.queryPartsNonReadiness = ko.observableArray([
+    self.queryPaneView.arePropertiesVisible,
+    self.queryPaneView.areRelationsVisible,
+  ]);
   this.isQueryReady = ko.computed(function () {
     for (let isQueryPartNotReady of self.queryPartsNonReadiness()) {
       if (isQueryPartNotReady()) { return false; }
@@ -113,6 +144,7 @@ function viewModel() {
   }, this);
 
   this.queryTree = new TreeNode();
+  this.linearizedQueryTree = this.queryTree.linear6n;
 
   this.canSearch = ko.computed(function () {
     let isQueryReady = self.isQueryReady(),
@@ -128,7 +160,7 @@ function viewModel() {
   this.lastQueryJSON = '';
   this.queryJSON = ko.computed(function () {
     if (self.canSearch()) {
-      self.lastQueryJSON = getQueryJSON(self);
+      self.lastQueryJSON = getQueryJSON(self, self.linearizedQueryTree());
     }
     return self.lastQueryJSON;
   }).extend({ rateLimit: 500 });

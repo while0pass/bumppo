@@ -1,6 +1,4 @@
-import ko from 'knockout';
 import SVG from 'svg.js';
-import linearizeTree from '../scripts/linearizeTree.js';
 
 const svgDrawElementId = 'svgQueryTree',
       template = `
@@ -10,9 +8,9 @@ const svgDrawElementId = 'svgQueryTree',
     </div>
     <div class="bmpp-query" data-bind="foreach: linearizedQueryTree">
 
-      <query-node-relations params="node: $data, draw: $component.svgDraw"
+      <relations-formula params="node: $data, draw: $component.svgDraw"
         data-bind="visible: $data.parentNode">
-      </query-node-relations>
+      </relations-formula>
 
       <query-node params="node: $data, draw: $component.svgDraw"></query-node>
 
@@ -24,29 +22,22 @@ const svgDrawElementId = 'svgQueryTree',
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
 
-  var redrawTree = (linearizedTree) => {
+  let linearizedQueryTree = params.linearizedQueryTree,
+      svgDraw = SVG(svgDrawElementId).size('100%', '100%');
+
+  let redrawTree = (linearizedTree) => {
     for (let treeNode of linearizedTree) {
-      if (treeNode.svgSlug) {
-        treeNode.svgSlug.position();
-      }
+      treeNode.svgSlug && treeNode.svgSlug.position();
     }
-    for (let treeNode of linearizedTree.slice(1)) {
-      if (treeNode.svgRelationLine) {
-        treeNode.svgRelationLine.redrawLine();
-      }
+    for (let treeNode of linearizedTree) {
+      treeNode.svgRelationLine && treeNode.svgRelationLine.redrawLine();
+      treeNode.svgReferenceLine && treeNode.svgReferenceLine.redrawLine();
     }
   };
 
-  var linearizedQueryTree = ko.computed(() => {
-    let tree = linearizeTree(params.queryTree, []);
-    for (let node of tree) {
-      node.childNodes();
-    }
-    return tree;
-  });
   linearizedQueryTree.subscribe(redrawTree);
 
-  var domObserver = new MutationObserver(function() {
+  let domObserver = new MutationObserver(function() {
     if (redrawTree.timeoutID !== undefined) {
       clearTimeout(redrawTree.timeoutID);
     }
@@ -55,16 +46,12 @@ var viewModelFactory = (params, componentInfo) => {
     }, 30);
     return true;
   });
+
   domObserver.observe(componentInfo.element, { childList: true, subtree: true,
     attributes: false, characterData: false, attributeOldValue: false,
     characterDataOldValue: false });
 
-  let viewModel = {
-    linearizedQueryTree: linearizedQueryTree,
-    svgDraw: SVG(svgDrawElementId).size('100%', '100%')
-  };
-
-  return viewModel;
+  return { linearizedQueryTree, svgDraw };
 };
 
 // KnockoutJS component

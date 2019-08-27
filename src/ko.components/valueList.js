@@ -1,6 +1,6 @@
 import jQuery from 'jquery';
 
-const template = `
+const template1 = `
 
   <ul data-bind="foreach: valueList.items" class="bmpp-valueList">
     <li>
@@ -46,6 +46,18 @@ const template = `
 
     </li>
   </ul>
+
+`;
+
+const template = `
+
+  <!-- ko if: valueList.radioButtons && valueList.depth === 0 -->
+    <radio-buttons params="valueList: valueList"></radio-buttons>
+  <!-- /ko -->
+
+  <!-- ko if: !valueList.radioButtons || valueList.depth > 0 -->
+    ${ template1 }
+  <!-- /ko -->
 
 `;
 
