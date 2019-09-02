@@ -32,7 +32,6 @@ $videoHeight: 193px;
   flex-direction: column;
   align-items: stretch;
   overflow-y: scroll;
-  padding-bottom: 3em;
   position: relative;
 
   &.no-pad {
@@ -179,6 +178,7 @@ $videoHeight: 193px;
 
 .bmpp-resultsPane {
   display: grid;
+  height: 100%;
   grid-template-areas: "video  results info"
                        "layers layers  layers";
   grid-template-rows: $videoHeight auto;
@@ -193,11 +193,12 @@ $videoHeight: 193px;
     height: $videoHeight !important;
     overflow: hidden;
   }
+
   & #bmpp-results {
     grid-area: results;
     border-bottom: 1px solid $bmppBorderColor;
     border-right: 1px solid $bmppBorderColor;
-    overflow-y: scroll;
+    overflow-x: hidden;
     position: relative;
 
     &::after {
@@ -215,10 +216,24 @@ $videoHeight: 193px;
         rgba(255,255,255,0) 100%
       );
     }
+
+    &::-webkit-scrollbar {
+      width: 0.5em;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #efefef;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.33em;
+      background-color: #aaa;
+    }
   }
 
   & #bmpp-layers {
     overflow: hidden;
+    grid-area: layers;
   }
 }
 
@@ -477,6 +492,7 @@ $videoHeight: 193px;
 
   &::before {
     $height: 3em;
+    $color: rgba(212, 212, 212, 0.2);
     position: absolute;
     left: 0;
     right: 0;
@@ -603,12 +619,15 @@ $videoHeight: 193px;
 .bmpp-bannerPropvalue {
 }
 
-.bmpp-searchResult {
+.bmpp-searchResults {
   width: 100%;
   display: grid;
   grid-template-columns: auto auto auto 1fr auto;
   column-gap: 0.66em;
   align-items: baseline;
+
+  $shortTransitionTime: 0.3s;
+  $transitionTime: 0.5s;
 
   & .divider {
     grid-column: 1 / span 5;
@@ -619,30 +638,67 @@ $videoHeight: 193px;
   }
   & .bmpp-recordLabel {
     position: sticky !important;
+    box-shadow: 0 0 0.3em 0.1em white;
     top: 1em;
     grid-column: 5;
+    transition: background-color $transitionTime,
+                color $transitionTime;
   }
   & .bmpp-unitValue {
     text-align: right;
     color: green;
     font-size: smaller;
-    cursor: pointer;
     grid-column: 3;
   }
   & .bmpp-transcription {
     cursor: pointer;
     grid-column: 4;
-  }
-  & .bmpp-context {
-    color: grey;
-    cursor: auto !important;
+    position: relative;
+
+    /* ::after нужен для изменения цвета всей строки сетки,
+     * а ::before -- для срабатывания :hover на всей строке,
+     * а не только на .bmpp-transcription */
+    &::after,
+    &::before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: -0.55em;
+      bottom: -0.65em;
+      left: -100em;
+      right: -100em;
+    }
+
+    &::after {
+      z-index: -1;
+    }
+
+    &:hover::after {
+      background-color: color(green a(0.1));
+      transition: background-color $shortTransitionTime;
+    }
+    &.currentItem::after {
+      background-color: color(green a(0.1));
+      transition: background-color $transitionTime;
+    }
+    &.currentItem:hover::after {
+      background-color: color(green a(0.25));
+      transition: background-color $shortTransitionTime;
+    }
+
+    &:hover + .bmpp-recordLabel,
+    &.currentItem + .bmpp-recordLabel {
+      color: white !important;
+      background-color: green !important;
+      transition: color $transitionTime,
+                  background-color $transitionTime;
+    }
   }
   & .bmpp-time,
   & .bmpp-duration {
-    font-size: smaller;
     color: grey;
+    font-size: smaller;
     text-align: right;
-    cursor: auto;
   }
   & .bmpp-time {
     grid-column: 1;

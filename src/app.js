@@ -13,7 +13,8 @@ import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
 preinitKnockout(ko);
 
-const qs = window.URLSearchParams && (new URLSearchParams(document.location.search));
+const qs = window.URLSearchParams
+  && (new URLSearchParams(document.location.search));
 window[';)'] = {
   debug: qs && qs.has('debug') || false,
 };

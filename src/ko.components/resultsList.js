@@ -2,27 +2,27 @@ import cinema from '../scripts/cinema.js';
 
 const resultsTemplate = `
 
-  <div data-bind="foreach: results" class="bmpp-searchResult">
+  <div data-bind="foreach: results" class="bmpp-searchResults">
 
     <div class="divider" data-bind="visible: previousItem"></div>
 
     <div class="bmpp-time"
       data-bind="text: match.beginTime + '–' + match.endTime"></div>
+
     <div class="bmpp-duration" data-bind="text: match.duration"></div>
-    <div class="bmpp-unitValue"
-      data-bind="text: match.value, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, filmType, $data)
-        "></div>
+
+    <div class="bmpp-unitValue" data-bind="text: match.value"></div>
+
     <div class="bmpp-transcription"
-      data-bind="html: match.transcription,
-        click: $component.cinema.showFilm.bind($component.cinema,
-          record_id, filmType, $data)">
+      data-bind="html: match.transcription, click: $component.showFilm,
+        css: { currentItem: $data === $component.cinema.activeDataItem() }">
     </div>
 
     <div class="ui label bmpp-recordLabel"
       data-bind="text: 'Запись ' + record_id,
         visible: !previousItem
-              || previousItem && previousItem.record_id !== record_id"></div>
+              || previousItem && previousItem.record_id !== record_id">
+    </div>
 
   </div>
 
@@ -68,14 +68,15 @@ var viewModelFactory = function (params) {
     observer.observe(target);
   }
 
+  function showFilm(data) {
+    cinema.showFilm(data.record_id, data.filmType, data);
+  }
+
   if (vM.resultsNumber() > resultsData.results().length) {
     setTimeout(bindLazyLoad, 5000);
   }
 
-  return {
-    cinema: cinema,
-    resultsData: params.resultsData
-  };
+  return { cinema, resultsData, showFilm };
 };
 viewModelFactory.prototype.dispose = function () {
   this.observer.disconnect && this.observer.disconnect();
