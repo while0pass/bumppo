@@ -1,4 +1,8 @@
+//import ko from 'knockout';
+import log from '../scripts/log.js';
+import SVG from 'svg.js';
 import cinema from '../scripts/cinema.js';
+import { LayersStruct } from '../scripts/layers.js';
 
 const videoTemplate = `
 
@@ -114,9 +118,10 @@ const resultsTemplate = `
 
 `;
 
-const layersTemplate = `
+const svgDrawElementId = 'bmpp-layers',
+      layersTemplate = `
 
-  <div id="bmpp-layers">
+  <div id="${ svgDrawElementId }">
 
   </div>
 
@@ -125,10 +130,33 @@ const layersTemplate = `
 const template = videoTemplate +
   queryInfoTemplate + resultsTemplate + layersTemplate;
 
+function makeViewModelForLayers(layersStruct, svgDraw) {
+  let layers = layersStruct.layers;
+  for (let i = 1; i < layers.length; i++) {
+    let j = i * 30;
+    svgDraw.line(0, j, '100%', j).stroke({
+      width: 1,
+      color: '#efefef',
+      dasharray: '5 4',
+    });
+  }
+  for (let i = 0; i < layers.length; i++) {
+    let y1 = i * 30;
+    for (let j = 0; j < layers[i].segments.length; j++) {
+      let seg = layers[i].segments[j];
+      svgDraw.move(seg.x1, y1).rect(seg.width, 30);
+    }
+  }
+}
+
 function viewModelFactory(params) {
+  let svgDraw = SVG(svgDrawElementId).size('100%', '100%'),
+      layers = new LayersStruct(params.layersData());
+  log(layers);
+  layers = makeViewModelForLayers(layers, svgDraw);
   return {
     resultsData: { results: params.resultsData },
-    cinema: cinema
+    layers, cinema
   };
 }
 

@@ -1,3 +1,5 @@
+import stubData from './response_data_new2.json';
+
 /* eslint-disable no-undef,no-constant-condition */
 const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
   '$_CONFIG.BUMPPO_REMOTE_SERVER.origin' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path':
@@ -16,8 +18,12 @@ var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] },
 onmessage = (message) => {
   let [messageType, data] = message.data;
   if (messageType === 'query') {
-    doAbort(xhr);
-    doQuery(data);
+    if (data) {
+      getStubResults();
+    } else {
+      doAbort(xhr);
+      doQuery(data);
+    }
   } else if (messageType === 'abort') {
     doAbort(xhr);
   } else if (messageType === 'results1') {
@@ -130,4 +136,12 @@ function sendOtherResults() {
       resultsPortion = results.slice(sent, sent + inc);
   postMessage(['results1', resultsPortion]);
   searchData.sent += resultsPortion.length;
+}
+
+function getStubResults() {
+  searchData.sent = 0;
+  searchData.total = stubData.results.length;
+  searchData.results = stubData.results;
+  postMessage(['status', 'Отрисовка результатов']);
+  sendFirstResults();
 }

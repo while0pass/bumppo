@@ -33,6 +33,7 @@ const //builtins = require('rollup-plugin-node-builtins'),
       commonjs = require('rollup-plugin-commonjs'),
       //globals = require('rollup-plugin-node-globals'),
       jscc = require('rollup-plugin-jscc'),
+      json = require('rollup-plugin-json'),
       resolve = require('rollup-plugin-node-resolve');
 
 // PostCSS plugins
@@ -63,6 +64,7 @@ const rollupInputOpts = {
     resolve({ mainFields: ['browser', 'jsnext:main', 'module', 'main'] }),
     commonjs(),
     //globals(),
+    json(),
     jscc({ values: { _CONFIG: context }, exclude: 'node_modules/**'}),
   ],
 };

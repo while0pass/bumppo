@@ -38,6 +38,10 @@ $videoHeight: 193px;
     overflow-y: hidden;
     padding: 0;
   }
+
+  &.no-scroll {
+    overflow: hidden;
+  }
 }
 
 #bmpp-mainWait {

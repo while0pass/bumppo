@@ -11,6 +11,8 @@ import { getHRef, hrefs } from './scripts/routing.js';
 import { concatResults, getResults } from './scripts/results.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
+import layersData from './response_tiers3.json';
+
 preinitKnockout(ko);
 
 const qs = window.URLSearchParams
@@ -109,6 +111,7 @@ function viewModel() {
   this.isSubcorpusNew = ko.observable(false);
 
   this.resultsData = ko.observableArray([]);
+  this.layersData = ko.observable(layersData);
   this.subcorpus = {
     records: new CheckboxForm(records, this.isSubcorpusNew),
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
