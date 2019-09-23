@@ -1,4 +1,4 @@
-import log from './log.js';
+//import log from './log.js';
 
 const LAYERS_HIERARCHY = [
 
@@ -221,17 +221,21 @@ const LAYERS_HIERARCHY = [
     ]},
 ];
 
-const [LAYERS, LAYER_CHILDREN_MAP] = (function () {
+const [LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP] = (function () {
   let layers = [],
-      childrenMap = {};
+      childrenMap = {},
+      parentMap = {};
   LAYERS_HIERARCHY.forEach(topLayer => {
     layers.push(topLayer.name);
     if (topLayer.children) {
       childrenMap[topLayer.name] = topLayer.children;
-      topLayer.children.forEach(layer => layers.push(layer));
+      topLayer.children.forEach(layer => {
+        layers.push(layer);
+        parentMap[layer] = topLayer.name;
+      });
     }
   });
-  return [layers, childrenMap];
+  return [layers, childrenMap, parentMap];
 })();
 
 const LAYER_ORDER_MAP = (function () {
@@ -239,6 +243,8 @@ const LAYER_ORDER_MAP = (function () {
   LAYERS.forEach((layerName, ix) => { orderMap[layerName] = ix; });
   return orderMap;
 })();
+
+const COOKED_LAYERS = {};
 
 
 class Layer {
@@ -261,6 +267,7 @@ class Layer {
   getChildren() {
     let children = LAYER_CHILDREN_MAP[this.type],
         availableList = this.struct._availableList;
+    COOKED_LAYERS[this.type] = this;
     if (children instanceof Array) {
       return children
         .filter(layerType => availableList.indexOf(layerType) > -1)
@@ -345,7 +352,6 @@ class Segment {
     let t = this.layer.struct.time,
         d = t.end - t.start,
         value = (this.time.end - this.time.start) / d * 100;
-    value > 0 && log('width:', this, value);
     return `${ value }%`;
   }
 }
@@ -374,7 +380,13 @@ class LayersStruct {
     return layersList;
   }
   getLayersFromData(availableList) {
-    return availableList.map(layerType => new Layer(this, null, layerType));
+    return availableList.map(layerType => {
+      if (layerType in LAYER_PARENT_MAP) {
+        return COOKED_LAYERS[layerType];
+      } else {
+        return new Layer(this, null, layerType);
+      }
+    });
   }
 }
 

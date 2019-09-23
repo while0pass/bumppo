@@ -321,6 +321,10 @@ $layerHeight: 2rem;
   font-size: smaller;
   overflow: hidden;
 
+  &.sublayer {
+    padding-left: 2rem;
+  }
+
   &:hover {
     background-color: $lightGrey;
   }

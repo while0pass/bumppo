@@ -126,7 +126,8 @@ const svgDrawElementId = 'bmpp-timeline',
 
     <div id="bmpp-layersNames">
       <div id="bmpp-lNContainer" data-bind="foreach: layersStruct.layers">
-        <div class="bmpp-layerName" data-bind="text: type"></div>
+        <div class="bmpp-layerName" data-bind="text: type,
+          css: { sublayer: parent }"></div>
       </div>
     </div>
 
