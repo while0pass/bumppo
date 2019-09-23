@@ -97,11 +97,12 @@ function js() {
 }
 
 function css() {
-  var cpOpts = { preserve: false },
-      cpeOpts = { stage: 0 },
-      plugins = [easyImport(), mixins(), sassLikeVars(), customProps(cpOpts),
-                 cssPresetEnv(cpeOpts), calc(), color(), cssNano()],
-      oldPlugins = [sassLikeVars(), nested(), cssNext(), color(), cssNano()];
+  var //cpOpts = { preserve: false },
+      //cpeOpts = { stage: 0 },
+      //plugins = [easyImport(), mixins(), sassLikeVars(), customProps(cpOpts),
+      //           cssPresetEnv(cpeOpts), calc(), color(), cssNano()],
+      oldPlugins = [easyImport(), mixins(), sassLikeVars(), nested(),
+                    cssNext(), color(), cssNano()];
   return src('src/styles/main.css').pipe(postcss(oldPlugins))
     .pipe(rename('bumppo.css')).pipe(dest('.build'));
 }

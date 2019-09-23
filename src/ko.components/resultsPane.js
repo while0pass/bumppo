@@ -1,6 +1,7 @@
 //import ko from 'knockout';
-import log from '../scripts/log.js';
-import SVG from 'svg.js';
+//import log from '../scripts/log.js';
+//import SVG from 'svg.js';
+import jQuery from 'jquery';
 import cinema from '../scripts/cinema.js';
 import { LayersStruct } from '../scripts/layers.js';
 
@@ -118,10 +119,29 @@ const resultsTemplate = `
 
 `;
 
-const svgDrawElementId = 'bmpp-layers',
+const svgDrawElementId = 'bmpp-timeline',
       layersTemplate = `
 
-  <div id="${ svgDrawElementId }">
+  <div id="bmpp-layers">
+
+    <div id="bmpp-layersNames">
+      <div id="bmpp-lNContainer" data-bind="foreach: layersStruct.layers">
+        <div class="bmpp-layerName" data-bind="text: type"></div>
+      </div>
+    </div>
+
+    <div id="${ svgDrawElementId }"></div>
+
+    <div id="bmpp-layersLayers">
+      <div id="bmpp-layersCanvas" data-bind="foreach: layersStruct.layers">
+        <div class="bmpp-layer" data-bind="foreach: segments">
+          <div class="bmpp-segment" data-bind="html: value,
+            style: { width: width, left: x }"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bmpp-layersButtons"></div>
 
   </div>
 
@@ -130,33 +150,18 @@ const svgDrawElementId = 'bmpp-layers',
 const template = videoTemplate +
   queryInfoTemplate + resultsTemplate + layersTemplate;
 
-function makeViewModelForLayers(layersStruct, svgDraw) {
-  let layers = layersStruct.layers;
-  for (let i = 1; i < layers.length; i++) {
-    let j = i * 30;
-    svgDraw.line(0, j, '100%', j).stroke({
-      width: 1,
-      color: '#efefef',
-      dasharray: '5 4',
-    });
-  }
-  for (let i = 0; i < layers.length; i++) {
-    let y1 = i * 30;
-    for (let j = 0; j < layers[i].segments.length; j++) {
-      let seg = layers[i].segments[j];
-      svgDraw.move(seg.x1, y1).rect(seg.width, 30);
-    }
-  }
-}
-
 function viewModelFactory(params) {
-  let svgDraw = SVG(svgDrawElementId).size('100%', '100%'),
-      layers = new LayersStruct(params.layersData());
-  log(layers);
-  layers = makeViewModelForLayers(layers, svgDraw);
+  let //svgDraw = SVG(svgDrawElementId).size('100%', '100%'),
+      layersStruct = new LayersStruct(params.layersData());
+  //makeTimeline(svgDraw);
+  jQuery('#bmpp-layersLayers').on('scroll', function () {
+    let x = document.getElementById('bmpp-lNContainer'),
+        y = document.getElementById('bmpp-layersLayers');
+    x.scrollTop = y.scrollTop;
+  });
   return {
     resultsData: { results: params.resultsData },
-    layers, cinema
+    layersStruct, cinema
   };
 }
 

@@ -16,6 +16,22 @@ $mainWaitWidth: calc(100vw - $sidePaneWidth - $borderWidth);
 $videoWidth: 342px;
 $videoHeight: 193px;
 
+@define-mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #efefef;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.33rem;
+    background-color: #aaa;
+  }
+}
+
 * {
   user-select: none;
 }
@@ -180,6 +196,9 @@ $videoHeight: 193px;
   top: .8em;
 }
 
+$layersPanelTimelineHeight: 2rem;
+$layersPanelButtonsHeight: 2rem;
+
 .bmpp-resultsPane {
   display: grid;
   height: 100%;
@@ -221,23 +240,89 @@ $videoHeight: 193px;
       );
     }
 
-    &::-webkit-scrollbar {
-      width: 0.5em;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: #efefef;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 0.33em;
-      background-color: #aaa;
-    }
+    @mixin scrollbar;
   }
 
   & #bmpp-layers {
     overflow: hidden;
     grid-area: layers;
+
+    display: grid;
+    grid-template-areas: "names timeline"
+                         "names layers"
+                         "names buttons";
+    grid-template-rows: $layersPanelTimelineHeight 1fr $layersPanelButtonsHeight;
+    grid-template-columns: 15rem auto;
+
+    & #bmpp-layersNames {
+      grid-area: names;
+      border-right: 1px solid $bmppBorderColor;
+      height: 100%;
+      position: relative;
+
+      & #bmpp-lNContainer {
+        position: absolute;
+        top: $layersPanelTimelineHeight;
+        bottom: $layersPanelButtonsHeight;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+      }
+    }
+
+    & #bmpp-timeline {
+      grid-area: timeline;
+      border-bottom: 1px solid $bmppBorderColor;
+    }
+
+    & #bmpp-layersLayers {
+      grid-area: layers;
+      position: relative;
+      overflow: auto;
+      @mixin scrollbar;
+
+      & #bmpp-layersCanvas {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    & #bmpp-layersButtons {
+      grid-area: buttons;
+      border-top: 1px solid $bmppBorderColor;
+    }
+  }
+}
+
+$layerHeight: 2rem;
+
+.bmpp-layer {
+  position: relative;
+  width: 100%;
+  height: $layerHeight;
+  border-bottom: 1px dashed $lightGrey;
+}
+
+.bmpp-segment {
+  position: absolute;
+  height: $layerHeight;
+  background-color: $lightGrey;
+  border: 1px solid $grey;
+  overflow: hidden;
+  padding: 0.5rem;
+  font-size: smaller;
+}
+
+.bmpp-layerName {
+  height: $layerHeight;
+  padding: 0.4rem 1rem;
+  font-size: smaller;
+  overflow: hidden;
+
+  &:hover {
+    background-color: $lightGrey;
   }
 }
 

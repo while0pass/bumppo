@@ -254,13 +254,13 @@ class Layer {
     return segments.map(
       x => {
         let seg = new Segment(this, x);
-        if (seg.time) { this.struct.timeBoundSegRegister[seg.value] = seg; }
+        if (seg.time) { this.struct._timeBoundSegRegister[seg.value] = seg; }
         return seg;
       });
   }
   getChildren() {
     let children = LAYER_CHILDREN_MAP[this.type],
-        availableList = this.struct.availableList;
+        availableList = this.struct._availableList;
     if (children instanceof Array) {
       return children
         .filter(layerType => availableList.indexOf(layerType) > -1)
@@ -304,7 +304,7 @@ class Segment {
   }
   defineParent(parentValue) {
     if (parentValue) {
-      let register = this.layer.struct.timeBoundSegRegister;
+      let register = this.layer.struct._timeBoundSegRegister;
       if (register.hasOwnProperty(parentValue)) {
         this.parent = register[parentValue];
       } else {
@@ -335,18 +335,18 @@ class Segment {
       }
     }
   }
-  get x1() {
+  get x() {
     let t = this.layer.struct.time,
         d = t.end - t.start;
-    log('x1:', this);
     let value = (this.time.start - t.start) / d * 100;
-    return String(value) + '%';
+    return `${ value }%`;
   }
   get width() {
     let t = this.layer.struct.time,
         d = t.end - t.start,
         value = (this.time.end - this.time.start) / d * 100;
-    return String(value) + '%';
+    value > 0 && log('width:', this, value);
+    return `${ value }%`;
   }
 }
 
@@ -361,10 +361,11 @@ function sortFunction(a, b) {
 class LayersStruct {
   constructor(data) {
     this._data = data;
-    this.timeBoundSegRegister = {};
+    this._timeBoundSegRegister = {};
+    this._availableList = this.getAvailableLayersList();
+
     this.time = {};
-    this.availableList = this.getAvailableLayersList();
-    this.layers = this.getLayersFromData(this.availableList);
+    this.layers = this.getLayersFromData(this._availableList);
   }
   getAvailableLayersList() {
     let layersList = Object.getOwnPropertyNames(this._data);
