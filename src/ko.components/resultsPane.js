@@ -1,7 +1,7 @@
 //import ko from 'knockout';
 //import log from '../scripts/log.js';
 //import SVG from 'svg.js';
-import jQuery from 'jquery';
+//import jQuery from 'jquery';
 import cinema from '../scripts/cinema.js';
 import { LayersStruct } from '../scripts/layers.js';
 
@@ -153,13 +153,17 @@ const template = videoTemplate +
 
 function viewModelFactory(params) {
   let //svgDraw = SVG(svgDrawElementId).size('100%', '100%'),
-      layersStruct = new LayersStruct(params.layersData());
+      layersStruct = new LayersStruct(params.layersData()),
+      elNC = document.getElementById('bmpp-lNContainer'),
+      elLL = document.getElementById('bmpp-layersLayers'),
+      propagateScroll = function () { elNC.scrollTop = elLL.scrollTop; },
+      propagateScrollReverse = function (event) {
+        event.preventDefault();
+        elNC.scrollTop = elLL.scrollTop -= event.wheelDelta;
+      };
   //makeTimeline(svgDraw);
-  jQuery('#bmpp-layersLayers').on('scroll', function () {
-    let x = document.getElementById('bmpp-lNContainer'),
-        y = document.getElementById('bmpp-layersLayers');
-    x.scrollTop = y.scrollTop;
-  });
+  elLL.addEventListener('scroll', propagateScroll);
+  elNC.addEventListener('wheel', propagateScrollReverse);
   return {
     resultsData: { results: params.resultsData },
     layersStruct, cinema
