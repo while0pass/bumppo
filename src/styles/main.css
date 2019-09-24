@@ -272,7 +272,6 @@ $layersPanelButtonsHeight: 2rem;
 
     & #bmpp-timeline {
       grid-area: timeline;
-      border-bottom: 1px solid $bmppBorderColor;
     }
 
     & #bmpp-layersLayers {
@@ -308,8 +307,8 @@ $layerHeight: 2rem;
 .bmpp-segment {
   position: absolute;
   height: $layerHeight;
-  background-color: $lightGrey;
-  border: 1px solid $grey;
+  background-color: #efefef;
+  border: 1px solid #ddd;
   overflow: hidden;
   padding: 0.5rem;
   font-size: smaller;
