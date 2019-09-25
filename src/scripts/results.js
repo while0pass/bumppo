@@ -1,3 +1,5 @@
+import { getTimeTag } from './timeline.js';
+
 const R = /^[^\d]*(\d+).*$/g;
 
 const tierMap = {
@@ -197,6 +199,8 @@ const tier2val = {
   'R-oLocus': m_oLocus,
 };
 
+const MILLISECONDS = 1;
+
 class Match {
   constructor(data, result) {
     this.result = result;
@@ -207,10 +211,12 @@ class Match {
     this.transcription = this.getTranscription();
   }
   get beginTime() {
-    return (this.time.begin / 1000).toFixed(2);
+    if (!this._begin) this._begin = getTimeTag(this.time.begin, MILLISECONDS);
+    return this._begin;
   }
   get endTime() {
-    return (this.time.end / 1000).toFixed(2);
+    if (!this._end) this._end = getTimeTag(this.time.end, MILLISECONDS);
+    return this._end;
   }
   get duration() {
     return ((this.time.end - this.time.begin) / 1000).toFixed(2);

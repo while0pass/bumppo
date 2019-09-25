@@ -312,7 +312,7 @@ $layerHeight: 2rem;
   background-color: #efefef;
   border: 1px solid #ddd;
   overflow: hidden;
-  padding: 0.5rem;
+  padding: 0.35rem 0.5rem;
   font-size: smaller;
 }
 
