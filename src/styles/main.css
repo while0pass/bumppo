@@ -272,6 +272,8 @@ $layersPanelButtonsHeight: 2rem;
 
     & #bmpp-timeline {
       grid-area: timeline;
+      width: 100%;
+      overflow: hidden;
     }
 
     & #bmpp-layersLayers {

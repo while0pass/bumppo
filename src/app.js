@@ -11,7 +11,7 @@ import { getHRef, hrefs } from './scripts/routing.js';
 import { concatResults, getResults } from './scripts/results.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
-import layersData from './response_tiers1.json';
+import layersData from './response_tiers3.json';
 
 preinitKnockout(ko);
 
