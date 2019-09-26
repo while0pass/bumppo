@@ -7,7 +7,7 @@ import log from '../scripts/log.js';
 //import jQuery from 'jquery';
 import cinema from '../scripts/cinema.js';
 import { LayersStruct } from '../scripts/layers.js';
-import { makeTimeline } from '../scripts/timeline.js';
+import { TimeLine } from '../scripts/timeline.js';
 
 const videoTemplate = `
 
@@ -202,7 +202,8 @@ function viewModelFactory(params) {
           elLL.scrollTop -= event.wheelDelta;
         }
       };
-  makeTimeline(svgDraw, layersStruct);
+
+  new TimeLine(svgDraw, layersStruct);
 
   elLL.addEventListener('scroll', propagateScroll);
   elLL.addEventListener('wheel', scale, true);

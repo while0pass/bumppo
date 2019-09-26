@@ -388,6 +388,10 @@ class LayersStruct {
       }
     });
   }
+  get duration() {
+    if (!this._duration) this._duration = this.time.end - this.time.start;
+    return this._duration;
+  }
 }
 
 export { LayersStruct };
