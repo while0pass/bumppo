@@ -178,6 +178,7 @@ function viewModelFactory(params) {
         elNC.scrollTop = elLL.scrollTop -= event.wheelDelta;
       },
       propagateScrollReverseTL = event => {
+        if (event.ctrlKey) return;
         elTL.scrollLeft = elLL.scrollLeft -= event.wheelDelta;
       },
       scale = event => {
