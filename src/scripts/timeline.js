@@ -337,7 +337,7 @@ class TimeLine {
     // Наблюдаем за изменениями ширины полотна для слоев
     let onResizeCanvas = entries => {
           const canvas = entries[0],
-                box = canvas.contentBoxSize || canvas.contentRect;
+                box = canvas.contentRect;
           self.canvasWidth(box.width);
           self.commitPoints(performance.now());
         },
@@ -347,7 +347,7 @@ class TimeLine {
     // Наблюдаем за изменением ширины окна видимости временной шкалы
     let onResizeTimelineWindow = entries => {
           const win = entries[0],
-                box = win.contentBoxSize || win.contentRect;
+                box = win.contentRect;
           self.windowWidth(box.width);
           self.commitPoints(performance.now());
         },
