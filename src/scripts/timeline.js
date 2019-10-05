@@ -1,4 +1,3 @@
-import log from './log.js';
 import ko from 'knockout';
 
 const timelineElementIds = {
@@ -14,17 +13,51 @@ const MS_IN_S = 1000,
       H_IN_D = 24;
 
 const MS = 1,
+      MS2 = 2 * MS,
+      MS5 = 5 * MS,
       CS = 10 * MS,
+      MS25 = 25 * MS,
+      MS50 = 50 * MS,
       DS = 100 * MS,
+      MS250 = 250 * MS,
+      MS500 = 500 * MS,
+
       S = MS_IN_S * MS,
+      S2 = 2 * S,
+      S5 = 5 * S,
       DAS = 10 * S,
+      S15 = 15 * S,
+      S30 = 30 * S,
+
       MIN = S_IN_MIN * S,
+      MIN2 = 2 * MIN,
+      MIN5 = 5 * MIN,
       DAMIN = 10 * MIN,
+      MIN15 = 15 * MIN,
+      MIN30 = 30 * MIN,
+
       H = MIN_IN_H * MIN,
-      DAH = 10 * H,
+      H2 = 2 * H,
+      H6 = 6 * H,
+      H12 = 12 * H,
+
       D = H_IN_D * H;
 
-const UNITS = [MS, CS, DS, S, DAS, MIN, DAMIN, H, DAH, D];
+const UNITS = [
+  MS, MS2, MS5, CS, MS25, MS50, DS, MS250, MS500,
+  S, S2, S5, DAS, S15, S30,
+  MIN, MIN2, MIN5, DAMIN, MIN15, MIN30,
+  H, H2, H6, H12, D
+];
+
+const tagEveryDivisionLine = (function () {
+  let map = {};
+  map[MS] = false;
+  for (let i = 1; i < UNITS.length; i++) {
+    map[UNITS[i]] = UNITS[i] % UNITS[i - 1] !== 0;
+  }
+  return map;
+})();
 
 if (!String.prototype.padStart) {
   String.prototype.padStart = function padStart(targetLength, padString) {
@@ -33,7 +66,7 @@ if (!String.prototype.padStart) {
   };
 }
 
-function getTimeTag(timePoint, showMsWhenZero) {
+function getTimeTag(timePoint, unit) {
   let sign = timePoint >= 0 ? 1 : -1,
       time = timePoint >= 0 ? timePoint : -timePoint,
       ms = Math.round(time % MS_IN_S),
@@ -44,7 +77,13 @@ function getTimeTag(timePoint, showMsWhenZero) {
   if (h > 0) timeTag += String(h).padStart(2, '0') + ':';
   timeTag += String(min).padStart(2, '0') + ':';
   timeTag += String(s).padStart(2, '0');
-  if (ms > 0 || showMsWhenZero) timeTag += '.' + String(ms).padStart(3, '0');
+  if (unit < S) {
+    let cropNum;
+    if (unit % 10 !== 0) cropNum = undefined;
+    else if (unit % 10 === 0 && unit % 100 !== 0) cropNum = -1;
+    else if (unit % 10 === 0 && unit % 100 === 0) cropNum = -2;
+    timeTag += '.' + String(ms).padStart(3, '0').slice(0, cropNum);
+  }
   return timeTag;
 }
 
@@ -64,14 +103,13 @@ class TimePoint {
   createTimeTag(point, timeline) {
     let xPercentage = this.getXPercentage(point, timeline),
         widthPercentage = 5,
-        timeTag = getTimeTag(point),
+        timeTag = getTimeTag(point, timeline.unit()),
         el = document.createElement('div');
     el.className = 'bmpp-timeTag';
     el.style.width = String(widthPercentage) + '%';
     el.style.left = String(xPercentage - widthPercentage / 2) + '%';
     el.appendChild(document.createTextNode(timeTag));
     document.getElementById(timelineElementIds.canvas).appendChild(el);
-    log('create', timeTag);
     return el;
   }
   smartDispose() {
@@ -86,7 +124,6 @@ class TimePoint {
     delete this.prv;
     delete this.nxt;
 
-    log('delete', getTimeTag(this.point));
     this.el.remove();
     delete this.el;
     delete this.point;
@@ -229,9 +266,7 @@ class TimeLine {
     }
   }
   recalcPoints() {
-    let t = performance.now();
     this.recreatePoints();
-    log('Recreating points time, ms:', performance.now() - t);
     /*
     this.recalcFirstPoint();
     this.recalcLastPoint();
@@ -240,13 +275,17 @@ class TimeLine {
   }
   getUnit() {
     return ko.computed(function () {
-      const referenceWidth = 300,
-            durationPerReferenceWidth = this.layersStruct.duration
-              * referenceWidth / this.canvasWidth();
-      for (let i = 0; i < UNITS.length - 1; i++) {
-        if (durationPerReferenceWidth < UNITS[i + 1]) {
-          return UNITS[i];
-        }
+      const charPxWidth = 5,
+            padPxWidth = charPxWidth * 4,
+            end = this.layersStruct.time.end,
+            canvasDuration = this.layersStruct.duration,
+            canvasPxWidth = this.canvasWidth();
+      for (let i = 0; i < UNITS.length; i++) {
+        let unitDuration = UNITS[i],
+            tagPxWidth = getTimeTag(end, unitDuration).length * charPxWidth,
+            referencePxWidth = tagPxWidth + padPxWidth,
+            unitPxWidth = canvasPxWidth * unitDuration / canvasDuration;
+        if (referencePxWidth < unitPxWidth) return unitDuration;
       }
       return UNITS.slice(-1)[0];
     }, this);
@@ -260,11 +299,17 @@ class TimeLine {
     let minorTicks = document.getElementById(timelineElementIds.ticks1),
         majorTicks = document.getElementById(timelineElementIds.ticks2),
         color = getComputedStyle(minorTicks).color,
+
+        unit = this.unit(),
+        dUnit = this.dUnit(),
+        everyDivLine = tagEveryDivisionLine[unit],
         duration = this.layersStruct.duration,
-        dUnitPercentage = this.dUnit() / duration * 100,
-        halfUnitPercentage = dUnitPercentage * 5,
-        unitShift = this.layersStruct.time.start % this.unit() / duration * 100,
-        unitShiftString = String(unitShift) + '%';
+
+        unitShift = this.layersStruct.time.start % unit / duration * 100,
+        unitShiftString = String(unitShift) + '%',
+        minorDivUnitPercentage = (everyDivLine ? dUnit * 2 : dUnit) / duration * 100,
+        majorDivUnitPercentage = minorDivUnitPercentage * 5;
+
     minorTicks.style.backgroundPositionX = unitShiftString;
     majorTicks.style.backgroundPositionX = unitShiftString;
     minorTicks.style.backgroundImage = `
@@ -272,7 +317,7 @@ class TimeLine {
       repeating-linear-gradient(
         90deg,
         ${ color }, ${ color } 1px,
-        transparent 1px, transparent ${ dUnitPercentage }%
+        transparent 1px, transparent ${ minorDivUnitPercentage }%
       )
 
     `,
@@ -281,7 +326,7 @@ class TimeLine {
       repeating-linear-gradient(
         90deg,
         ${ color }, ${ color } 1px,
-        transparent 1px, transparent ${ halfUnitPercentage }%
+        transparent 1px, transparent ${ majorDivUnitPercentage }%
       )
 
     `;
@@ -312,7 +357,6 @@ class TimeLine {
     // Перерисовываем шкалу при смене единицы измерения
     this.recalcTicks();
     this.dUnit.subscribe(function () {
-      log('unit:', this.unit(), 'dUnit:', this.dUnit());
       this.recalcTicks();
       self.commitPoints(performance.now());
     }, this);
@@ -323,4 +367,4 @@ class TimeLine {
   }
 }
 
-export { TimeLine, getTimeTag, timelineElementIds };
+export { TimeLine, getTimeTag, timelineElementIds, MS };

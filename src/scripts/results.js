@@ -1,4 +1,4 @@
-import { getTimeTag } from './timeline.js';
+import { getTimeTag, MS } from './timeline.js';
 
 const R = /^[^\d]*(\d+).*$/g;
 
@@ -199,8 +199,6 @@ const tier2val = {
   'R-oLocus': m_oLocus,
 };
 
-const SHOW_MS_WHEN_ZERO = true;
-
 class Match {
   constructor(data, result) {
     this.result = result;
@@ -211,11 +209,11 @@ class Match {
     this.transcription = this.getTranscription();
   }
   get beginTime() {
-    if (!this._begin) this._begin = getTimeTag(this.time.begin, SHOW_MS_WHEN_ZERO);
+    if (!this._begin) this._begin = getTimeTag(this.time.begin, MS);
     return this._begin;
   }
   get endTime() {
-    if (!this._end) this._end = getTimeTag(this.time.end, SHOW_MS_WHEN_ZERO);
+    if (!this._end) this._end = getTimeTag(this.time.end, MS);
     return this._end;
   }
   get duration() {
