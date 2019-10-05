@@ -1,5 +1,11 @@
 //import log from './log.js';
 
+const layersElementIds = {
+  layers: 'bmpp-layersLayers',
+  canvas: 'bmpp-layersCanvas',
+  names: 'bmpp-lNContainer',
+};
+
 const LAYERS_HIERARCHY = [
 
   { name: 'N-vLine',
@@ -394,4 +400,4 @@ class LayersStruct {
   }
 }
 
-export { LayersStruct };
+export { LayersStruct, layersElementIds };

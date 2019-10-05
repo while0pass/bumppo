@@ -6,8 +6,8 @@ import log from '../scripts/log.js';
 //import SVG from 'svg.js';
 //import jQuery from 'jquery';
 import cinema from '../scripts/cinema.js';
-import { LayersStruct } from '../scripts/layers.js';
-import { TimeLine } from '../scripts/timeline.js';
+import { LayersStruct, layersElementIds } from '../scripts/layers.js';
+import { TimeLine, timelineElementIds } from '../scripts/timeline.js';
 
 const videoTemplate = `
 
@@ -123,22 +123,26 @@ const resultsTemplate = `
 
 `;
 
-const svgDrawElementId = 'bmpp-timeline',
-      layersTemplate = `
+const layersTemplate = `
 
   <div id="bmpp-layers">
 
     <div id="bmpp-layersNames">
-      <div id="bmpp-lNContainer" data-bind="foreach: layersStruct.layers">
+      <div id="${ layersElementIds.names }" data-bind="foreach: layersStruct.layers">
         <div class="bmpp-layerName" data-bind="text: type,
           css: { sublayer: parent }"></div>
       </div>
     </div>
 
-    <div id="${ svgDrawElementId }"></div>
+    <div id="${ timelineElementIds.timeline }">
+      <div id="${ timelineElementIds.canvas }">
+        <div id="${ timelineElementIds.ticks1 }"></div>
+        <div id="${ timelineElementIds.ticks2 }"></div>
+      </div>
+    </div>
 
-    <div id="bmpp-layersLayers">
-      <div id="bmpp-layersCanvas" data-bind="foreach: layersStruct.layers">
+    <div id="${ layersElementIds.layers }">
+      <div id="${ layersElementIds.canvas }" data-bind="foreach: layersStruct.layers">
         <div class="bmpp-layer" data-bind="foreach: segments">
           <div class="bmpp-segment" data-bind="html: value,
             style: { width: width, left: x }"></div>
@@ -156,16 +160,17 @@ const template = videoTemplate +
   queryInfoTemplate + resultsTemplate + layersTemplate;
 
 function viewModelFactory(params) {
-  let svgDraw = SVG(svgDrawElementId).size('100%', '100%'),
-      layersStruct = new LayersStruct(params.layersData()),
-      elNC = document.getElementById('bmpp-lNContainer'),
-      elLL = document.getElementById('bmpp-layersLayers'),
-      elLC = document.getElementById('bmpp-layersCanvas'),
-      elTL = document.getElementById(svgDrawElementId),
-      elTLsvg = svgDraw.node,
+  let layersStruct = new LayersStruct(params.layersData()),
+      elNC = document.getElementById(layersElementIds.names),
+      elLL = document.getElementById(layersElementIds.layers),
+      elLC = document.getElementById(layersElementIds.canvas),
+      elTL = document.getElementById(timelineElementIds.timeline),
+      elTC = document.getElementById(timelineElementIds.canvas),
+      timeline = new TimeLine(elLC, layersStruct),
       propagateScroll = () => {
         elNC.scrollTop = elLL.scrollTop;
         elTL.scrollLeft = elLL.scrollLeft;
+        timeline.commitPoints(performance.now());
       },
       propagateScrollReverseNC = event => {
         // Синхронизация прокрутки панели с названиями слоев с прокруткой
@@ -192,7 +197,7 @@ function viewModelFactory(params) {
         // Совместное масштабирование ширины областей со слоями
         // и со временной шкалой.
         elLC.style.width = width;
-        elTLsvg.setAttribute('width', width);
+        elTC.style.width = width;
       },
       smartScroll = event => {
         if (event.ctrlKey) return;
@@ -203,7 +208,6 @@ function viewModelFactory(params) {
         }
       };
 
-  new TimeLine(svgDraw, layersStruct);
 
   elLL.addEventListener('scroll', propagateScroll);
   elLL.addEventListener('wheel', scale, true);

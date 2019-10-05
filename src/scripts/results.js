@@ -199,7 +199,7 @@ const tier2val = {
   'R-oLocus': m_oLocus,
 };
 
-const MILLISECONDS = 1;
+const SHOW_MS_WHEN_ZERO = true;
 
 class Match {
   constructor(data, result) {
@@ -211,11 +211,11 @@ class Match {
     this.transcription = this.getTranscription();
   }
   get beginTime() {
-    if (!this._begin) this._begin = getTimeTag(this.time.begin, MILLISECONDS);
+    if (!this._begin) this._begin = getTimeTag(this.time.begin, SHOW_MS_WHEN_ZERO);
     return this._begin;
   }
   get endTime() {
-    if (!this._end) this._end = getTimeTag(this.time.end, MILLISECONDS);
+    if (!this._end) this._end = getTimeTag(this.time.end, SHOW_MS_WHEN_ZERO);
     return this._end;
   }
   get duration() {

@@ -1,6 +1,13 @@
 import log from './log.js';
 import ko from 'knockout';
 
+const timelineElementIds = {
+  timeline: 'bmpp-timeline',
+  canvas: 'bmpp-timelineCanvas',
+  ticks1: 'bmpp-timelineTicks1',
+  ticks2: 'bmpp-timelineTicks2',
+};
+
 const MS_IN_S = 1000,
       S_IN_MIN = 60,
       MIN_IN_H = 60,
@@ -19,14 +26,6 @@ const MS = 1,
 
 const UNITS = [MS, CS, DS, S, DAS, MIN, DAMIN, H, DAH, D];
 
-const tickStroke = { width: 1, color: '#aaa' },
-      timeTagOpts = {
-        'fill': '#aaa',
-        'font-family': 'PT Sans',
-        'font-size': '0.7em',
-        'text-anchor': 'middle',
-      };
-
 if (!String.prototype.padStart) {
   String.prototype.padStart = function padStart(targetLength, padString) {
     if (this.length >= targetLength) return this;
@@ -34,24 +33,18 @@ if (!String.prototype.padStart) {
   };
 }
 
-function getTimeTag(timePoint, unitScale) {
+function getTimeTag(timePoint, showMsWhenZero) {
   let sign = timePoint >= 0 ? 1 : -1,
       time = timePoint >= 0 ? timePoint : -timePoint,
-      ms = time % MS_IN_S,
-      s = Math.floor(time / S % S_IN_MIN),
-      min = Math.floor(time / MIN % MIN_IN_H),
-      h = Math.floor(time / H % H_IN_D);
-
-  h = h > 0 ? String(h).padStart(2, '0') : '';
-  min = String(min).padStart(2, '0');
-  s = String(s).padStart(2, '0');
-  ms = String(ms).padStart(3, '0');
-
-  let timeTag = sign < 0 ? '-' : '';
-  if (h) timeTag += h + ':';
-  timeTag += min + ':';
-  timeTag += s;
-  if (unitScale < S) timeTag += '.' + ms;
+      ms = Math.round(time % MS_IN_S),
+      s = Math.round(time / S % S_IN_MIN),
+      min = Math.round(time / MIN % MIN_IN_H),
+      h = Math.round(time / H % H_IN_D),
+      timeTag = sign < 0 ? '-' : '';
+  if (h > 0) timeTag += String(h).padStart(2, '0') + ':';
+  timeTag += String(min).padStart(2, '0') + ':';
+  timeTag += String(s).padStart(2, '0');
+  if (ms > 0 || showMsWhenZero) timeTag += '.' + String(ms).padStart(3, '0');
   return timeTag;
 }
 
@@ -59,168 +52,193 @@ class TimePoint {
   constructor(point, timeline) {
     this.point = point;
     this.timeline = timeline;
-    this.svg = timeline.svgDraw.line(0, 0, 0, 0).stroke(tickStroke);
+    this.el = this.createTimeTag(point, timeline);
 
     //this.prv
     //this.nxt
-
-    this.tune();
   }
-  getRedrawOpts() {
-    const unitScale = this.timeline.unitScale(),
-          isFullUnit = this.point % unitScale === 0,
-          isHalfUnit = !isFullUnit && this.point % (unitScale / 2) === 0,
-          ls = this.timeline.layersStruct,
-          x = String((this.point - ls.time.start) / ls.duration * 100) + '%',
-          y1 = 0,
-          y2 = isFullUnit ? 10 : isHalfUnit ? 15 : 7;
-    return [[x, y1, x, y2], isFullUnit];
+  getXPercentage(point, timeline) {
+    let ls = timeline.layersStruct;
+    return (point - ls.time.start) / ls.duration * 100;
   }
-  redraw(coords, showTag) {
-    this.svg.plot(...coords);
-    if (showTag && !this.svgText) {
-
-      let timeTag = getTimeTag(this.point, this.timeline.unitScale());
-      this.svgText = this.timeline.svgDraw.text(timeTag)
-        .attr(timeTagOpts).attr({ x: coords[0], y: 20 });
-
-    } else if (showTag && this.svgText) {
-
-      let timeTag = getTimeTag(this.point, this.timeline.unitScale());
-      this.svgText.text(timeTag);
-
-    } else if (!showTag && this.svgText) {
-
-      this.svgText.remove();
-      delete this.svgText;
-
-    }
+  createTimeTag(point, timeline) {
+    let xPercentage = this.getXPercentage(point, timeline),
+        widthPercentage = 5,
+        timeTag = getTimeTag(point),
+        el = document.createElement('div');
+    el.className = 'bmpp-timeTag';
+    el.style.width = String(widthPercentage) + '%';
+    el.style.left = String(xPercentage - widthPercentage / 2) + '%';
+    el.appendChild(document.createTextNode(timeTag));
+    document.getElementById(timelineElementIds.canvas).appendChild(el);
+    log('create', timeTag);
+    return el;
   }
   smartDispose() {
     if (this.prv !== undefined && this.nxt !== undefined) {
       this.prv.nxt = this.nxt;
       this.nxt.prv = this.prv;
+    } else if (this.prv !== undefined) {
+      delete this.prv.nxt;
+    } else if (this.nxt !== undefined) {
+      delete this.nxt.prv;
     }
     delete this.prv;
     delete this.nxt;
-    this.svg.remove();
-  }
-  tune() {
-    ko.computed(function () {
-      let [coords, showTag] = this.getRedrawOpts();
-      this.redraw(coords, showTag);
-    }, this);
+
+    log('delete', getTimeTag(this.point));
+    this.el.remove();
+    delete this.el;
+    delete this.point;
+    delete this.timeline;
   }
 }
 
 class TimeLine {
-  constructor(svgDraw, layersStruct) {
-    this.svgDraw = svgDraw;
+  constructor(canvasElement, layersStruct) {
     this.layersStruct = layersStruct;
-    this.canvas = document.getElementById('bmpp-layersCanvas');
+    this.canvasWidth = this.getCanvasWidth(canvasElement);
+    this.windowWidth = this.getWindowWidth();
+    this.unit = this.getUnit();
+    this.dUnit = this.getDUnit();
+    this.commitPoints = ko.observable(0);
+    [ this.firstPoint, this.lastPoint ] = this.recreatePoints();
 
-    this.canvasWidth = ko.observable(this.canvas.clientWidth);
-    this.unitScale = this.getUnitScale();
-    this.dUnitScale = this.getDUnitScale();
-    this.dUnitStart = this.getStartShift();
-    this.dUnitEnd = this.getEndShift();
+    this.tune(canvasElement);
+  }
+  getWindowWidth() {
+    let windowElement = document.getElementById(timelineElementIds.timeline);
+    return ko.observable(windowElement.clientWidth);
+  }
+  getCanvasWidth(canvasElement) {
+    return ko.observable(canvasElement.clientWidth);
+  }
+  getWindowStart() {
+    let w = document.getElementById(timelineElementIds.timeline),
+        start = this.layersStruct.time.start,
+        duration = this.layersStruct.duration;
+    return start + duration * w.scrollLeft / this.canvasWidth();
+  }
+  getWindowEnd() {
+    let w = document.getElementById(timelineElementIds.timeline),
+        start = this.layersStruct.time.start,
+        duration = this.layersStruct.duration;
+    return start + duration * (w.scrollLeft + this.windowWidth()) / this.canvasWidth();
+  }
+  getUnitStartShift() {
+    let windowStart = this.getWindowStart(),
+        unit = this.unit();
+    return windowStart + unit - windowStart % unit;
+  }
+  getUnitEndShift() {
+    let windowEnd = this.getWindowEnd();
+    return windowEnd - windowEnd % this.unit();
+  }
+  removePointsFrom(firstPoint) {
+    let a = firstPoint;
+    while (a) {
+      let b = a.nxt;
+      a.smartDispose();
+      a = b;
+    }
+  }
+  recreatePoints() {
+    const oldFirstPoint = this.firstPoint;
 
-    this.edgePoints = this.getPoints();
+    const unit = this.unit(),
+          unitStart = this.getUnitStartShift(),
+          unitEnd = this.getUnitEndShift();
 
-    this.tune();
+    let a = new TimePoint(unitStart, this),
+        firstPoint = a, lastPoint;
+
+    while (unitEnd - a.point > 1e-1) {
+      let b = new TimePoint(a.point + unit, this);
+      a.nxt = b;
+      b.prv = a;
+      a = b;
+    }
+    lastPoint = a;
+    [ this.firstPoint, this.lastPoint ] = [firstPoint, lastPoint];
+
+    this.removePointsFrom(oldFirstPoint);
+
+    return [firstPoint, lastPoint];
   }
-  getStartShift() {
-    return ko.computed(function () {
-      let start = this.layersStruct.time.start,
-          dUnitScale = this.dUnitScale();
-      return start + dUnitScale - start % dUnitScale;
-    }, this);
-  }
-  getEndShift() {
-    return ko.computed(function () {
-      let end = this.layersStruct.time.end;
-      return end - end % this.dUnitScale();
-    }, this);
-  }
-  getPoints() {
-    return ko.computed(function () {
-      const dUnitScale = this.dUnitScale(),
-            dUnitStart = this.dUnitStart.peek(),
-            dUnitEnd = this.dUnitEnd.peek();
-      if (!this.edgePoints) { // Если шкала ещё не создана
-        let a = new TimePoint(dUnitStart, this),
-            firstPoint = a;
-        while (dUnitEnd - a.point > 1e-1) {
-          let b = new TimePoint(a.point + dUnitScale, this);
-          a.nxt = b;
-          b.prv = a;
-          a = b;
-        }
-        return [firstPoint, a];
-      } else { // Если шкала уже имеется
-        // Наcтроить начальный видимый штрих
-        let [firstPoint, lastPoint] = this.edgePoints.peek();
-        let a = firstPoint;
-        while (a.nxt !== undefined) {
-          let b = a.nxt;
-          if (Math.abs(a.point - dUnitStart) < 1e-1) {
-            break;
-          } else if (a.point < dUnitStart) {
-            a.smartDispose();
-            a = b;
-          } else if (a.point > dUnitStart) {
-            let c = new TimePoint(dUnitStart, this);
-            c.nxt = a;
-            a.prv = c;
-            a = c;
-            break;
-          }
-          log(2);
-        }
-        firstPoint = a;
-        // Настроить конечный видимый штрих
-        a = lastPoint;
-        while (a.prv !== undefined) {
-          let b = a.prv;
-          if (Math.abs(a.point - dUnitEnd) < 1e-1) {
-            break;
-          } else if (a.point > dUnitEnd) {
-            a.smartDispose();
-            a = b;
-          } else if (a.point < dUnitEnd) {
-            let c = new TimePoint(dUnitEnd, this);
-            c.prv = a;
-            a.nxt = c;
-            a = c;
-            break;
-          }
-          log(3);
-        }
-        lastPoint = a;
-        // Настроить все промежуточные штрихи
-        a = firstPoint;
-        while (a.nxt !== undefined) {
-          let b = a.nxt,
-              delta = b.point - a.point;
-          if (Math.abs(delta - dUnitScale) < 1e-1) {
-            a = b;
-          } else if (delta < dUnitScale) {
-            b.smartDispose();
-          } else if (delta > dUnitScale) {
-            let c = new TimePoint(a.point + dUnitScale, this);
-            a.nxt = c;
-            c.nxt = b;
-            b.prv = c;
-            c.prv = a;
-            a = c;
-          }
-          log(4);
-        }
-        return [firstPoint, lastPoint];
+  recalcFirstPoint() {
+    const unitStart = this.getUnitStartShift();
+    let a = this.firstPoint;
+    while (a.nxt !== undefined) {
+      let b = a.nxt;
+      if (Math.abs(a.point - unitStart) < 1e-1) {
+        break;
+      } else if (a.point < unitStart) {
+        a.smartDispose();
+        a = b;
+      } else if (a.point > unitStart) {
+        let c = new TimePoint(unitStart, this);
+        c.nxt = a;
+        a.prv = c;
+        a = c;
+        break;
       }
-    }, this);
+    }
+    this.firstPoint = a;
   }
-  getUnitScale() {
+  recalcLastPoint() {
+    const unitEnd = this.getUnitEndShift();
+    let a = this.lastPoint;
+    while (a.prv !== undefined) {
+      let b = a.prv;
+      if (Math.abs(a.point - unitEnd) < 1e-1) {
+        break;
+      } else if (a.point > unitEnd) {
+        a.smartDispose();
+        a = b;
+      } else if (a.point < unitEnd) {
+        let c = new TimePoint(unitEnd, this);
+        c.prv = a;
+        a.nxt = c;
+        a = c;
+        break;
+      }
+    }
+    this.lastPoint = a;
+  }
+  recalcMidPoints() {
+    const unit = this.unit();
+    let a = this.firstPoint;
+
+    debugger; // eslint-disable-line
+
+    while (a.nxt !== undefined) {
+      let b = a.nxt,
+          delta = b.point - a.point;
+      if (Math.abs(delta - unit) < 1e-1) {
+        a = b;
+      } else if (delta < unit) {
+        b.smartDispose();
+      } else if (delta > unit) {
+        let c = new TimePoint(a.point + unit, this);
+        a.nxt = c;
+        c.nxt = b;
+        b.prv = c;
+        c.prv = a;
+        a = c;
+      }
+    }
+  }
+  recalcPoints() {
+    let t = performance.now();
+    this.recreatePoints();
+    log('Recreating points time, ms:', performance.now() - t);
+    /*
+    this.recalcFirstPoint();
+    this.recalcLastPoint();
+    this.recalcMidPoints();
+    */
+  }
+  getUnit() {
     return ko.computed(function () {
       const referenceWidth = 300,
             durationPerReferenceWidth = this.layersStruct.duration
@@ -233,22 +251,76 @@ class TimeLine {
       return UNITS.slice(-1)[0];
     }, this);
   }
-  getDUnitScale() {
+  getDUnit() {
     return ko.computed(function () {
-      return this.unitScale() / 10;
+      return this.unit() / 10;
     }, this);
   }
-  tune() {
+  recalcTicks() {
+    let minorTicks = document.getElementById(timelineElementIds.ticks1),
+        majorTicks = document.getElementById(timelineElementIds.ticks2),
+        color = getComputedStyle(minorTicks).color,
+        duration = this.layersStruct.duration,
+        dUnitPercentage = this.dUnit() / duration * 100,
+        halfUnitPercentage = dUnitPercentage * 5,
+        unitShift = this.layersStruct.time.start % this.unit() / duration * 100,
+        unitShiftString = String(unitShift) + '%';
+    minorTicks.style.backgroundPositionX = unitShiftString;
+    majorTicks.style.backgroundPositionX = unitShiftString;
+    minorTicks.style.backgroundImage = `
+
+      repeating-linear-gradient(
+        90deg,
+        ${ color }, ${ color } 1px,
+        transparent 1px, transparent ${ dUnitPercentage }%
+      )
+
+    `,
+    majorTicks.style.backgroundImage = `
+
+      repeating-linear-gradient(
+        90deg,
+        ${ color }, ${ color } 1px,
+        transparent 1px, transparent ${ halfUnitPercentage }%
+      )
+
+    `;
+  }
+  tune(canvasElement) {
+    let self = this;
+
     // Наблюдаем за изменениями ширины полотна для слоев
-    let canvasWidth = this.canvasWidth,
-        callback = entries => {
+    let onResizeCanvas = entries => {
           const canvas = entries[0],
                 box = canvas.contentBoxSize || canvas.contentRect;
-          canvasWidth(box.width);
+          self.canvasWidth(box.width);
+          self.commitPoints(performance.now());
         },
-        ro = new ResizeObserver(callback);
-    ro.observe(this.canvas);
+        ro1 = new ResizeObserver(onResizeCanvas);
+    ro1.observe(canvasElement);
+
+    // Наблюдаем за изменением ширины окна видимости временной шкалы
+    let onResizeTimelineWindow = entries => {
+          const win = entries[0],
+                box = win.contentBoxSize || win.contentRect;
+          self.windowWidth(box.width);
+          self.commitPoints(performance.now());
+        },
+        ro2 = new ResizeObserver(onResizeTimelineWindow);
+    ro2.observe(document.getElementById(timelineElementIds.timeline));
+
+    // Перерисовываем шкалу при смене единицы измерения
+    this.recalcTicks();
+    this.dUnit.subscribe(function () {
+      log('unit:', this.unit(), 'dUnit:', this.dUnit());
+      this.recalcTicks();
+      self.commitPoints(performance.now());
+    }, this);
+
+    this.commitPoints.extend({ rateLimit: 50 }).subscribe(function () {
+      this.recalcPoints();
+    }, this);
   }
 }
 
-export { TimeLine, getTimeTag };
+export { TimeLine, getTimeTag, timelineElementIds };
