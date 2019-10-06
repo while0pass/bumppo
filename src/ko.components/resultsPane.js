@@ -175,11 +175,11 @@ function viewModelFactory(params) {
       propagateScrollReverseNC = event => {
         // Синхронизация прокрутки панели с названиями слоев с прокруткой
         // области, где отображются сами слои.
-        elNC.scrollTop = elLL.scrollTop -= event.wheelDelta;
+        elNC.scrollTop = elLL.scrollTop -= event.deltaY;
       },
       propagateScrollReverseTL = event => {
         if (event.ctrlKey) return;
-        elTL.scrollLeft = elLL.scrollLeft -= event.wheelDelta;
+        elTL.scrollLeft = elLL.scrollLeft -= event.deltaY;
       },
       scale = event => {
         if (!event.ctrlKey) return;
@@ -193,8 +193,8 @@ function viewModelFactory(params) {
             cursorSlidingWindowX = event.clientX - slidingWindowX,
             timePoint = start + duration * cursorCanvasX / canvasWidth,
             mul = 1, width;
-        if (event.wheelDelta > 0) mul = 1.1;
-        else if (event.wheelDelta < 0) mul = 10 / 11;
+        if (event.deltaY > 0) mul = 1.1;
+        else if (event.deltaY < 0) mul = 10 / 11;
         width = canvasWidth * mul;
         if (width <= elTL.clientWidth) {
           width = '100%';
@@ -204,7 +204,8 @@ function viewModelFactory(params) {
         // Совместное масштабирование холста со слоями и холста временной шкалы
         elLC.style.width = width;
         elTC.style.width = width;
-        // При масштабировании закреплять холст под курсором
+        // При масштабировании закреплять холст на той точке временной шкалы,
+        // которая находится под курсором
         log('cursor under', getTimeTag(timePoint, 1));
         let scrollLeft = cursorCanvasX * mul - cursorSlidingWindowX;
         elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
@@ -212,9 +213,9 @@ function viewModelFactory(params) {
       smartScroll = event => {
         if (event.ctrlKey) return;
         if (event.shiftKey || elLC.clientHeight === elLL.clientHeight) {
-          elLL.scrollLeft -= event.wheelDelta;
+          elLL.scrollLeft -= event.deltaY;
         } else {
-          elLL.scrollTop -= event.wheelDelta;
+          elLL.scrollTop -= event.deltaY;
         }
       };
 
