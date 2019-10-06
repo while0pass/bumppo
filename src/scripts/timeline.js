@@ -69,10 +69,10 @@ if (!String.prototype.padStart) {
 function getTimeTag(timePoint, unit) {
   let sign = timePoint >= 0 ? 1 : -1,
       time = timePoint >= 0 ? timePoint : -timePoint,
-      ms = Math.round(time % MS_IN_S),
-      s = Math.round(time / S % S_IN_MIN),
-      min = Math.round(time / MIN % MIN_IN_H),
-      h = Math.round(time / H % H_IN_D),
+      ms = Math.floor(time % MS_IN_S),
+      s = Math.floor(time / S % S_IN_MIN),
+      min = Math.floor(time / MIN % MIN_IN_H),
+      h = Math.floor(time / H % H_IN_D),
       timeTag = sign < 0 ? '-' : '';
   if (h > 0) timeTag += String(h).padStart(2, '0') + ':';
   timeTag += String(min).padStart(2, '0') + ':';
