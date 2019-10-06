@@ -7,7 +7,7 @@ import log from '../scripts/log.js';
 //import jQuery from 'jquery';
 import cinema from '../scripts/cinema.js';
 import { LayersStruct, layersElementIds } from '../scripts/layers.js';
-import { TimeLine, timelineElementIds } from '../scripts/timeline.js';
+import { TimeLine, timelineElementIds, getTimeTag } from '../scripts/timeline.js';
 
 const videoTemplate = `
 
@@ -184,21 +184,30 @@ function viewModelFactory(params) {
       scale = event => {
         if (!event.ctrlKey) return;
         event.preventDefault();
-        let width = elLC.clientWidth;
-        if (event.wheelDelta > 0) {
-          width *= 1.1;
-        } else if (event.wheelDelta < 0) {
-          width *= 10 / 11;
-        }
+        let canvasWidth = elTC.clientWidth,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            slidingWindowX = elTL.getBoundingClientRect().left,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = event.clientX - canvasX,
+            cursorSlidingWindowX = event.clientX - slidingWindowX,
+            timePoint = start + duration * cursorCanvasX / canvasWidth,
+            mul = 1, width;
+        if (event.wheelDelta > 0) mul = 1.1;
+        else if (event.wheelDelta < 0) mul = 10 / 11;
+        width = canvasWidth * mul;
         if (width <= elTL.clientWidth) {
           width = '100%';
         } else {
           width = `${ width }px`;
         }
-        // Совместное масштабирование ширины областей со слоями
-        // и со временной шкалой.
+        // Совместное масштабирование холста со слоями и холста временной шкалы
         elLC.style.width = width;
         elTC.style.width = width;
+        // При масштабировании закреплять холст под курсором
+        log('cursor under', getTimeTag(timePoint, 1));
+        let scrollLeft = cursorCanvasX * mul - cursorSlidingWindowX;
+        elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
       },
       smartScroll = event => {
         if (event.ctrlKey) return;

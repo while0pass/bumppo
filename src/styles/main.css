@@ -280,7 +280,12 @@ $layersPanelButtonsHeight: 2rem;
     & #bmpp-layersLayers {
       grid-area: layers;
       position: relative;
-      overflow: auto;
+      overflow-x: auto;
+      overflow-y: hidden; /* Для того, чтобы ширина полосы прокрутки
+      не съедала часть ширины холста #bmpp-layersCanvas. В противном случае
+      изменение width #bmpp-layersCanvas и #bmpp-timelineCanvas на одну и ту же
+      величину при масштабировании не будет приводить к полностью одинаковой
+      ширине. */
       @mixin scrollbar;
 
       & #bmpp-layersCanvas {
