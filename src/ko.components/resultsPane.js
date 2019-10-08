@@ -177,10 +177,6 @@ function viewModelFactory(params) {
         // области, где отображются сами слои.
         elNC.scrollTop = elLL.scrollTop -= event.deltaY;
       },
-      propagateScrollReverseTL = event => {
-        if (event.ctrlKey) return;
-        elTL.scrollLeft = elLL.scrollLeft -= event.deltaY;
-      },
       scale = event => {
         if (!event.ctrlKey) return;
         event.preventDefault();
@@ -212,7 +208,8 @@ function viewModelFactory(params) {
       },
       smartScroll = event => {
         if (event.ctrlKey) return;
-        if (event.shiftKey || elLC.clientHeight === elLL.clientHeight) {
+        event.preventDefault();
+        if (event.shiftKey || elLL.offsetHeight === elLL.scrollHeight) {
           elLL.scrollLeft -= event.deltaY;
         } else {
           elLL.scrollTop -= event.deltaY;
@@ -227,7 +224,7 @@ function viewModelFactory(params) {
   elNC.addEventListener('wheel', propagateScrollReverseNC);
 
   elTL.addEventListener('wheel', scale, true);
-  elTL.addEventListener('wheel', propagateScrollReverseTL);
+  elTL.addEventListener('wheel', smartScroll);
 
   return {
     resultsData: { results: params.resultsData },

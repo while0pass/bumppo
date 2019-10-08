@@ -4,209 +4,6 @@
     [
       {
         "show_tiers": {
-          "R-vLineHTML": "\\зач<u>е</u>м она там? \\зач<u>е</u>м она там? \\зач<u>е</u>м она там? \\зач<u>е</u>м она там? \\зач<u>е</u>м она там? \\зач<u>е</u>м она там? \\зач<u>е</u>м она там?"
-        },
-        "value": "R-vE142",
-        "c_1": {
-          "id": "R-vE142",
-          "value": "R-vE142",
-          "time": { "begin": 733435, "end": 734258 }
-        },
-        "tier": "R-vLine",
-        "c_2": {
-          "tier": "R_oFixation",
-          "id": "R-oF0839",
-          "value": "R-oF0839",
-          "time": { "end": 734638 }
-        },
-        "c_1p0": {
-          "tier": "R_vLineType",
-          "id": "R-vE142",
-          "value": "EDU",
-          "time": { "begin": 734258, "end": 734258 }
-        },
-        "time": { "begin": 733435, "end": 734258 },
-        "record_id": "04",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
-          "C-vLineHTML": "<sup>ˀ</sup>Он ему за /шляпу как бы —"
-        },
-        "value": "C-vE183",
-        "c_1": {
-          "id": "C-vE183",
-          "value": "C-vE183",
-          "time": { "begin": 864798, "end": 866402 }
-        },
-        "tier": "C-vLine",
-        "c_2": {
-          "tier": "R_oFixation",
-          "id": "R-oF1013",
-          "value": "R-oF1013",
-          "time": { "end": 866462 }
-        },
-        "c_1p0": {
-          "tier": "C_vLineType",
-          "id": "C-vE183",
-          "value": "EDU",
-          "time": { "begin": 866402, "end": 866402 }
-        },
-        "time": { "begin": 864798, "end": 866402 },
-        "record_id": "04",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
-          "R-vLineHTML": "и смотрит на˗а (1.60) \\/↓корз<u>и</u>ны,"
-        },
-        "value": "R-vE204",
-        "c_1": {
-          "id": "R-vE204",
-          "value": "R-vE204",
-          "time": { "begin": 886685, "end": 890135 }
-        },
-        "tier": "R-vLine",
-        "c_2": {
-          "tier": "R_oFixation",
-          "id": "R-oF1047",
-          "value": "R-oF1047",
-          "time": { "end": 891335 }
-        },
-        "c_1p0": {
-          "tier": "R_vLineType",
-          "id": "R-vE204",
-          "value": "EDU",
-          "time": { "begin": 890135, "end": 890135 }
-        },
-        "time": { "begin": 886685, "end": 890135 },
-        "record_id": "04",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
-          "R-vLineHTML": "он ведёт /коз<u>у</u>,"
-        },
-        "value": "R-vE331",
-        "c_1": {
-          "id": "R-vE331",
-          "value": "R-vE331",
-          "time": { "begin": 1205747, "end": 1206910 }
-        },
-        "tier": "R-vLine",
-        "c_2": {
-          "tier": "R_oFixation",
-          "id": "R-oF1550",
-          "value": "R-oF1550",
-          "time": { "end": 1207150 }
-        },
-        "c_1p0": {
-          "tier": "R_vLineType",
-          "id": "R-vE331",
-          "value": "EDU",
-          "time": { "begin": 1206910, "end": 1206910 }
-        },
-        "time": { "begin": 1205747, "end": 1206910 },
-        "record_id": "04",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
-          "R-vLineHTML": "/<sup>ə</sup><u>Е</u>й,"
-        },
-        "value": "R-vE455",
-        "c_1": {
-          "id": "R-vE455",
-          "value": "R-vE455",
-          "time": { "begin": 1398632, "end": 1399160 }
-        },
-        "tier": "R-vLine",
-        "c_2": {
-          "tier": "N_oFixation",
-          "id": "N-oF2129",
-          "value": "N-oF2129",
-          "time": { "end": 1399420 }
-        },
-        "c_1p0": {
-          "tier": "R_vLineType",
-          "id": "R-vE455",
-          "value": "EDU",
-          "time": { "begin": 1399160, "end": 1399160 }
-        },
-        "time": { "begin": 1398632, "end": 1399160 },
-        "record_id": "04",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
-          "N-vLineHTML": "(на \\не<u>ё</u>,)"
-        },
-        "value": "N-vE085",
-        "c_1": {
-          "id": "N-vE085",
-          "value": "N-vE085",
-          "time": { "begin": 124479, "end": 125000 }
-        },
-        "tier": "N-vLine",
-        "c_2": {
-          "tier": "N_oFixation",
-          "id": "N-oF0175",
-          "value": "N-oF0175",
-          "time": { "end": 125460 }
-        },
-        "c_1p0": {
-          "tier": "N_vLineType",
-          "id": "N-vE085",
-          "value": "EDU",
-          "time": { "begin": 125000, "end": 125000 }
-        },
-        "time": { "begin": 124479, "end": 125000 },
-        "record_id": "22",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
-          "N-vLineHTML": "Он падает с /велосип<u>е</u>да,"
-        },
-        "value": "N-vE092",
-        "c_1": {
-          "id": "N-vE092",
-          "value": "N-vE092",
-          "time": { "begin": 134437, "end": 135726 }
-        },
-        "tier": "N-vLine",
-        "c_2": {
-          "tier": "R_oFixation",
-          "id": "R-oF0122",
-          "value": "R-oF0122",
-          "time": { "end": 136906 }
-        },
-        "c_1p0": {
-          "tier": "N_vLineType",
-          "id": "N-vE092",
-          "value": "EDU",
-          "time": { "begin": 135726, "end": 135726 }
-        },
-        "time": { "begin": 134437, "end": 135726 },
-        "record_id": "22",
-        "is_main": true
-      }
-    ],
-    [
-      {
-        "show_tiers": {
           "C-vLineHTML": "\\собирает (0.18) (ə 0.63) груши себе в (ˀ 0.36) /ф<u>а</u>ртук,"
         },
         "value": "C-vE009",
@@ -401,6 +198,151 @@
           "end": 611142
         },
         "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "\\зач<u>е</u>м она там?"
+        },
+        "value": "R-vE142",
+        "c_1": {
+          "id": "R-vE142",
+          "value": "R-vE142",
+          "time": { "begin": 733435, "end": 734258 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0839",
+          "value": "R-oF0839",
+          "time": { "end": 734638 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE142",
+          "value": "EDU",
+          "time": { "begin": 734258, "end": 734258 }
+        },
+        "time": { "begin": 733435, "end": 734258 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vLineHTML": "<sup>ˀ</sup>Он ему за /шляпу как бы —"
+        },
+        "value": "C-vE183",
+        "c_1": {
+          "id": "C-vE183",
+          "value": "C-vE183",
+          "time": { "begin": 864798, "end": 866402 }
+        },
+        "tier": "C-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF1013",
+          "value": "R-oF1013",
+          "time": { "end": 866462 }
+        },
+        "c_1p0": {
+          "tier": "C_vLineType",
+          "id": "C-vE183",
+          "value": "EDU",
+          "time": { "begin": 866402, "end": 866402 }
+        },
+        "time": { "begin": 864798, "end": 866402 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "и смотрит на˗а (1.60) \\/↓корз<u>и</u>ны,"
+        },
+        "value": "R-vE204",
+        "c_1": {
+          "id": "R-vE204",
+          "value": "R-vE204",
+          "time": { "begin": 886685, "end": 890135 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF1047",
+          "value": "R-oF1047",
+          "time": { "end": 891335 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE204",
+          "value": "EDU",
+          "time": { "begin": 890135, "end": 890135 }
+        },
+        "time": { "begin": 886685, "end": 890135 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "он ведёт /коз<u>у</u>,"
+        },
+        "value": "R-vE331",
+        "c_1": {
+          "id": "R-vE331",
+          "value": "R-vE331",
+          "time": { "begin": 1205747, "end": 1206910 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF1550",
+          "value": "R-oF1550",
+          "time": { "end": 1207150 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE331",
+          "value": "EDU",
+          "time": { "begin": 1206910, "end": 1206910 }
+        },
+        "time": { "begin": 1205747, "end": 1206910 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "/<sup>ə</sup><u>Е</u>й,"
+        },
+        "value": "R-vE455",
+        "c_1": {
+          "id": "R-vE455",
+          "value": "R-vE455",
+          "time": { "begin": 1398632, "end": 1399160 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "N_oFixation",
+          "id": "N-oF2129",
+          "value": "N-oF2129",
+          "time": { "end": 1399420 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE455",
+          "value": "EDU",
+          "time": { "begin": 1399160, "end": 1399160 }
+        },
+        "time": { "begin": 1398632, "end": 1399160 },
+        "record_id": "04",
         "is_main": true
       }
     ]

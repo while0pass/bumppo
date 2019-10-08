@@ -16,14 +16,14 @@ $mainWaitWidth: calc(100vw - $sidePaneWidth - $borderWidth);
 $videoWidth: 342px;
 $videoHeight: 193px;
 
-@define-mixin scrollbar {
+@define-mixin scrollbar $bgcolor: #efefef {
   &::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #efefef;
+    background-color: $bgcolor;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -207,6 +207,19 @@ $layersPanelButtonsHeight: 2rem;
   grid-template-rows: $videoHeight auto;
   grid-template-columns: auto 1fr auto;
   overflow: hidden;
+  transition: all 1s ease-out;
+
+  &.without-layers {
+    grid-template-areas: "video info"
+                         "results results";
+    grid-template-columns: auto 1fr;
+    transition: all 1s ease-out;
+
+    & #bmpp-layers {
+      display: none !important;
+      transition: all 1s ease-out;
+    }
+  }
 
   & #bmpp-video {
     grid-area: video;
@@ -218,6 +231,7 @@ $layersPanelButtonsHeight: 2rem;
   }
 
   & #bmpp-results {
+    transition: all 1s ease-out;
     grid-area: results;
     border-bottom: 1px solid $bmppBorderColor;
     border-right: 1px solid $bmppBorderColor;
@@ -244,6 +258,7 @@ $layersPanelButtonsHeight: 2rem;
   }
 
   & #bmpp-layers {
+    transition: all 1s ease-out;
     overflow: hidden;
     grid-area: layers;
 
@@ -275,17 +290,18 @@ $layersPanelButtonsHeight: 2rem;
       width: 100%;
       overflow: hidden;
       position: relative;
+
+      overflow-y: scroll; /* ##overflowy## */
+      @mixin scrollbar #fff;
     }
 
     & #bmpp-layersLayers {
       grid-area: layers;
       position: relative;
       overflow-x: auto;
-      overflow-y: hidden; /* Для того, чтобы ширина полосы прокрутки
-      не съедала часть ширины холста #bmpp-layersCanvas. В противном случае
-      изменение width #bmpp-layersCanvas и #bmpp-timelineCanvas на одну и ту же
-      величину при масштабировании не будет приводить к полностью одинаковой
-      ширине. */
+
+      overflow-y: scroll; /* Этот блок должен идти одновременно
+                             с блоком ##overflowy## */
       @mixin scrollbar;
 
       & #bmpp-layersCanvas {
