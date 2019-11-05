@@ -13,14 +13,14 @@ const MS_IN_S = 1000,
       H_IN_D = 24;
 
 const MS = 1,
-      MS2 = 2 * MS,
-      MS5 = 5 * MS,
-      CS = 10 * MS,
-      MS25 = 25 * MS,
-      MS50 = 50 * MS,
-      DS = 100 * MS,
-      MS250 = 250 * MS,
-      MS500 = 500 * MS,
+      MS2 = 2,
+      MS5 = 5,
+      CS = 10,
+      MS25 = 25,
+      MS50 = 50,
+      DS = 100,
+      MS250 = 250,
+      MS500 = 500,
 
       S = MS_IN_S * MS,
       S2 = 2 * S,
@@ -303,15 +303,17 @@ class TimeLine {
         unit = this.unit(),
         dUnit = this.dUnit(),
         everyDivLine = tagEveryDivisionLine[unit],
+        refMinorUnit = everyDivLine ? dUnit * 2 : dUnit,
+        refMajorUnit = refMinorUnit * 5,
+
+        start = this.layersStruct.time.start,
         duration = this.layersStruct.duration,
 
-        unitShift = this.layersStruct.time.start % unit / duration * 100,
-        unitShiftString = String(unitShift) + '%',
-        minorDivUnitPercentage = (everyDivLine ? dUnit * 2 : dUnit) / duration * 100,
+        unitShift = (start % refMajorUnit - refMajorUnit) / duration,
+        unitShiftString = String(unitShift * 100) + '%',
+        minorDivUnitPercentage = refMinorUnit / duration * 100,
         majorDivUnitPercentage = minorDivUnitPercentage * 5;
 
-    minorTicks.style.backgroundPositionX = unitShiftString;
-    majorTicks.style.backgroundPositionX = unitShiftString;
     minorTicks.style.backgroundImage = `
 
       repeating-linear-gradient(
@@ -330,6 +332,14 @@ class TimeLine {
       )
 
     `;
+
+    //minorTicks.style.backgroundPositionX = unitShiftString;
+    //majorTicks.style.backgroundPositionX = unitShiftString;
+    // NOTE: При использовании смещения фонового рисунка, а не самого элемента
+    // возникают глюки с неверной отрисовкой засечек. Однократно обязательно
+    // появляется нерегулярное (!) заметное для глаза смещение засечек.
+    minorTicks.style.left = unitShiftString;
+    majorTicks.style.left = unitShiftString;
   }
   tune(canvasElement) {
     let self = this;

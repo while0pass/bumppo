@@ -2,7 +2,7 @@
  */
 
 //import ko from 'knockout';
-import log from '../scripts/log.js';
+//import log from '../scripts/log.js';
 //import SVG from 'svg.js';
 //import jQuery from 'jquery';
 import cinema from '../scripts/cinema.js';
@@ -202,7 +202,7 @@ function viewModelFactory(params) {
         elTC.style.width = width;
         // При масштабировании закреплять холст на той точке временной шкалы,
         // которая находится под курсором
-        log('cursor under', getTimeTag(timePoint, 1));
+        //log('cursor under', getTimeTag(timePoint, 1));
         let scrollLeft = cursorCanvasX * mul - cursorSlidingWindowX;
         elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
       },
