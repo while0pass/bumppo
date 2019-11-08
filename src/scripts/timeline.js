@@ -298,7 +298,7 @@ class TimeLine {
   recalcTicks() {
     let minorTicks = document.getElementById(timelineElementIds.ticks1),
         majorTicks = document.getElementById(timelineElementIds.ticks2),
-        color = getComputedStyle(minorTicks).color,
+        canvasWidth = this.canvasWidth(),
 
         unit = this.unit(),
         dUnit = this.dUnit(),
@@ -310,36 +310,14 @@ class TimeLine {
         duration = this.layersStruct.duration,
 
         unitShift = (start % refMajorUnit - refMajorUnit) / duration,
-        unitShiftString = String(unitShift * 100) + '%',
-        minorDivUnitPercentage = refMinorUnit / duration * 100,
-        majorDivUnitPercentage = minorDivUnitPercentage * 5;
+        unitShiftString = String(unitShift * canvasWidth) + 'px',
+        minorDivUnitPx = refMinorUnit / duration * canvasWidth,
+        majorDivUnitPx = minorDivUnitPx * 5;
 
-    minorTicks.style.backgroundImage = `
-
-      repeating-linear-gradient(
-        90deg,
-        ${ color }, ${ color } 1px,
-        transparent 1px, transparent ${ minorDivUnitPercentage }%
-      )
-
-    `,
-    majorTicks.style.backgroundImage = `
-
-      repeating-linear-gradient(
-        90deg,
-        ${ color }, ${ color } 1px,
-        transparent 1px, transparent ${ majorDivUnitPercentage }%
-      )
-
-    `;
-
-    //minorTicks.style.backgroundPositionX = unitShiftString;
-    //majorTicks.style.backgroundPositionX = unitShiftString;
-    // NOTE: При использовании смещения фонового рисунка, а не самого элемента
-    // возникают глюки с неверной отрисовкой засечек. Однократно обязательно
-    // появляется нерегулярное (!) заметное для глаза смещение засечек.
-    minorTicks.style.left = unitShiftString;
-    majorTicks.style.left = unitShiftString;
+    minorTicks.style.strokeDasharray = `1px ${ minorDivUnitPx - 1 }px`;
+    majorTicks.style.strokeDasharray = `1px ${ majorDivUnitPx - 1 }px`;
+    minorTicks.style.strokeDashoffset = unitShiftString;
+    majorTicks.style.strokeDashoffset = unitShiftString;
   }
   tune(canvasElement) {
     let self = this;
@@ -364,14 +342,9 @@ class TimeLine {
         ro2 = new ResizeObserver(onResizeTimelineWindow);
     ro2.observe(document.getElementById(timelineElementIds.timeline));
 
-    // Перерисовываем шкалу при смене единицы измерения
-    this.recalcTicks();
-    this.dUnit.subscribe(function () {
-      this.recalcTicks();
-      self.commitPoints(performance.now());
-    }, this);
-
+    // Перерисовываем шкалу и метки при масштабировании или прокрутке
     this.commitPoints.extend({ rateLimit: 50 }).subscribe(function () {
+      this.recalcTicks();
       this.recalcPoints();
     }, this);
   }

@@ -330,33 +330,17 @@ $layersPanelButtonsHeight: 2rem;
 $tickColor: #aaa;
 
 #bmpp-timelineTicks1 {
-  position: absolute;
-  content: '';
-  height: 0.4rem;
-  width: 100%;
-  color: $tickColor; /* Это свойство используется в javascript
-                        при установке background-image */
-  background-image: repeating-linear-gradient(
-    90deg,
-    $tickColor, $tickColor 1px,
-    transparent 1px, transparent 2%
-  );
-  background-position-x: 0;
-  transition: background-image 0.5s ease;
+  stroke-width: 0.4rem;
+  stroke: $tickColor;
+  stroke-dasharray: 1px 4px;
+  stroke-dashoffset: 0px;
 }
 
 #bmpp-timelineTicks2 {
-  position: absolute;
-  content: '';
-  height: 0.7rem;
-  width: 100%;
-  background-image: repeating-linear-gradient(
-    90deg,
-    $tickColor, $tickColor 1px,
-    transparent 1px, transparent 10%
-  );
-  background-position-x: 0;
-  transition: background-image 0.5s ease;
+  stroke-width: 0.7rem;
+  stroke: $tickColor;
+  stroke-dasharray: 1px 24px;
+  stroke-dashoffset: 0px;
 }
 
 .bmpp-timeTag {

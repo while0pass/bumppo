@@ -136,8 +136,12 @@ const layersTemplate = `
 
     <div id="${ timelineElementIds.timeline }">
       <div id="${ timelineElementIds.canvas }">
-        <div id="${ timelineElementIds.ticks1 }"></div>
-        <div id="${ timelineElementIds.ticks2 }"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <line id="${ timelineElementIds.ticks1 }" x1="0" x2="100%"
+                                                    y1="0.2rem" y2="0.2rem"/>
+          <line id="${ timelineElementIds.ticks2 }" x1="0" x2="100%"
+                                                    y1="0.35rem" y2="0.35rem"/>
+        </svg>
       </div>
     </div>
 
