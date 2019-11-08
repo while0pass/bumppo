@@ -199,6 +199,13 @@ function viewModelFactory(params) {
         if (width <= elTL.clientWidth) {
           width = '100%';
         } else {
+          if (timeline.unit() === 1) {
+            const maxPxPerMs = 100;
+            if (width / duration > maxPxPerMs) {
+              width = Math.floor(maxPxPerMs * duration);
+              mul = width / canvasWidth;
+            }
+          }
           width = `${ width }px`;
         }
         // Совместное масштабирование холста со слоями и холста временной шкалы
