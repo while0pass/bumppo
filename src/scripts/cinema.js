@@ -15,6 +15,8 @@ const plyrOpts = {
   //speed: { selected: 1, options: [0.5, 0.75, 1] },
 };
 
+//const performance = window.performance || window.Date;
+
 
 class Film {
   constructor(cinema, filmData) {
@@ -67,7 +69,23 @@ class Film {
     let self = this,
         film = new Plyr(element.find('video'), plyrOpts),
         showLoader = () => { cinema.loader.show(); },
-        hideLoader = () => { cinema.loader.hide(); };
+        hideLoader = () => { cinema.loader.hide(); },
+        animationFrame = null,
+        placeCursor = () => {
+          cinema.placeCursor(film.currentTime);
+          animationFrame = window.requestAnimationFrame(placeCursor);
+        },
+        onPlay = () => {
+          cinema.loader.hide();
+          placeCursor();
+        },
+        onPause = () => {
+          cinema.loader.hide();
+          while (animationFrame) {
+            window.cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+          }
+        };
     film.toggleControls(false);
     showLoader();
     film.filmObject = this;
@@ -76,8 +94,8 @@ class Film {
     film.on('seeking', showLoader);
     film.on('waiting', showLoader);
     film.on('seeked', hideLoader);
-    film.on('playing', hideLoader);
-    film.on('pause', hideLoader);
+    film.on('playing', onPlay);
+    film.on('pause', onPause);
     film.on('controlsshown', () => {
       self.isMouseWithin || film.toggleControls(false);
     });
@@ -86,7 +104,7 @@ class Film {
 }
 
 class Cinema {
-  constructor() {
+  constructor(timeline) {
     this.films = {};
     this.filmTypes = [
       { id: 'N-eyf', disabled: true },
@@ -100,6 +118,8 @@ class Cinema {
     this.activeRecordId = ko.observable(null);
     this.activeFilmType = ko.observable(null);
     this.activeDataItem = ko.observable(null);
+    this.timeline = timeline;
+    this.cursorStruct = this.createCursorStruct();
     this.createHider();
   }
   get screen() {
@@ -131,6 +151,40 @@ class Cinema {
     this.activeRecordId(null);
     this.activeFilmType(null);
     this.activeDataItem(null);
+  }
+  createCursorStruct() {
+    let struct = {
+      width: 0,
+      start: 0,
+      duration: 1,
+      //lastTime: performance.now(),
+    };
+    ko.computed(function () {
+      let timeline = this.timeline();
+      if (timeline) {
+        struct.width = timeline.canvasWidth();
+        struct.start = timeline.layersStruct.time.start;
+        struct.duration = timeline.layersStruct.duration;
+      }
+    }, this);
+    return struct;
+  }
+  placeCursor(currentTime) {
+    // Ограничимся 25 кадрами в сек.
+    //let lastTime = this.cursorStruct.lastTime,
+    //    thisTime = performance.now();
+    //if (thisTime - lastTime < 40) return;
+    //this.cursorStruct.lastTime = thisTime;
+
+    let cursor = this.cursorStruct.cursor;
+    if (!cursor) cursor = document.getElementById('bmpp-cursor');
+    // NOTE: Нет смысла брать элемент DOM для курсора в createCursorStruct,
+    // т.к. на тот момент элемента ещё в DOM не будет.
+
+    let { start, width, duration } = this.cursorStruct,
+        position = (currentTime * 1000 - start) / duration * width;
+    cursor.setAttribute('x1', position);
+    cursor.setAttribute('x2', position);
   }
   showFilm(recordId, filmType, dataItem) {
     const cinema = this;
@@ -204,6 +258,4 @@ class Cinema {
   }
 }
 
-var cinema = new Cinema();
-
-export default cinema;
+export default Cinema;

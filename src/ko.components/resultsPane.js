@@ -5,7 +5,6 @@
 //import log from '../scripts/log.js';
 //import SVG from 'svg.js';
 //import jQuery from 'jquery';
-import cinema from '../scripts/cinema.js';
 import { LayersStruct, layersElementIds } from '../scripts/layers.js';
 import { TimeLine, timelineElementIds, getTimeTag } from '../scripts/timeline.js';
 
@@ -153,8 +152,13 @@ const layersTemplate = `
         </div>
       </div>
     </div>
-
     <div id="bmpp-layersButtons"></div>
+
+    <svg id="bmpp-cursorAndSelection" width="100%" height="100%"
+        xmlns="http://www.w3.org/2000/svg">
+      <rect id="bmpp-selection" x="" y="0%" width="" height="100%" />
+      <line id="bmpp-cursor" x1="100" x2="100" y1="0%" y2="100%" />
+    </svg>
 
   </div>
 
@@ -164,7 +168,8 @@ const template = videoTemplate +
   queryInfoTemplate + resultsTemplate + layersTemplate;
 
 function viewModelFactory(params) {
-  let layersStruct = new LayersStruct(params.layersData()),
+  let cinema = params.cinema,
+      layersStruct = new LayersStruct(params.layersData()),
       elNC = document.getElementById(layersElementIds.names),
       elLL = document.getElementById(layersElementIds.layers),
       elLC = document.getElementById(layersElementIds.canvas),
@@ -237,6 +242,7 @@ function viewModelFactory(params) {
   elTL.addEventListener('wheel', scale, true);
   elTL.addEventListener('wheel', smartScroll);
 
+  cinema.timeline(timeline);
   return {
     resultsData: { results: params.resultsData },
     layersStruct, cinema

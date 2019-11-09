@@ -1,5 +1,3 @@
-import cinema from '../scripts/cinema.js';
-
 const resultsTemplate = `
 
   <div data-bind="foreach: results" class="bmpp-searchResults">
@@ -43,6 +41,7 @@ const template = `
 
 var viewModelFactory = function (params) {
   var vM = params.viewModel,
+      cinema = vM.cinema,
       resultsData = params.resultsData,
       observer;
 

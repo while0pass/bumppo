@@ -6,7 +6,7 @@ import { init as initKnockout, preinit as preinitKnockout  }
   from './scripts/init.knockout.js';
 import { TreeNode } from './scripts/queryTree.js';
 import getQueryJSON from './scripts/queryJSON.js';
-import cinema from './scripts/cinema.js';
+import Cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
 import { concatResults, getResults } from './scripts/results.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
@@ -112,6 +112,8 @@ function viewModel() {
 
   this.resultsData = ko.observableArray([]);
   this.layersData = ko.observable(layersData);
+  this.timeline = ko.observable(null);
+  this.cinema = new Cinema(this.timeline);
   this.subcorpus = {
     records: new CheckboxForm(records, this.isSubcorpusNew),
     recordPhases: new CheckboxForm(recordPhases, this.isSubcorpusNew)
@@ -169,7 +171,6 @@ function viewModel() {
     return self.lastQueryJSON;
   }).extend({ rateLimit: 500 });
 
-  this.cinema = cinema;
   this.search = () => {
     if (self.canSearch()) {
       self.searchStatus('Формирование запроса');

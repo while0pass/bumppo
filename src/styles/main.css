@@ -354,6 +354,16 @@ $tickColor: #aaa;
   height: 1rem;
 }
 
+#bmpp-cursorAndSelection {
+  grid-area: timeline / timeline / layers;
+}
+
+#bmpp-cursor {
+  stroke: red;
+  stroke-width: 1px;
+  position: absolute;
+  z-index: 10000;
+}
 
 $layerHeight: 2rem;
 
