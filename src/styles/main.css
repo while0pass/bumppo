@@ -371,6 +371,15 @@ $tickColor: #aaa;
   position: absolute;
 }
 
+#bmpp-selection {
+  stroke: green;
+  stroke-opacity: 0.5;
+  stroke-width: 1px;
+  fill: green;
+  fill-opacity: 0.2;
+  position: absolute;
+}
+
 $layerHeight: 2rem;
 
 .bmpp-layer {

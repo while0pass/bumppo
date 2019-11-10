@@ -153,7 +153,7 @@ const layersTemplate = `
       <svg id="${ timelineElementIds.cursor.canvas }"
           width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <rect id="${ timelineElementIds.cursor.selection }"
-          x="-100" y="0%" width="0" height="100%" />
+          x="-100" y="-5%" width="0" height="105%" />
         <line id="${ timelineElementIds.cursor.cursor }"
           x1="-100" x2="-100" y1="0%" y2="100%" />
       </svg>
@@ -231,7 +231,32 @@ function viewModelFactory(params) {
           elLL.scrollTop -= event.deltaY;
         }
       },
-      click = event => {
+      isDragging = null,
+      mouseup = event => {
+        let canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = event.clientX - canvasX,
+            [lastTimePoint, lastCursorCanvasX] = isDragging;
+        if (lastCursorCanvasX === cursorCanvasX) {
+          cinema.seek(lastTimePoint);
+        }
+        elTL.removeEventListener('mousemove', mousemove);
+        elTL.removeEventListener('mouseup', mouseup);
+        elLL.removeEventListener('mousemove', mousemove);
+        elLL.removeEventListener('mouseup', mouseup);
+        isDragging = null;
+      },
+      mousemove = event => {
+        let canvasWidth = elTC.clientWidth,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = event.clientX - canvasX,
+            timePoint = start + duration * cursorCanvasX / canvasWidth,
+            lastTimePoint = isDragging[0];
+        timeline.selectionStart(lastTimePoint);
+        timeline.selectionEnd(timePoint);
+      },
+      mousedown = event => {
         let canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
             duration = layersStruct.duration,
@@ -239,20 +264,24 @@ function viewModelFactory(params) {
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
-        cinema.seek(timePoint);
+        isDragging = [timePoint, cursorCanvasX];
+        elTL.addEventListener('mousemove', mousemove);
+        elTL.addEventListener('mouseup', mouseup);
+        elLL.addEventListener('mousemove', mousemove);
+        elLL.addEventListener('mouseup', mouseup);
       };
 
 
   elLL.addEventListener('scroll', propagateScroll);
   elLL.addEventListener('wheel', scale, true);
   elLL.addEventListener('wheel', smartScroll);
-  elLL.addEventListener('click', click);
+  elLL.addEventListener('mousedown', mousedown);
 
   elNC.addEventListener('wheel', propagateScrollReverseNC);
 
   elTL.addEventListener('wheel', scale, true);
   elTL.addEventListener('wheel', smartScroll);
-  elTL.addEventListener('click', click);
+  elTL.addEventListener('mousedown', mousedown);
 
   cinema.timeline(timeline);
   return {

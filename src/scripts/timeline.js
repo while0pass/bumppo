@@ -146,6 +146,8 @@ class TimeLine {
     this.dUnit = this.getDUnit();
     this.commitPoints = ko.observable(0);
     [ this.firstPoint, this.lastPoint ] = this.recreatePoints();
+    this.selectionStart = ko.observable(null);
+    this.selectionEnd = ko.observable(null);
 
     this.tune(canvasElement);
   }
@@ -355,6 +357,28 @@ class TimeLine {
     this.commitPoints.extend({ rateLimit: 50 }).subscribe(function () {
       this.recalcTicks();
       this.recalcPoints();
+    }, this);
+
+    // Перерисовываем выделение
+    ko.computed(function () {
+      let start = this.selectionStart(),
+          end = this.selectionEnd(),
+          element = document
+            .getElementById(timelineElementIds.cursor.selection);
+      if (start === null && end !== null) start = end;
+      if (start !== null && end === null) end = start;
+      if (start === null && end === null) {
+        element.setAttribute('x', -100);
+        element.setAttribute('width', 0);
+        return;
+      }
+      if (start > end) [start, end] = [end, start];
+      let xStart = this.layersStruct.time.start,
+          xDuration = this.layersStruct.duration,
+          posStart = (start - xStart) / xDuration * 100,
+          posEnd = (end - xStart) / xDuration * 100;
+      element.setAttribute('x', String(posStart) + '%');
+      element.setAttribute('width', String(posEnd - posStart) + '%');
     }, this);
   }
 }
