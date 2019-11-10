@@ -5,6 +5,12 @@ const timelineElementIds = {
   canvas: 'bmpp-timelineCanvas',
   ticks1: 'bmpp-timelineTicks1',
   ticks2: 'bmpp-timelineTicks2',
+  cursor: {
+    cursor: 'bmpp-cursor',
+    canvas: 'bmpp-cursorSVG',
+    window: 'bmpp-cursorAndSelection',
+    selection: 'bmpp-selection',
+  },
 };
 
 const MS_IN_S = 1000,
@@ -325,8 +331,11 @@ class TimeLine {
     // Наблюдаем за изменениями ширины полотна для слоев
     let onResizeCanvas = entries => {
           const canvas = entries[0],
-                box = canvas.contentRect;
+                box = canvas.contentRect,
+                svgCanvas = document
+                  .getElementById(timelineElementIds.cursor.canvas);
           self.canvasWidth(box.width);
+          svgCanvas.setAttribute('width', box.width);
           self.commitPoints(performance.now());
         },
         ro1 = new ResizeObserver(onResizeCanvas);

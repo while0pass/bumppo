@@ -145,7 +145,8 @@ const layersTemplate = `
     </div>
 
     <div id="${ layersElementIds.layers }">
-      <div id="${ layersElementIds.canvas }" data-bind="foreach: layersStruct.layers">
+      <div id="${ layersElementIds.canvas }"
+          data-bind="foreach: layersStruct.layers">
         <div class="bmpp-layer" data-bind="foreach: segments">
           <div class="bmpp-segment" data-bind="html: value,
             style: { width: width, left: x }"></div>
@@ -154,11 +155,15 @@ const layersTemplate = `
     </div>
     <div id="bmpp-layersButtons"></div>
 
-    <svg id="bmpp-cursorAndSelection" width="100%" height="100%"
-        xmlns="http://www.w3.org/2000/svg">
-      <rect id="bmpp-selection" x="" y="0%" width="" height="100%" />
-      <line id="bmpp-cursor" x1="100" x2="100" y1="0%" y2="100%" />
-    </svg>
+    <div id="${ timelineElementIds.cursor.window }">
+      <svg id="${ timelineElementIds.cursor.canvas }"
+          width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect id="${ timelineElementIds.cursor.selection }"
+          x="-100" y="0%" width="0" height="100%" />
+        <line id="${ timelineElementIds.cursor.cursor }"
+          x1="-100" x2="-100" y1="0%" y2="100%" />
+      </svg>
+    </div>
 
   </div>
 
@@ -175,10 +180,12 @@ function viewModelFactory(params) {
       elLC = document.getElementById(layersElementIds.canvas),
       elTL = document.getElementById(timelineElementIds.timeline),
       elTC = document.getElementById(timelineElementIds.canvas),
+      elCC = document.getElementById(timelineElementIds.cursor.canvas),
       timeline = new TimeLine(elLC, layersStruct),
       propagateScroll = () => {
         elNC.scrollTop = elLL.scrollTop;
         elTL.scrollLeft = elLL.scrollLeft;
+        elCC.style.left = elLL.scrollLeft > 0 ? -elLL.scrollLeft : 0;
         timeline.commitPoints(performance.now());
       },
       propagateScrollReverseNC = event => {
@@ -221,12 +228,14 @@ function viewModelFactory(params) {
         //log('cursor under', getTimeTag(timePoint, 1));
         let scrollLeft = cursorCanvasX * mul - cursorSlidingWindowX;
         elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
+        elCC.style.left = scrollLeft > 0 ? -scrollLeft : 0;
       },
       smartScroll = event => {
         if (event.ctrlKey) return;
         event.preventDefault();
         if (event.shiftKey || elLL.offsetHeight === elLL.scrollHeight) {
           elLL.scrollLeft -= event.deltaY;
+          elCC.style.left = elLL.scrollLeft > 0 ? -elLL.scrollLeft : 0;
         } else {
           elLL.scrollTop -= event.deltaY;
         }

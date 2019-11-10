@@ -165,6 +165,12 @@ class Cinema {
         struct.width = timeline.canvasWidth();
         struct.start = timeline.layersStruct.time.start;
         struct.duration = timeline.layersStruct.duration;
+        //let recordId = this.activeRecordId(),
+        //    filmType = this.activeFilmType();
+        //if (recordId && filmType) {
+        //  let film = this.getFilm(recordId, filmType)[0];
+        //  this.placeCursor(film.currentTime);
+        //}
       }
     }, this);
     return struct;
@@ -182,7 +188,9 @@ class Cinema {
     // т.к. на тот момент элемента ещё в DOM не будет.
 
     let { start, width, duration } = this.cursorStruct,
-        position = (currentTime * 1000 - start) / duration * width;
+        position = width
+          ? String((currentTime * 1000 - start) / duration * 100) + '%'
+          : -100;
     cursor.setAttribute('x1', position);
     cursor.setAttribute('x2', position);
   }

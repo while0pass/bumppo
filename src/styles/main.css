@@ -356,13 +356,19 @@ $tickColor: #aaa;
 
 #bmpp-cursorAndSelection {
   grid-area: timeline / timeline / layers;
+  overflow: hidden;
+  position: relative;
+  pointer-events: none;
+}
+
+#bmpp-cursorSVG {
+  position: absolute;
 }
 
 #bmpp-cursor {
   stroke: red;
   stroke-width: 1px;
   position: absolute;
-  z-index: 10000;
 }
 
 $layerHeight: 2rem;
