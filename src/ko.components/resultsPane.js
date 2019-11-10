@@ -167,6 +167,10 @@ const template = videoTemplate +
   queryInfoTemplate + resultsTemplate + layersTemplate;
 
 function viewModelFactory(params) {
+  const msDelta = 200,
+        pxNear = 10,
+        pxDelta = 15;
+
   let cinema = params.cinema,
       layersStruct = new LayersStruct(params.layersData()),
       elNC = document.getElementById(layersElementIds.names),
@@ -176,6 +180,7 @@ function viewModelFactory(params) {
       elTC = document.getElementById(timelineElementIds.canvas),
       elCC = document.getElementById(timelineElementIds.cursor.canvas),
       timeline = new TimeLine(elLC, layersStruct),
+
       propagateScroll = () => {
         elNC.scrollTop = elLL.scrollTop;
         elTL.scrollLeft = elLL.scrollLeft;
@@ -187,6 +192,7 @@ function viewModelFactory(params) {
         // области, где отображются сами слои.
         elNC.scrollTop = elLL.scrollTop -= event.deltaY;
       },
+
       scale = event => {
         if (!event.ctrlKey) return;
         event.preventDefault();
@@ -221,6 +227,7 @@ function viewModelFactory(params) {
         elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
         elCC.style.left = scrollLeft > 0 ? -scrollLeft : 0;
       },
+
       smartScroll = event => {
         if (event.ctrlKey) return;
         event.preventDefault();
@@ -231,7 +238,54 @@ function viewModelFactory(params) {
           elLL.scrollTop -= event.deltaY;
         }
       },
+
       isDragging = null,
+      isExpandingLeft = null,
+      isExpandingRight = null,
+
+      endExpandingLeft = () => {
+        if (isExpandingLeft !== null) {
+          clearTimeout(isExpandingLeft);
+          isExpandingLeft = null;
+        }
+      },
+      endExpandingRight = () => {
+        if (isExpandingRight !== null) {
+          clearTimeout(isExpandingRight);
+          isExpandingRight = null;
+        }
+      },
+      selectionExpandLeft = cursorX => () => {
+        let windowLeft = elTL.getBoundingClientRect().left,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = cursorX - windowLeft <= 0
+              ? windowLeft - canvasX
+              : cursorX - canvasX,
+            canvasWidth = elTC.clientWidth,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            timePoint;
+        elLL.scrollLeft -= pxDelta;
+        timePoint = start + duration * cursorCanvasX / canvasWidth,
+        timeline.selectionEnd(timePoint);
+        isExpandingLeft = setTimeout(selectionExpandLeft(cursorX), msDelta);
+      },
+      selectionExpandRight = cursorX => () => {
+        let windowRight = elTL.getBoundingClientRect().right,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = cursorX - windowRight >= 0
+              ? windowRight - canvasX
+              : cursorX - canvasX,
+            canvasWidth = elTC.clientWidth,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            timePoint;
+        elLL.scrollLeft += pxDelta;
+        timePoint = start + duration * cursorCanvasX / canvasWidth,
+        timeline.selectionEnd(timePoint);
+        isExpandingRight = setTimeout(selectionExpandRight(cursorX), msDelta);
+      },
+
       mouseup = event => {
         let canvasX = elTC.getBoundingClientRect().left,
             cursorCanvasX = event.clientX - canvasX,
@@ -239,23 +293,46 @@ function viewModelFactory(params) {
         if (lastCursorCanvasX === cursorCanvasX) {
           cinema.seek(lastTimePoint);
         }
-        elTL.removeEventListener('mousemove', mousemove);
-        elTL.removeEventListener('mouseup', mouseup);
-        elLL.removeEventListener('mousemove', mousemove);
-        elLL.removeEventListener('mouseup', mouseup);
+        document.body.removeEventListener('mousemove', mousemove);
+        document.body.removeEventListener('mouseup', mouseup);
         isDragging = null;
+        endExpandingLeft();
+        endExpandingRight();
       },
+
       mousemove = event => {
+        let { left: windowLeft, right: windowRight } =
+              elTL.getBoundingClientRect(),
+            cursorX = event.clientX,
+            cursorWindowLeft = cursorX - windowLeft,
+            cursorWindowRight = cursorX - windowRight,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX;
+        endExpandingLeft();
+        endExpandingRight();
+        if (cursorWindowLeft < pxNear) {
+          cursorCanvasX = cursorWindowLeft <= 0
+            ? windowLeft - canvasX
+            : cursorX - canvasX;
+          isExpandingLeft = setTimeout(selectionExpandLeft(cursorX), msDelta);
+        } else if (cursorWindowRight > -pxNear) {
+          cursorCanvasX = cursorWindowRight >= 0
+            ? windowRight - canvasX
+            : cursorX - canvasX;
+          isExpandingRight = setTimeout(selectionExpandRight(cursorX), msDelta);
+        } else {
+          cursorCanvasX = cursorX - canvasX;
+        }
+
         let canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
             duration = layersStruct.duration,
-            canvasX = elTC.getBoundingClientRect().left,
-            cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth,
             lastTimePoint = isDragging[0];
         timeline.selectionStart(lastTimePoint);
         timeline.selectionEnd(timePoint);
       },
+
       mousedown = event => {
         let canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
@@ -265,11 +342,10 @@ function viewModelFactory(params) {
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
         isDragging = [timePoint, cursorCanvasX];
-        elTL.addEventListener('mousemove', mousemove);
-        elTL.addEventListener('mouseup', mouseup);
-        elLL.addEventListener('mousemove', mousemove);
-        elLL.addEventListener('mouseup', mouseup);
+        document.body.addEventListener('mousemove', mousemove);
+        document.body.addEventListener('mouseup', mouseup);
       },
+
       dblclick = event => {
         let canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
