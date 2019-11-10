@@ -165,12 +165,6 @@ class Cinema {
         struct.width = timeline.canvasWidth();
         struct.start = timeline.layersStruct.time.start;
         struct.duration = timeline.layersStruct.duration;
-        //let recordId = this.activeRecordId(),
-        //    filmType = this.activeFilmType();
-        //if (recordId && filmType) {
-        //  let film = this.getFilm(recordId, filmType)[0];
-        //  this.placeCursor(film.currentTime);
-        //}
       }
     }, this);
     return struct;
@@ -231,6 +225,16 @@ class Cinema {
       play();
     }
     cinema.hideCurtain();
+  }
+  seek(timePoint) {
+    let recordId = this.activeRecordId(),
+        filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      let film = this.getFilm(recordId, filmType)[0].film;
+      timePoint /= 1000;
+      film.currentTime = timePoint;
+      this.placeCursor(timePoint);
+    }
   }
   getFilm(recordId, filmType) {
     const key = recordId + filmType,

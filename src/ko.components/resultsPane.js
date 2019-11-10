@@ -1,10 +1,4 @@
-/* eslint-disable
- */
-
-//import ko from 'knockout';
-//import log from '../scripts/log.js';
-//import SVG from 'svg.js';
-//import jQuery from 'jquery';
+import log from '../scripts/log.js';
 import { LayersStruct, layersElementIds } from '../scripts/layers.js';
 import { TimeLine, timelineElementIds, getTimeTag } from '../scripts/timeline.js';
 
@@ -197,13 +191,11 @@ function viewModelFactory(params) {
         if (!event.ctrlKey) return;
         event.preventDefault();
         let canvasWidth = elTC.clientWidth,
-            start = layersStruct.time.start,
             duration = layersStruct.duration,
             slidingWindowX = elTL.getBoundingClientRect().left,
             canvasX = elTC.getBoundingClientRect().left,
             cursorCanvasX = event.clientX - canvasX,
             cursorSlidingWindowX = event.clientX - slidingWindowX,
-            timePoint = start + duration * cursorCanvasX / canvasWidth,
             mul = 1, width;
         if (event.deltaY > 0) mul = 1.1;
         else if (event.deltaY < 0) mul = 10 / 11;
@@ -225,7 +217,6 @@ function viewModelFactory(params) {
         elTC.style.width = width;
         // При масштабировании закреплять холст на той точке временной шкалы,
         // которая находится под курсором
-        //log('cursor under', getTimeTag(timePoint, 1));
         let scrollLeft = cursorCanvasX * mul - cursorSlidingWindowX;
         elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
         elCC.style.left = scrollLeft > 0 ? -scrollLeft : 0;
@@ -239,17 +230,29 @@ function viewModelFactory(params) {
         } else {
           elLL.scrollTop -= event.deltaY;
         }
+      },
+      click = event => {
+        let canvasWidth = elTC.clientWidth,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = event.clientX - canvasX,
+            timePoint = start + duration * cursorCanvasX / canvasWidth;
+        log('cursor under', getTimeTag(timePoint, 1));
+        cinema.seek(timePoint);
       };
 
 
   elLL.addEventListener('scroll', propagateScroll);
   elLL.addEventListener('wheel', scale, true);
   elLL.addEventListener('wheel', smartScroll);
+  elLL.addEventListener('click', click);
 
   elNC.addEventListener('wheel', propagateScrollReverseNC);
 
   elTL.addEventListener('wheel', scale, true);
   elTL.addEventListener('wheel', smartScroll);
+  elTL.addEventListener('click', click);
 
   cinema.timeline(timeline);
   return {
