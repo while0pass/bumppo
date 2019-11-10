@@ -1,4 +1,5 @@
 import log from '../scripts/log.js';
+import ko from 'knockout';
 import { LayersStruct, layersElementIds } from '../scripts/layers.js';
 import { TimeLine, timelineElementIds, getTimeTag } from '../scripts/timeline.js';
 
@@ -123,7 +124,9 @@ const layersTemplate = `
     <div id="bmpp-layersNames">
       <div id="${ layersElementIds.names }" data-bind="foreach: layersStruct.layers">
         <div class="bmpp-layerName" data-bind="text: type,
-          css: { sublayer: parent }"></div>
+          css: { sublayer: parent },
+          event: { mouseover: $component.highlight,
+                   mouseout: $component.dehighlight }"></div>
       </div>
     </div>
 
@@ -141,7 +144,8 @@ const layersTemplate = `
     <div id="${ layersElementIds.layers }">
       <div id="${ layersElementIds.canvas }"
           data-bind="foreach: layersStruct.layers">
-        <div class="bmpp-layer" data-bind="foreach: segments">
+        <div class="bmpp-layer" data-bind="foreach: segments,
+          css: { highlighted: $component.highlighted() === type }">
           <div class="bmpp-segment" data-bind="html: value,
             style: { width: width, left: x }"></div>
         </div>
@@ -182,6 +186,7 @@ function viewModelFactory(params) {
       elTC = document.getElementById(timelineElementIds.canvas),
       elCC = document.getElementById(timelineElementIds.cursor.canvas),
       timeline = new TimeLine(elLC, layersStruct),
+      highlighted = ko.observable(),
 
       propagateScroll = () => {
         elNC.scrollTop = elLL.scrollTop;
@@ -378,7 +383,9 @@ function viewModelFactory(params) {
   cinema.timeline(timeline);
   return {
     resultsData: { results: params.resultsData },
-    layersStruct, cinema
+    layersStruct, cinema, highlighted,
+    highlight: layer => highlighted(layer.type),
+    dehighlight: layer => highlighted() === layer.type && highlighted(null),
   };
 }
 

@@ -387,6 +387,10 @@ $layerHeight: 2rem;
   width: 100%;
   height: $layerHeight;
   border-bottom: 1px dashed $lightGrey;
+
+  &.highlighted {
+    background-color: $lightGrey;
+  }
 }
 
 .bmpp-segment {
@@ -397,6 +401,11 @@ $layerHeight: 2rem;
   overflow: hidden;
   padding: 0.35rem 0.5rem;
   font-size: smaller;
+
+  .highlighted & {
+    background-color: $lightGrey;
+    border: 1px solid #aaa;
+  }
 }
 
 .bmpp-layerName {
