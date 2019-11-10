@@ -152,7 +152,15 @@ const layersTemplate = `
         </div>
       </div>
     </div>
-    <div id="bmpp-layersButtons"></div>
+    <div id="bmpp-layersButtons">
+      <ul>
+        <li data-bind="click: zoomAll">all</li
+        ><li data-bind="click: zoomIn">in</li
+        ><li data-bind="click: zoomOut">out</li
+        ><li data-bind="click: zoomSel">sel</li
+        ><li>bak</li>
+      </ul>
+    </div>
 
     <div id="${ timelineElementIds.cursor.window }">
       <svg id="${ timelineElementIds.cursor.canvas }"
@@ -172,11 +180,12 @@ const template = videoTemplate +
   queryInfoTemplate + resultsTemplate + layersTemplate;
 
 function viewModelFactory(params) {
-  const msDelta = 200,
+  const rAF = window.requestAnimationFrame || window.setTimeout,
+        cAF = window.cancelAnimationFrame || window.clearTimeout,
+        msDelta = 200,
         pxNear = 10,
         pxDelta = 15,
-        rAF = window.requestAnimationFrame || window.setTimeout,
-        cAF = window.cancelAnimationFrame || window.clearTimeout;
+        maxPxPerMs = 100;
 
   let cinema = params.cinema,
       layersStruct = new LayersStruct(params.layersData()),
@@ -227,7 +236,6 @@ function viewModelFactory(params) {
           width = '100%';
         } else {
           if (timeline.unit() === 1) {
-            const maxPxPerMs = 100;
             if (width / duration > maxPxPerMs) {
               width = Math.floor(maxPxPerMs * duration);
               mul = width / canvasWidth;
@@ -391,6 +399,72 @@ function viewModelFactory(params) {
         cinema.seek(timePoint);
       };
 
+  let zoomSel = () => {
+        let startPoint = timeline.selectionStart(),
+            endPoint = timeline.selectionEnd();
+        if (startPoint === null || endPoint === null) return;
+        let windowWidth = elTL.getBoundingClientRect().width,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            xDuration = endPoint - startPoint,
+            xCanvasWidth = windowWidth / xDuration * duration,
+            xScroll = (startPoint - start) / duration * xCanvasWidth,
+            xCanvasWidthString = String(xCanvasWidth) + 'px';
+        elLC.style.width = xCanvasWidthString;
+        elTC.style.width = xCanvasWidthString;
+        elTL.scrollLeft = elLL.scrollLeft = xScroll;
+        elCC.style.left = xScroll > 0 ? -xScroll : 0;
+      },
+      zoomIn = () => {
+        let { left: windowLeft, width: windowWidth } =
+              elTL.getBoundingClientRect(),
+            canvasWidth = elTC.clientWidth,
+            canvasX = elTC.getBoundingClientRect().left,
+            duration = layersStruct.duration,
+            windowDuration = windowWidth / canvasWidth * duration,
+            xDuration = windowDuration / 2,
+            xStartDuration = (windowLeft - canvasX) / canvasWidth * duration
+              + windowDuration / 4,
+            xCanvasWidth = windowWidth / xDuration * duration,
+            xScroll = xStartDuration / duration * xCanvasWidth,
+            xCanvasWidthString = String(xCanvasWidth) + 'px';
+        if (timeline.unit() === 1 && xCanvasWidth / duration > maxPxPerMs) {
+          let oldXCanvasWidth = xCanvasWidth;
+          xCanvasWidth = Math.floor(maxPxPerMs * duration);
+          xScroll = xScroll * xCanvasWidth / oldXCanvasWidth;
+        }
+        elLC.style.width = xCanvasWidthString;
+        elTC.style.width = xCanvasWidthString;
+        elTL.scrollLeft = elLL.scrollLeft = xScroll;
+        elCC.style.left = xScroll > 0 ? -xScroll : 0;
+      },
+      zoomOut = () => {
+        let { left: windowLeft, width: windowWidth } =
+              elTL.getBoundingClientRect(),
+            canvasWidth = elTC.clientWidth,
+            canvasX = elTC.getBoundingClientRect().left,
+            duration = layersStruct.duration,
+            windowDuration = windowWidth / canvasWidth * duration,
+            xDuration = windowDuration * 2,
+            xStartDuration = (windowLeft - canvasX) / canvasWidth * duration
+              - windowDuration / 2,
+            xCanvasWidth = windowWidth / xDuration * duration,
+            xScroll = xStartDuration / duration * xCanvasWidth,
+            xCanvasWidthString = String(xCanvasWidth) + 'px';
+        log(xCanvasWidth, windowWidth);
+        if (xCanvasWidth < windowWidth) {
+          xCanvasWidthString = '100%';
+          xScroll = 0;
+        }
+        elLC.style.width = xCanvasWidthString;
+        elTC.style.width = xCanvasWidthString;
+        elTL.scrollLeft = elLL.scrollLeft = xScroll;
+        elCC.style.left = xScroll > 0 ? -xScroll : 0;
+      },
+      zoomAll = () => {
+        elLC.style.width = '100%';
+        elTC.style.width = '100%';
+      };
 
   elLL.addEventListener('scroll', propagateScroll);
   elLL.addEventListener('wheel', scale, true);
@@ -411,6 +485,7 @@ function viewModelFactory(params) {
     layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
+    zoomIn, zoomOut, zoomAll, zoomSel,
   };
 }
 
