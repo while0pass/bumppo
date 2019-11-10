@@ -169,7 +169,9 @@ const template = videoTemplate +
 function viewModelFactory(params) {
   const msDelta = 200,
         pxNear = 10,
-        pxDelta = 15;
+        pxDelta = 15,
+        rAF = window.requestAnimationFrame || window.setTimeout,
+        cAF = window.cancelAnimationFrame || window.clearTimeout;
 
   let cinema = params.cinema,
       layersStruct = new LayersStruct(params.layersData()),
@@ -245,13 +247,13 @@ function viewModelFactory(params) {
 
       endExpandingLeft = () => {
         if (isExpandingLeft !== null) {
-          clearTimeout(isExpandingLeft);
+          cAF(isExpandingLeft);
           isExpandingLeft = null;
         }
       },
       endExpandingRight = () => {
         if (isExpandingRight !== null) {
-          clearTimeout(isExpandingRight);
+          cAF(isExpandingRight);
           isExpandingRight = null;
         }
       },
@@ -268,7 +270,7 @@ function viewModelFactory(params) {
         elLL.scrollLeft -= pxDelta;
         timePoint = start + duration * cursorCanvasX / canvasWidth,
         timeline.selectionEnd(timePoint);
-        isExpandingLeft = setTimeout(selectionExpandLeft(cursorX), msDelta);
+        isExpandingLeft = rAF(selectionExpandLeft(cursorX), msDelta);
       },
       selectionExpandRight = cursorX => () => {
         let windowRight = elTL.getBoundingClientRect().right,
@@ -283,7 +285,7 @@ function viewModelFactory(params) {
         elLL.scrollLeft += pxDelta;
         timePoint = start + duration * cursorCanvasX / canvasWidth,
         timeline.selectionEnd(timePoint);
-        isExpandingRight = setTimeout(selectionExpandRight(cursorX), msDelta);
+        isExpandingRight = rAF(selectionExpandRight(cursorX), msDelta);
       },
 
       mouseup = event => {
@@ -314,12 +316,12 @@ function viewModelFactory(params) {
           cursorCanvasX = cursorWindowLeft <= 0
             ? windowLeft - canvasX
             : cursorX - canvasX;
-          isExpandingLeft = setTimeout(selectionExpandLeft(cursorX), msDelta);
+          isExpandingLeft = rAF(selectionExpandLeft(cursorX), msDelta);
         } else if (cursorWindowRight > -pxNear) {
           cursorCanvasX = cursorWindowRight >= 0
             ? windowRight - canvasX
             : cursorX - canvasX;
-          isExpandingRight = setTimeout(selectionExpandRight(cursorX), msDelta);
+          isExpandingRight = rAF(selectionExpandRight(cursorX), msDelta);
         } else {
           cursorCanvasX = cursorX - canvasX;
         }
