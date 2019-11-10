@@ -146,8 +146,7 @@ class TimeLine {
     this.dUnit = this.getDUnit();
     this.commitPoints = ko.observable(0);
     [ this.firstPoint, this.lastPoint ] = this.recreatePoints();
-    this.selectionStart = ko.observable(null);
-    this.selectionEnd = ko.observable(null);
+    this.selectionEdges = ko.observable([null, null]);
 
     this.tune(canvasElement);
   }
@@ -361,8 +360,7 @@ class TimeLine {
 
     // Перерисовываем выделение
     ko.computed(function () {
-      let start = this.selectionStart(),
-          end = this.selectionEnd(),
+      let [start, end] = this.selectionEdges(),
           element = document
             .getElementById(timelineElementIds.cursor.selection);
       if (start === null && end !== null) start = end;

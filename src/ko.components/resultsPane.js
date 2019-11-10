@@ -200,11 +200,11 @@ function viewModelFactory(params) {
 
       isDblClickedSegment = false,
       selectionFromSegment = segment => {
+        let time = segment.time;
         isDblClickedSegment = true;
         document.body.classList.remove('no-highlight');
-        timeline.selectionStart(segment.time.start);
-        timeline.selectionEnd(segment.time.end);
-        cinema.seek(segment.time.start);
+        timeline.selectionEdges([time.start, time.end]);
+        cinema.seek(time.start);
       },
 
       propagateScroll = () => {
@@ -293,7 +293,7 @@ function viewModelFactory(params) {
             timePoint;
         elLL.scrollLeft -= pxDelta;
         timePoint = start + duration * cursorCanvasX / canvasWidth,
-        timeline.selectionEnd(timePoint);
+        timeline.selectionEdges([timePoint, timeline.selectionEdges()[1]]);
         isExpandingLeft = rAF(selectionExpandLeft(cursorX), msDelta);
       },
       selectionExpandRight = cursorX => () => {
@@ -308,7 +308,7 @@ function viewModelFactory(params) {
             timePoint;
         elLL.scrollLeft += pxDelta;
         timePoint = start + duration * cursorCanvasX / canvasWidth,
-        timeline.selectionEnd(timePoint);
+        timeline.selectionEdges([timeline.selectionEdges()[0], timePoint]);
         isExpandingRight = rAF(selectionExpandRight(cursorX), msDelta);
       },
 
@@ -362,8 +362,10 @@ function viewModelFactory(params) {
             duration = layersStruct.duration,
             timePoint = start + duration * cursorCanvasX / canvasWidth,
             lastTimePoint = isDragging[0];
-        timeline.selectionStart(lastTimePoint);
-        timeline.selectionEnd(timePoint);
+        if (lastTimePoint > timePoint) {
+          [lastTimePoint, timePoint] = [timePoint, lastTimePoint];
+        }
+        timeline.selectionEdges([lastTimePoint, timePoint]);
       },
 
       mousedown = event => {
@@ -394,14 +396,12 @@ function viewModelFactory(params) {
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
-        timeline.selectionStart(null);
-        timeline.selectionEnd(null);
+        timeline.selectionEdges([null, null]);
         cinema.seek(timePoint);
       };
 
   let zoomSel = () => {
-        let startPoint = timeline.selectionStart(),
-            endPoint = timeline.selectionEnd();
+        let [startPoint, endPoint] = timeline.selectionEdges();
         if (startPoint === null || endPoint === null) return;
         let windowWidth = elTL.getBoundingClientRect().width,
             start = layersStruct.time.start,
