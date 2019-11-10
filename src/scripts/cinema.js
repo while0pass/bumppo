@@ -25,6 +25,7 @@ class Film {
     this.filmId = this.getFilmId(filmData);
     this.element = this.createElement(cinema, this.elementId, this.filmId);
     this.film = this.createFilm(cinema, this.element);
+    this.episode = { begin: 0, end: 86400 };
   }
   getElementId(cinema, filmData) {
     return cinema.screen.attr('id') + filmData.recordId + filmData.filmType;
@@ -72,7 +73,14 @@ class Film {
         hideLoader = () => { cinema.loader.hide(); },
         animationFrame = null,
         placeCursor = () => {
-          cinema.placeCursor(film.currentTime);
+          let time = film.currentTime;
+          cinema.placeCursor(time);
+          if (time - self.episode.end > 0 || self.episode.begin - time > 1e-3) {
+            film.pause();
+            self.episode.begin = 0;
+            self.episode.end = film.duration;
+            return;
+          }
           animationFrame = window.requestAnimationFrame(placeCursor);
         },
         onPlay = () => {
@@ -188,6 +196,21 @@ class Cinema {
     cursor.setAttribute('x1', position);
     cursor.setAttribute('x2', position);
   }
+  _play(film, isCreated, begin, end) {
+    film.episode.begin = begin;
+    film.episode.end = end;
+    film = film.film;
+    if (isCreated) {
+      film.once('loadedmetadata', function () {
+        film.currentTime = begin;
+        film.play();
+      });
+    } else {
+      film.currentTime = begin;
+      film.play();
+    }
+    this.hideCurtain();
+  }
   showFilm(recordId, filmType, dataItem) {
     const cinema = this;
     if (!dataItem || recordId === null || !filmType) return;
@@ -198,41 +221,27 @@ class Cinema {
     let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
         end = (dataItem.after? dataItem.after: dataItem.match).time.end,
         [film, isCreated] = cinema.getFilm(recordId, filmType);
-    film = film.film;
     begin /= 1000;
     end /= 1000;
-
-    const pauseFunction = event => {
-            let p = event.detail.plyr;
-            if (p.currentTime >= end - 1e-2) {
-              p.off('timeupdate', p._pauseFunction);
-              delete p._pauseFunction;
-              p.pause();
-            }
-          },
-          play = () => {
-            film.currentTime = begin;
-            if (film._pauseFunction !== undefined) {
-              film.off('timeupdate', film._pauseFunction);
-            }
-            film._pauseFunction = pauseFunction;
-            film.on('timeupdate', film._pauseFunction);
-            film.play();
-          };
-    if (isCreated) {
-      film.once('loadedmetadata', play);
-    } else {
-      play();
+    cinema._play(film, isCreated, begin, end);
+  }
+  showEpisode(begin, end) {
+    let recordId = this.activeRecordId(),
+        filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      let [film, isCreated] = this.getFilm(recordId, filmType);
+      begin /= 1000;
+      end /= 1000;
+      this._play(film, isCreated, begin, end);
     }
-    cinema.hideCurtain();
   }
   seek(timePoint) {
     let recordId = this.activeRecordId(),
         filmType = this.activeFilmType();
     if (recordId && filmType) {
-      let film = this.getFilm(recordId, filmType)[0].film;
+      let film = this.getFilm(recordId, filmType)[0];
       timePoint /= 1000;
-      film.currentTime = timePoint;
+      film.film.currentTime = timePoint;
       this.placeCursor(timePoint);
     }
   }

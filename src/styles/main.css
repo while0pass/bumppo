@@ -315,15 +315,16 @@ $layersPanelButtonsHeight: 2rem;
     & #bmpp-layersButtons {
       grid-area: buttons;
       border-top: 1px solid $bmppBorderColor;
+      display: flex;
 
       & ul {
         list-style: none;
-        margin: 0;
+        margin: 0 3em 0 0;
         padding: 0;
+        display: flex;
       }
 
       & ul li {
-        display: inline-block;
         text-transform: uppercase;
         margin: 0;
         padding: 0.35em;

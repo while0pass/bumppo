@@ -154,11 +154,28 @@ const layersTemplate = `
     </div>
     <div id="bmpp-layersButtons">
       <ul>
-        <li data-bind="click: zoomAll">all</li
-        ><li data-bind="click: zoomIn">in</li
-        ><li data-bind="click: zoomOut">out</li
-        ><li data-bind="click: zoomSel">sel</li
-        ><li data-bind="click: selectionBak">bak</li>
+        <li data-bind="click: zoomAll">all</li>
+        <li data-bind="click: zoomIn">in</li>
+        <li data-bind="click: zoomOut">out</li>
+        <li data-bind="click: zoomSel">sel</li>
+        <li data-bind="click: selectionBak">bak</li>
+      </ul>
+      <ul data-bind="visible: cinema.timeline()
+            && cinema.timeline().selectionEdges()[0] !== null">
+        <li data-bind="click: playAllVisible">
+          <i class="ui disabled large angle left icon"></i>
+          <i class="ui disabled play icon"></i>
+          <i class="ui disabled large angle right icon"></i>
+        </li>
+        <li data-bind="click: playPreSelection">
+          <i class="ui disabled large angle left icon"></i>
+        </li>
+        <li data-bind="click: playSelection">
+          <i class="ui disabled play icon"></i>
+        </li>
+        <li data-bind="click: playPostSelection">
+          <i class="ui disabled large angle right icon"></i>
+        </li>
       </ul>
     </div>
 
@@ -224,10 +241,9 @@ function viewModelFactory(params) {
       scale = event => {
         if (!event.ctrlKey) return;
         event.preventDefault();
-        let canvasWidth = elTC.clientWidth,
-            duration = layersStruct.duration,
+        let duration = layersStruct.duration,
             slidingWindowX = elTL.getBoundingClientRect().left,
-            canvasX = elTC.getBoundingClientRect().left,
+            { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             cursorSlidingWindowX = event.clientX - slidingWindowX,
             mul = 1, width;
@@ -285,31 +301,27 @@ function viewModelFactory(params) {
       },
       selectionExpandLeft = cursorX => () => {
         let windowLeft = elTL.getBoundingClientRect().left,
-            canvasX = elTC.getBoundingClientRect().left,
+            { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = cursorX - windowLeft <= 0
               ? windowLeft - canvasX
               : cursorX - canvasX,
-            canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
             duration = layersStruct.duration,
-            timePoint;
+            timePoint = start + duration * cursorCanvasX / canvasWidth;
         elLL.scrollLeft -= pxDelta;
-        timePoint = start + duration * cursorCanvasX / canvasWidth,
         timeline.selectionEdges([timePoint, timeline.selectionEdges()[1]]);
         isExpandingLeft = rAF(selectionExpandLeft(cursorX), msDelta);
       },
       selectionExpandRight = cursorX => () => {
         let windowRight = elTL.getBoundingClientRect().right,
-            canvasX = elTC.getBoundingClientRect().left,
+            { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = cursorX - windowRight >= 0
               ? windowRight - canvasX
               : cursorX - canvasX,
-            canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
             duration = layersStruct.duration,
-            timePoint;
+            timePoint = start + duration * cursorCanvasX / canvasWidth;
         elLL.scrollLeft += pxDelta;
-        timePoint = start + duration * cursorCanvasX / canvasWidth,
         timeline.selectionEdges([timeline.selectionEdges()[0], timePoint]);
         isExpandingRight = rAF(selectionExpandRight(cursorX), msDelta);
       },
@@ -372,10 +384,9 @@ function viewModelFactory(params) {
       },
 
       mousedown = event => {
-        let canvasWidth = elTC.clientWidth,
-            start = layersStruct.time.start,
+        let start = layersStruct.time.start,
             duration = layersStruct.duration,
-            canvasX = elTC.getBoundingClientRect().left,
+            { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
@@ -392,10 +403,9 @@ function viewModelFactory(params) {
           isDblClickedSegment = false;
           return;
         }
-        let canvasWidth = elTC.clientWidth,
-            start = layersStruct.time.start,
+        let start = layersStruct.time.start,
             duration = layersStruct.duration,
-            canvasX = elTC.getBoundingClientRect().left,
+            { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
@@ -422,13 +432,13 @@ function viewModelFactory(params) {
       zoomIn = () => {
         let { left: windowLeft, width: windowWidth } =
               elTL.getBoundingClientRect(),
-            canvasWidth = elTC.clientWidth,
+            { left: canvasLeft, width: canvasWidth } =
+              elTC.getBoundingClientRect(),
             duration = layersStruct.duration,
-            canvasX = elTC.getBoundingClientRect().left,
             windowDuration = windowWidth / canvasWidth * duration,
             xDuration = windowDuration / 2,
-            xStartDuration = (windowLeft - canvasX) / canvasWidth * duration
-              + windowDuration / 4,
+            xStartDuration = (windowLeft - canvasLeft) / canvasWidth
+              * duration + windowDuration / 4,
             xCanvasWidth = windowWidth / xDuration * duration,
             xScroll = xStartDuration / duration * xCanvasWidth,
             xCanvasWidthString;
@@ -447,14 +457,14 @@ function viewModelFactory(params) {
       zoomOut = () => {
         let { left: windowLeft, width: windowWidth } =
               elTL.getBoundingClientRect(),
-            canvasWidth = elTC.clientWidth;
+            { left: canvasLeft, width: canvasWidth } =
+              elTC.getBoundingClientRect();
         if (canvasWidth === windowWidth) return;
-        let canvasX = elTC.getBoundingClientRect().left,
-            duration = layersStruct.duration,
+        let duration = layersStruct.duration,
             windowDuration = windowWidth / canvasWidth * duration,
             xDuration = windowDuration * 2,
-            xStartDuration = (windowLeft - canvasX) / canvasWidth * duration
-              - windowDuration / 2,
+            xStartDuration = (windowLeft - canvasLeft) / canvasWidth
+              * duration - windowDuration / 2,
             xCanvasWidth = windowWidth / xDuration * duration,
             xScroll = xStartDuration / duration * xCanvasWidth,
             xCanvasWidthString = String(xCanvasWidth) + 'px';
@@ -477,6 +487,41 @@ function viewModelFactory(params) {
         previousSelection = x;
       };
 
+  let playAllVisible = () => {
+        let { left: windowLeft, right: windowRight } =
+              elTL.getBoundingClientRect(),
+            { left: canvasLeft, width: canvasWidth } =
+              elTC.getBoundingClientRect(),
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
+            xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start;
+        cinema.showEpisode(xStart, xEnd);
+      },
+      playPreSelection = () => {
+        let windowLeft = elTL.getBoundingClientRect().left,
+            { left: canvasLeft, width: canvasWidth } =
+              elTC.getBoundingClientRect(),
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
+            xEnd = timeline.selectionEdges()[0];
+        cinema.showEpisode(xStart, xEnd);
+      },
+      playPostSelection = () => {
+        let windowRight = elTL.getBoundingClientRect().right,
+            { left: canvasLeft, width: canvasWidth } =
+              elTC.getBoundingClientRect(),
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start,
+            xStart = timeline.selectionEdges()[1];
+        cinema.showEpisode(xStart, xEnd);
+      },
+      playSelection = () => {
+        cinema.showEpisode(...timeline.selectionEdges());
+      };
+
   elLL.addEventListener('scroll', propagateScroll);
   elLL.addEventListener('wheel', scale, true);
   elLL.addEventListener('wheel', smartScroll);
@@ -496,7 +541,8 @@ function viewModelFactory(params) {
     layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
-    zoomIn, zoomOut, zoomAll, zoomSel, selectionBak
+    playAllVisible, playPreSelection, playPostSelection, playSelection,
+    zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,
   };
 }
 
