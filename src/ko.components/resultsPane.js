@@ -158,7 +158,7 @@ const layersTemplate = `
         ><li data-bind="click: zoomIn">in</li
         ><li data-bind="click: zoomOut">out</li
         ><li data-bind="click: zoomSel">sel</li
-        ><li>bak</li>
+        ><li data-bind="click: selectionBak">bak</li>
       </ul>
     </div>
 
@@ -197,12 +197,14 @@ function viewModelFactory(params) {
       elCC = document.getElementById(timelineElementIds.cursor.canvas),
       timeline = new TimeLine(elLC, layersStruct),
       highlighted = ko.observable(),
+      previousSelection = timeline.selectionEdges(),
 
       isDblClickedSegment = false,
       selectionFromSegment = segment => {
         let time = segment.time;
         isDblClickedSegment = true;
         document.body.classList.remove('no-highlight');
+        previousSelection = timeline.selectionEdges();
         timeline.selectionEdges([time.start, time.end]);
         cinema.seek(time.start);
       },
@@ -315,7 +317,7 @@ function viewModelFactory(params) {
       mouseup = event => {
         let canvasX = elTC.getBoundingClientRect().left,
             cursorCanvasX = event.clientX - canvasX,
-            [lastTimePoint, lastCursorCanvasX] = isDragging;
+            [lastTimePoint, lastCursorCanvasX, prevSelEdges] = isDragging;
         if (lastCursorCanvasX === cursorCanvasX) {
           if (event.target.classList.contains('bmpp-segment')) {
             clearTimeout(mouseUpWait);
@@ -327,6 +329,7 @@ function viewModelFactory(params) {
         }
         document.body.removeEventListener('mousemove', mousemove);
         document.body.removeEventListener('mouseup', mouseup);
+        previousSelection = prevSelEdges;
         isDragging = null;
         document.body.classList.remove('no-highlight');
         endExpandingLeft();
@@ -376,7 +379,7 @@ function viewModelFactory(params) {
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
-        isDragging = [timePoint, cursorCanvasX];
+        isDragging = [timePoint, cursorCanvasX, timeline.selectionEdges()];
         document.body.classList.add('no-highlight');
         document.body.addEventListener('mousemove', mousemove);
         document.body.addEventListener('mouseup', mouseup);
@@ -396,6 +399,7 @@ function viewModelFactory(params) {
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
+        previousSelection = timeline.selectionEdges();
         timeline.selectionEdges([null, null]);
         cinema.seek(timePoint);
       };
@@ -466,6 +470,11 @@ function viewModelFactory(params) {
       zoomAll = () => {
         elLC.style.width = '100%';
         elTC.style.width = '100%';
+      },
+      selectionBak = () => {
+        let x = timeline.selectionEdges();
+        timeline.selectionEdges(previousSelection);
+        previousSelection = x;
       };
 
   elLL.addEventListener('scroll', propagateScroll);
@@ -487,7 +496,7 @@ function viewModelFactory(params) {
     layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
-    zoomIn, zoomOut, zoomAll, zoomSel,
+    zoomIn, zoomOut, zoomAll, zoomSel, selectionBak
   };
 }
 
