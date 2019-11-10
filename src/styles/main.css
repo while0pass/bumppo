@@ -402,6 +402,7 @@ $layerHeight: 2rem;
   padding: 0.35rem 0.5rem;
   font-size: smaller;
 
+  &:hover,
   .highlighted & {
     background-color: $lightGrey;
     border: 1px solid #aaa;

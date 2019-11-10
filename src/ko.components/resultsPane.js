@@ -147,7 +147,8 @@ const layersTemplate = `
         <div class="bmpp-layer" data-bind="foreach: segments,
           css: { highlighted: $component.highlighted() === type }">
           <div class="bmpp-segment" data-bind="html: value,
-            style: { width: width, left: x }"></div>
+            style: { width: width, left: x },
+            event: { dblclick: $component.selectionFromSegment }"></div>
         </div>
       </div>
     </div>
@@ -187,6 +188,14 @@ function viewModelFactory(params) {
       elCC = document.getElementById(timelineElementIds.cursor.canvas),
       timeline = new TimeLine(elLC, layersStruct),
       highlighted = ko.observable(),
+
+      isDblClickedSegment = false,
+      selectionFromSegment = segment => {  // (segment, event)
+        timeline.selectionStart(segment.time.start);
+        timeline.selectionEnd(segment.time.end);
+        cinema.seek(segment.time.start);
+        isDblClickedSegment = true;
+      },
 
       propagateScroll = () => {
         elNC.scrollTop = elLL.scrollTop;
@@ -249,6 +258,7 @@ function viewModelFactory(params) {
       isDragging = null,
       isExpandingLeft = null,
       isExpandingRight = null,
+      mouseUpWait = null,
 
       endExpandingLeft = () => {
         if (isExpandingLeft !== null) {
@@ -298,7 +308,13 @@ function viewModelFactory(params) {
             cursorCanvasX = event.clientX - canvasX,
             [lastTimePoint, lastCursorCanvasX] = isDragging;
         if (lastCursorCanvasX === cursorCanvasX) {
-          cinema.seek(lastTimePoint);
+          if (event.target.classList.contains('bmpp-segment')) {
+            clearTimeout(mouseUpWait);
+            mouseUpWait = setTimeout(
+              cinema.seek.bind(cinema, lastTimePoint), 250);
+          } else {
+            cinema.seek(lastTimePoint);
+          }
         }
         document.body.removeEventListener('mousemove', mousemove);
         document.body.removeEventListener('mouseup', mouseup);
@@ -354,6 +370,12 @@ function viewModelFactory(params) {
       },
 
       dblclick = event => {
+        if (isDblClickedSegment
+              && event.target.classList.contains('bmpp-segment')) {
+          clearTimeout(mouseUpWait);
+          isDblClickedSegment = false;
+          return;
+        }
         let canvasWidth = elTC.clientWidth,
             start = layersStruct.time.start,
             duration = layersStruct.duration,
@@ -383,7 +405,7 @@ function viewModelFactory(params) {
   cinema.timeline(timeline);
   return {
     resultsData: { results: params.resultsData },
-    layersStruct, cinema, highlighted,
+    layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
   };
