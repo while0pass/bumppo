@@ -269,6 +269,18 @@ function viewModelFactory(params) {
         elTL.addEventListener('mouseup', mouseup);
         elLL.addEventListener('mousemove', mousemove);
         elLL.addEventListener('mouseup', mouseup);
+      },
+      dblclick = event => {
+        let canvasWidth = elTC.clientWidth,
+            start = layersStruct.time.start,
+            duration = layersStruct.duration,
+            canvasX = elTC.getBoundingClientRect().left,
+            cursorCanvasX = event.clientX - canvasX,
+            timePoint = start + duration * cursorCanvasX / canvasWidth;
+        log('cursor under', getTimeTag(timePoint, 1));
+        timeline.selectionStart(null);
+        timeline.selectionEnd(null);
+        cinema.seek(timePoint);
       };
 
 
@@ -276,12 +288,14 @@ function viewModelFactory(params) {
   elLL.addEventListener('wheel', scale, true);
   elLL.addEventListener('wheel', smartScroll);
   elLL.addEventListener('mousedown', mousedown);
+  elLL.addEventListener('dblclick', dblclick);
 
   elNC.addEventListener('wheel', propagateScrollReverseNC);
 
   elTL.addEventListener('wheel', scale, true);
   elTL.addEventListener('wheel', smartScroll);
   elTL.addEventListener('mousedown', mousedown);
+  elTL.addEventListener('dblclick', dblclick);
 
   cinema.timeline(timeline);
   return {
