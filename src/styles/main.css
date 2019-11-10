@@ -391,6 +391,10 @@ $layerHeight: 2rem;
   &.highlighted {
     background-color: $lightGrey;
   }
+
+  .no-highlight &.highlighted {
+    background-color: white;
+  }
 }
 
 .bmpp-segment {
@@ -408,7 +412,8 @@ $layerHeight: 2rem;
     border: 1px solid #aaa;
   }
 
-  .no-highlight &:hover {
+  .no-highlight &:hover,
+  .no-highlight .highlighted & {
     background-color: #efefef;
     border: 1px solid #ddd;
   }
@@ -426,6 +431,10 @@ $layerHeight: 2rem;
 
   &:hover {
     background-color: $lightGrey;
+  }
+
+  .no-highlight &:hover {
+    background-color: white;
   }
 }
 
