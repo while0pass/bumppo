@@ -407,6 +407,11 @@ $layerHeight: 2rem;
     background-color: $lightGrey;
     border: 1px solid #aaa;
   }
+
+  .no-highlight &:hover {
+    background-color: #efefef;
+    border: 1px solid #ddd;
+  }
 }
 
 .bmpp-layerName {

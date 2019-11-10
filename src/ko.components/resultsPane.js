@@ -190,11 +190,12 @@ function viewModelFactory(params) {
       highlighted = ko.observable(),
 
       isDblClickedSegment = false,
-      selectionFromSegment = segment => {  // (segment, event)
+      selectionFromSegment = segment => {
+        isDblClickedSegment = true;
+        elLL.classList.remove('no-highlight');
         timeline.selectionStart(segment.time.start);
         timeline.selectionEnd(segment.time.end);
         cinema.seek(segment.time.start);
-        isDblClickedSegment = true;
       },
 
       propagateScroll = () => {
@@ -319,6 +320,7 @@ function viewModelFactory(params) {
         document.body.removeEventListener('mousemove', mousemove);
         document.body.removeEventListener('mouseup', mouseup);
         isDragging = null;
+        elLL.classList.remove('no-highlight');
         endExpandingLeft();
         endExpandingRight();
       },
@@ -365,6 +367,7 @@ function viewModelFactory(params) {
             timePoint = start + duration * cursorCanvasX / canvasWidth;
         log('cursor under', getTimeTag(timePoint, 1));
         isDragging = [timePoint, cursorCanvasX];
+        elLL.classList.add('no-highlight');
         document.body.addEventListener('mousemove', mousemove);
         document.body.addEventListener('mouseup', mouseup);
       },
