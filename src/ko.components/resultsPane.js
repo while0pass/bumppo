@@ -419,20 +419,22 @@ function viewModelFactory(params) {
         let { left: windowLeft, width: windowWidth } =
               elTL.getBoundingClientRect(),
             canvasWidth = elTC.clientWidth,
-            canvasX = elTC.getBoundingClientRect().left,
             duration = layersStruct.duration,
+            canvasX = elTC.getBoundingClientRect().left,
             windowDuration = windowWidth / canvasWidth * duration,
             xDuration = windowDuration / 2,
             xStartDuration = (windowLeft - canvasX) / canvasWidth * duration
               + windowDuration / 4,
             xCanvasWidth = windowWidth / xDuration * duration,
             xScroll = xStartDuration / duration * xCanvasWidth,
-            xCanvasWidthString = String(xCanvasWidth) + 'px';
+            xCanvasWidthString;
         if (timeline.unit() === 1 && xCanvasWidth / duration > maxPxPerMs) {
-          let oldXCanvasWidth = xCanvasWidth;
-          xCanvasWidth = Math.floor(maxPxPerMs * duration);
-          xScroll = xScroll * xCanvasWidth / oldXCanvasWidth;
+          return;
+          //let oldXCanvasWidth = xCanvasWidth;
+          //xCanvasWidth = Math.floor(maxPxPerMs * duration);
+          //xScroll = xScroll * xCanvasWidth / oldXCanvasWidth;
         }
+        xCanvasWidthString = String(xCanvasWidth) + 'px';
         elLC.style.width = xCanvasWidthString;
         elTC.style.width = xCanvasWidthString;
         elTL.scrollLeft = elLL.scrollLeft = xScroll;
@@ -441,8 +443,9 @@ function viewModelFactory(params) {
       zoomOut = () => {
         let { left: windowLeft, width: windowWidth } =
               elTL.getBoundingClientRect(),
-            canvasWidth = elTC.clientWidth,
-            canvasX = elTC.getBoundingClientRect().left,
+            canvasWidth = elTC.clientWidth;
+        if (canvasWidth === windowWidth) return;
+        let canvasX = elTC.getBoundingClientRect().left,
             duration = layersStruct.duration,
             windowDuration = windowWidth / canvasWidth * duration,
             xDuration = windowDuration * 2,
@@ -451,7 +454,6 @@ function viewModelFactory(params) {
             xCanvasWidth = windowWidth / xDuration * duration,
             xScroll = xStartDuration / duration * xCanvasWidth,
             xCanvasWidthString = String(xCanvasWidth) + 'px';
-        log(xCanvasWidth, windowWidth);
         if (xCanvasWidth < windowWidth) {
           xCanvasWidthString = '100%';
           xScroll = 0;
