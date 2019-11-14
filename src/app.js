@@ -210,7 +210,9 @@ initKnockout(ko, vM);
 
 worker.onmessage = message => {
   let [ messageType, data ] = message.data;
+  // Получена начальная часть результатов
   if (messageType === 'results0') {
+    vM.cinema && vM.cinema.deactivateAll();
     vM.isQueryNew(false);
     vM.isSubcorpusNew(false);
     vM.resultsNumber(data.total);
@@ -219,12 +221,15 @@ worker.onmessage = message => {
     vM.isSearchInProgress(false);
     vM.canViewResults(true);
     vM.switchOnResultsPane();
+
+  // Получена очередная часть результатов
   } else if (messageType === 'results1') {
     if (data && data.length) {
       concatResults(vM.resultsData, getResults(data));
     }
     vM.isLoadingNewDataPortion(false);
     log(`Got ${ vM.resultsData().length } / ${ vM.resultsNumber() } results`);
+
   } else if (messageType === 'status') {
     vM.searchStatus(data);
   } else if (messageType === 'error') {

@@ -1,0 +1,40 @@
+<!-- ko if: queryPaneView.isTreeVisible -->
+  <query-pane params="linearizedQueryTree: linearizedQueryTree"></query-pane>
+<!-- /ko -->
+
+<!-- ko if: queryPaneView.arePropertiesVisible -->
+<div class="bmpp-propertiesPane">
+  <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
+      <properties-pane params="node: queryPaneView.propertiesNode"
+        ></properties-pane>
+  </div></div>
+  <div class="bmpp-paneDivider"></div>
+  <div class="bmpp-paneButtons">
+      <button class="ui small button"
+        data-bind="click: queryPaneView.finishEditingNodeProperties"
+        >ОК</button>
+      <button class="ui small button" data-bind="click:
+        queryPaneView.propertiesNode().clearAllProperties
+          .bind(queryPaneView.propertiesNode())"
+        >Очистить</button>
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: queryPaneView.areRelationsVisible -->
+<div class="bmpp-relationsPane">
+  <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
+      <relations-pane params="node1: queryPaneView.relationsNode1,
+      node2: queryPaneView.relationsNode2"></relations-pane>
+  </div></div>
+  <div class="bmpp-paneDivider"></div>
+  <div class="bmpp-paneButtons">
+      <button class="ui small button"
+        data-bind="click: queryPaneView.finishEditingNodeRelations"
+        >ОК</button>
+      <button class="ui small button"
+        data-bind="click: queryPaneView.resetRelations"
+        >Сбросить к значениям по умолчанию</button>
+  </div>
+</div>
+<!-- /ko -->

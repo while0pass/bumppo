@@ -45,7 +45,7 @@ class Film {
 
           `);
 
-    jQuery(document.body).append(element);
+    jQuery(this.cinema.screen).append(element);
     element.on('mouseenter', () => {
       self.isMouseWithin = true;
     });
@@ -56,12 +56,7 @@ class Film {
     return element;
   }
   activateIFrame() {
-    let element = this.element,
-        screen = this.cinema.screen;
-    element.offset(screen.offset());
-    element.width(screen.width());
-    element.height(screen.height());
-    element.css({ zIndex: 900 });
+    this.element.css({ zIndex: 900 });
   }
   deactivateIFrame() {
     this.element.css({ zIndex: -1000 });
@@ -128,32 +123,18 @@ class Cinema {
     this.activeDataItem = ko.observable(null);
     this.timeline = timeline;
     this.cursorStruct = this.createCursorStruct();
-    this.createHider();
   }
   get screen() {
-    if (!this._screen || this._screenNotInDOM) {
-      this._screen = jQuery('#bmpp-videoPlayer');
-      this._screenNotInDOM = false;
-    }
+    if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
     return this._screen;
   }
   get loader() {
-    if (!this._loader || this._loaderNotInDOM) {
-      this._loader = jQuery('#bmpp-videoLoader');
-      this._loaderNotInDOM = false;
-    }
+    if (!this._loader) this._loader = jQuery('#bmpp-videoLoader');
     return this._loader;
   }
   hideCurtain() {
     let element = jQuery(this.screen).find('.bmpp-videoCurtain');
     element.css('z-index', 0);
-  }
-  createHider() {
-    // Создаем шторку, за которой будут прятаться iframe'ы видео
-    // во всех разделах кроме раздела с результатами
-    jQuery(document.body).append(`<div style="position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0; background-color: #fff;
-      z-index: -800;"></div>`);
   }
   clearActiveState() {
     this.activeRecordId(null);
@@ -267,8 +248,6 @@ class Cinema {
       films[key].film.pause();
       films[key].deactivateIFrame();
     });
-    this._screenNotInDOM = true;
-    this._loaderNotInDOM = true;
   }
   hideAllBut(showKey) {
     const films = this.films;

@@ -1,4 +1,5 @@
 import SVG from 'svg.js';
+import jQuery from 'jquery';
 
 const svgDrawElementId = 'svgQueryTree',
       template = `
@@ -6,7 +7,8 @@ const svgDrawElementId = 'svgQueryTree',
   <div class="bmpp-queryPane">
     <div class="bmpp-queryTree" id="${ svgDrawElementId }">
     </div>
-    <div class="bmpp-query" data-bind="foreach: linearizedQueryTree">
+    <div class="bmpp-query" data-bind="foreach: { data: linearizedQueryTree,
+      afterAdd: scrollIntoView }">
 
       <relations-formula params="node: $data, draw: $component.svgDraw"
         data-bind="visible: $data.parentNode">
@@ -37,6 +39,17 @@ var viewModelFactory = (params, componentInfo) => {
 
   linearizedQueryTree.subscribe(redrawTree);
 
+  const scrollOpts = {
+    behavior: 'smooth', // Сделать прокрутку, а не прыжок
+    block: 'end', // Вертикально выровнять элемент по подвалу окна просмотра
+  };
+  let scrollIntoView = element => { // (element, index, data)
+    let x = jQuery(element).nextAll('query-node');
+    if (x.length > 0) {
+      setTimeout(function () { x[0].scrollIntoView(scrollOpts); }, 500);
+    }
+  };
+
   let domObserver = new MutationObserver(function() {
     if (redrawTree.timeoutID !== undefined) {
       clearTimeout(redrawTree.timeoutID);
@@ -51,7 +64,7 @@ var viewModelFactory = (params, componentInfo) => {
     attributes: false, characterData: false, attributeOldValue: false,
     characterDataOldValue: false });
 
-  return { linearizedQueryTree, svgDraw };
+  return { linearizedQueryTree, svgDraw, scrollIntoView };
 };
 
 // KnockoutJS component

@@ -1,0 +1,40 @@
+<div class="bmpp-sidePane_menuItem ui vertical segment"
+  data-bind="click: switchOnSubcorpusPane,
+             css: { 'bmpp-sidePane_menuItem--current': isSubcorpusPaneOn }">
+  Область поиска
+</div>
+<div class="bmpp-sidePane_menuItem ui vertical segment"
+  data-bind="click: switchOnQueryPane,
+             css: { 'bmpp-sidePane_menuItem--current': isQueryPaneOn }">
+  Запрос
+</div>
+<div class="bmpp-sidePane_menuItem ui vertical disabled segment">
+  Настройки выдачи
+</div>
+<div class="bmpp-sidePane_menuItem ui vertical segment"
+  data-bind="css: { disabled: !canSearch() }, click: search">
+  Искать
+  <i class="ui search icon"></i>
+</div>
+<div class="bmpp-sidePane_menuItem ui vertical segment"
+  data-bind="click: function () {
+                      if (canViewResults()) switchOnResultsPane();
+                    },
+             css: { 'bmpp-sidePane_menuItem--current': isResultsPaneOn,
+                     disabled: !canViewResults() }">
+  Результаты
+  <!-- ko if: resultsNumber() !== null -->
+  <span class="label" data-bind="text: resultsNumber,
+    css: { currentResults: !canSearch() }"></span>
+  <!-- /ko -->
+</div>
+
+<a href="http://multidiscourse.ru/"
+style="position: absolute; top: 18.6rem; left: 1.5rem;
+     font-size: x-small; color: green; border-bottom: 1px dotted green;
+     line-height: 1.3em; font-weight: bold; letter-spacing: 0.03em;">
+  www.multidiscourse.ru
+</a>
+<div style="position: absolute; bottom: 1rem; left: 1.5rem;
+     font-size: x-small; color: rgba(40,40,40,.3);"
+  data-bind="text: version"></div>

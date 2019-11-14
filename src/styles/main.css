@@ -43,22 +43,46 @@ $videoHeight: 193px;
 }
 
 .bmpp-main {
-  display: flex;
   width: 100vw;
+  position: relative;
+  display: flex;
   flex-direction: column;
   align-items: stretch;
-  overflow-y: scroll;
-  position: relative;
+  overflow: hidden;
 
   &.no-pad {
-    overflow-y: hidden;
     padding: 0;
   }
 
-  &.no-scroll {
-    overflow: hidden;
+  &:before {
+    background-color: white;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0; /* Слой, за которым будет скрываться всё неотображаемое
+                в данный момент содержимое основной области страницы */
   }
 }
+
+.bmpp-pane {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.visiblePane {
+  z-index: 1 !important;
+}
+
+
 
 #bmpp-mainWait {
   box-sizing: border-box;
@@ -151,6 +175,18 @@ $videoHeight: 193px;
   &_searchButton {
     margin-left: 0.3em !important;
   }
+}
+
+.bmpp-subcorpus {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding-top: 3em;
+  padding-left: 6em;
+  width: 55em;
 }
 
 .bmpp-paddedPane {
@@ -627,6 +663,12 @@ $layerHeight: 2rem;
       color: $red !important;
     }
   }
+}
+
+query-node:last-of-type:after {
+  display: block;
+  content: '';
+  height: 3rem;
 }
 
 .bmpp-number {
