@@ -68,6 +68,7 @@ var viewModelFactory = function (params) {
   }
 
   function showFilm(data) {
+    vM.showResultsOnly(false);
     cinema.showFilm(data.record_id, data.filmType, data);
   }
 

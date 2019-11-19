@@ -245,7 +245,7 @@ $layersPanelButtonsHeight: 2rem;
   overflow: hidden;
   transition: all 1s ease-out;
 
-  &.without-layers {
+  &.no-layers {
     grid-template-areas: "video info"
                          "results results";
     grid-template-columns: auto 1fr;

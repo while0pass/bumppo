@@ -62,11 +62,12 @@
     <div class="bmpp-pane" data-bind="css: { visiblePane: isResultsPaneOn }"
       style="overflow: hidden">
       <!-- ko if: isResultsPaneOn() || resultsData() -->
-      <div class="bmpp-resultsPane" data-bind="component: {
+      <div class="bmpp-resultsPane no-layers" data-bind="component: {
           name: 'results-pane',
           params: { resultsData: resultsData, layersData: layersData,
-                    cinema: cinema }
-        }"></div>
+                    cinema: cinema, viewModel: $root }
+        }, css: { 'no-layers': showResultsOnly }
+        "></div>
       <!-- /ko -->
     </div>
 

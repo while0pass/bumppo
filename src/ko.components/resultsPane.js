@@ -15,14 +15,11 @@ const videoTemplate = `
     <div id="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">
       <div data-bind="
         text: id,
+        click: $component.showFilm,
         css: {
           disabled: disabled || !$component.cinema.activeDataItem(),
           current: $component.cinema.activeFilmType() === id
-        },
-        click: $component.cinema.showFilm.bind(
-          $component.cinema, $component.cinema.activeRecordId(),
-          id, $component.cinema.activeDataItem())
-        "></div>
+        }"></div>
     </div>
 
   </div>
@@ -536,6 +533,12 @@ function viewModelFactory(params) {
       },
       playSelection = () => {
         cinema.showEpisode(...timeline.selectionEdges());
+      },
+      showFilm = data => {
+        let recordId = cinema.activeRecordId(),
+            dataItem = cinema.activeDataItem();
+        params.viewModel.showResultsOnly(false);
+        cinema.showFilm(recordId, data.id, dataItem);
       };
 
   elLL.addEventListener('scroll', propagateScroll);
@@ -559,6 +562,7 @@ function viewModelFactory(params) {
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
     playAllVisible, playPreSelection, playPostSelection, playSelection,
     zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,
+    showFilm,
   };
 }
 
