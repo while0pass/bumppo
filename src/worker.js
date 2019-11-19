@@ -1,4 +1,6 @@
 import stubData from './response_data_new2.json';
+import layersData from './response_tiers3.json';
+layersData;
 
 /* eslint-disable no-undef,no-constant-condition */
 const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
@@ -12,17 +14,20 @@ const notSameOrigin = self.location.origin !==
 /* eslint-enable no-undef,no-constant-condition */
 
 var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] },
-    aborted = false;
+    aborted = false,
+    useStubData = false;
 
 /*eslint-disable-next-line no-unused-vars */
-onmessage = (message) => {
+onmessage = message => {
   let [messageType, data] = message.data;
-  if (messageType === 'query') {
-    if (data) {
-      getStubResults();
-    } else {
+  if (messageType === 'stub') {
+    useStubData = true;
+  } else if (messageType === 'query') {
+    if (!useStubData) {
       doAbort(xhr);
       doQuery(data);
+    } else {
+      getStubResults();
     }
   } else if (messageType === 'abort') {
     doAbort(xhr);

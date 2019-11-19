@@ -11,14 +11,13 @@ import { getHRef, hrefs } from './scripts/routing.js';
 import { concatResults, getResults } from './scripts/results.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
-import layersData from './response_tiers3.json';
-
 preinitKnockout(ko);
 
 const qs = window.URLSearchParams
   && (new URLSearchParams(document.location.search));
 window[';)'] = {
   debug: qs && qs.has('debug') || false,
+  stub: qs && qs.has('stub') || false,
 };
 
 const worker = new Worker('js/worker.js');
@@ -111,7 +110,7 @@ function viewModel() {
   this.isSubcorpusNew = ko.observable(false);
 
   this.resultsData = ko.observableArray([]);
-  this.layersData = ko.observable(layersData);
+  this.layersData = ko.observable('');
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
 
@@ -199,8 +198,10 @@ function viewModel() {
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
   this.resultsNumber = ko.observable(null);
-  this.responseJSON = ko.pureComputed(
-    () => self.resultsData() ? JSON.stringify(self.resultsData(), null, 4) : ''
+  this.responseJSON = ko.computed(
+    () => self.resultsData()
+      ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
+      : ''
   );
   this.clearError = () => {
     self.isSearchInProgress(false);
@@ -211,6 +212,7 @@ function viewModel() {
 const vM = new viewModel();
 initKnockout(ko, vM);
 
+if (window[';)'].stub) worker.postMessage(['stub', true]);
 worker.onmessage = message => {
   let [ messageType, data ] = message.data;
   // Получена начальная часть результатов
@@ -229,7 +231,8 @@ worker.onmessage = message => {
   // Получена очередная часть результатов
   } else if (messageType === 'results1') {
     if (data && data.length) {
-      concatResults(vM.resultsData, getResults(data));
+      let lastItem = vM.resultsData().slice(-1)[0];
+      concatResults(vM.resultsData, getResults(data, lastItem));
     }
     vM.isLoadingNewDataPortion(false);
     log(`Got ${ vM.resultsData().length } / ${ vM.resultsNumber() } results`);
