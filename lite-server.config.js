@@ -2,10 +2,15 @@
 
 const BUMPPO_REMOTE_SERVER = {
   origin: 'https://multidiscourse.ru',
-  path: '/perform_search_sql/'
+  resultsPath: '/perform_search_sql/',
+  tiersPath: '/get_tiers/'
 };
 
 let proxy = require('http-proxy-middleware'),
+    paths = [
+      BUMPPO_REMOTE_SERVER.resultsPath,
+      BUMPPO_REMOTE_SERVER.tiersPath,
+    ],
     proxyOpts = {
       changeOrigin: true,
       target: BUMPPO_REMOTE_SERVER.origin
@@ -15,7 +20,7 @@ module.exports = {
   port: 3000,
   server: {
     baseDir: 'build',
-    middleware: { 1: proxy(BUMPPO_REMOTE_SERVER.path, proxyOpts) }
+    middleware: { 1: proxy(paths, proxyOpts) }
   },
   files: [
     'build/index.html',

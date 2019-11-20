@@ -61,14 +61,13 @@
 
     <div class="bmpp-pane" data-bind="css: { visiblePane: isResultsPaneOn }"
       style="overflow: hidden">
-      <!-- ko if: isResultsPaneOn() || resultsData() -->
       <div class="bmpp-resultsPane no-layers" data-bind="component: {
           name: 'results-pane',
           params: { resultsData: resultsData, layersData: layersData,
-                    cinema: cinema, viewModel: $root }
+                    cinema: cinema, viewModel: $root,
+                    timeline: timeline }
         }, css: { 'no-layers': showResultsOnly }
         "></div>
-      <!-- /ko -->
     </div>
 
     <div class="bmpp-pane" data-bind="css: { visiblePane: isSubcorpusPaneOn }"
@@ -92,7 +91,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="semantic/semantic.min.js"></script>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"
+      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-min.js"
       ></script>
     <script src="js/libs/svg.min.js"></script>
     <script src="js/libs/jquery.initialize.min.js"></script>

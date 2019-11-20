@@ -318,12 +318,12 @@ class Segment {
   defineParent(parentValue) {
     if (parentValue) {
       let register = this.layer.struct._timeBoundSegRegister;
-      if (register.hasOwnProperty(parentValue)) {
+      if (Object.prototype.hasOwnProperty.call(register, parentValue)) {
         this.parent = register[parentValue];
       } else {
         Object.defineProperty(this, 'parent', {
           get: function () {
-            if (register.hasOwnProperty(parentValue)) {
+            if (Object.prototype.hasOwnProperty.call(register, parentValue)) {
               let segment = register[parentValue];
               Object.defineProperty(this, 'parent', { value: segment });
               return segment;
@@ -339,7 +339,8 @@ class Segment {
   redefineOverallTime() {
     if (this.time) {
       let overallTime = this.layer.struct.time,
-          timeIsNotDefined = !overallTime.hasOwnProperty('start');
+          timeIsNotDefined = !Object.prototype
+            .hasOwnProperty.call(overallTime, 'start');
       if (timeIsNotDefined || this.time.start < overallTime.start) {
         overallTime.start = this.time.start;
       }
@@ -372,7 +373,7 @@ function sortFunction(a, b) {
 
 class LayersStruct {
   constructor(data) {
-    this._data = data;
+    this._data = data || {};
     this._timeBoundSegRegister = {};
     this._availableList = this.getAvailableLayersList();
 
@@ -386,6 +387,7 @@ class LayersStruct {
     return layersList;
   }
   getLayersFromData(availableList) {
+    if (availableList.length === 0) this.time = { start: 0, end: 0 };
     return availableList.map(layerType => {
       if (layerType in LAYER_PARENT_MAP) {
         return COOKED_LAYERS[layerType];

@@ -149,12 +149,11 @@ class Cinema {
       //lastTime: performance.now(),
     };
     ko.computed(function () {
-      let timeline = this.timeline();
-      if (timeline) {
-        struct.width = timeline.canvasWidth();
-        struct.start = timeline.layersStruct.time.start;
-        struct.duration = timeline.layersStruct.duration;
-      }
+      let layersStruct = this.timeline.layersStruct(),
+          width = this.timeline.canvasWidth && this.timeline.canvasWidth() || 0;
+      struct.width = width;
+      struct.start = layersStruct.time.start;
+      struct.duration = layersStruct.duration;
     }, this);
     return struct;
   }
@@ -199,6 +198,8 @@ class Cinema {
     cinema.activeRecordId(recordId);
     cinema.activeFilmType(filmType);
     cinema.activeDataItem(dataItem);
+    // FIXME: Убрать костыли для разных версий dataItem, когда новая
+    // версия устаканится.
     let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
         end = (dataItem.after? dataItem.after: dataItem.match).time.end,
         [film, isCreated] = cinema.getFilm(recordId, filmType);

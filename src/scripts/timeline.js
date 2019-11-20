@@ -103,19 +103,20 @@ class TimePoint {
     //this.nxt
   }
   getXPercentage(point, timeline) {
-    let ls = timeline.layersStruct;
+    let ls = timeline.layersStruct();
     return (point - ls.time.start) / ls.duration * 100;
   }
   createTimeTag(point, timeline) {
     let xPercentage = this.getXPercentage(point, timeline),
         widthPercentage = 5,
         timeTag = getTimeTag(point, timeline.unit()),
-        el = document.createElement('div');
+        el = document.createElement('div'),
+        canvas = document.getElementById(timelineElementIds.canvas);
     el.className = 'bmpp-timeTag';
     el.style.width = String(widthPercentage) + '%';
     el.style.left = String(xPercentage - widthPercentage / 2) + '%';
     el.appendChild(document.createTextNode(timeTag));
-    document.getElementById(timelineElementIds.canvas).appendChild(el);
+    canvas.appendChild(el);
     return el;
   }
   smartDispose() {
@@ -138,36 +139,39 @@ class TimePoint {
 }
 
 class TimeLine {
-  constructor(canvasElement, layersStruct) {
-    this.layersStruct = layersStruct;
-    this.canvasWidth = this.getCanvasWidth(canvasElement);
-    this.windowWidth = this.getWindowWidth();
+  constructor(layersStruct) {
+    this.layersStruct = ko.computed(() => layersStruct());
+    // Вторая часть инициализации afterInitDom будет произведена из шаблона
+    // при появлении нужных DOM-элементов.
+  }
+  afterInitDom() {
+    this.canvasWidth = ko.observable(0);
+    this.windowWidth = ko.observable(0);
     this.unit = this.getUnit();
     this.dUnit = this.getDUnit();
     this.commitPoints = ko.observable(0);
     [ this.firstPoint, this.lastPoint ] = this.recreatePoints();
     this.selectionEdges = ko.observable([null, null]);
 
-    this.tune(canvasElement);
-  }
-  getWindowWidth() {
-    let windowElement = document.getElementById(timelineElementIds.timeline);
-    return ko.observable(windowElement.clientWidth);
-  }
-  getCanvasWidth(canvasElement) {
-    return ko.observable(canvasElement.clientWidth);
+    this.tune();
+    this.constructor.prototype.afterInitDom = () => {};  // Для контроля
+    // идемпотентности операции. Повторные попытки инициализации не будут
+    // ничего менять.
   }
   getWindowStart() {
     let w = document.getElementById(timelineElementIds.timeline),
-        start = this.layersStruct.time.start,
-        duration = this.layersStruct.duration;
+        layersStruct = this.layersStruct(),
+        start = layersStruct.time.start,
+        duration = layersStruct.duration;
     return start + duration * w.scrollLeft / this.canvasWidth();
   }
   getWindowEnd() {
     let w = document.getElementById(timelineElementIds.timeline),
-        start = this.layersStruct.time.start,
-        duration = this.layersStruct.duration;
-    return start + duration * (w.scrollLeft + this.windowWidth()) / this.canvasWidth();
+        layersStruct = this.layersStruct(),
+        start = layersStruct.time.start,
+        duration = layersStruct.duration;
+    return start + duration
+      * (w.scrollLeft + this.windowWidth()) / this.canvasWidth();
   }
   getUnitStartShift() {
     let windowStart = this.getWindowStart(),
@@ -282,10 +286,11 @@ class TimeLine {
   }
   getUnit() {
     return ko.computed(function () {
-      const charPxWidth = 5,
+      const layersStruct = this.layersStruct(),
+            charPxWidth = 5,
             padPxWidth = charPxWidth * 4,
-            end = this.layersStruct.time.end,
-            canvasDuration = this.layersStruct.duration,
+            end = layersStruct.time.end,
+            canvasDuration = layersStruct.duration,
             canvasPxWidth = this.canvasWidth();
       for (let i = 0; i < UNITS.length; i++) {
         let unitDuration = UNITS[i],
@@ -303,7 +308,8 @@ class TimeLine {
     }, this);
   }
   recalcTicks() {
-    let minorTicks = document.getElementById(timelineElementIds.ticks1),
+    let layersStruct = this.layersStruct(),
+        minorTicks = document.getElementById(timelineElementIds.ticks1),
         majorTicks = document.getElementById(timelineElementIds.ticks2),
         canvasWidth = this.canvasWidth(),
 
@@ -313,8 +319,8 @@ class TimeLine {
         refMinorUnit = everyDivLine ? dUnit * 2 : dUnit,
         refMajorUnit = refMinorUnit * 5,
 
-        start = this.layersStruct.time.start,
-        duration = this.layersStruct.duration,
+        start = layersStruct.time.start,
+        duration = layersStruct.duration,
 
         unitShift = (start % refMajorUnit - refMajorUnit) / duration,
         unitShiftString = String(unitShift * canvasWidth) + 'px',
@@ -326,32 +332,7 @@ class TimeLine {
     minorTicks.style.strokeDashoffset = unitShiftString;
     majorTicks.style.strokeDashoffset = unitShiftString;
   }
-  tune(canvasElement) {
-    let self = this;
-
-    // Наблюдаем за изменениями ширины полотна для слоев
-    let onResizeCanvas = entries => {
-          const canvas = entries[0],
-                box = canvas.contentRect,
-                svgCanvas = document
-                  .getElementById(timelineElementIds.cursor.canvas);
-          self.canvasWidth(box.width);
-          svgCanvas.setAttribute('width', box.width);
-          self.commitPoints(performance.now());
-        },
-        ro1 = new ResizeObserver(onResizeCanvas);
-    ro1.observe(canvasElement);
-
-    // Наблюдаем за изменением ширины окна видимости временной шкалы
-    let onResizeTimelineWindow = entries => {
-          const win = entries[0],
-                box = win.contentRect;
-          self.windowWidth(box.width);
-          self.commitPoints(performance.now());
-        },
-        ro2 = new ResizeObserver(onResizeTimelineWindow);
-    ro2.observe(document.getElementById(timelineElementIds.timeline));
-
+  tune() {
     // Перерисовываем шкалу и метки при масштабировании или прокрутке
     this.commitPoints.extend({ rateLimit: 50 }).subscribe(function () {
       this.recalcTicks();
@@ -371,13 +352,15 @@ class TimeLine {
         return;
       }
       if (start > end) [start, end] = [end, start];
-      let xStart = this.layersStruct.time.start,
-          xDuration = this.layersStruct.duration,
+      let layersStruct = this.layersStruct(),
+          xStart = layersStruct.time.start,
+          xDuration = layersStruct.duration,
           posStart = (start - xStart) / xDuration * 100,
           posEnd = (end - xStart) / xDuration * 100;
       element.setAttribute('x', String(posStart) + '%');
       element.setAttribute('width', String(posEnd - posStart) + '%');
     }, this);
+
   }
 }
 

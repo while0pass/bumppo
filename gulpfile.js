@@ -12,14 +12,13 @@ const context = {
 
 console.log('\nBumppo v' + context.BUMPPO_VERSION);
 
-const exec = require('child_process').exec,
-    { src, dest, parallel, series } = require('gulp'),
+const { src, dest, parallel, series } = require('gulp'),
       merge = require('merge-stream');
 
 // Gulp plugins
 const babel = require('gulp-babel'),
       eslint = require('gulp-eslint'),
-      ext = require('gulp-ext'),
+      //ext = require('gulp-ext'),
       gulpif = require('gulp-if'),
       htmlmin = require('gulp-htmlmin'),
       nunjucks = require('gulp-nunjucks'),
@@ -37,12 +36,12 @@ const //builtins = require('rollup-plugin-node-builtins'),
       resolve = require('rollup-plugin-node-resolve');
 
 // PostCSS plugins
-const calc = require('postcss-calc'),
+const //calc = require('postcss-calc'),
       color = require('postcss-color-function'),
       cssNano = require('cssnano'),
       cssNext = require('postcss-cssnext'),
-      cssPresetEnv = require('postcss-preset-env'),
-      customProps = require('postcss-css-variables'),
+      //cssPresetEnv = require('postcss-preset-env'),
+      //customProps = require('postcss-css-variables'),
       easyImport = require('postcss-easy-import'),
       mixins = require('postcss-mixins'),
       nested = require('postcss-nested'),

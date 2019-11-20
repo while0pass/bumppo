@@ -594,6 +594,14 @@ $layerHeight: 2rem;
   }
 }
 
+.bmpp-resultsLoadPercent {
+  color: $grey;
+  font-size: xx-small;
+  position: absolute;
+  top: 0.3em;
+  right: 0.6em;
+}
+
 #bmpp-videoChoices {
   display: flex;
   flex-flow: column nowrap;

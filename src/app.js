@@ -1,15 +1,17 @@
-import log from './scripts/log.js';
 import jQuery from 'jquery';
 import ko from 'knockout';
 
 import { init as initKnockout, preinit as preinitKnockout  }
   from './scripts/init.knockout.js';
 import { TreeNode } from './scripts/queryTree.js';
-import getQueryJSON from './scripts/queryJSON.js';
+import { getQueryJSON, getLayersQueryJSON } from './scripts/queryJSON.js';
 import Cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
 import { concatResults, getResults } from './scripts/results.js';
+import { LayersStruct } from './scripts/layers.js';
+import { TimeLine } from './scripts/timeline.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
+
 
 preinitKnockout(ko);
 
@@ -110,11 +112,11 @@ function viewModel() {
   this.isSubcorpusNew = ko.observable(false);
 
   this.resultsData = ko.observableArray([]);
-  this.layersData = ko.observable('');
+  this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
 
-  this.timeline = ko.observable(null);
+  this.timeline = new TimeLine(this.layersData);
   this.cinema = new Cinema(this.timeline);
   this.subcorpus = {
     records: new CheckboxForm(records, this.isSubcorpusNew),
@@ -179,7 +181,8 @@ function viewModel() {
       self.isSearchInProgress(true);
       self.canSearchBeAborted(true);
       self.cinema.clearActiveState();
-      worker.postMessage(['query', self.queryJSON()]);
+      let data = { type: 'results', query: self.queryJSON() };
+      worker.postMessage(['query', data]);
     }
   };
   this.isSearchInProgress = ko.observable(false);
@@ -189,15 +192,29 @@ function viewModel() {
     self.isSearchInProgress(false);
     worker.postMessage(['abort', null]);
   };
-  this.isLoadingNewDataPortion = ko.observable(false);
-  this.loadNewDataPortion = () => {
-    self.isLoadingNewDataPortion(true);
-    worker.postMessage(['results1', null]);
+  this.loadLayers = item => {
+    let query = window[';)'].stub
+          && item.match.value === self.resultsData()[0].match.value
+          && item.record_id === self.resultsData()[0].record_id
+          ? 'stub'
+          : getLayersQueryJSON(item),
+        data = { type: 'layers', query };
+    worker.postMessage(['query', data]);
   };
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
   this.resultsNumber = ko.observable(null);
+  this.resultsPercent = ko.computed(() => {
+    let n = self.resultsData().length,
+        N = self.resultsNumber();
+    if (n === 0 || N === 0) return '100%';
+    return Math.floor(n / N * 100).toFixed(0) + '%';
+  });
+  this.checkResults1 = () => {
+    let value = self.resultsPercent();
+    if (value !== '100%') worker.postMessage(['results1', null]);
+  };
   this.responseJSON = ko.computed(
     () => self.resultsData()
       ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
@@ -234,15 +251,19 @@ worker.onmessage = message => {
       let lastItem = vM.resultsData().slice(-1)[0];
       concatResults(vM.resultsData, getResults(data, lastItem));
     }
-    vM.isLoadingNewDataPortion(false);
-    log(`Got ${ vM.resultsData().length } / ${ vM.resultsNumber() } results`);
+
+  } else if (messageType === 'layers') {
+    vM.layersData(new LayersStruct(data));
 
   } else if (messageType === 'status') {
     vM.searchStatus(data);
+
   } else if (messageType === 'error') {
     vM.resultsError(data);
+
   } else if (messageType === 'noabort') {
     vM.canSearchBeAborted(false);
+
   }
 };
 

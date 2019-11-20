@@ -1,33 +1,40 @@
-import stubData from './response_data_new2.json';
-import layersData from './response_tiers3.json';
-layersData;
+import stubResultsData from './response_data_new2.json';
+import stubTiersData from './response_tiers3.json';
 
 /* eslint-disable no-undef,no-constant-condition */
-const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
-  '$_CONFIG.BUMPPO_REMOTE_SERVER.origin' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path':
-  ('$_CONFIG.BUMPPO_LOCAL_SERVER' ?
-    '$_CONFIG.BUMPPO_LOCAL_SERVER' : 'http://localhost:' +
-    '$_CONFIG.BUMPPO_LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
+const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION
+  ? '$_CONFIG.BUMPPO_REMOTE_SERVER.origin'
+  : ('$_CONFIG.BUMPPO_LOCAL_SERVER'
+    ? '$_CONFIG.BUMPPO_LOCAL_SERVER'
+    : 'http://localhost:' + '$_CONFIG.BUMPPO_LOCAL_PORT'));
+
+const resultsURL = searchEngineURL + '$_CONFIG.BUMPPO_REMOTE_SERVER.resultsPath',
+      tiersURL = searchEngineURL + '$_CONFIG.BUMPPO_REMOTE_SERVER.tiersPath';
 
 const notSameOrigin = self.location.origin !==
   (new URL('$_CONFIG.BUMPPO_REMOTE_SERVER.origin')).origin;
 /* eslint-enable no-undef,no-constant-condition */
 
-var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] },
+const mainQueryType = 'results'; // 'results' vs. 'layers'
+
+var xhr,
+    resultsData = { total: 0, sent: 0, inc: 30, results: [] },
     aborted = false,
     useStubData = false;
 
-/*eslint-disable-next-line no-unused-vars */
 onmessage = message => {
   let [messageType, data] = message.data;
   if (messageType === 'stub') {
     useStubData = true;
   } else if (messageType === 'query') {
-    if (!useStubData) {
+    let isMainQueryType = data.type === mainQueryType,
+        doUseStubData = useStubData
+          && (isMainQueryType || data.query === 'stub');
+    if (!doUseStubData) {
       doAbort(xhr);
-      doQuery(data);
+      doQuery(data.type, data.query);
     } else {
-      getStubResults();
+      getStubResults(data.type);
     }
   } else if (messageType === 'abort') {
     doAbort(xhr);
@@ -44,7 +51,10 @@ function doAbort(xhr) {
   }
 }
 
-function doQuery(data) {
+function doQuery(queryType, query) {
+  const isMainType = queryType === mainQueryType,
+        xURL = isMainType ? resultsURL : tiersURL;
+
   const NOT_SENT = 0,
         OPENED = 1,
         HEADERS_RECEIVED = 2,
@@ -76,11 +86,15 @@ function doQuery(data) {
           return;
         }
 
-        searchData.sent = 0;
-        searchData.total = rawData.results.length;
-        searchData.results = rawData.results;
-        postMessage(['status', 'Отрисовка результатов']);
-        sendFirstResults();
+        if (isMainType) {
+          resultsData.sent = 0;
+          resultsData.total = rawData.results.length;
+          resultsData.results = rawData.results;
+          postMessage(['status', 'Отрисовка результатов']);
+          sendFirstResults();
+        } else {
+          sendLayers(rawData);
+        }
       } else {
         let message;
         if (xhr.status !== 0) {
@@ -120,33 +134,41 @@ function doQuery(data) {
     postMessage(['status', 'Запрос отменен']);
   });
   // eslint-disable-next-line no-undef
-  xhr.open('GET', searchEngineURL + '?data=' + encodeURIComponent(data),
+  xhr.open('GET', xURL + '?data=' + encodeURIComponent(query),
     asynchronously);
   xhr.send();
-  //xhr.open('POST', searchEngineURL, asynchronously);
-  //xhr.send(data);
+  //xhr.open('POST', xURL, asynchronously);
+  //xhr.send(query);
 }
 
 function sendFirstResults() {
-  let firstResults = searchData.results.slice(0, searchData.inc);
+  let firstResults = resultsData.results.slice(0, resultsData.inc);
   postMessage(['results0', {
-    total: searchData.total,
+    total: resultsData.total,
     results: firstResults
   }]);
-  searchData.sent = firstResults.length;
+  resultsData.sent = firstResults.length;
 }
 
 function sendOtherResults() {
-  let { sent, inc, results } = searchData,
+  let { sent, inc, results } = resultsData,
       resultsPortion = results.slice(sent, sent + inc);
   postMessage(['results1', resultsPortion]);
-  searchData.sent += resultsPortion.length;
+  resultsData.sent += resultsPortion.length;
 }
 
-function getStubResults() {
-  searchData.sent = 0;
-  searchData.total = stubData.results.length;
-  searchData.results = stubData.results;
-  postMessage(['status', 'Отрисовка результатов']);
-  sendFirstResults();
+function getStubResults(dataType) {
+  if (dataType === mainQueryType) {
+    resultsData.sent = 0;
+    resultsData.total = stubResultsData.results.length;
+    resultsData.results = stubResultsData.results;
+    postMessage(['status', 'Отрисовка результатов']);
+    sendFirstResults();
+  } else {
+    sendLayers(stubTiersData);
+  }
+}
+
+function sendLayers(data) {
+  postMessage(['layers', data]);
 }

@@ -1,7 +1,7 @@
 import log from '../scripts/log.js';
 import ko from 'knockout';
-import { LayersStruct, layersElementIds } from '../scripts/layers.js';
-import { TimeLine, timelineElementIds, getTimeTag } from '../scripts/timeline.js';
+import { layersElementIds } from '../scripts/layers.js';
+import { timelineElementIds, getTimeTag } from '../scripts/timeline.js';
 
 const videoTemplate = `
 
@@ -80,7 +80,7 @@ const queryInfoTemplate = `
 
 const resultsTemplate = `
 
-  <div id="bmpp-results" data-bind="if: resultsData.results">
+  <div id="bmpp-results">
 
     <!-- ko if: $root.debug -->
     <div style="padding: 1em; font-size: x-small; background-color: #eee;">
@@ -119,7 +119,8 @@ const layersTemplate = `
   <div id="bmpp-layers">
 
     <div id="bmpp-layersNames">
-      <div id="${ layersElementIds.names }" data-bind="foreach: layersStruct.layers">
+      <div id="${ layersElementIds.names }"
+          data-bind="foreach: layersStruct().layers">
         <div class="bmpp-layerName" data-bind="text: type,
           css: { sublayer: parent },
           event: { mouseover: $component.highlight,
@@ -140,7 +141,7 @@ const layersTemplate = `
 
     <div id="${ layersElementIds.layers }">
       <div id="${ layersElementIds.canvas }"
-          data-bind="foreach: layersStruct.layers">
+          data-bind="foreach: layersStruct().layers">
         <div class="bmpp-layer" data-bind="foreach: segments,
           css: { highlighted: $component.highlighted() === type }">
           <div class="bmpp-segment" data-bind="html: value,
@@ -157,8 +158,7 @@ const layersTemplate = `
         <li data-bind="click: zoomSel">sel</li>
         <li data-bind="click: selectionBak">bak</li>
       </ul>
-      <ul data-bind="visible: cinema.timeline()
-            && cinema.timeline().selectionEdges()[0] !== null">
+      <ul data-bind="visible: cinema.timeline.selectionEdges()[0] !== null">
         <li data-bind="click: playAllVisible">
           <i class="ui disabled large angle left icon"></i>
           <i class="ui disabled play icon"></i>
@@ -202,18 +202,35 @@ function viewModelFactory(params) {
         maxPxPerMs = 100;
 
   let cinema = params.cinema,
-      layersStruct = new LayersStruct(params.layersData()),
+      timeline = params.timeline,
+      layersStruct = params.layersData,
       elNC = document.getElementById(layersElementIds.names),
       elLL = document.getElementById(layersElementIds.layers),
       elLC = document.getElementById(layersElementIds.canvas),
       elTL = document.getElementById(timelineElementIds.timeline),
       elTC = document.getElementById(timelineElementIds.canvas),
       elCC = document.getElementById(timelineElementIds.cursor.canvas),
-      timeline = new TimeLine(elLC, layersStruct),
       highlighted = ko.observable(),
-      previousSelection = timeline.selectionEdges(),
+      previousSelection = [null, null],
+      // Используем литерал, так как timeline.selectionEdges еще не определен
 
-      isDblClickedSegment = false,
+      syncWidth = (width) => {
+        let widthString = String(width) + 'px';
+        elLC.style.width = widthString;
+        elTC.style.width = widthString;
+        elCC.setAttribute('width', width);
+      },
+      syncScrollLeft = scrollLeft => {
+        elLL.scrollLeft = scrollLeft;
+        elTL.scrollLeft = scrollLeft;
+        elCC.style.left = scrollLeft > 0 ? -scrollLeft : 0;
+      },
+      syncScrollTop = scrollTop => {
+        elNC.scrollTop = scrollTop;
+        elLL.scrollTop = scrollTop;
+      };
+
+  let isDblClickedSegment = false,
       selectionFromSegment = segment => {
         let time = segment.time;
         isDblClickedSegment = true;
@@ -224,32 +241,32 @@ function viewModelFactory(params) {
       },
 
       propagateScroll = () => {
-        elNC.scrollTop = elLL.scrollTop;
-        elTL.scrollLeft = elLL.scrollLeft;
-        elCC.style.left = elLL.scrollLeft > 0 ? -elLL.scrollLeft : 0;
+        syncScrollTop(elLL.scrollTop);
+        syncScrollLeft(elLL.scrollLeft);
         timeline.commitPoints(performance.now());
       },
       propagateScrollReverseNC = event => {
         // Синхронизация прокрутки панели с названиями слоев с прокруткой
         // области, где отображются сами слои.
-        elNC.scrollTop = elLL.scrollTop -= event.deltaY;
+        syncScrollTop(elLL.scrollTop - event.deltaY);
       },
 
       scale = event => {
         if (!event.ctrlKey) return;
         event.preventDefault();
-        let duration = layersStruct.duration,
+        let duration = layersStruct().duration,
             slidingWindowX = elTL.getBoundingClientRect().left,
             slidingWindowWidth = elTL.clientWidth, // NOTE: ##cWgBCR##
             { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             cursorSlidingWindowX = event.clientX - slidingWindowX,
-            mul = 1, width;
+            mul = 1,
+            width;
         if (event.deltaY > 0) mul = 1.1;
         else if (event.deltaY < 0) mul = 10 / 11;
         width = canvasWidth * mul;
         if (width <= slidingWindowWidth) {
-          width = '100%';
+          width = slidingWindowWidth;
         } else {
           if (timeline.unit() === 1) {
             if (width / duration > maxPxPerMs) {
@@ -257,26 +274,22 @@ function viewModelFactory(params) {
               mul = width / canvasWidth;
             }
           }
-          width = `${ width }px`;
         }
         // Совместное масштабирование холста со слоями и холста временной шкалы
-        elLC.style.width = width;
-        elTC.style.width = width;
+        syncWidth(width);
         // При масштабировании закреплять холст на той точке временной шкалы,
         // которая находится под курсором
         let scrollLeft = cursorCanvasX * mul - cursorSlidingWindowX;
-        elTL.scrollLeft = elLL.scrollLeft = scrollLeft;
-        elCC.style.left = scrollLeft > 0 ? -scrollLeft : 0;
+        syncScrollLeft(scrollLeft);
       },
 
       smartScroll = event => {
         if (event.ctrlKey) return;
         event.preventDefault();
         if (event.shiftKey || elLL.offsetHeight === elLL.scrollHeight) {
-          elLL.scrollLeft -= event.deltaY;
-          elCC.style.left = elLL.scrollLeft > 0 ? -elLL.scrollLeft : 0;
+          syncScrollLeft(elLL.scrollLeft - event.deltaY);
         } else {
-          elLL.scrollTop -= event.deltaY;
+          syncScrollTop(elLL.scrollTop - event.deltaY);
         }
       },
 
@@ -303,10 +316,11 @@ function viewModelFactory(params) {
             cursorCanvasX = cursorX - windowLeft <= 0
               ? windowLeft - canvasX
               : cursorX - canvasX,
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
-        elLL.scrollLeft -= pxDelta;
+        syncScrollLeft(elLL.scrollLeft - pxDelta);
         timeline.selectionEdges([timePoint, timeline.selectionEdges()[1]]);
         isExpandingLeft = rAF(selectionExpandLeft(cursorX), msDelta);
       },
@@ -327,10 +341,11 @@ function viewModelFactory(params) {
             cursorCanvasX = cursorX - windowRight >= 0
               ? windowRight - canvasX
               : cursorX - canvasX,
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
-        elLL.scrollLeft += pxDelta;
+        syncScrollLeft(elLL.scrollLeft + pxDelta);
         timeline.selectionEdges([timeline.selectionEdges()[0], timePoint]);
         isExpandingRight = rAF(selectionExpandRight(cursorX), msDelta);
       },
@@ -383,8 +398,9 @@ function viewModelFactory(params) {
         }
 
         let canvasWidth = elTC.clientWidth,
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             timePoint = start + duration * cursorCanvasX / canvasWidth,
             lastTimePoint = isDragging[0];
         if (lastTimePoint > timePoint) {
@@ -394,8 +410,9 @@ function viewModelFactory(params) {
       },
 
       mousedown = event => {
-        let start = layersStruct.time.start,
-            duration = layersStruct.duration,
+        let lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
@@ -413,8 +430,9 @@ function viewModelFactory(params) {
           isDblClickedSegment = false;
           return;
         }
-        let start = layersStruct.time.start,
-            duration = layersStruct.duration,
+        let lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
@@ -428,41 +446,35 @@ function viewModelFactory(params) {
         let [startPoint, endPoint] = timeline.selectionEdges();
         if (startPoint === null || endPoint === null) return;
         let windowWidth = elTL.clientWidth, // NOTE: ##cWgBCR##
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             xDuration = endPoint - startPoint,
             xCanvasWidth = windowWidth / xDuration * duration,
-            xScroll = (startPoint - start) / duration * xCanvasWidth,
-            xCanvasWidthString = String(xCanvasWidth) + 'px';
-        elLC.style.width = xCanvasWidthString;
-        elTC.style.width = xCanvasWidthString;
-        elTL.scrollLeft = elLL.scrollLeft = xScroll;
-        elCC.style.left = xScroll > 0 ? -xScroll : 0;
+            xScroll = (startPoint - start) / duration * xCanvasWidth;
+        syncWidth(xCanvasWidth);
+        syncScrollLeft(xScroll);
       },
       zoomIn = () => {
         let windowLeft = elTL.getBoundingClientRect().left,
             windowWidth = elTL.clientWidth, // NOTE: ##cWgBCR##
             { left: canvasLeft, width: canvasWidth } =
               elTC.getBoundingClientRect(),
-            duration = layersStruct.duration,
+            duration = layersStruct().duration,
             windowDuration = windowWidth / canvasWidth * duration,
             xDuration = windowDuration / 2,
             xStartDuration = (windowLeft - canvasLeft) / canvasWidth
               * duration + windowDuration / 4,
             xCanvasWidth = windowWidth / xDuration * duration,
-            xScroll = xStartDuration / duration * xCanvasWidth,
-            xCanvasWidthString;
+            xScroll = xStartDuration / duration * xCanvasWidth;
         if (timeline.unit() === 1 && xCanvasWidth / duration > maxPxPerMs) {
           return;
           //let oldXCanvasWidth = xCanvasWidth;
           //xCanvasWidth = Math.floor(maxPxPerMs * duration);
           //xScroll = xScroll * xCanvasWidth / oldXCanvasWidth;
         }
-        xCanvasWidthString = String(xCanvasWidth) + 'px';
-        elLC.style.width = xCanvasWidthString;
-        elTC.style.width = xCanvasWidthString;
-        elTL.scrollLeft = elLL.scrollLeft = xScroll;
-        elCC.style.left = xScroll > 0 ? -xScroll : 0;
+        syncWidth(xCanvasWidth);
+        syncScrollLeft(xScroll);
       },
       zoomOut = () => {
         let windowLeft = elTL.getBoundingClientRect().left,
@@ -470,26 +482,23 @@ function viewModelFactory(params) {
             { left: canvasLeft, width: canvasWidth } =
               elTC.getBoundingClientRect();
         if (canvasWidth === windowWidth) return;
-        let duration = layersStruct.duration,
+        let duration = layersStruct().duration,
             windowDuration = windowWidth / canvasWidth * duration,
             xDuration = windowDuration * 2,
             xStartDuration = (windowLeft - canvasLeft) / canvasWidth
               * duration - windowDuration / 2,
             xCanvasWidth = windowWidth / xDuration * duration,
-            xScroll = xStartDuration / duration * xCanvasWidth,
-            xCanvasWidthString = String(xCanvasWidth) + 'px';
+            xScroll = xStartDuration / duration * xCanvasWidth;
         if (xCanvasWidth < windowWidth) {
-          xCanvasWidthString = '100%';
+          xCanvasWidth = windowWidth;
           xScroll = 0;
         }
-        elLC.style.width = xCanvasWidthString;
-        elTC.style.width = xCanvasWidthString;
-        elTL.scrollLeft = elLL.scrollLeft = xScroll;
-        elCC.style.left = xScroll > 0 ? -xScroll : 0;
+        syncWidth(xCanvasWidth);
+        syncScrollLeft(xScroll);
       },
       zoomAll = () => {
-        elLC.style.width = '100%';
-        elTC.style.width = '100%';
+        let windowWidth = elTL.clientWidth; // NOTE: ##cWgBCR##
+        syncWidth(windowWidth);
       },
       selectionBak = () => {
         let x = timeline.selectionEdges();
@@ -503,8 +512,9 @@ function viewModelFactory(params) {
             windowRight = windowLeft + windowWidth, // NOTE: ##cWgBCR##
             { left: canvasLeft, width: canvasWidth } =
               elTC.getBoundingClientRect(),
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
             xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start;
         cinema.showEpisode(xStart, xEnd);
@@ -513,8 +523,9 @@ function viewModelFactory(params) {
         let windowLeft = elTL.getBoundingClientRect().left,
             { left: canvasLeft, width: canvasWidth } =
               elTC.getBoundingClientRect(),
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
             xEnd = timeline.selectionEdges()[0];
         cinema.showEpisode(xStart, xEnd);
@@ -525,8 +536,9 @@ function viewModelFactory(params) {
             windowRight = windowLeft + windowWidth, // NOTE: ##cWgBCR##
             { left: canvasLeft, width: canvasWidth } =
               elTC.getBoundingClientRect(),
-            start = layersStruct.time.start,
-            duration = layersStruct.duration,
+            lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
             xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start,
             xStart = timeline.selectionEdges()[1];
         cinema.showEpisode(xStart, xEnd);
@@ -554,9 +566,38 @@ function viewModelFactory(params) {
   elTL.addEventListener('mousedown', mousedown);
   elTL.addEventListener('dblclick', dblclick);
 
-  cinema.timeline(timeline);
+  // Наблюдаем за изменениями ширины полотна для слоев
+  let onResizeTimelineCanvas = entries => {
+        const canvas = entries[0],
+              width = canvas.contentRect.width;
+        timeline.canvasWidth(width);
+        syncWidth(width);
+        timeline.commitPoints(performance.now());
+      },
+      ro1 = new ResizeObserver(onResizeTimelineCanvas);
+  ro1.observe(elTC);
+
+  // Наблюдаем за изменением ширины окна видимости временной шкалы
+  let onResizeTimelineWindow = entries => {
+        const win = entries[0],
+              width = win.contentRect.width;
+        timeline.windowWidth(width);
+        if (elTC.clientWidth < width) syncWidth(width);
+        timeline.commitPoints(performance.now());
+      },
+      ro2 = new ResizeObserver(onResizeTimelineWindow);
+  ro2.observe(elTL);
+
+  // При смене слоев сбрасываем параметры
+  layersStruct.subscribe(() => {
+    zoomAll();  // масштаб
+    timeline.selectionEdges([null, null]);  // выделение
+  });
+
+  timeline.afterInitDom();
+
   return {
-    resultsData: { results: params.resultsData },
+    resultsData: params.resultsData,
     layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
