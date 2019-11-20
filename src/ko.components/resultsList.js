@@ -38,7 +38,7 @@ var viewModelFactory = function (params) {
       timeout = null;
 
   function showFilm(data) {
-    vM.loadLayers(data);
+    if (data !== cinema.activeDataItem()) vM.loadLayers(data);
     vM.showResultsOnly(false);
     cinema.showFilm(data.record_id, data.filmType, data);
   }
