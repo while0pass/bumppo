@@ -90,7 +90,7 @@ const resultsTemplate = `
     </div>
     <!-- /ko -->
 
-    <results-list params="resultsData: resultsData,
+    <results-list params="resultsData: resultsData, activeResult: activeResult,
       viewModel: $root"></results-list>
 
     <!-- ko if: $root.debug -->
@@ -588,10 +588,16 @@ function viewModelFactory(params) {
       ro2 = new ResizeObserver(onResizeTimelineWindow);
   ro2.observe(elTL);
 
+  let activeResult = ko.observable();
+
   // При смене слоев сбрасываем параметры
   layersStruct.subscribe(() => {
-    zoomAll();  // масштаб
-    timeline.selectionEdges([null, null]);  // выделение
+    let { begin: start, end } = activeResult().match.time,
+        segment = { time: { start, end }};
+    timeline.selectionEdges([null, null]);
+    selectionFromSegment(segment);
+    zoomSel();
+    zoomOut();
   });
 
   timeline.afterInitDom();
@@ -603,7 +609,7 @@ function viewModelFactory(params) {
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
     playAllVisible, playPreSelection, playPostSelection, playSelection,
     zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,
-    showFilm,
+    showFilm, activeResult,
   };
 }
 

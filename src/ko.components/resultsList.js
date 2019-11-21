@@ -33,12 +33,16 @@ const template = `
 
 var viewModelFactory = function (params) {
   var vM = params.viewModel,
+      activeResult = params.activeResult,
       cinema = vM.cinema,
       resultsData = params.resultsData,
       timeout = null;
 
   function showFilm(data) {
-    if (data !== cinema.activeDataItem()) vM.loadLayers(data);
+    if (data !== cinema.activeDataItem()) {
+      activeResult(data);
+      vM.loadLayers(data);
+    }
     vM.showResultsOnly(false);
     cinema.showFilm(data.record_id, data.filmType, data);
   }
