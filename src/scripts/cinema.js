@@ -67,10 +67,12 @@ class Film {
         showLoader = () => { cinema.loader.show(); },
         hideLoader = () => { cinema.loader.hide(); },
         animationFrame = null,
+        lastEnd = 0,
         placeCursor = () => {
           let time = film.currentTime;
           cinema.placeCursor(time);
           if (time - self.episode.end > 0 || self.episode.begin - time > 1e-3) {
+            lastEnd = self.episode.end;
             film.pause();
             self.episode.begin = 0;
             self.episode.end = film.duration;
@@ -87,6 +89,12 @@ class Film {
           while (animationFrame) {
             window.cancelAnimationFrame(animationFrame);
             animationFrame = null;
+          }
+          // Поправляем курсор, если он немного проскочил отметку паузы
+          if (lastEnd > 0) {
+            let delta = film.currentTime - lastEnd;
+            if (delta > 0 && delta < 1e-1) cinema.placeCursor(lastEnd);
+            lastEnd = 0;
           }
         };
     film.toggleControls(false);
