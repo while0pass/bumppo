@@ -15,6 +15,8 @@ const plyrOpts = {
   //speed: { selected: 1, options: [0.5, 0.75, 1] },
 };
 
+//const performance = window.performance || window.Date;
+
 
 class Film {
   constructor(cinema, filmData) {
@@ -23,6 +25,7 @@ class Film {
     this.filmId = this.getFilmId(filmData);
     this.element = this.createElement(cinema, this.elementId, this.filmId);
     this.film = this.createFilm(cinema, this.element);
+    this.episode = { begin: 0, end: 86400 };
   }
   getElementId(cinema, filmData) {
     return cinema.screen.attr('id') + filmData.recordId + filmData.filmType;
@@ -42,7 +45,7 @@ class Film {
 
           `);
 
-    jQuery(document.body).append(element);
+    jQuery(this.cinema.screen).append(element);
     element.on('mouseenter', () => {
       self.isMouseWithin = true;
     });
@@ -53,12 +56,7 @@ class Film {
     return element;
   }
   activateIFrame() {
-    let element = this.element,
-        screen = this.cinema.screen;
-    element.offset(screen.offset());
-    element.width(screen.width());
-    element.height(screen.height());
-    element.css({ zIndex: 900 });
+    this.element.css({ zIndex: 900 });
   }
   deactivateIFrame() {
     this.element.css({ zIndex: -1000 });
@@ -67,7 +65,38 @@ class Film {
     let self = this,
         film = new Plyr(element.find('video'), plyrOpts),
         showLoader = () => { cinema.loader.show(); },
-        hideLoader = () => { cinema.loader.hide(); };
+        hideLoader = () => { cinema.loader.hide(); },
+        animationFrame = null,
+        lastEnd = 0,
+        placeCursor = () => {
+          let time = film.currentTime;
+          cinema.placeCursor(time);
+          if (time - self.episode.end > 0 || self.episode.begin - time > 1e-3) {
+            lastEnd = self.episode.end;
+            film.pause();
+            self.episode.begin = 0;
+            self.episode.end = film.duration;
+            return;
+          }
+          animationFrame = window.requestAnimationFrame(placeCursor);
+        },
+        onPlay = () => {
+          cinema.loader.hide();
+          placeCursor();
+        },
+        onPause = () => {
+          cinema.loader.hide();
+          while (animationFrame) {
+            window.cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+          }
+          // Поправляем курсор, если он немного проскочил отметку паузы
+          if (lastEnd > 0) {
+            let delta = film.currentTime - lastEnd;
+            if (delta > 0 && delta < 1e-1) cinema.placeCursor(lastEnd);
+            lastEnd = 0;
+          }
+        };
     film.toggleControls(false);
     showLoader();
     film.filmObject = this;
@@ -76,8 +105,8 @@ class Film {
     film.on('seeking', showLoader);
     film.on('waiting', showLoader);
     film.on('seeked', hideLoader);
-    film.on('playing', hideLoader);
-    film.on('pause', hideLoader);
+    film.on('playing', onPlay);
+    film.on('pause', onPause);
     film.on('controlsshown', () => {
       self.isMouseWithin || film.toggleControls(false);
     });
@@ -86,7 +115,7 @@ class Film {
 }
 
 class Cinema {
-  constructor() {
+  constructor(timeline) {
     this.films = {};
     this.filmTypes = [
       { id: 'N-eyf', disabled: true },
@@ -100,37 +129,75 @@ class Cinema {
     this.activeRecordId = ko.observable(null);
     this.activeFilmType = ko.observable(null);
     this.activeDataItem = ko.observable(null);
-    this.createHider();
+    this.timeline = timeline;
+    this.cursorStruct = this.createCursorStruct();
   }
   get screen() {
-    if (!this._screen || this._screenNotInDOM) {
-      this._screen = jQuery('#bmpp-videoPlayer');
-      this._screenNotInDOM = false;
-    }
+    if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
     return this._screen;
   }
   get loader() {
-    if (!this._loader || this._loaderNotInDOM) {
-      this._loader = jQuery('#bmpp-videoLoader');
-      this._loaderNotInDOM = false;
-    }
+    if (!this._loader) this._loader = jQuery('#bmpp-videoLoader');
     return this._loader;
   }
   hideCurtain() {
     let element = jQuery(this.screen).find('.bmpp-videoCurtain');
     element.css('z-index', 0);
   }
-  createHider() {
-    // Создаем шторку, за которой будут прятаться iframe'ы видео
-    // во всех разделах кроме раздела с результатами
-    jQuery(document.body).append(`<div style="position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0; background-color: #fff;
-      z-index: -800;"></div>`);
-  }
   clearActiveState() {
     this.activeRecordId(null);
     this.activeFilmType(null);
     this.activeDataItem(null);
+  }
+  createCursorStruct() {
+    let struct = {
+      width: 0,
+      start: 0,
+      duration: 1,
+      //lastTime: performance.now(),
+    };
+    ko.computed(function () {
+      let layersStruct = this.timeline.layersStruct(),
+          width = this.timeline.canvasWidth && this.timeline.canvasWidth() || 0;
+      struct.width = width;
+      struct.start = layersStruct.time.start;
+      struct.duration = layersStruct.duration;
+    }, this);
+    return struct;
+  }
+  placeCursor(currentTime) {
+    // Ограничимся 25 кадрами в сек.
+    //let lastTime = this.cursorStruct.lastTime,
+    //    thisTime = performance.now();
+    //if (thisTime - lastTime < 40) return;
+    //this.cursorStruct.lastTime = thisTime;
+
+    let cursor = this.cursorStruct.cursor;
+    if (!cursor) cursor = document.getElementById('bmpp-cursor');
+    // NOTE: Нет смысла брать элемент DOM для курсора в createCursorStruct,
+    // т.к. на тот момент элемента ещё в DOM не будет.
+
+    let { start, width, duration } = this.cursorStruct,
+        position = width
+          ? String((currentTime * 1000 - start) / duration * 100) + '%'
+          : -100;
+    cursor.setAttribute('x1', position);
+    cursor.setAttribute('x2', position);
+  }
+  _play(film, isCreated, begin, end) {
+    film.episode.begin = begin;
+    film.episode.end = end;
+    film = film.film;
+    if (isCreated) {
+      film.once('loadedmetadata', function () {
+        film.currentTime = begin;
+        film.play();
+      });
+    } else {
+      film.currentTime = begin;
+      film.play();
+    }
+    this.hideCurtain();
   }
   showFilm(recordId, filmType, dataItem) {
     const cinema = this;
@@ -139,36 +206,34 @@ class Cinema {
     cinema.activeRecordId(recordId);
     cinema.activeFilmType(filmType);
     cinema.activeDataItem(dataItem);
+    // FIXME: Убрать костыли для разных версий dataItem, когда новая
+    // версия устаканится.
     let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
         end = (dataItem.after? dataItem.after: dataItem.match).time.end,
         [film, isCreated] = cinema.getFilm(recordId, filmType);
-    film = film.film;
     begin /= 1000;
     end /= 1000;
-
-    const pauseFunction = event => {
-            let p = event.detail.plyr;
-            if (p.currentTime >= end - 1e-2) {
-              p.off('timeupdate', p._pauseFunction);
-              delete p._pauseFunction;
-              p.pause();
-            }
-          },
-          play = () => {
-            film.currentTime = begin;
-            if (film._pauseFunction !== undefined) {
-              film.off('timeupdate', film._pauseFunction);
-            }
-            film._pauseFunction = pauseFunction;
-            film.on('timeupdate', film._pauseFunction);
-            film.play();
-          };
-    if (isCreated) {
-      film.once('loadedmetadata', play);
-    } else {
-      play();
+    cinema._play(film, isCreated, begin, end);
+  }
+  showEpisode(begin, end) {
+    let recordId = this.activeRecordId(),
+        filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      let [film, isCreated] = this.getFilm(recordId, filmType);
+      begin /= 1000;
+      end /= 1000;
+      this._play(film, isCreated, begin, end);
     }
-    cinema.hideCurtain();
+  }
+  seek(timePoint) {
+    let recordId = this.activeRecordId(),
+        filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      let film = this.getFilm(recordId, filmType)[0];
+      timePoint /= 1000;
+      film.film.currentTime = timePoint;
+      this.placeCursor(timePoint);
+    }
   }
   getFilm(recordId, filmType) {
     const key = recordId + filmType,
@@ -192,8 +257,6 @@ class Cinema {
       films[key].film.pause();
       films[key].deactivateIFrame();
     });
-    this._screenNotInDOM = true;
-    this._loaderNotInDOM = true;
   }
   hideAllBut(showKey) {
     const films = this.films;
@@ -204,6 +267,4 @@ class Cinema {
   }
 }
 
-var cinema = new Cinema();
-
-export default cinema;
+export default Cinema;

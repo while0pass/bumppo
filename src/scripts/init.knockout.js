@@ -58,7 +58,7 @@ export function preinit(ko) {
     }).extend({ notify: 'always' });
     ko.computed(() => {
       let href = target();
-      viewModel.cinema && viewModel.cinema.deactivateAll();
+      viewModel.cinema && viewModel.cinema.pauseAll();
       viewModel.abortLastRequest && viewModel.abortLastRequest();
       navigate(href);
     });

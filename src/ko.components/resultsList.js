@@ -1,41 +1,31 @@
-import cinema from '../scripts/cinema.js';
-
-const resultsTemplate = `
-
-  <div data-bind="foreach: results" class="bmpp-searchResult">
-
-    <div class="divider" data-bind="visible: previousItem"></div>
-
-    <div class="bmpp-time"
-      data-bind="text: match.beginTime + '–' + match.endTime"></div>
-    <div class="bmpp-duration" data-bind="text: match.duration"></div>
-    <div class="bmpp-unitValue"
-      data-bind="text: match.value, click: $component.cinema.showFilm
-        .bind($component.cinema, record_id, filmType, $data)
-        "></div>
-    <div class="bmpp-transcription"
-      data-bind="html: match.transcription,
-        click: $component.cinema.showFilm.bind($component.cinema,
-          record_id, filmType, $data)">
-    </div>
-
-    <div class="ui label bmpp-recordLabel"
-      data-bind="text: 'Запись ' + record_id,
-        visible: !previousItem
-              || previousItem && previousItem.record_id !== record_id"></div>
-
-  </div>
-
-`;
-
 const template = `
 
-  <div class="ui basic segment" data-bind="with: resultsData">
+  <div class="ui basic segment">
 
-    ${ resultsTemplate }
+    <div class="bmpp-searchResults" data-bind="
+        foreach: { data: resultsData, afterRender: checkYetOtherData }">
 
-    <div id="bmpp-ResultsEndMarker" class="ui basic segment"
-      style="height: 5em"></div>
+      <div class="divider" data-bind="visible: previousItem"></div>
+
+      <div class="bmpp-time"
+        data-bind="text: match.beginTime + '–' + match.endTime"></div>
+
+      <div class="bmpp-duration" data-bind="text: match.duration"></div>
+
+      <div class="bmpp-unitValue" data-bind="text: match.value"></div>
+
+      <div class="bmpp-transcription"
+        data-bind="html: match.transcription, click: $component.showFilm,
+          css: { currentItem: $data === $component.cinema.activeDataItem() }">
+      </div>
+
+      <div class="ui label bmpp-recordLabel"
+        data-bind="text: 'Запись ' + record_id,
+          visible: !previousItem
+                || previousItem && previousItem.record_id !== record_id">
+      </div>
+
+    </div>
 
   </div>
 
@@ -43,42 +33,30 @@ const template = `
 
 var viewModelFactory = function (params) {
   var vM = params.viewModel,
+      activeResult = params.activeResult,
+      cinema = vM.cinema,
       resultsData = params.resultsData,
-      observer;
+      timeout = null;
 
-  function callback() {
-    if (!vM.isLoadingNewDataPortion()) {
-      vM.loadNewDataPortion();
-      if (vM.resultsNumber() <= resultsData.results().length) {
-        observer.disconnect();
-        vM.isLoadingNewDataPortion(false);
-      }
+  function showFilm(data) {
+    if (data !== cinema.activeDataItem()) {
+      activeResult(data);
+      vM.loadLayers(data);
     }
+    vM.showResultsOnly(false);
+    cinema.showFilm(data.record_id, data.filmType, data);
   }
 
-  function bindLazyLoad () {
-    var area = document.getElementById('bmpp-ResultsList'),
-        target = document.getElementById('bmpp-ResultsEndMarker'),
-        options = {
-          root: area,
-          rootMargin: '0px',
-          threshold: 0
-        };
-    observer = new IntersectionObserver(callback, options);
-    observer.observe(target);
+  function checkResults1() {
+    vM.checkResults1();
   }
 
-  if (vM.resultsNumber() > resultsData.results().length) {
-    setTimeout(bindLazyLoad, 5000);
+  function checkYetOtherData() {
+    clearTimeout(timeout);
+    timeout = setTimeout(checkResults1, 2000);
   }
 
-  return {
-    cinema: cinema,
-    resultsData: params.resultsData
-  };
-};
-viewModelFactory.prototype.dispose = function () {
-  this.observer.disconnect && this.observer.disconnect();
+  return { checkYetOtherData, cinema, resultsData, showFilm };
 };
 
 export default {

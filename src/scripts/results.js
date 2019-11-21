@@ -1,3 +1,5 @@
+import { getTimeTag, MS } from './timeline.js';
+
 const R = /^[^\d]*(\d+).*$/g;
 
 const tierMap = {
@@ -207,10 +209,12 @@ class Match {
     this.transcription = this.getTranscription();
   }
   get beginTime() {
-    return (this.time.begin / 1000).toFixed(2);
+    if (!this._begin) this._begin = getTimeTag(this.time.begin, MS);
+    return this._begin;
   }
   get endTime() {
-    return (this.time.end / 1000).toFixed(2);
+    if (!this._end) this._end = getTimeTag(this.time.end, MS);
+    return this._end;
   }
   get duration() {
     return ((this.time.end - this.time.begin) / 1000).toFixed(2);
@@ -233,9 +237,8 @@ class Match {
 export class Result {
   constructor(data) {
     // NOTE: удалить после миграции на новую версию API результатов
-    if (Array.isArray(data)) {
-      data = data[0];
-    }
+    if (Array.isArray(data)) { data = data[0]; }
+    this._data = data;
 
     this.record_id = this.getRecordId(data && data.record_id || '');
     this.match = new Match(data, this),
@@ -261,13 +264,16 @@ export class Result {
     let filmType = this.match.tier.slice(-10) === '-oFixation' ? 'ey' : 'vi';
     return `${ this.participant }-${ filmType }`;
   }
+  forJSON() {
+    return this._data;
+  }
 }
 
 
-export function getResults(list) {
-  let results = list.map(item => new Result(item));
+export function getResults(newItems, lastItem=null) {
+  let results = newItems.map(item => new Result(item));
   results.forEach((item, index, array) => {
-    let previousItem = index > 0 ? array[index - 1] : null;
+    let previousItem = index > 0 ? array[index - 1] : (lastItem ? lastItem : null);
     item.setPreviousItem(previousItem);
   });
   return results;

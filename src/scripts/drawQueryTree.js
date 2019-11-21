@@ -85,7 +85,7 @@ export class RelationLine {
         s2 = slug2.svg,
         r = circRadius,
         b1 = r * 0.5,
-        b2 = relationsElementHeight - r * 3,
+        b2 = relationsElementHeight + r * 1.5,
         s = r * 1,
         m1 = r * 1.3,
         m2 = r * 0.5,
@@ -125,7 +125,9 @@ export class RelationLine {
     let slug1 = this.treeNode.parentNode && this.treeNode.parentNode.svgSlug,
         slug2 = this.treeNode.svgSlug,
         level = this.treeNode.level,
-        rh = jQuery(this.element).height();
+        x = this.element.querySelectorAll('.bmpp-relationsFormula1'),
+        xfound = x.length > 0,
+        rh = xfound ? x[0].offsetHeight : 0;
     if (slug1 && slug2 && level) {
       let path = RelationLine.calculatePath(slug1, slug2, level(), rh);
       this.svg.plot(path);

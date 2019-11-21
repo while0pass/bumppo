@@ -5,3 +5,6 @@ curl -G --data-urlencode data@src/.request.json \
   https://multidiscourse.ru/perform_search_sql/ \
   | jq . >.response.json
 
+curl -G --data-urlencode data@src/request_tiers1.json \
+  https://multidiscourse.ru/get_tiers/ \
+  | jq . | less

@@ -7,7 +7,7 @@ function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
 }
 
-export default function getQueryJSON(viewModel) {
+function getQueryJSON(viewModel) {
   let stages = viewModel.subcorpus.recordPhases.getQueryValuesForJSON(),
       ltree = viewModel.linearizedQueryTree(),
       shouldFilterStages = stages.length > 0 && stages.length < 3,
@@ -236,3 +236,81 @@ export default function getQueryJSON(viewModel) {
   }
   return JSON.stringify(query, null, 4);
 }
+
+const LAYERS = [
+  '-vLine',
+  '-vLineType',
+  '-vHTML',
+  '-vIllocPhase',
+  '-vCombIllocPhase',
+  '-vParenth',
+  '-vInSplit',
+  '-vCitation',
+  '-vCoConstr',
+  '-vStartFilled',
+  '-vMainAccents',
+  '-vLineVerbatim',
+  '-vComments',
+  '-vLineHTML',
+  '-vCollat',
+  '-vCollatForm',
+  '-oFixation',
+  '-oInterlocutor',
+  '-oLocus',
+  '-mLtMovement',
+  '-mLtMtType',
+  '-mRtMovement',
+  '-mRtMtType',
+  '-mLtStillness',
+  '-mLtStType',
+  '-mRtStillness',
+  '-mRtStType',
+  '-mPosture',
+  '-mPrPhase',
+  '-mPostureChange',
+  '-mPostureAccommodator',
+  '-mGesture',
+  '-mGeHandedness',
+  '-mGeStucture',
+  '-mGeTags',
+  '-mGeFunction',
+  '-mAdaptor',
+  '-mAdType',
+  '-mGestureChain',
+  '-mMovementChain',
+  '-mComments',
+  '-vPause',
+  '-vPauseInOutEDU',
+  '-vPauseHTML',
+  '-vSegm',
+  '-vTempo',
+  '-vReduction',
+  '-vLength',
+  '-vInterrupt',
+  '-vEmph',
+  '-vRegister',
+  '-vStops',
+  '-vStress',
+  '-vPhon',
+  '-vNearPause',
+  '-vInOutEDU',
+  '-vOnom',
+  '-vTruncated',
+  '-vMainAccent',
+  '-vSType',
+  '-vSForm',
+  '-vAccents',
+  '-vSegmHTML'
+];
+
+function getLayersQueryJSON(data) {
+  let query = {
+    record_id: data.record_id,
+    time: { begin: data.match.time.begin, end: data.match.time.end },
+    type: 'overlaps',
+  };
+  query.tiers = LAYERS.map(x => data.participant + x);
+  return JSON.stringify(query, null, 4);
+}
+
+export { getQueryJSON, getLayersQueryJSON };

@@ -53,137 +53,49 @@
 
 <div class="bmpp-uiLayout">
   <div class="bmpp-sidePane">
-    <div class="bmpp-sidePane_menuItem ui vertical segment"
-      data-bind="click: switchOnSubcorpusPane,
-                 css: { 'bmpp-sidePane_menuItem--current': isSubcorpusPaneOn }">
-      Область поиска
-    </div>
-    <div class="bmpp-sidePane_menuItem ui vertical segment"
-      data-bind="click: switchOnQueryPane,
-                 css: { 'bmpp-sidePane_menuItem--current': isQueryPaneOn }">
-      Запрос
-    </div>
-    <div class="bmpp-sidePane_menuItem ui vertical disabled segment">
-      Настройки выдачи
-    </div>
-    <div class="bmpp-sidePane_menuItem ui vertical segment"
-      data-bind="css: { disabled: !canSearch() }, click: search">
-      Искать
-      <i class="ui search icon"></i>
-    </div>
-    <div class="bmpp-sidePane_menuItem ui vertical segment"
-      data-bind="click: function () {
-                          if (canViewResults()) switchOnResultsPane();
-                        },
-                 css: { 'bmpp-sidePane_menuItem--current': isResultsPaneOn,
-                         disabled: !canViewResults() }">
-      Результаты
-      <!-- ko if: resultsNumber() !== null -->
-      <span class="label" data-bind="text: resultsNumber,
-        css: { currentResults: !canSearch() }"></span>
-      <!-- /ko -->
-    </div>
-
-    <a href="http://multidiscourse.ru/"
-    style="position: absolute; top: 18.6rem; left: 1.5rem;
-         font-size: x-small; color: green; border-bottom: 1px dotted green;
-         line-height: 1.3em; font-weight: bold; letter-spacing: 0.03em;">
-      www.multidiscourse.ru
-    </a>
-    <div style="position: absolute; bottom: 1rem; left: 1.5rem;
-         font-size: x-small; color: rgba(40,40,40,.3);"
-      data-bind="text: version"></div>
+    {% include 'scraps/side_pane.htm' %}
   </div>
 
   <div class="bmpp-main"
        data-bind="css: { 'no-pad': queryPaneView.arePropertiesVisible }">
 
-    <div id="bmpp-mainWait"
-      data-bind="visible: isSearchInProgress() || resultsError()">
+    <div class="bmpp-pane" data-bind="css: { visiblePane: isResultsPaneOn }"
+      style="overflow: hidden">
+      <div class="bmpp-resultsPane no-layers" data-bind="component: {
+          name: 'results-pane',
+          params: { resultsData: resultsData, layersData: layersData,
+                    cinema: cinema, viewModel: $root,
+                    timeline: timeline }
+        }, css: { 'no-layers': showResultsOnly }
+        "></div>
+    </div>
 
-      <div class="ui active inverted dimmer"
-        data-bind="visible: isSearchInProgress">
-
-        <div class="ui text loader" style="color: #767676; font-size: smaller"
-          data-bind="text: searchStatus, visible: !resultsError()"></div>
-
-        <button class="ui mini basic button"
-          data-bind="click: abortLastRequest, fadeVisible: canSearchBeAborted,
-            visible: !resultsError()"
-          >Отмена</button>
-
-        <div class="ui negative message" data-bind="visible: resultsError">
-          <i class="close icon" data-bind="click: clearError"></i>
-          <div class="left header">Произошла ошибка</div>
-          <p data-bind="html: resultsError"></p>
-        </div>
-
+    <div class="bmpp-pane" data-bind="css: { visiblePane: isSubcorpusPaneOn }"
+      style="overflow: hidden">
+      <div class="bmpp-subcorpus">
+        <subcorpus-pane params="records: subcorpus.records,
+          recordPhases: subcorpus.recordPhases"></subcorpus-pane>
       </div>
     </div>
 
-    <!-- ko if: isQueryPaneOn -->
-      <!-- ko if: queryPaneView.isTreeVisible -->
-        <query-pane
-          params="linearizedQueryTree: linearizedQueryTree"></query-pane>
-      <!-- /ko -->
-      <!-- ko if: queryPaneView.arePropertiesVisible -->
-      <div class="bmpp-propertiesPane">
-        <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
-            <properties-pane params="node: queryPaneView.propertiesNode"
-              ></properties-pane>
-        </div></div>
-        <div class="bmpp-paneDivider"></div>
-        <div class="bmpp-paneButtons">
-            <button class="ui small button"
-              data-bind="click: queryPaneView.finishEditingNodeProperties"
-              >ОК</button>
-            <button class="ui small button" data-bind="click:
-              queryPaneView.propertiesNode().clearAllProperties
-                .bind(queryPaneView.propertiesNode())"
-              >Очистить</button>
-        </div>
-      </div>
-      <!-- /ko -->
-      <!-- ko if: queryPaneView.areRelationsVisible -->
-      <div class="bmpp-relationsPane">
-        <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
-            <relations-pane params="node1: queryPaneView.relationsNode1,
-            node2: queryPaneView.relationsNode2"></relations-pane>
-        </div></div>
-        <div class="bmpp-paneDivider"></div>
-        <div class="bmpp-paneButtons">
-            <button class="ui small button"
-              data-bind="click: queryPaneView.finishEditingNodeRelations"
-              >ОК</button>
-            <button class="ui small button"
-              data-bind="click: queryPaneView.resetRelations"
-              >Сбросить к значениям по умолчанию</button>
-        </div>
-      </div>
-      <!-- /ko -->
-    <!-- /ko -->
-
-    <div class="bmpp-paddedPane" data-bind="visible: isSubcorpusPaneOn">
-      <subcorpus-pane params="records: subcorpus.records,
-        recordPhases: subcorpus.recordPhases"></subcorpus-pane>
+    <div class="bmpp-pane" data-bind="css: { visiblePane: isQueryPaneOn }"
+      style="overflow-x: hidden; overflow-y: auto">
+      {% include 'scraps/query_pane.htm' %}
     </div>
 
-    <!-- ko if: isResultsPaneOn -->
-    <div class="bmpp-resultsPane" data-bind="component: {
-        name: 'results-pane', params: { resultsData: resultsData }}"></div>
-    <!-- /ko -->
+    {% include 'scraps/main_wait.htm' %}
 
   </div>
 </div>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="semantic/semantic.min.js"></script>
     <script
-      src="https://code.jquery.com/jquery-3.1.1.min.js"
-      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-      crossorigin="anonymous"></script>
-    <script src="semantic/semantic.min.js" crossorigin="anonymous"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"
-      crossorigin="anonymous"></script>
+      src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-min.js"
+      ></script>
+    <script>
+      window.ko||document.write('<script src="/js/knockout.min.js"><\/script>');
+    </script>
     <script src="js/libs/svg.min.js"></script>
     <script src="js/libs/jquery.initialize.min.js"></script>
     <script src="js/spa.js"></script>

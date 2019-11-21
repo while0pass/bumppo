@@ -12,14 +12,13 @@ const context = {
 
 console.log('\nBumppo v' + context.BUMPPO_VERSION);
 
-const exec = require('child_process').exec,
-    { src, dest, parallel, series } = require('gulp'),
+const { src, dest, parallel, series } = require('gulp'),
       merge = require('merge-stream');
 
 // Gulp plugins
 const babel = require('gulp-babel'),
       eslint = require('gulp-eslint'),
-      ext = require('gulp-ext'),
+      //ext = require('gulp-ext'),
       gulpif = require('gulp-if'),
       htmlmin = require('gulp-htmlmin'),
       nunjucks = require('gulp-nunjucks'),
@@ -33,15 +32,16 @@ const //builtins = require('rollup-plugin-node-builtins'),
       commonjs = require('rollup-plugin-commonjs'),
       //globals = require('rollup-plugin-node-globals'),
       jscc = require('rollup-plugin-jscc'),
+      json = require('rollup-plugin-json'),
       resolve = require('rollup-plugin-node-resolve');
 
 // PostCSS plugins
-const calc = require('postcss-calc'),
+const //calc = require('postcss-calc'),
       color = require('postcss-color-function'),
       cssNano = require('cssnano'),
       cssNext = require('postcss-cssnext'),
-      cssPresetEnv = require('postcss-preset-env'),
-      customProps = require('postcss-css-variables'),
+      //cssPresetEnv = require('postcss-preset-env'),
+      //customProps = require('postcss-css-variables'),
       easyImport = require('postcss-easy-import'),
       mixins = require('postcss-mixins'),
       nested = require('postcss-nested'),
@@ -63,6 +63,7 @@ const rollupInputOpts = {
     resolve({ mainFields: ['browser', 'jsnext:main', 'module', 'main'] }),
     commonjs(),
     //globals(),
+    json(),
     jscc({ values: { _CONFIG: context }, exclude: 'node_modules/**'}),
   ],
 };
@@ -95,11 +96,12 @@ function js() {
 }
 
 function css() {
-  var cpOpts = { preserve: false },
-      cpeOpts = { stage: 0 },
-      plugins = [easyImport(), mixins(), sassLikeVars(), customProps(cpOpts),
-                 cssPresetEnv(cpeOpts), calc(), color(), cssNano()],
-      oldPlugins = [sassLikeVars(), nested(), cssNext(), color(), cssNano()];
+  var //cpOpts = { preserve: false },
+      //cpeOpts = { stage: 0 },
+      //plugins = [easyImport(), mixins(), sassLikeVars(), customProps(cpOpts),
+      //           cssPresetEnv(cpeOpts), calc(), color(), cssNano()],
+      oldPlugins = [easyImport(), mixins(), sassLikeVars(), nested(),
+                    cssNext(), color(), cssNano()];
   return src('src/styles/main.css').pipe(postcss(oldPlugins))
     .pipe(rename('bumppo.css')).pipe(dest('.build'));
 }

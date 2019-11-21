@@ -16,6 +16,22 @@ $mainWaitWidth: calc(100vw - $sidePaneWidth - $borderWidth);
 $videoWidth: 342px;
 $videoHeight: 193px;
 
+@define-mixin scrollbar $bgcolor: #efefef {
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $bgcolor;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.33rem;
+    background-color: #aaa;
+  }
+}
+
 * {
   user-select: none;
 }
@@ -27,19 +43,46 @@ $videoHeight: 193px;
 }
 
 .bmpp-main {
-  display: flex;
   width: 100vw;
+  position: relative;
+  display: flex;
   flex-direction: column;
   align-items: stretch;
-  overflow-y: scroll;
-  padding-bottom: 3em;
-  position: relative;
+  overflow: hidden;
 
   &.no-pad {
-    overflow-y: hidden;
     padding: 0;
   }
+
+  &:before {
+    background-color: white;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0; /* Слой, за которым будет скрываться всё неотображаемое
+                в данный момент содержимое основной области страницы */
+  }
 }
+
+.bmpp-pane {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.visiblePane {
+  z-index: 1 !important;
+}
+
+
 
 #bmpp-mainWait {
   box-sizing: border-box;
@@ -134,6 +177,18 @@ $videoHeight: 193px;
   }
 }
 
+.bmpp-subcorpus {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding-top: 3em;
+  padding-left: 6em;
+  width: 55em;
+}
+
 .bmpp-paddedPane {
   width: 55em;
   margin: 3em auto auto 6em !important;
@@ -177,22 +232,266 @@ $videoHeight: 193px;
   top: .8em;
 }
 
-.bmpp-resultsPane {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow: hidden;
+$layersPanelTimelineHeight: 2rem;
+$layersPanelButtonsHeight: 2rem;
 
-  &_video {
+.bmpp-resultsPane {
+  display: grid;
+  height: 100%;
+  grid-template-areas: "video  results info"
+                       "layers layers  layers";
+  grid-template-rows: $videoHeight auto;
+  grid-template-columns: auto 1fr auto;
+  overflow: hidden;
+  transition: all 1s ease-out;
+
+  &.no-layers {
+    grid-template-areas: "video info"
+                         "results results";
+    grid-template-columns: auto 1fr;
+    transition: all 1s ease-out;
+
+    & #bmpp-layers {
+      display: none !important;
+      transition: all 1s ease-out;
+    }
+  }
+
+  & #bmpp-video {
+    grid-area: video;
     border-bottom: 1px solid $bmppBorderColor;
     background-color: white;
     display: flex;
     height: $videoHeight !important;
-    flex: 0 0 auto;
     overflow: hidden;
   }
-  &_results {
-    overflow-y: scroll;
+
+  & #bmpp-results {
+    transition: all 1s ease-out;
+    grid-area: results;
+    border-bottom: 1px solid $bmppBorderColor;
+    border-right: 1px solid $bmppBorderColor;
+    overflow-x: hidden;
+    position: relative;
+
+    &::after {
+      display: block;
+      content: '';
+      height: 2em;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(
+        to top,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,1) 40%,
+        rgba(255,255,255,0) 100%
+      );
+    }
+
+    @mixin scrollbar;
+  }
+
+  & #bmpp-layers {
+    transition: all 1s ease-out;
+    overflow: hidden;
+    grid-area: layers;
+
+    display: grid;
+    grid-template-areas: "names timeline"
+                         "names layers"
+                         "names buttons";
+    grid-template-rows: $layersPanelTimelineHeight 1fr $layersPanelButtonsHeight;
+    grid-template-columns: 15rem auto;
+
+    & #bmpp-layersNames {
+      grid-area: names;
+      border-right: 1px solid $bmppBorderColor;
+      height: 100%;
+      position: relative;
+
+      & #bmpp-lNContainer {
+        position: absolute;
+        top: $layersPanelTimelineHeight;
+        bottom: $layersPanelButtonsHeight;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+      }
+    }
+
+    & #bmpp-timeline {
+      grid-area: timeline;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+
+      overflow-y: scroll; /* ##overflowy## */
+      @mixin scrollbar #fff;
+    }
+
+    & #bmpp-layersLayers {
+      grid-area: layers;
+      position: relative;
+      overflow-x: auto;
+
+      overflow-y: scroll; /* Этот блок должен идти одновременно
+                             с блоком ##overflowy## */
+      @mixin scrollbar;
+
+      & #bmpp-layersCanvas {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    & #bmpp-layersButtons {
+      grid-area: buttons;
+      border-top: 1px solid $bmppBorderColor;
+      display: flex;
+
+      & ul {
+        list-style: none;
+        margin: 0 3em 0 0;
+        padding: 0;
+        display: flex;
+      }
+
+      & ul li {
+        text-transform: uppercase;
+        margin: 0;
+        padding: 0.35em;
+        border-right: 1px solid $bmppBorderColor;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $bmppBorderColor;
+        }
+      }
+    }
+
+  }
+}
+
+#bmpp-timelineCanvas {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+$tickColor: #aaa;
+
+#bmpp-timelineTicks1 {
+  stroke-width: 0.4rem;
+  stroke: $tickColor;
+  stroke-dasharray: 1px 4px;
+  stroke-dashoffset: 0px;
+}
+
+#bmpp-timelineTicks2 {
+  stroke-width: 0.7rem;
+  stroke: $tickColor;
+  stroke-dasharray: 1px 24px;
+  stroke-dashoffset: 0px;
+}
+
+.bmpp-timeTag {
+  text-align: center;
+  font-size: x-small;
+  padding: 0;
+  margin: 0;
+  color: $tickColor;
+  position: absolute;
+  top: 0.7rem;
+  height: 1rem;
+}
+
+#bmpp-cursorAndSelection {
+  grid-area: timeline / timeline / layers;
+  overflow: hidden;
+  position: relative;
+  pointer-events: none;
+}
+
+#bmpp-cursorSVG {
+  position: absolute;
+}
+
+#bmpp-cursor {
+  stroke: red;
+  stroke-width: 1px;
+  position: absolute;
+}
+
+#bmpp-selection {
+  stroke: green;
+  stroke-opacity: 0.5;
+  stroke-width: 1px;
+  fill: green;
+  fill-opacity: 0.2;
+  position: absolute;
+}
+
+$layerHeight: 2rem;
+
+.bmpp-layer {
+  position: relative;
+  width: 100%;
+  height: $layerHeight;
+  border-bottom: 1px dashed $lightGrey;
+
+  &.highlighted {
+    background-color: $lightGrey;
+  }
+
+  .no-highlight &.highlighted {
+    background-color: white;
+  }
+}
+
+.bmpp-segment {
+  position: absolute;
+  height: $layerHeight;
+  background-color: #efefef;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  padding: 0.35rem 0.5rem;
+  font-size: smaller;
+
+  &:hover,
+  .highlighted & {
+    background-color: $lightGrey;
+    border: 1px solid #aaa;
+  }
+
+  .no-highlight &:hover,
+  .no-highlight .highlighted & {
+    background-color: #efefef;
+    border: 1px solid #ddd;
+  }
+}
+
+.bmpp-layerName {
+  height: $layerHeight;
+  padding: 0.4rem 1rem;
+  font-size: smaller;
+  overflow: hidden;
+
+  &.sublayer {
+    padding-left: 2rem;
+  }
+
+  &:hover {
+    background-color: $lightGrey;
+  }
+
+  .no-highlight &:hover {
+    background-color: white;
   }
 }
 
@@ -271,11 +570,13 @@ $videoHeight: 193px;
   border-color: #ffcc00 #880088 #008800 #008800cc;
 }
 
-.bmpp-resultsInfo {
+#bmpp-resultsInfo {
+  grid-area: info;
   max-width: 40em;
   padding: 0.7em 1em;
   font-size: smaller;
   position: relative;
+  border-bottom: 1px solid $bmppBorderColor;
 
   &::after {
     display: block;
@@ -293,7 +594,15 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-videoChoices {
+.bmpp-resultsLoadPercent {
+  color: $grey;
+  font-size: xx-small;
+  position: absolute;
+  top: 0.3em;
+  right: 0.6em;
+}
+
+#bmpp-videoChoices {
   display: flex;
   flex-flow: column nowrap;
   border-right: 1px solid $bmppBorderColor;
@@ -362,6 +671,12 @@ $videoHeight: 193px;
       color: $red !important;
     }
   }
+}
+
+query-node:last-of-type:after {
+  display: block;
+  content: '';
+  height: 3rem;
 }
 
 .bmpp-number {
@@ -447,8 +762,9 @@ $videoHeight: 193px;
   margin-top: 5em;
   padding-top: 1em;
 
-  &:before {
+  &::before {
     $height: 3em;
+    $color: rgba(212, 212, 212, 0.2);
     position: absolute;
     left: 0;
     right: 0;
@@ -575,12 +891,15 @@ $videoHeight: 193px;
 .bmpp-bannerPropvalue {
 }
 
-.bmpp-searchResult {
+.bmpp-searchResults {
   width: 100%;
   display: grid;
   grid-template-columns: auto auto auto 1fr auto;
   column-gap: 0.66em;
   align-items: baseline;
+
+  $shortTransitionTime: 0.3s;
+  $transitionTime: 0.5s;
 
   & .divider {
     grid-column: 1 / span 5;
@@ -591,31 +910,67 @@ $videoHeight: 193px;
   }
   & .bmpp-recordLabel {
     position: sticky !important;
+    box-shadow: 0 0 0.3em 0.1em white;
     top: 1em;
     grid-column: 5;
+    transition: background-color $transitionTime,
+                color $transitionTime;
   }
   & .bmpp-unitValue {
     text-align: right;
     color: green;
     font-size: smaller;
-    cursor: pointer;
     grid-column: 3;
   }
   & .bmpp-transcription {
     cursor: pointer;
-    padding-right: 7em;
     grid-column: 4;
-  }
-  & .bmpp-context {
-    color: grey;
-    cursor: auto !important;
+    position: relative;
+
+    /* ::after нужен для изменения цвета всей строки сетки,
+     * а ::before -- для срабатывания :hover на всей строке,
+     * а не только на .bmpp-transcription */
+    &::after,
+    &::before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: -0.55em;
+      bottom: -0.65em;
+      left: -100em;
+      right: -100em;
+    }
+
+    &::after {
+      z-index: -1;
+    }
+
+    &:hover::after {
+      background-color: color(green a(0.1));
+      transition: background-color $shortTransitionTime;
+    }
+    &.currentItem::after {
+      background-color: color(green a(0.1));
+      transition: background-color $transitionTime;
+    }
+    &.currentItem:hover::after {
+      background-color: color(green a(0.25));
+      transition: background-color $shortTransitionTime;
+    }
+
+    &:hover + .bmpp-recordLabel,
+    &.currentItem + .bmpp-recordLabel {
+      color: white !important;
+      background-color: green !important;
+      transition: color $transitionTime,
+                  background-color $transitionTime;
+    }
   }
   & .bmpp-time,
   & .bmpp-duration {
-    font-size: smaller;
     color: grey;
+    font-size: smaller;
     text-align: right;
-    cursor: auto;
   }
   & .bmpp-time {
     grid-column: 1;
