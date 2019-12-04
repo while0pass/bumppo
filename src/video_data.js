@@ -1,5 +1,5 @@
 /* eslint-disable */
-let x = 'http://188.120.226.171/mdvideos/Pears';
+let x = 'http://83.220.168.226/mdvideos/Pears';
 export default {
   '04': {
     'N-eyf': x + '04N-eyf.mp4',

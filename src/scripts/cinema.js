@@ -93,7 +93,7 @@ class Film {
           // Поправляем курсор, если он немного проскочил отметку паузы
           if (lastEnd > 0) {
             let delta = film.currentTime - lastEnd;
-            if (delta > 0 && delta < 1e-1) cinema.placeCursor(lastEnd);
+            if (delta > 0 && delta < 0.5) cinema.placeCursor(lastEnd);
             lastEnd = 0;
           }
         };
