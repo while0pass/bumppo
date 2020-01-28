@@ -118,7 +118,6 @@ class Cinema {
   constructor(timeline) {
     this.films = {};
     this.filmTypes = [
-      { id: 'N-eyf', disabled: true },
       { id: 'N-vi', disabled: false },
       { id: 'N-ey', disabled: false },
       { id: 'C-vi', disabled: false },

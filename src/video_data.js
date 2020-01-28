@@ -2,7 +2,6 @@
 let x = 'https://md.fvds.ru/mdvideos/Pears';
 export default {
   '04': {
-    'N-eyf': x + '04N-eyf.mp4',
     'N-ey':  x + '04N-ey.mp4',
     'N-vi':  x + '04N-vi.mp4',
     'C-vi':  x + '04C-vi.mp4',
@@ -11,7 +10,6 @@ export default {
     'W-vi':  x + '04W-vi.mp4',
   },
   '22': {
-    'N-eyf': x + '22N-eyf.mp4',
     'N-ey':  x + '22N-ey.mp4',
     'N-vi':  x + '22N-vi.mp4',
     'C-vi':  x + '22C-vi.mp4',
@@ -20,7 +18,6 @@ export default {
     'W-vi':  x + '22W-vi.mp4',
   },
   '23': {
-    'N-eyf': x + '23N-eyf.mp4',
     'N-ey':  x + '23N-ey.mp4',
     'N-vi':  x + '23N-vi.mp4',
     'C-vi':  x + '23C-vi.mp4',
