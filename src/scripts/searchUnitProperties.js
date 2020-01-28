@@ -1180,7 +1180,10 @@ class ValueList {
   uncheckAllBut(specialItem) {
     this.items.forEach(item => {
       if (item !== specialItem) {
-        item.userChecked(false);
+        item.checked(false);
+        if (item.childList) {
+          item.childList.uncheckAll();
+        }
       }
     });
   }
