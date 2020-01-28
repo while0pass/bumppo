@@ -388,7 +388,7 @@ const p_mStType = {
   tierTemplate: '{ p_participants }-m{ p_mHand }StType',
   valueList: { orValues: [
     { name: 'Удержание', value: 'Hold' },
-    { name: 'Покой', value: 'Reset' },
+    { name: 'Покой', value: 'Rest' },
     { name: 'Зависание', value: 'Frozen' },
   ]}
 };

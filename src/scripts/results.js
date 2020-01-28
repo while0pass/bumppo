@@ -77,7 +77,7 @@ const m_mMtType = m_func('', {  // Тип движения
 
 const m_mStType = m_func('', {  // Тип неподвижности
   'Hold': 'удержание',
-  'Reset': 'покой',
+  'Rest': 'покой',
   'Frozen': 'зависание',
 });
 
