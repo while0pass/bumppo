@@ -2,6 +2,7 @@ import log from '../scripts/log.js';
 import ko from 'knockout';
 import { layersElementIds } from '../scripts/layers.js';
 import { timelineElementIds, getTimeTag } from '../scripts/timeline.js';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const videoTemplate = `
 

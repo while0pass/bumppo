@@ -1,6 +1,6 @@
 {
   "name": "bumppo",
-  "version": "0.11.54",
+  "version": "0.11.55",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
@@ -15,6 +15,7 @@
     "watch": "find -type f -path './src/*' -o -path './package.json' -o -path './gulpfile.js' -o -path './lite-server.config.js' | entr -s 'npm-run-all --silent --parallel lint-all build'"
   },
   "dependencies": {
+    "@juggle/resize-observer": "^3.0.2",
     "debug": "^4.1.1",
     "jquery": "^3.4.1",
     "jquery.initialize": "^1.3.0",

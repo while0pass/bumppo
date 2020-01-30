@@ -25,7 +25,7 @@ const nodeTemplate = `
 
   <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
       style="right: 4.5em"
-      data-content="Добавить ссылку на другую единицу поиска"
+      data-content="Добавить ссылку на другую имеющуюся единицу поиска"
       data-bind="click: node.addChildProxy.bind(node, false),
         visible: node.unitType() !== null && node.refOpts().length > 0">
     <i class="ui linkify icon"></i>
