@@ -125,15 +125,16 @@ class Distance {
     this.onHeaderClick = undefined;
     this.refPoints = undefined;
     this.unitsFirstValueName = rp_units.valueList.xorValues[0].name;
-    this.sameTypeNodes = this.getSameNodeTypeIndicator();
+    this.sameUnitTypeAndParticipants = this.getSameUTPIndicator();
     this.measureInMs = this.getMeasureInMsIndicator();
     this.banner = this.getBanner();
   }
-  getSameNodeTypeIndicator() {
+  getSameUTPIndicator() {
     let x = ko.computed(function () {
-      let node1 = this.node1,
-          node2 = this.node2;
-      return node2.unitType && node1.unitType() === node2.unitType();
+      let n1 = this.node1,
+          n2 = this.node2,
+          formula = n2.relationsFormula;
+      return n2.unitType && n1.unitType() === n2.unitType() && formula;
     }, this);
     x.subscribe(function (value) {
       if (!value) {

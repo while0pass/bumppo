@@ -11,11 +11,11 @@ const template = `
       <interval-property params="property: intervalInUnits"></interval-property>
     <!-- /ko -->
 
-    <!-- ko if: sameTypeNodes -->
+    <!-- ko if: sameUnitTypeAndParticipants -->
       <list-property params="property: units"
           class="bmpp-unitsRadioButtons"></list-property>
     <!-- /ko -->
-    <!-- ko ifnot: sameTypeNodes -->
+    <!-- ko ifnot: sameUnitTypeAndParticipants -->
       <span data-bind="text: unitsFirstValueName"></span>
     <!-- /ko -->
 
