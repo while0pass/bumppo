@@ -204,6 +204,7 @@ function viewModel() {
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
+  this.resultsMessage = ko.observable(null);
   this.resultsNumber = ko.observable(null);
   this.resultsPercent = ko.computed(() => {
     let n = self.resultsData().length,
@@ -220,9 +221,10 @@ function viewModel() {
       ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
       : ''
   );
-  this.clearError = () => {
+  this.clearErrorOrMessage = () => {
     self.isSearchInProgress(false);
     self.resultsError(null);
+    self.resultsMessage(null);
   };
 
 }
@@ -240,10 +242,14 @@ worker.onmessage = message => {
     vM.isSubcorpusNew(false);
     vM.resultsNumber(data.total);
     vM.resultsData(getResults(data.results));
-    vM.resultsError(null);
-    vM.isSearchInProgress(false);
-    vM.canViewResults(true);
-    vM.switchOnResultsPane();
+    if (data.total > 0) {
+      vM.isSearchInProgress(false);
+      vM.resultsError(null);
+      vM.canViewResults(true);
+      vM.switchOnResultsPane();
+    } else {
+      vM.resultsMessage('Не найдено ни одного совпадения');
+    }
 
   // Получена очередная часть результатов
   } else if (messageType === 'results1') {
