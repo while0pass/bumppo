@@ -206,6 +206,7 @@ function viewModel() {
   this.resultsError = ko.observable(null);
   this.resultsMessage = ko.observable(null);
   this.resultsNumber = ko.observable(null);
+  this.activeResult = ko.observable(null);
   this.resultsPercent = ko.computed(() => {
     let n = self.resultsData().length,
         N = self.resultsNumber();
@@ -240,6 +241,7 @@ worker.onmessage = message => {
     vM.showResultsOnly(false);
     vM.isQueryNew(false);
     vM.isSubcorpusNew(false);
+    vM.activeResult(null);
     vM.resultsNumber(data.total);
     vM.resultsData(getResults(data.results));
     if (data.total > 0) {
