@@ -50,13 +50,13 @@ const nodeProxyTemplate = `
 const template = `
 
   <!-- ko ifnot: node.isProxy -->
-    <div class="bmpp-queryElement ui segment">
+    <div class="bmpp-queryElement bmpp-container ui segment">
       ${ nodeTemplate }
     </div>
   <!-- /ko -->
 
   <!-- ko if: node.isProxy -->
-    <div class="bmpp-queryElement ui tertiary segment">
+    <div class="bmpp-queryElement bmpp-container ui tertiary segment">
       ${ nodeProxyTemplate }
     </div>
   <!-- /ko -->

@@ -35,7 +35,7 @@ const template = `
   <div class="ui segments bmpp-relation"
     data-bind="foreach: relation.relationsOrConnectives">
 
-    <div class="ui segment"
+    <div class="ui segment bmpp-container"
       data-bind="css: { 'bmpp-relationItem': $index() > 0 }">
 
       <!-- ko if: $index() === 0 -->

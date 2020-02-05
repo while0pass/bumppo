@@ -671,6 +671,10 @@ $layerHeight: 2rem;
       color: $red !important;
     }
   }
+
+  &:hover {
+    box-shadow: 0 0 4px $lightGrey;
+  }
 }
 
 query-node:last-of-type:after {
@@ -833,10 +837,15 @@ query-node:last-of-type:after {
 
 .bmpp-editUrl {
   font-size: smaller;
-  border-bottom: 1px dotted $blue;
-  color: $blue;
+  border-bottom: 1px dotted $grey;
+  color: $grey;
   cursor: pointer;
   opacity: 0.8;
+
+  .bmpp-container:hover & {
+    border-bottom: 1px dotted $blue;
+    color: $blue;
+  }
 
   &:hover {
     opacity: 1;
@@ -1074,11 +1083,19 @@ relations-formula .ui.circular.label {
     bottom: 0.2rem;
     box-shadow: 0 0 0 1px $lightGrey inset!important;
 
-    & .icon {
-      color: $lightGrey !important;
+    .bmpp-container:hover & {
+      box-shadow: 0 0 0 1px $blue inset!important;
     }
 
-    &:hover {
+    & .icon {
+      color: $lightGrey !important;
+
+      .bmpp-container:hover & {
+        color: $blue !important;
+      }
+    }
+
+    .bmpp-container:hover &:hover {
       box-shadow: none !important;
       background-color: $tealBlue !important;
       opacity: 0.8;
@@ -1105,6 +1122,7 @@ relations-formula .ui.circular.label {
       color: $lightGrey !important;
     }
 
+    .bmpp-container:hover & .icon,
     &:hover .icon {
       color: $red !important;
     }
