@@ -113,7 +113,7 @@ function viewModel() {
 
   this.resultsData = ko.observableArray([]);
   this.layersData = ko.observable(new LayersStruct());
-  this.showResultsOnly = ko.observable(true);
+  this.showResultsOnly = ko.observable(false);
   // Показывать только результаты без слоев.
 
   this.timeline = new TimeLine(this.layersData);
@@ -235,7 +235,7 @@ worker.onmessage = message => {
   // Получена начальная часть результатов
   if (messageType === 'results0') {
     vM.cinema && vM.cinema.deactivateAll();
-    vM.showResultsOnly(true);
+    vM.showResultsOnly(false);
     vM.isQueryNew(false);
     vM.isSubcorpusNew(false);
     vM.resultsNumber(data.total);
