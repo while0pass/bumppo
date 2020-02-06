@@ -4,7 +4,7 @@ import { RelationLine, ReferenceLine } from '../scripts/drawQueryTree.js';
 const template = `
 
   <!-- ko if: node1 -->
-  <div class="bmpp-relationsFormula1 bmpp-container"
+  <div class="bmpp-relationsFormula1"
     data-bind="css: { 'bmpp-relationsFormula2': $component.node2.level() > 0 }">
 
     <!-- ko if: isProxyBound -->
