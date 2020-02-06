@@ -43,6 +43,7 @@ import ko from 'knockout';
  *  valueList
  *  displayValues
  *  isRegEx
+ *  isFullMatch
  *  addNameToChildNames
  *
  * * * *  type == 'text'
@@ -261,7 +262,7 @@ const v_R = '/', v_F = '\\', v_L = '–', v_r = '↑', v_f = '↓', v_l = '→',
 
 const p_vMainAccents = {
   type: 'list', name: 'Движение тона в главном акценте',
-  id: 'p_vMainAccents', displayValues: true,
+  id: 'p_vMainAccents', displayValues: true, isFullMatch: true,
   tierTemplate: '{ p_participants }-vMainAccents',
   valueList: { orValues: [
     { name: 'Восходящее', value: v_R },
@@ -554,7 +555,7 @@ const p_vInterrupt = {
 
 const p_vAccents = {
   type: 'list', name: 'С акцентом', id: 'with_accent', displayValues: true,
-  tierTemplate: '{ p_participants }-vAccents',
+  tierTemplate: '{ p_participants }-vAccents', isFullMatch: true,
   valueList: { xorValues: [
     { name: 'Да', orValues: [
       { name: 'С восходящим тоном', value: v_R },
@@ -772,6 +773,7 @@ class SearchUnitProperty {
     this.value = ko.observable(null);
     this.virtualKeyboard = data.virtualKeyboard || false;
     this.isRegEx = data.isRegEx || false;
+    this.isFullMatch = data.isFullMatch || false;
     this.tierTemplate = data.tierTemplate;
 
     this._SearchUnitProperty_tune(data);

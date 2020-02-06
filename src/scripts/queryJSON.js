@@ -91,12 +91,17 @@ function getQueryJSON(viewModel) {
           };
         } else if (prop instanceof ListProperty) {
           if (value instanceof Array) {
+            let v = value.filter(a => typeof a === 'string')
+              .map(a => prop.isRegEx ? a : escapeRegExpELAN(a)).join('|');
+            if (prop.isFullMatch) {
+              v = `\\A(${ v })\\Z`;  /* NOTE: В ELAN для совпадения по началу
+              и концу строки используется регулярные выражения \A и \Z
+              вместо крышки (^) и доллара ($). */
+            }
             query.conditions[propKey] = {
               type: 'simple',
               is_regex: true,
-              search: value
-                .filter(a => typeof a === 'string')
-                .map(a => prop.isRegEx ? a : escapeRegExpELAN(a)).join('|')
+              search: v
             };
           } else if (typeof value === 'string') {
             query.conditions[propKey] = {
