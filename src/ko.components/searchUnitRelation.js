@@ -50,7 +50,7 @@ const template = `
         <distance-relation params="relation: $data"></distance-relation>
       <!-- /ko -->
 
-      <button class="ui tiny basic icon button bmpp-removeButton"
+      <button class="ui small basic icon button bmpp-removeButton"
         data-bind="click: $$removeRelation,
           css: { 'bmpp-removeButton1': $index() === 0 },
           visible: $index() > 0 ||
@@ -58,7 +58,7 @@ const template = `
         <i class="ui close icon"></i>
       </button>
 
-      <button class="ui mini basic icon button bmpp-addButton"
+      <button class="blue ui mini icon button bmpp-addButton"
         data-bind="click: $$addRelation, visible: $index() + 1 ===
             $component.relation.relationsOrConnectives().length">
         <i class="ui plus icon"></i>
