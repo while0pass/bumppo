@@ -6,10 +6,10 @@ import cinematheque from '../video_data.js';
 
 const plyrOpts = {
   clickToPlay: true,
-  controls: ['play', 'current-time', 'mute', 'volume'],
+  controls: ['play', 'current-time', 'mute', 'volume', 'fullscreen'],
   debug: !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
   invertTime: false,
-  fullscreen: { enabled: false, fallback: false, iosNative: false },
+  fullscreen: { enabled: true, fallback: true, iosNative: false },
   ratio: '16:9',
   //settings: ['speed'],
   //speed: { selected: 1, options: [0.5, 0.75, 1] },
