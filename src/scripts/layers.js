@@ -402,4 +402,4 @@ class LayersStruct {
   }
 }
 
-export { LayersStruct, layersElementIds };
+export { LayersStruct, layersElementIds, LAYER_PARENT_MAP };

@@ -2,6 +2,7 @@ import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
 import { SAME_PARTICIPANT_RELATION_ID,
   DISTANCE_RELATION_TYPE, Connective } from './searchUnitRelations.js';
+import { LAYER_PARENT_MAP } from './layers.js';
 
 function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
@@ -242,79 +243,43 @@ function getQueryJSON(viewModel) {
   return JSON.stringify(query, null, 4);
 }
 
-const LAYERS = [
+const DEFAULT_LAYERS = [
   '-vLine',
-  '-vLineType',
-  '-vHTML',
-  '-vIllocPhase',
-  '-vCombIllocPhase',
-  '-vParenth',
-  '-vInSplit',
-  '-vCitation',
-  '-vCoConstr',
-  '-vStartFilled',
-  '-vMainAccents',
-  '-vLineVerbatim',
-  '-vComments',
   '-vLineHTML',
-  '-vCollat',
-  '-vCollatForm',
-  '-oFixation',
-  '-oInterlocutor',
-  '-oLocus',
-  '-mLtMovement',
-  '-mLtMtType',
-  '-mRtMovement',
-  '-mRtMtType',
-  '-mLtStillness',
-  '-mLtStType',
-  '-mRtStillness',
-  '-mRtStType',
-  '-mPosture',
-  '-mPrPhase',
-  '-mPostureChange',
-  '-mPostureAccommodator',
-  '-mGesture',
-  '-mGeHandedness',
-  '-mGeStucture',
-  '-mGeTags',
-  '-mGeFunction',
-  '-mAdaptor',
-  '-mAdType',
-  '-mGestureChain',
-  '-mMovementChain',
-  '-mComments',
-  '-vPause',
-  '-vPauseInOutEDU',
-  '-vPauseHTML',
   '-vSegm',
-  '-vTempo',
-  '-vReduction',
-  '-vLength',
-  '-vInterrupt',
-  '-vEmph',
-  '-vRegister',
-  '-vStops',
-  '-vStress',
-  '-vPhon',
-  '-vNearPause',
-  '-vInOutEDU',
-  '-vOnom',
-  '-vTruncated',
-  '-vMainAccent',
-  '-vSType',
-  '-vSForm',
-  '-vAccents',
-  '-vSegmHTML'
+  '-vSegmHTML',
+];
+
+const EXCLUDE_LAYERS = [
+  'Stage',
 ];
 
 function getLayersQueryJSON(data) {
-  let query = {
+  const halfDuration = (data.match.time.end - data.match.time.begin),
+        end = data.match.time.end + halfDuration;
+  let begin = data.match.time.begin - halfDuration;
+  if (begin < 0) begin = 0;
+
+  let tiers = DEFAULT_LAYERS.map(x => data.participant + x);
+  tiers.push(data.match.tier);
+  tiers = tiers.concat(Object.keys(data.match.tiers));
+  tiers = tiers.concat(Object.values(data._data)
+    .filter(x => x.tier && EXCLUDE_LAYERS.indexOf(x.tier) < 0)
+    .map(x => x.tier)
+  );
+  tiers = tiers.reduce((a, b) => {
+    if (a.indexOf(b) < 0) a.push(b);
+    let parent = b in LAYER_PARENT_MAP ? LAYER_PARENT_MAP[b] : null;
+    if (parent !== null && a.indexOf(parent) < 0) a.push(parent);
+    return a;
+  }, []);
+
+  const query = {
     record_id: data.record_id,
-    time: { begin: data.match.time.begin, end: data.match.time.end },
+    time: { begin: begin, end: end },
     type: 'overlaps',
+    tiers: tiers,
   };
-  query.tiers = LAYERS.map(x => data.participant + x);
   return JSON.stringify(query, null, 4);
 }
 
