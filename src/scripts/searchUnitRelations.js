@@ -86,6 +86,12 @@ class Connective {
         .map(rel => ko.unwrap(rel.banner)).join('.\u2002');
     }, this);
   }
+  do(func) {
+    this.relationsOrConnectives().forEach(item => {
+      if (item instanceof this.Relation) func(item);
+      if (item instanceof Connective) item.do(func);
+    });
+  }
 }
 
 
@@ -125,30 +131,8 @@ class Distance {
     this.onHeaderClick = undefined;
     this.refPoints = undefined;
     this.unitsFirstValueName = rp_units.valueList.xorValues[0].name;
-    this.sameTypeNodes = this.getSameNodeTypeIndicator();
     this.measureInMs = this.getMeasureInMsIndicator();
     this.banner = this.getBanner();
-  }
-  getSameNodeTypeIndicator() {
-    let x = ko.computed(function () {
-      let node1 = this.node1,
-          node2 = this.node2;
-      return node2.unitType && node1.unitType() === node2.unitType();
-    }, this);
-    x.subscribe(function (value) {
-      if (!value) {
-        this.units.valueList.checkFirstAsIfByUser();  // (*)
-
-        // TODO: Если между единицами задано более одного условия на расстояние
-        // и присутствует хотя бы одно условие, где расстояние задано в мс, то
-        // вместо (*) все расстояния в единицах (но не миллисекундах) надо
-        // удалить и оставить только расстояния в мс. Если же ни одного
-        // расстояния в мс не задано, то удалить все расстояния, кроме одного,
-        // где выставить в качестве единиц миллисекунды.
-
-      }
-    }, this);
-    return x;
   }
   getMeasureInMsIndicator() {
     return ko.computed(function () {
@@ -182,30 +166,108 @@ class NodesRelationsFormula {
   constructor(node1, node2) {
     this.node1 = node1;
     this.node2 = node2;
-    this.relations = ko.observableArray(this.getRelations());
+
+    let [relations, relationsMap] = this.getRelations();
+    this.relations = ko.observableArray(relations);
+    this.relationsMap = relationsMap;
+    this.visibleRelations = this.getVisibleRelations();
     this.chosenRelations = this.getChosenRelations();
+
+    this.sameUnitType = this.getSameUnitTypeIndicator();
+    this.sameParticipants = this.getSameParticipantsIndicator();
+    this.sameUnitTypeAndParticipants = this.getSameUTPIndicator();
   }
   getRelations() {
     const defaultRelations = [
-      new ListProperty(r_sameParticipant, this.node1, this.node2),
-      new Connective(Distance, this.node1, this.node2),
+      { relation: new ListProperty(r_sameParticipant, this.node1, this.node2),
+        check: this.showSameParticipantsRelation(this) },
+      { relation: new Connective(Distance, this.node1, this.node2),
+        check: () => true },
     ];
-    return defaultRelations;
+    const relationsMap = {};
+    defaultRelations.forEach(item => {
+      let key = item.relation.id || item.relation.type;
+      relationsMap[key] = item.relation;
+    });
+    return [defaultRelations, relationsMap];
   }
   resetToDefault() {
-    this.relations(this.getRelations());
+    let [relations, relationsMap] = this.getRelations();
+    this.relations(relations);
+    this.relationsMap = relationsMap;
+  }
+  getVisibleRelations() {
+    return ko.computed(function () {
+      return this.relations && this.relations()
+        .filter(item => item.check())
+        .map(item => item.relation);
+    }, this);
   }
   getChosenRelations() {
     return ko.computed(function () {
-      return this.relations && this.relations().filter(
-        prop => ko.unwrap(prop.banner));
+      return this.visibleRelations && this.visibleRelations()
+        .filter(rel => ko.unwrap(rel.banner));
     }, this);
   }
   seppuku() {
-    delete this.node1;
+    this.sameUnitTypeAndParticipants.dispose();
+    this.sameParticipants.dispose();
+    this.sameUnitType.dispose();
+    this.chosenRelations.dispose();
+    this.visibleRelations.dispose();
+    delete this.relationsMap;
+    this.relations.dispose();
     delete this.node2;
-    delete this.chosenRelations;
-    delete this.relations;
+    delete this.node1;
+  }
+  getSameUnitTypeIndicator() {
+    return ko.computed(function () {
+      let n1 = this.node1,
+          n2 = this.node2;
+      return n2.unitType && n1.unitType() === n2.unitType();
+    }, this);
+  }
+  showSameParticipantsRelation(self) {
+    return function () {
+      if (self.node2.unitType() === null) return false;
+      let p1 = self.node1.getParticipants(),
+          p2 = self.node2.getParticipants();
+      if (p1.length === 1 && p2.length === p1.length) return false;
+      for (let p of p1) if (p2.indexOf(p) > -1) return true;
+      return false;
+    };
+  }
+  getSameParticipantsIndicator() {
+    let x = ko.computed(function () {
+      if (this.node2.unitType() === null) return false;
+      let p1 = this.node1.getParticipants(),
+          p2 = this.node2.getParticipants();
+      if (p1.length === 1 && p2.length === p1.length) {
+        return p1[0] === p2[0];
+      }
+      let intersection = false;
+      for (let p of p1) {
+        if (p2.indexOf(p) > -1) {
+          intersection = true;
+          break;
+        }
+      }
+      let val = this.relationsMap[SAME_PARTICIPANT_RELATION_ID].value();
+      return intersection && val;
+    }, this);
+    return x;
+  }
+  getSameUTPIndicator() {
+    let x = ko.computed(function () {
+      return this.sameUnitType() && this.sameParticipants();
+    }, this);
+    x.subscribe(function (value) {
+      if (!value) {
+        let func = relation => relation.units.valueList.checkFirstAsIfByUser();
+        this.relationsMap[AND_TYPE].do(func);
+      }
+    }, this);
+    return x;
   }
 }
 

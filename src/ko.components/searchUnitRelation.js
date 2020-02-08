@@ -47,7 +47,8 @@ const template = `
       <!-- /ko -->
 
       <!-- ko if: type === $component.DISTANCE_RELATION_TYPE -->
-        <distance-relation params="relation: $data"></distance-relation>
+        <distance-relation params="relation: $data,
+          formula: $component.relationsFormula"></distance-relation>
       <!-- /ko -->
 
       <button class="ui small basic icon button bmpp-removeButton"
@@ -73,11 +74,12 @@ const template = `
 
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  let relation = params.relation;
+  let relation = params.relation,
+      relationsFormula = params.formula;
   return {
     DISTANCE_RELATION_TYPE,
     isFormula: relation.type === AND_TYPE,
-    relation,
+    relation, relationsFormula,
   };
 };
 

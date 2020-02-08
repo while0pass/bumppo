@@ -1,6 +1,6 @@
 import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists,
-  SearchUnitProperty } from './searchUnitProperties.js';
+  SearchUnitProperty, p_participants } from './searchUnitProperties.js';
 import { NodesRelationsFormula } from './searchUnitRelations.js';
 import linearizeTree from './linearizeTree.js';
 import log from './log.js';
@@ -202,6 +202,10 @@ export class TreeNode {
       return refOpts;
     }, this).extend({ rateLimit: 400 });
   }
+  getParticipants() {
+    let x = this.unitProperties.unitPropertiesMap();
+    return x[p_participants.id].value();
+  }
 }
 
 
@@ -245,6 +249,7 @@ TreeNodeProxy.prototype.isProxy = true;
 const PROXIED_PROPS = [
   'areRelationsChanged',
   'chosenUnitProperties',
+  'getParticipants',
   'serialNumber',
   'unitType',
   'unitProperties',

@@ -82,7 +82,9 @@ const template = `
   ${ templateHeader }
 
   <div data-bind="foreach: relations">
-    <search-unit-relation params="relation: $data"></search-unit-relation>
+    <search-unit-relation params="relation: $data,
+              formula: $component.relationsFormula">
+    </search-unit-relation>
   </div>
 
 `;
@@ -92,12 +94,13 @@ var viewModelFactory = (params, componentInfo) => {
   const relations = ko.computed(function () {
     const node1 = params.node1(),
           node2 = params.node2();
-    return !node1 || !node2 ? [] : node2.relationsFormula.relations();
+    return !node1 || !node2 ? [] : node2.relationsFormula.visibleRelations();
   });
   return {
     node1: params.node1(),
     node2: params.node2(),
-    relations: relations,
+    relationsFormula: params.node2().relationsFormula,
+    relations,
   };
 };
 
