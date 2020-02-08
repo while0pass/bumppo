@@ -1425,5 +1425,5 @@ class ValueListItem {
 export {
   defaultPropertiesList, testPropertiesList, propertiesLists,
   SearchUnitProperty, IntervalProperty, TextProperty, ListProperty,
-  p_duration, escapeRegExp, injectNodeNumbers, beautifyNumber
+  p_duration, p_participants, escapeRegExp, injectNodeNumbers, beautifyNumber
 };

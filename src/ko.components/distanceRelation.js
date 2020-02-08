@@ -1,22 +1,24 @@
 const template = `
 
-  <div class="bmpp-relationBanner" data-bind="html: banner"></div>
+  <div class="bmpp-relationBanner" data-bind="html: relation.banner"></div>
 
   <div>
 
-    <!-- ko if: measureInMs -->
-      <interval-property params="property: intervalInMs"></interval-property>
+    <!-- ko if: relation.measureInMs -->
+      <interval-property params="property: relation.intervalInMs">
+      </interval-property>
     <!-- /ko -->
-    <!-- ko ifnot: measureInMs -->
-      <interval-property params="property: intervalInUnits"></interval-property>
+    <!-- ko ifnot: relation.measureInMs -->
+      <interval-property params="property: relation.intervalInUnits">
+      </interval-property>
     <!-- /ko -->
 
-    <!-- ko if: sameUnitTypeAndParticipants -->
-      <list-property params="property: units"
+    <!-- ko if: formula.sameUnitTypeAndParticipants -->
+      <list-property params="property: relation.units"
           class="bmpp-unitsRadioButtons"></list-property>
     <!-- /ko -->
-    <!-- ko ifnot: sameUnitTypeAndParticipants -->
-      <span data-bind="text: unitsFirstValueName"></span>
+    <!-- ko ifnot: formula.sameUnitTypeAndParticipants -->
+      <span data-bind="text: relation.unitsFirstValueName"></span>
     <!-- /ko -->
 
   </div>
@@ -24,10 +26,10 @@ const template = `
 
   <div style="margin-top: 1em">
 
-    <list-property params="property: occurrence"></list-property>
+    <list-property params="property: relation.occurrence"></list-property>
 
-    <!-- ko if: units.value() === 'ms' -->
-      <list-property params="property: referencePoints"
+    <!-- ko if: relation.units.value() === 'ms' -->
+      <list-property params="property: relation.referencePoints"
         style="margin-left: 1em"></list-property>
     <!-- /ko -->
 
@@ -37,7 +39,7 @@ const template = `
 
 // eslint-disable-next-line no-unused-vars
 var viewModelFactory = (params, componentInfo) => {
-  return params.relation;
+  return { relation: params.relation, formula: params.formula };
 };
 
 export default {
