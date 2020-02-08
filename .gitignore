@@ -1,6 +1,7 @@
 build
 .build
 .temp
+.now
 
 node_modules
 semantic

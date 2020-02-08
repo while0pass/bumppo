@@ -113,7 +113,7 @@ function viewModel() {
 
   this.resultsData = ko.observableArray([]);
   this.layersData = ko.observable(new LayersStruct());
-  this.showResultsOnly = ko.observable(true);
+  this.showResultsOnly = ko.observable(false);
   // Показывать только результаты без слоев.
 
   this.timeline = new TimeLine(this.layersData);
@@ -204,7 +204,9 @@ function viewModel() {
 
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
+  this.resultsMessage = ko.observable(null);
   this.resultsNumber = ko.observable(null);
+  this.activeResult = ko.observable(null);
   this.resultsPercent = ko.computed(() => {
     let n = self.resultsData().length,
         N = self.resultsNumber();
@@ -220,9 +222,10 @@ function viewModel() {
       ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
       : ''
   );
-  this.clearError = () => {
+  this.clearErrorOrMessage = () => {
     self.isSearchInProgress(false);
     self.resultsError(null);
+    self.resultsMessage(null);
   };
 
 }
@@ -235,15 +238,20 @@ worker.onmessage = message => {
   // Получена начальная часть результатов
   if (messageType === 'results0') {
     vM.cinema && vM.cinema.deactivateAll();
-    vM.showResultsOnly(true);
+    vM.showResultsOnly(false);
     vM.isQueryNew(false);
     vM.isSubcorpusNew(false);
+    vM.activeResult(null);
     vM.resultsNumber(data.total);
     vM.resultsData(getResults(data.results));
-    vM.resultsError(null);
-    vM.isSearchInProgress(false);
-    vM.canViewResults(true);
-    vM.switchOnResultsPane();
+    if (data.total > 0) {
+      vM.isSearchInProgress(false);
+      vM.resultsError(null);
+      vM.canViewResults(true);
+      vM.switchOnResultsPane();
+    } else {
+      vM.resultsMessage('Не найдено ни одного совпадения');
+    }
 
   // Получена очередная часть результатов
   } else if (messageType === 'results1') {

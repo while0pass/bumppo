@@ -9,21 +9,21 @@ const nodeTemplate = `
     isQueryNew: $root.isQueryNew">
   </search-unit-choice>
 
-  <button class="ui tiny basic icon button bmpp-removeButton"
+  <button class="ui small basic icon button bmpp-removeButton"
     data-content="Удалить единицу поиска со всеми зависимостями"
     data-bind="visible: node.depth() > 0,
       click: function () { node.seppuku(); $root.isQueryNew(true); }">
     <i class="ui close icon"></i>
   </button>
 
-  <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+  <button class="blue ui mini icon button bmpp-addButton bmpp-addUnit"
       data-content="Добавить единицу поиска"
       data-bind="click: node.addChild.bind(node, false),
                  visible: node.unitType() !== null">
     <i class="ui plus icon"></i>
   </button>
 
-  <button class="ui mini basic icon button bmpp-addButton bmpp-addUnit"
+  <button class="blue ui mini icon button bmpp-addButton bmpp-addUnit"
       style="right: 4.5em"
       data-content="Добавить ссылку на другую имеющуюся единицу поиска"
       data-bind="click: node.addChildProxy.bind(node, false),
@@ -38,7 +38,7 @@ const nodeProxyTemplate = `
   <unit-proxy params="node: node,
     queryPartsNonReadiness: $root.queryPartsNonReadiness"></unit-proxy>
 
-  <button class="ui tiny basic icon button bmpp-removeButton"
+  <button class="ui small basic icon button bmpp-removeButton"
     data-content="Удалить ссылку на единицу поиска"
     data-bind="visible: node.depth() > 0,
       click: function () { node.seppuku(); $root.isQueryNew(true); }">

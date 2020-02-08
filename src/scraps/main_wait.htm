@@ -1,21 +1,31 @@
 <div id="bmpp-mainWait"
-  data-bind="visible: isSearchInProgress() || resultsError()">
+  data-bind="visible: isSearchInProgress() || resultsError() || resultsMessage()">
 
   <div class="ui active inverted dimmer"
     data-bind="visible: isSearchInProgress">
 
     <div class="ui text loader" style="color: #767676; font-size: smaller"
-      data-bind="text: searchStatus, visible: !resultsError()"></div>
+      data-bind="text: searchStatus,
+        visible: !resultsError() && !resultsMessage()"></div>
 
-    <button class="ui mini basic button"
+    <button class="ui mini basic button bmpp-cancel"
       data-bind="click: abortLastRequest, fadeVisible: canSearchBeAborted,
-        visible: !resultsError()"
+        visible: !resultsError() && !resultsMessage()"
       >Отмена</button>
 
     <div class="ui negative message" data-bind="visible: resultsError">
-      <i class="close icon" data-bind="click: clearError"></i>
+      <i class="close icon" data-bind="click: clearErrorOrMessage"></i>
       <div class="left header">Произошла ошибка</div>
       <p data-bind="html: resultsError"></p>
+    </div>
+
+    <div class="ui positive message" data-bind="visible: resultsMessage">
+      <div class="left header">Поиск завершен</div>
+      <p data-bind="html: resultsMessage"></p>
+
+      <button class="ui mini olive basic button"
+        data-bind="click: clearErrorOrMessage"
+        >OK</button>
     </div>
 
   </div>

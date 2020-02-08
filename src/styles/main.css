@@ -94,7 +94,7 @@ $videoHeight: 193px;
   z-index: 1001;
   border-left: $borderWidth solid transparent!important;
 
-  & .button {
+  & .button.bmpp-cancel {
     $colorChannels: 219, 40, 40;
     background-color: rgba(255, 255, 255, 1) !important;
     color: rgba($colorChannels, 0.5) !important;
@@ -1066,27 +1066,12 @@ relations-formula .ui.circular.label {
   padding-top: 1.5em !important;
 }
 
-.ui.basic.icon.button {
+.ui.icon.button {
 
   &.bmpp-addButton {
     position: absolute;
     right: 0.1rem;
     bottom: 0.2rem;
-    box-shadow: 0 0 0 1px $lightGrey inset!important;
-
-    & .icon {
-      color: $lightGrey !important;
-    }
-
-    &:hover {
-      box-shadow: none !important;
-      background-color: $tealBlue !important;
-      opacity: 0.8;
-
-      & .icon {
-        color: white !important;
-      }
-    }
 
     .bmpp-queryElement & {
       right: 1rem;
@@ -1102,11 +1087,14 @@ relations-formula .ui.circular.label {
     background-color: transparent !important;
 
     & .icon {
-      color: $lightGrey !important;
+      color: $red !important;
+      transform: none;
+      transition: transform 0.3s;
     }
 
     &:hover .icon {
-      color: $red !important;
+      transform: rotate(0.75turn);
+      transition: transform 0.3s;
     }
 
     &.bmpp-removeButton1 {

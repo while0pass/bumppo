@@ -117,7 +117,7 @@ const resultsTemplate = `
 
 const layersTemplate = `
 
-  <div id="bmpp-layers">
+  <div id="bmpp-layers" data-bind="visible: activeResult">
 
     <div id="bmpp-layersNames">
       <div id="${ layersElementIds.names }"
@@ -589,11 +589,9 @@ function viewModelFactory(params) {
       ro2 = new ResizeObserver(onResizeTimelineWindow);
   ro2.observe(elTL);
 
-  let activeResult = ko.observable();
-
   // При смене слоев сбрасываем параметры
   layersStruct.subscribe(() => {
-    let { begin: start, end } = activeResult().match.time,
+    let { begin: start, end } = params.viewModel.activeResult().match.time,
         segment = { time: { start, end }};
     timeline.selectionEdges([null, null]);
     selectionFromSegment(segment);
@@ -605,12 +603,13 @@ function viewModelFactory(params) {
 
   return {
     resultsData: params.resultsData,
+    activeResult: params.viewModel.activeResult,
     layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
     playAllVisible, playPreSelection, playPostSelection, playSelection,
     zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,
-    showFilm, activeResult,
+    showFilm,
   };
 }
 
