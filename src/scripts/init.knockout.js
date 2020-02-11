@@ -52,18 +52,11 @@ export function preinit(ko) {
         target.notifySubscribers(newHRef);
       }
     }
-    let result = ko.computed({
-      read: target,
-      write: writeValue
-    }).extend({ notify: 'always' });
-    ko.computed(() => {
-      let href = target();
-      viewModel.cinema && viewModel.cinema.pauseAll();
-      viewModel.abortLastRequest && viewModel.abortLastRequest();
-      navigate(href);
-    });
-    result(target());
-    return result;
+    let routedHRef = ko.computed({ read: target, write: writeValue })
+      .extend({ notify: 'always' });
+    routedHRef.subscribe(navigate);
+    routedHRef(target());
+    return routedHRef;
   };
 }
 

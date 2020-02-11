@@ -191,8 +191,35 @@ const layersTemplate = `
 
 `;
 
-const template = videoTemplate +
-  queryInfoTemplate + resultsTemplate + layersTemplate;
+const loaderTemplate = `
+
+  <div class="bmpp-wait" data-bind="visible:
+      (searchStatus() || resultsError()) && isResultsPaneOn()">
+
+    <div class="ui active inverted dimmer">
+
+      <div class="ui text loader" style="color: #767676; font-size: smaller"
+        data-bind="text: searchStatus,
+          visible: !resultsError()"></div>
+
+      <button class="ui mini basic button bmpp-cancel"
+        data-bind="click: abortLastRequest, fadeVisible: canSearchBeAborted,
+          visible: !resultsError()"
+        >Отмена</button>
+
+      <div class="ui negative message" data-bind="visible: resultsError">
+        <i class="close icon" data-bind="click: clearErrorOrMessage"></i>
+        <div class="left header">Произошла ошибка</div>
+        <p data-bind="html: resultsError"></p>
+      </div>
+
+    </div>
+  </div>
+
+`;
+
+const template = videoTemplate + queryInfoTemplate +
+  resultsTemplate + layersTemplate + loaderTemplate;
 
 function viewModelFactory(params) {
   const rAF = window.requestAnimationFrame || window.setTimeout,
@@ -610,6 +637,12 @@ function viewModelFactory(params) {
     playAllVisible, playPreSelection, playPostSelection, playSelection,
     zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,
     showFilm,
+    searchStatus: params.viewModel.searchStatus,
+    resultsError: params.viewModel.resultsError,
+    isResultsPaneOn: params.viewModel.isResultsPaneOn,
+    canSearchBeAborted: params.viewModel.canSearchBeAborted,
+    clearErrorOrMessage: params.viewModel.clearErrorOrMessage,
+    abortLastRequest: params.viewModel.abortLastRequest,
   };
 }
 

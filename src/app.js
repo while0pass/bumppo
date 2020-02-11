@@ -26,15 +26,23 @@ const worker = new Worker('js/worker.js');
 
 function viewModel() {
   let self = this;
+  function switchTo(href) {
+    return function () {
+      self.clientHRef(href);
+      self.cinema.pauseAll();
+      self.abortLastRequest();
+    };
+  }
+
   this.version = 'v' + '$_CONFIG.BUMPPO_VERSION';
   this.debug = window[';)'].debug;
 
   this.clientHRef = ko.observable(getHRef(window.location.hash))
     .extend({ clientRouting: self });
-  this.switchOnQueryPane = () => { self.clientHRef(hrefs.QUERY_PANE); };
-  this.switchOnSubcorpusPane = () => { self.clientHRef(hrefs.SUBCORPUS_PANE); };
+  this.switchOnQueryPane = switchTo(hrefs.QUERY_PANE);
+  this.switchOnSubcorpusPane = switchTo(hrefs.SUBCORPUS_PANE);
   this.switchOnResultsPane = () => { self.clientHRef(hrefs.RESULTS_PANE); };
-  this.switchOnResultsOptionsPane = () => { self.clientHRef(hrefs.RESOPTS_PANE); };
+  this.switchOnResultsOptionsPane = switchTo(hrefs.RESOPTS_PANE);
 
   this.isQueryPaneOn = ko.computed(
     () => this.clientHRef() === hrefs.QUERY_PANE);
@@ -156,11 +164,13 @@ function viewModel() {
   this.queryTree = new TreeNode();
   this.linearizedQueryTree = this.queryTree.linear6n;
 
+  this.isSearchAborted = ko.observable(false);
   this.canSearch = ko.computed(function () {
     let isQueryReady = self.isQueryReady(),
         isQueryNew = self.isQueryNew(),
-        isSubcorpusNew = self.isSubcorpusNew();
-    if (isQueryReady && (isQueryNew || isSubcorpusNew)) {
+        isSubcorpusNew = self.isSubcorpusNew(),
+        isSearchAborted = self.isSearchAborted();
+    if (isQueryReady && (isQueryNew || isSubcorpusNew || isSearchAborted)) {
       return true;
     } else {
       return false;
@@ -178,21 +188,23 @@ function viewModel() {
   this.search = () => {
     if (self.canSearch()) {
       self.searchStatus('Формирование запроса');
-      self.isSearchInProgress(true);
       self.canSearchBeAborted(true);
+      self.isSearchAborted(false);
       self.cinema.clearActiveState();
       let data = { type: 'results', query: self.queryJSON() };
       worker.postMessage(['query', data]);
     }
   };
-  this.isSearchInProgress = ko.observable(false);
-  this.canSearchBeAborted = ko.observable(true);
+  this.canSearchBeAborted = ko.observable(false);
   this.searchStatus = ko.observable('');
   this.abortLastRequest = () => {
-    self.isSearchInProgress(false);
+    if (self.searchStatus()) {
+      self.searchStatus('Отмена запроса');
+    }
     worker.postMessage(['abort', null]);
   };
   this.loadLayers = item => {
+    self.searchStatus('Формирование запроса');
     let query = window[';)'].stub
           && item.match.value === self.resultsData()[0].match.value
           && item.record_id === self.resultsData()[0].record_id
@@ -223,7 +235,7 @@ function viewModel() {
       : ''
   );
   this.clearErrorOrMessage = () => {
-    self.isSearchInProgress(false);
+    self.searchStatus(null);
     self.resultsError(null);
     self.resultsMessage(null);
   };
@@ -245,8 +257,7 @@ worker.onmessage = message => {
     vM.resultsNumber(data.total);
     vM.resultsData(getResults(data.results));
     if (data.total > 0) {
-      vM.isSearchInProgress(false);
-      vM.resultsError(null);
+      vM.clearErrorOrMessage();
       vM.canViewResults(true);
       vM.switchOnResultsPane();
     } else {
@@ -262,6 +273,7 @@ worker.onmessage = message => {
 
   } else if (messageType === 'layers') {
     vM.layersData(new LayersStruct(data));
+    vM.clearErrorOrMessage();
 
   } else if (messageType === 'status') {
     vM.searchStatus(data);
@@ -271,6 +283,10 @@ worker.onmessage = message => {
 
   } else if (messageType === 'noabort') {
     vM.canSearchBeAborted(false);
+
+  } else if (messageType === 'aborted') {
+    vM.isSearchAborted(true);
+    vM.clearErrorOrMessage();
 
   }
 };

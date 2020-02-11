@@ -1,8 +1,8 @@
-<div id="bmpp-mainWait"
-  data-bind="visible: isSearchInProgress() || resultsError() || resultsMessage()">
+<div class="bmpp-wait"
+  data-bind="visible: (searchStatus() || resultsError() || resultsMessage()) &&
+    !isResultsPaneOn()">
 
-  <div class="ui active inverted dimmer"
-    data-bind="visible: isSearchInProgress">
+  <div class="ui active inverted dimmer">
 
     <div class="ui text loader" style="color: #767676; font-size: smaller"
       data-bind="text: searchStatus,

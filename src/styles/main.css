@@ -84,7 +84,7 @@ $videoHeight: 193px;
 
 
 
-#bmpp-mainWait {
+.bmpp-wait {
   box-sizing: border-box;
   position: fixed;
   top: 0;
@@ -93,6 +93,13 @@ $videoHeight: 193px;
   height: 100vh;
   z-index: 1001;
   border-left: $borderWidth solid transparent!important;
+
+  .bmpp-resultsPane & {
+    width: auto;
+    height: auto;
+    position: relative;
+    grid-area: layers;
+  }
 
   & .button.bmpp-cancel {
     $colorChannels: 219, 40, 40;

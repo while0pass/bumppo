@@ -78,8 +78,7 @@ function doQuery(queryType, query) {
 
         try {
           var rawData = JSON.parse(xhr.responseText);
-        }
-        catch (error) {
+        } catch (error) {
           let message = `Полученные данные не соответствуют
                          спецификации JSON: «${ error }».`;
           postMessage(['error', message]);
@@ -92,6 +91,7 @@ function doQuery(queryType, query) {
           resultsData.results = rawData.results;
           postMessage(['status', 'Отрисовка результатов']);
           sendFirstResults();
+          postMessage(['status', null]);
         } else {
           sendLayers(rawData);
         }
@@ -131,7 +131,7 @@ function doQuery(queryType, query) {
     }
   });
   xhr.addEventListener('abort', () => {
-    postMessage(['status', 'Запрос отменен']);
+    postMessage(['aborted', null]);
   });
   // eslint-disable-next-line no-undef
   xhr.open('GET', xURL + '?data=' + encodeURIComponent(query),
@@ -164,6 +164,7 @@ function getStubResults(dataType) {
     resultsData.results = stubResultsData.results;
     postMessage(['status', 'Отрисовка результатов']);
     sendFirstResults();
+    postMessage(['status', null]);
   } else {
     sendLayers(stubTiersData);
   }
