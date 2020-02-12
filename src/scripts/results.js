@@ -1,4 +1,5 @@
 import { getTimeTag, MS } from './timeline.js';
+import { LAYER_PARENT_MAP } from './layers.js';
 
 const R = /^[^\d]*(\d+).*$/g;
 
@@ -221,7 +222,12 @@ class Match {
   }
   getTranscription() {
     let transcription = '', self = this,
-        showTiers = this.tier in tierMap ? tierMap[this.tier] : [];
+        showTiers = [];
+    if (self.tier in tierMap) {
+      showTiers = tierMap[self.tier];
+    } else if (LAYER_PARENT_MAP[self.tier] in tierMap) {
+      showTiers = tierMap[LAYER_PARENT_MAP[self.tier]];
+    }
     showTiers.forEach((tier, i) => {
       let annotation = tier in self.tiers ? self.tiers[tier].trim() : '',
           text = tier in tier2val ? tier2val[tier](annotation) : annotation;
