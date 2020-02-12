@@ -14,7 +14,7 @@ function getQueryJSON(viewModel) {
       shouldFilterStages = stages.length > 0 && stages.length < 3,
       stagesKeyAndTier = 'Stage',
       query = {
-        version: '1.0',
+        version: '2.0',
         record_ids: viewModel.subcorpus.records.getQueryValuesForJSON(),
         conditions: {}
       },
@@ -61,19 +61,13 @@ function getQueryJSON(viewModel) {
 
       // Случай, если тип единицы надо проверять в подслое
       if (unitType.subtierTemplate) {
-        let subKey = nodeKey + 'p0';
-        query.conditions[subKey] = {
+        // Поскольку указывать родительский слой нет необходимости, заменяем
+        // его сразу на дочерний.
+        query.conditions[nodeKey] = {
           type: 'simple',
           is_regex: false,
           search: unitType.subtierValue,
           tiers: node.getTiersFromTemplate(unitType.subtierTemplate)
-        };
-        query.conditions[`${ nodeKey }.${ subKey }`] = {
-          type: 'structural',
-          first_condition_id: nodeKey,
-          second_condition_id: subKey,
-          distance_min: 0,
-          distance_max: 0
         };
       }
 
