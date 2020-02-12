@@ -121,7 +121,7 @@ function viewModel() {
 
   this.resultsData = ko.observableArray([]);
   this.layersData = ko.observable(new LayersStruct());
-  this.showResultsOnly = ko.observable(false);
+  this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
 
   this.timeline = new TimeLine(this.layersData);
@@ -229,6 +229,15 @@ function viewModel() {
     let value = self.resultsPercent();
     if (value !== '100%') worker.postMessage(['results1', null]);
   };
+  this.showResults = () => {
+    if (self.canViewResults()) {
+      if (self.isResultsPaneOn()) {
+        self.showResultsOnly(true);
+      } else {
+        self.switchOnResultsPane();
+      }
+    }
+  };
   this.responseJSON = ko.computed(
     () => self.resultsData()
       ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
@@ -250,7 +259,7 @@ worker.onmessage = message => {
   // Получена начальная часть результатов
   if (messageType === 'results0') {
     vM.cinema && vM.cinema.deactivateAll();
-    vM.showResultsOnly(false);
+    vM.showResultsOnly(true);
     vM.isQueryNew(false);
     vM.isSubcorpusNew(false);
     vM.activeResult(null);
