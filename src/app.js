@@ -123,9 +123,10 @@ function viewModel() {
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
-  self.showResultsOnly.subscribe(function () {
+  self.showResultsOnly.subscribe(function (value) {
     const func = () => {
-      const opts = { behavior: 'smooth', block: 'center' };
+      const block = value ? 'nearest' : 'center',
+            opts = { behavior: 'auto', block };
       document.querySelector('.currentItem').scrollIntoView(opts);
     };
     setTimeout(func, 500);
