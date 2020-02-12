@@ -123,6 +123,13 @@ function viewModel() {
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
+  self.showResultsOnly.subscribe(function () {
+    const func = () => {
+      const opts = { behavior: 'smooth', block: 'center' };
+      document.querySelector('.currentItem').scrollIntoView(opts);
+    };
+    setTimeout(func, 500);
+  });
 
   this.timeline = new TimeLine(this.layersData);
   this.cinema = new Cinema(this.timeline);
