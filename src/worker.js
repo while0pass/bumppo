@@ -51,7 +51,7 @@ function doAbort(xhr) {
   }
 }
 
-function doQuery(queryType, query) {
+function doQuery(queryType, queryJSON) {
   const isMainType = queryType === mainQueryType,
         xURL = isMainType ? resultsURL : tiersURL;
 
@@ -133,12 +133,12 @@ function doQuery(queryType, query) {
   xhr.addEventListener('abort', () => {
     postMessage(['aborted', null]);
   });
-  // eslint-disable-next-line no-undef
-  xhr.open('GET', xURL + '?data=' + encodeURIComponent(query),
-    asynchronously);
-  xhr.send();
-  //xhr.open('POST', xURL, asynchronously);
-  //xhr.send(query);
+  //xhr.open('GET', xURL + '?data=' + encodeURIComponent(queryJSON),
+  //  asynchronously);
+  //xhr.send();
+  xhr.open('POST', xURL, asynchronously);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(queryJSON);
 }
 
 function sendFirstResults() {
