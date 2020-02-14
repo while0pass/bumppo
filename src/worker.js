@@ -18,7 +18,7 @@ const notSameOrigin = self.location.origin !==
 const mainQueryType = 'results'; // 'results' vs. 'layers'
 
 var xhr,
-    resultsData = { total: 0, sent: 0, inc: 30, results: [] },
+    resultsData = { total: 0, results: [] },
     aborted = false,
     useStubData = false;
 
@@ -38,8 +38,6 @@ onmessage = message => {
     }
   } else if (messageType === 'abort') {
     doAbort(xhr);
-  } else if (messageType === 'results1') {
-    sendOtherResults();
   }
 };
 
@@ -86,11 +84,10 @@ function doQuery(queryType, queryJSON) {
         }
 
         if (isMainType) {
-          resultsData.sent = 0;
           resultsData.total = rawData.results.length;
           resultsData.results = rawData.results;
           postMessage(['status', 'Отрисовка результатов']);
-          sendFirstResults();
+          postMessage(['results', resultsData]);
           postMessage(['status', null]);
         } else {
           sendLayers(rawData);
@@ -141,29 +138,12 @@ function doQuery(queryType, queryJSON) {
   xhr.send(queryJSON);
 }
 
-function sendFirstResults() {
-  let firstResults = resultsData.results.slice(0, resultsData.inc);
-  postMessage(['results0', {
-    total: resultsData.total,
-    results: firstResults
-  }]);
-  resultsData.sent = firstResults.length;
-}
-
-function sendOtherResults() {
-  let { sent, inc, results } = resultsData,
-      resultsPortion = results.slice(sent, sent + inc);
-  postMessage(['results1', resultsPortion]);
-  resultsData.sent += resultsPortion.length;
-}
-
 function getStubResults(dataType) {
   if (dataType === mainQueryType) {
-    resultsData.sent = 0;
     resultsData.total = stubResultsData.results.length;
     resultsData.results = stubResultsData.results;
     postMessage(['status', 'Отрисовка результатов']);
-    sendFirstResults();
+    postMessage(['results', resultsData]);
     postMessage(['status', null]);
   } else {
     sendLayers(stubTiersData);

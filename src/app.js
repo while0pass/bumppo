@@ -7,7 +7,7 @@ import { TreeNode } from './scripts/queryTree.js';
 import { getQueryJSON, getLayersQueryJSON } from './scripts/queryJSON.js';
 import Cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
-import { concatResults, getResults } from './scripts/results.js';
+import { getResults } from './scripts/results.js';
 import { LayersStruct } from './scripts/layers.js';
 import { TimeLine } from './scripts/timeline.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
@@ -227,16 +227,6 @@ function viewModel() {
   this.resultsMessage = ko.observable(null);
   this.resultsNumber = ko.observable(null);
   this.activeResult = ko.observable(null);
-  this.resultsPercent = ko.computed(() => {
-    let n = self.resultsData().length,
-        N = self.resultsNumber();
-    if (n === 0 || N === 0) return '100%';
-    return Math.floor(n / N * 100).toFixed(0) + '%';
-  });
-  this.checkResults1 = () => {
-    let value = self.resultsPercent();
-    if (value !== '100%') worker.postMessage(['results1', null]);
-  };
   this.showResults = () => {
     if (self.canViewResults()) {
       if (self.isResultsPaneOn()) {
@@ -265,7 +255,7 @@ if (window[';)'].stub) worker.postMessage(['stub', true]);
 worker.onmessage = message => {
   let [ messageType, data ] = message.data;
   // Получена начальная часть результатов
-  if (messageType === 'results0') {
+  if (messageType === 'results') {
     vM.cinema && vM.cinema.deactivateAll();
     vM.showResultsOnly(true);
     vM.isQueryNew(false);
@@ -279,13 +269,6 @@ worker.onmessage = message => {
       vM.switchOnResultsPane();
     } else {
       vM.resultsMessage('Не найдено ни одного совпадения');
-    }
-
-  // Получена очередная часть результатов
-  } else if (messageType === 'results1') {
-    if (data && data.length) {
-      let lastItem = vM.resultsData().slice(-1)[0];
-      concatResults(vM.resultsData, getResults(data, lastItem));
     }
 
   } else if (messageType === 'layers') {
