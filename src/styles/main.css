@@ -892,39 +892,21 @@ query-node:last-of-type:after {
 
 .bmpp-searchResults {
   width: 100%;
-  display: grid;
-  grid-template-columns: auto auto auto 1fr auto;
-  column-gap: 0.66em;
-  align-items: baseline;
 
   $shortTransitionTime: 0.3s;
   $transitionTime: 0.5s;
 
-  & .divider {
-    grid-column: 1 / span 5;
+  & .bmpp-result {
+    display: flex;
     border: none;
-    border-top: 1px solid $bmppBorderColor;
-    padding: 0.5em 0 0 0;
-    margin: 0.5em 0 0 0;
-  }
-  & .bmpp-recordLabel {
-    position: sticky !important;
-    box-shadow: 0 0 0.3em 0.1em white;
-    top: 1em;
-    grid-column: 5;
-    transition: background-color $transitionTime,
-                color $transitionTime;
-  }
-  & .bmpp-unitValue {
-    text-align: right;
-    color: green;
-    font-size: smaller;
-    grid-column: 3;
-  }
-  & .bmpp-transcription {
-    cursor: pointer;
-    grid-column: 4;
+    border-bottom: 1px solid $bmppBorderColor;
+    padding: 0.5em 0;
+    margin: 0;
     position: relative;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
 
     /* ::after нужен для изменения цвета всей строки сетки,
      * а ::before -- для срабатывания :hover на всей строке,
@@ -934,10 +916,10 @@ query-node:last-of-type:after {
       display: block;
       content: '';
       position: absolute;
-      top: -0.55em;
-      bottom: -0.65em;
-      left: -100em;
-      right: -100em;
+      top: -0.1em;
+      bottom: -0.1em;
+      left: -10em;
+      right: -10em;
     }
 
     &::after {
@@ -956,26 +938,44 @@ query-node:last-of-type:after {
       background-color: color(green a(0.25));
       transition: background-color $shortTransitionTime;
     }
+  }
 
-    &:hover + .bmpp-recordLabel,
-    &.currentItem + .bmpp-recordLabel {
+  & .bmpp-recordLabel {
+    position: sticky !important;
+    top: 1.5em;
+    float: right;
+    margin-top: 0.3em;
+    box-shadow: 0 0 0.3em 0.1em white;
+    transition: background-color $transitionTime,
+                color $transitionTime;
+
+    &.currentItem,
+    &.hoveredItem {
       color: white !important;
       background-color: green !important;
       transition: color $transitionTime,
                   background-color $transitionTime;
     }
   }
+
+
+  & .bmpp-unitValue {
+    text-align: right;
+    color: green;
+    font-size: smaller;
+    margin-right: 0.66em;
+  }
+  & .bmpp-transcription {
+    cursor: pointer;
+    position: relative;
+    flex: 1 0 auto;
+  }
   & .bmpp-time,
   & .bmpp-duration {
     color: grey;
     font-size: smaller;
     text-align: right;
-  }
-  & .bmpp-time {
-    grid-column: 1;
-  }
-  & .bmpp-duration {
-    grid-column: 2;
+    margin-right: 0.66em;
   }
 }
 
