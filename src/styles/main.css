@@ -964,11 +964,15 @@ query-node:last-of-type:after {
     color: green;
     font-size: smaller;
     margin-right: 0.66em;
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
   & .bmpp-transcription {
     cursor: pointer;
     position: relative;
-    flex: 1 0 auto;
+    flex: 1 0 0;
+    white-space: nowrap;
+    overflow-x: hidden;
   }
   & .bmpp-time,
   & .bmpp-duration {
@@ -976,6 +980,8 @@ query-node:last-of-type:after {
     font-size: smaller;
     text-align: right;
     margin-right: 0.66em;
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 
