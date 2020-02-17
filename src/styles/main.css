@@ -892,9 +892,16 @@ query-node:last-of-type:after {
 
 .bmpp-searchResults {
   width: 100%;
+  position: relative;
 
   $shortTransitionTime: 0.3s;
   $transitionTime: 0.5s;
+
+  & #bmpp-referenceResult {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1000;
+  }
 
   & .bmpp-result {
     display: flex;
@@ -902,7 +909,9 @@ query-node:last-of-type:after {
     border-bottom: 1px solid $bmppBorderColor;
     padding: 0.5em 0;
     margin: 0;
-    position: relative;
+    position: absolute;
+    right: 0;
+    left: 0;
 
     &:last-of-type {
       border-bottom: none;
@@ -942,9 +951,9 @@ query-node:last-of-type:after {
 
   & .bmpp-recordLabel {
     position: sticky !important;
-    top: 1.5em;
+    top: 1em;
     float: right;
-    margin-top: 0.3em;
+    z-index: 100;
     box-shadow: 0 0 0.3em 0.1em white;
     transition: background-color $transitionTime,
                 color $transitionTime;
@@ -958,6 +967,10 @@ query-node:last-of-type:after {
     }
   }
 
+  & .bmpp-recordLabelBumper {
+    clear: right;
+    padding: 0.3em 0;
+  }
 
   & .bmpp-unitValue {
     text-align: right;
@@ -970,7 +983,8 @@ query-node:last-of-type:after {
   & .bmpp-transcription {
     cursor: pointer;
     position: relative;
-    flex: 1 0 0;
+    flex: 1 0 auto;
+    width: auto;
     white-space: nowrap;
     overflow-x: hidden;
   }

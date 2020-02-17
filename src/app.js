@@ -120,6 +120,10 @@ function viewModel() {
   this.isSubcorpusNew = ko.observable(false);
 
   this.resultsData = ko.observableArray([]);
+  this.resultsSections = ko.observableArray([]);
+  this.resultsWindow = ko.observableArray([]);
+  this.resultsShift = ko.observable(0);
+  this.resultsNumber = ko.observable(null);
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
@@ -225,7 +229,6 @@ function viewModel() {
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
   this.resultsMessage = ko.observable(null);
-  this.resultsNumber = ko.observable(null);
   this.activeResult = ko.observable(null);
   this.showResults = () => {
     if (self.canViewResults()) {
@@ -236,11 +239,13 @@ function viewModel() {
       }
     }
   };
-  this.responseJSON = ko.computed(
-    () => self.resultsData()
-      ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
-      : ''
-  );
+  if (self.debug) {
+    this.responseJSON = ko.computed(
+      () => self.resultsData()
+        ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
+        : ''
+    );
+  }
   this.clearErrorOrMessage = () => {
     self.searchStatus(null);
     self.resultsError(null);
@@ -262,7 +267,9 @@ worker.onmessage = message => {
     vM.isSubcorpusNew(false);
     vM.activeResult(null);
     vM.resultsNumber(data.total);
-    vM.resultsData(getResults(data.results));
+    let [resultsData, resultsSections] = getResults(data.results);
+    vM.resultsSections(resultsSections);
+    vM.resultsData(resultsData);
     if (data.total > 0) {
       vM.clearErrorOrMessage();
       vM.canViewResults(true);
