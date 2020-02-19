@@ -83,6 +83,11 @@ function doQuery(queryType, queryJSON) {
           return;
         }
 
+        if (rawData.error) {
+          postMessage(['error', rawData.error]);
+          return;
+        }
+
         if (isMainType) {
           resultsData.total = rawData.results.length;
           resultsData.results = rawData.results;
@@ -90,7 +95,7 @@ function doQuery(queryType, queryJSON) {
           postMessage(['results', resultsData]);
           postMessage(['status', null]);
         } else {
-          sendLayers(rawData);
+          postMessage(['layers', rawData]);
         }
       } else {
         let message;
@@ -146,10 +151,6 @@ function getStubResults(dataType) {
     postMessage(['results', resultsData]);
     postMessage(['status', null]);
   } else {
-    sendLayers(stubTiersData);
+    postMessage(['layers', stubTiersData]);
   }
-}
-
-function sendLayers(data) {
-  postMessage(['layers', data]);
 }
