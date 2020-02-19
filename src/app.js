@@ -7,7 +7,7 @@ import { TreeNode } from './scripts/queryTree.js';
 import { getQueryJSON, getLayersQueryJSON } from './scripts/queryJSON.js';
 import Cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
-import { concatResults, getResults } from './scripts/results.js';
+import { getResults } from './scripts/results.js';
 import { LayersStruct } from './scripts/layers.js';
 import { TimeLine } from './scripts/timeline.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
@@ -119,17 +119,25 @@ function viewModel() {
   this.isQueryNew = ko.observable(true);
   this.isSubcorpusNew = ko.observable(false);
 
-  this.resultsData = ko.observableArray([]);
+  this.resultsData = ko.observable([]);
+  this.resultsWindow = ko.observableArray([]);
+  this.resultsSections = ko.observableArray([]);
+  this.resultsNumber = ko.observable(null);
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
+  self._lock_ChangeLayout = false;
   self.showResultsOnly.subscribe(function (value) {
-    const func = () => {
-      const block = value ? 'nearest' : 'center',
-            opts = { behavior: 'auto', block };
-      document.querySelector('.currentItem').scrollIntoView(opts);
-    };
-    setTimeout(func, 500);
+    if (!value) {
+      self._lock_ChangeLayout = true;
+      const func = () => {
+        const block = value ? 'nearest' : 'center',
+              opts = { behavior: 'auto', block };
+        document.querySelector('.currentItem').scrollIntoView(opts);
+        self._lock_ChangeLayout = false;
+      };
+      setTimeout(func, 500);
+    }
   });
 
   this.timeline = new TimeLine(this.layersData);
@@ -225,18 +233,7 @@ function viewModel() {
   this.canViewResults = ko.observable(false);
   this.resultsError = ko.observable(null);
   this.resultsMessage = ko.observable(null);
-  this.resultsNumber = ko.observable(null);
   this.activeResult = ko.observable(null);
-  this.resultsPercent = ko.computed(() => {
-    let n = self.resultsData().length,
-        N = self.resultsNumber();
-    if (n === 0 || N === 0) return '100%';
-    return Math.floor(n / N * 100).toFixed(0) + '%';
-  });
-  this.checkResults1 = () => {
-    let value = self.resultsPercent();
-    if (value !== '100%') worker.postMessage(['results1', null]);
-  };
   this.showResults = () => {
     if (self.canViewResults()) {
       if (self.isResultsPaneOn()) {
@@ -246,11 +243,13 @@ function viewModel() {
       }
     }
   };
-  this.responseJSON = ko.computed(
-    () => self.resultsData()
-      ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
-      : ''
-  );
+  if (self.debug) {
+    this.responseJSON = ko.computed(
+      () => self.resultsData()
+        ? JSON.stringify(self.resultsData().map(x => x.forJSON()), null, 4)
+        : ''
+    );
+  }
   this.clearErrorOrMessage = () => {
     self.searchStatus(null);
     self.resultsError(null);
@@ -265,27 +264,22 @@ if (window[';)'].stub) worker.postMessage(['stub', true]);
 worker.onmessage = message => {
   let [ messageType, data ] = message.data;
   // Получена начальная часть результатов
-  if (messageType === 'results0') {
+  if (messageType === 'results') {
     vM.cinema && vM.cinema.deactivateAll();
     vM.showResultsOnly(true);
     vM.isQueryNew(false);
     vM.isSubcorpusNew(false);
     vM.activeResult(null);
     vM.resultsNumber(data.total);
-    vM.resultsData(getResults(data.results));
+    let [resultsData, resultsSections] = getResults(data.results);
+    vM.resultsSections(resultsSections);
+    vM.resultsData(resultsData);
     if (data.total > 0) {
       vM.clearErrorOrMessage();
       vM.canViewResults(true);
       vM.switchOnResultsPane();
     } else {
       vM.resultsMessage('Не найдено ни одного совпадения');
-    }
-
-  // Получена очередная часть результатов
-  } else if (messageType === 'results1') {
-    if (data && data.length) {
-      let lastItem = vM.resultsData().slice(-1)[0];
-      concatResults(vM.resultsData, getResults(data, lastItem));
     }
 
   } else if (messageType === 'layers') {

@@ -240,10 +240,11 @@ class Match {
   }
 }
 
-export class Result {
+class Result {
   constructor(data) {
     // NOTE: удалить после миграции на новую версию API результатов
     if (Array.isArray(data)) { data = data[0]; }
+
     this._data = data;
 
     this.record_id = this.getRecordId(data && data.record_id || '');
@@ -251,7 +252,8 @@ export class Result {
     this.participant = data.participant || data.tier && data.tier[0] || '';
     this.filmType = this.getFilmType();
 
-    this.setup();
+    this.ix = null; // Номер результата в выборке, нумерация с 0
+    this.record_ix = null; // То же, но в рамках одной записи, а не всей выборки
   }
   getRecordId(raw_record_id) {
     let splits = raw_record_id.split(R);
@@ -259,12 +261,6 @@ export class Result {
       return splits[1];
     }
     return 'NoID';
-  }
-  setup() {
-    this.previousItem = null;
-  }
-  setPreviousItem(item) {
-    this.previousItem = item;
   }
   getFilmType() {
     let filmType = this.match.tier.slice(-10) === '-oFixation' ? 'ey' : 'vi';
@@ -276,20 +272,63 @@ export class Result {
 }
 
 
-export function getResults(newItems, lastItem=null) {
-  let results = newItems.map(item => new Result(item));
+const referenceResultData = {
+  show_tiers: { 'C-vLineHTML':
+    '\\собирает (0.18) (ə 0.63) груши себе в (ˀ 0.36) /ф<u>а</u>ртук,' },
+  value: 'C-vE009',
+  c_1: {
+    id: 'C-vE009',
+    value: 'C-vE009',
+    time: { begin: 232020, end: 235340 }
+  },
+  tier: 'C-vLine',
+  c_2: {
+    tier: 'R_oFixation',
+    id: 'R-oF0233',
+    value: 'R-oF0233',
+    time: { end: 235420 }
+  },
+  c_1p0: {
+    tier: 'C_vLineType',
+    id: 'C-vE009',
+    value: 'EDU',
+    time: { begin: 235340, end: 235340 }
+  },
+  time: { begin: 232020, end: 235340 },
+  record_id: '22',
+  is_main: true
+};
+const referenceResult = new Result(referenceResultData);
+
+
+function getResults(dataItems) {
+  let results = dataItems.map(item => new Result(item)),
+      sections = [],
+      record_ix = 0;
   results.forEach((item, index, array) => {
-    let previousItem = index > 0 ? array[index - 1] : (lastItem ? lastItem : null);
-    item.setPreviousItem(previousItem);
+    item.ix = index;
+    item.record_ix = record_ix;
+    record_ix += 1;
+
+    if (index === 0 || item.record_id !== array[index - 1].record_id) {
+      var prevSection = sections.length > 0 ? sections.slice(-1)[0] : null,
+          nextSection = {
+            firstItem: item,
+            firstIndex: index,
+            sectionLength: 1,
+          };
+      sections.push(nextSection);
+      if (prevSection !== null) {
+        prevSection.sectionLength = index - prevSection.firstIndex;
+      }
+      record_ix = 0;
+    }
+    if (index === array.length - 1) {
+      let lastSection = sections.slice(-1)[0];
+      lastSection.sectionLength = index + 1 - lastSection.firstIndex;
+    }
   });
-  return results;
+  return [results, sections];
 }
 
-export function concatResults(oldOnesKoObservable, newOnes) {
-  let n = oldOnesKoObservable().length;
-  if (n > 0) {
-    let previousItem = oldOnesKoObservable()[n - 1];
-    newOnes[0].setPreviousItem(previousItem);
-  }
-  oldOnesKoObservable.splice(n, 0, ...newOnes);
-}
+export { Result, getResults, referenceResult };
