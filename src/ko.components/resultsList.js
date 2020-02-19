@@ -29,13 +29,12 @@ const template = `
       </div>
 
     <!-- /ko -->
-    <!-- ko foreach: resultsData -->
+    <!-- ko foreach: resultsWindow -->
 
       <div class="bmpp-result" data-bind="
         event: { mouseover: $component.hoveredItem },
         css: { currentItem: $data === $component.cinema.activeDataItem() },
-        style: { top: $component.resultHeight() *
-          ($component.resultsShift() + $index()) }">
+        style: { top: $component.resultHeight() * ix }">
 
         <div class="bmpp-time"
           data-bind="text: match.beginTime + '–' + match.endTime"></div>
@@ -60,7 +59,7 @@ var viewModelFactory = function (params) {
       cinema = vM.cinema,
       hoveredItem = ko.observable(null),
       resultsSections = vM.resultsSections,
-      resultsShift = vM.resultsShift,
+      resultsWindow = vM.resultsWindow,
       resultsData = params.resultsData,
       referenceResult = ko.computed(function () {
         let rD = resultsData();
@@ -79,8 +78,67 @@ var viewModelFactory = function (params) {
       onResizeReferenceResult = () => {
         resultHeight(elem.clientHeight + borderWidth);
       },
-      ro = new ResizeObserver(onResizeReferenceResult);
-  ro.observe(elem);
+      ro1 = new ResizeObserver(onResizeReferenceResult);
+  ro1.observe(elem);
+
+  let resultsDiv = document.getElementById('bmpp-results'),
+      rerenderId = null,
+      rerenderItems = () => {
+
+        if (vM._lock_ChangeLayout) {
+          if (rerenderId !== null) clearTimeout(rerenderId);
+          rerenderId = setTimeout(rerenderItems, 500);
+          return;
+        }
+
+        const N = vM.resultsNumber(),
+              arr = resultsWindow(),
+              itemHeight = resultHeight(),
+              windowHeight = resultsDiv.clientHeight,
+              halfHeight = windowHeight / 2,
+              scrollTop = resultsDiv.scrollTop,
+              shiftA = scrollTop - halfHeight,
+              shiftZ = scrollTop + windowHeight + halfHeight;
+
+        let ixA = Math.floor(shiftA / itemHeight),
+            ixZ = Math.floor(shiftZ / itemHeight);
+        if (ixA < 0) ixA = 0;
+        if (ixZ > N - 1) ixZ = N - 1;
+
+        if (arr.length > 0) {
+          let wA = arr.slice(0, 1)[0].ix,
+              wZ = arr.slice(-1)[0].ix;
+          if (ixA > wZ || ixZ < wA) {
+            resultsWindow(resultsData().slice(ixA, ixZ + 1));
+          } else {
+            if (ixA < wA) {
+              resultsWindow.splice(0, 0, ...resultsData().slice(ixA, wA));
+            } else if (ixA > wA) {
+              resultsWindow.splice(0, ixA - wA);
+            }
+            if (ixZ > wZ) {
+              resultsWindow.splice(resultsWindow().length, 0,
+                ...resultsData().slice(wZ + 1, ixZ + 1));
+            } else if (ixZ < wZ) {
+              let d = wZ - ixZ;
+              resultsWindow.splice(-d, d);
+            }
+          }
+        } else {
+          resultsWindow(resultsData().slice(ixA, ixZ + 1));
+        }
+      },
+      ro2 = new ResizeObserver(rerenderItems);
+  ro2.observe(resultsDiv);
+  resultHeight.subscribe(rerenderItems);
+
+  resultsData.subscribe(results => {
+    let size = Math.ceil(resultsDiv.clientHeight / resultHeight()) * 2;
+    resultsDiv.scrollTop = 0;
+    resultsWindow(results.slice(0, size));
+  });
+
+  resultsDiv.addEventListener('scroll', rerenderItems);
 
   function showFilm(data) {
     if (data !== cinema.activeDataItem()) {
@@ -93,7 +151,7 @@ var viewModelFactory = function (params) {
 
   return {
     cinema, showFilm, hoveredItem,
-    resultsData, resultsHeight, resultHeight, resultsShift, referenceResult,
+    resultsWindow, resultsHeight, resultHeight, referenceResult,
     resultsSections,
   };
 };

@@ -119,21 +119,25 @@ function viewModel() {
   this.isQueryNew = ko.observable(true);
   this.isSubcorpusNew = ko.observable(false);
 
-  this.resultsData = ko.observableArray([]);
-  this.resultsSections = ko.observableArray([]);
+  this.resultsData = ko.observable([]);
   this.resultsWindow = ko.observableArray([]);
-  this.resultsShift = ko.observable(0);
+  this.resultsSections = ko.observableArray([]);
   this.resultsNumber = ko.observable(null);
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.
+  self._lock_ChangeLayout = false;
   self.showResultsOnly.subscribe(function (value) {
-    const func = () => {
-      const block = value ? 'nearest' : 'center',
-            opts = { behavior: 'auto', block };
-      document.querySelector('.currentItem').scrollIntoView(opts);
-    };
-    setTimeout(func, 500);
+    if (!value) {
+      self._lock_ChangeLayout = true;
+      const func = () => {
+        const block = value ? 'nearest' : 'center',
+              opts = { behavior: 'auto', block };
+        document.querySelector('.currentItem').scrollIntoView(opts);
+        self._lock_ChangeLayout = false;
+      };
+      setTimeout(func, 500);
+    }
   });
 
   this.timeline = new TimeLine(this.layersData);
