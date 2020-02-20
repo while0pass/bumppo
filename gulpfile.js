@@ -29,11 +29,11 @@ const babel = require('gulp-babel'),
 
 // Rollup plugins
 const //builtins = require('rollup-plugin-node-builtins'),
-      commonjs = require('rollup-plugin-commonjs'),
+      commonjs = require('@rollup/plugin-commonjs'),
       //globals = require('rollup-plugin-node-globals'),
       jscc = require('rollup-plugin-jscc'),
-      json = require('rollup-plugin-json'),
-      resolve = require('rollup-plugin-node-resolve');
+      json = require('@rollup/plugin-json'),
+      resolve = require('@rollup/plugin-node-resolve');
 
 // PostCSS plugins
 const //calc = require('postcss-calc'),

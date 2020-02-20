@@ -1,6 +1,6 @@
 {
   "name": "bumppo",
-  "version": "0.11.73",
+  "version": "0.11.74",
   "description": "Search UI for the Multichannel Discourse Project",
   "main": "build/js/spa.js",
   "license": "CC0-1.0",
@@ -26,6 +26,9 @@
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "cssnano": "^4.1.10",
     "eslint": "^6.6.0",
     "gulp": "^4.0.2",
@@ -53,11 +56,7 @@
     "postcss-preset-env": "^6.7.0",
     "postcss-simple-vars": "^5.0.2",
     "rollup": "^1.27.2",
-    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-jscc": "^1.0.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "yarn-run-all": "^3.1.1"
   }
 }

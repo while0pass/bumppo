@@ -138,9 +138,10 @@ function doQuery(queryType, queryJSON) {
   //xhr.open('GET', xURL + '?data=' + encodeURIComponent(queryJSON),
   //  asynchronously);
   //xhr.send();
+  let formData = new FormData();
+  formData.append('data', queryJSON);
   xhr.open('POST', xURL, asynchronously);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(queryJSON);
+  xhr.send(formData);
 }
 
 function getStubResults(dataType) {
