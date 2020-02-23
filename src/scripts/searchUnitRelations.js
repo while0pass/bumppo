@@ -229,9 +229,10 @@ class NodesRelationsFormula {
   }
   showSameParticipantsRelation(self) {
     return function () {
-      if (self.node2.unitType() === null) return false;
+      let n2 = self.node2;
+      if (!n2.unitType || n2.unitType() === null) return false;
       let p1 = self.node1.getParticipants(),
-          p2 = self.node2.getParticipants();
+          p2 = n2.getParticipants();
       if (p1.length === 1 && p2.length === p1.length) return false;
       for (let p of p1) if (p2.indexOf(p) > -1) return true;
       return false;
@@ -239,9 +240,10 @@ class NodesRelationsFormula {
   }
   getSameParticipantsIndicator() {
     let x = ko.computed(function () {
-      if (this.node2.unitType() === null) return false;
+      let n2 = this.node2;
+      if (!n2.unitType || n2.unitType() === null) return false;
       let p1 = this.node1.getParticipants(),
-          p2 = this.node2.getParticipants();
+          p2 = n2.getParticipants();
       if (p1.length === 1 && p2.length === p1.length) {
         return p1[0] === p2[0];
       }
