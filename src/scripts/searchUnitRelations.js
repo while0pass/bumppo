@@ -216,7 +216,7 @@ class NodesRelationsFormula {
     this.chosenRelations.dispose();
     this.visibleRelations.dispose();
     delete this.relationsMap;
-    this.relations.dispose();
+    delete this.relations;
     delete this.node2;
     delete this.node1;
   }
