@@ -114,7 +114,11 @@ function assets() {
     src('node_modules/plyr/dist/plyr.css').pipe(dest('.build')),
     src(['node_modules/svg.js/dist/svg.min.js',
          'node_modules/jquery.initialize/jquery.initialize.min.js'])
-      .pipe(dest('.build/js/libs'))
+      .pipe(dest('.build/js/libs')),
+    src('src/scraps/ref00.svg').pipe(dest('.build')),
+    src('src/scraps/ref01.svg').pipe(dest('.build')),
+    src('src/scraps/ref10.svg').pipe(dest('.build')),
+    src('src/scraps/ref11.svg').pipe(dest('.build')),
   );
 }
 

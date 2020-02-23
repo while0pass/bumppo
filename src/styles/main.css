@@ -1134,3 +1134,50 @@ unit-proxy .ui.grey.circular.label {
 .bmpp-unitProps {
   margin: 1.5em 0 2.5em 0;
 }
+
+distance-relation button.ui.icon {
+  padding: 0 1em;
+}
+
+distance-relation .ui.icon.align {
+  width: 1.5em;
+  background-size: 1.3em;
+  background-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  &::before {
+    content: '';
+  }
+  &.left {
+    background-image: url(ref00.svg);
+    mask-image: url(ref00.svg);
+  }
+  &.right {
+    background-image: url(ref11.svg);
+    mask-image: url(ref11.svg);
+  }
+  &.center {
+    background-image: url(ref10.svg);
+    mask-image: url(ref10.svg);
+  }
+  &.justify {
+    background-image: url(ref01.svg);
+    mask-image: url(ref01.svg);
+  }
+}
+
+@supports (mask: url('')) {
+  distance-relation .ui.icon.align.left,
+  distance-relation .ui.icon.align.right,
+  distance-relation .ui.icon.align.center,
+  distance-relation .ui.icon.align.justify {
+    background-image: none;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+
+  distance-relation button.ui.icon:hover .ui.icon.align,
+  distance-relation button.ui.icon.active .ui.icon.align {
+    background-color: rgba(0, 0, 0, 0.95);
+  }
+}
