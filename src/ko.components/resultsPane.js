@@ -251,7 +251,9 @@ function viewModelFactory(params) {
       syncScrollLeft = scrollLeft => {
         elLL.scrollLeft = scrollLeft;
         elTL.scrollLeft = scrollLeft;
-        elCC.style.left = scrollLeft > 0 ? -scrollLeft : 0;
+        let shiftLeft =  scrollLeft > 0 ? -scrollLeft : 0;
+        elCC.style.left = shiftLeft; // Chrome
+        elCC.setAttribute('style', `left:${ shiftLeft }px;`); // Firefox
       },
       syncScrollTop = scrollTop => {
         elNC.scrollTop = scrollTop;

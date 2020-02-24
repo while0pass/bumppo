@@ -132,8 +132,9 @@ function viewModel() {
       self._lock_ChangeLayout = true;
       const func = () => {
         const block = value ? 'nearest' : 'center',
-              opts = { behavior: 'auto', block };
-        document.querySelector('.currentItem').scrollIntoView(opts);
+              opts = { behavior: 'auto', block },
+              element = document.querySelector('.currentItem');
+        if (element !== null) element.scrollIntoView(opts);
         self._lock_ChangeLayout = false;
       };
       setTimeout(func, 500);
