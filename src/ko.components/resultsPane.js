@@ -153,7 +153,10 @@ const layersTemplate = `
     </div>
     <div id="bmpp-layersButtons">
       <ul>
-        <li data-bind="click: zoomAll">all</li>
+        <li data-bind="click: zoomAll">
+          <i class="ui expand icon"></i>
+          all
+        </li>
         <li data-bind="click: zoomIn">in</li>
         <li data-bind="click: zoomOut">out</li>
         <li data-bind="click: zoomSel">sel</li>
@@ -161,19 +164,12 @@ const layersTemplate = `
       </ul>
       <ul data-bind="visible: cinema.timeline.selectionEdges()[0] !== null">
         <li data-bind="click: playAllVisible">
-          <i class="ui disabled large angle left icon"></i>
           <i class="ui disabled play icon"></i>
-          <i class="ui disabled large angle right icon"></i>
+          all
         </li>
-        <li data-bind="click: playPreSelection">
-          <i class="ui disabled large angle left icon"></i>
-        </li>
-        <li data-bind="click: playSelection">
-          <i class="ui disabled play icon"></i>
-        </li>
-        <li data-bind="click: playPostSelection">
-          <i class="ui disabled large angle right icon"></i>
-        </li>
+        <li data-bind="click: playPreSelection">pre</li>
+        <li data-bind="click: playSelection">sel</li>
+        <li data-bind="click: playPostSelection">post</li>
       </ul>
     </div>
 

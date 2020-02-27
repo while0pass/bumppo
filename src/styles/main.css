@@ -365,6 +365,7 @@ $layersPanelButtonsHeight: 2rem;
         margin: 0 3em 0 0;
         padding: 0;
         display: flex;
+        align-items: baseline;
       }
 
       & ul li {
@@ -377,6 +378,10 @@ $layersPanelButtonsHeight: 2rem;
         &:hover {
           background-color: $bmppBorderColor;
         }
+      }
+
+      & ul + ul li:first-of-type {
+        border-left: 1px solid $bmppBorderColor;
       }
     }
 
