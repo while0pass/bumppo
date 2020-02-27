@@ -29,7 +29,7 @@ const videoTemplate = `
 
 const queryInfoTemplate = `
 
-  <div id="bmpp-resultsInfo">
+  <div id="bmpp-resultsInfo"><div style="max-width: 40em">
 
     <div style="margin-bottom: .33em;">
       <em>Область поиска:</em>&#x2002;<span
@@ -75,7 +75,7 @@ const queryInfoTemplate = `
       <!-- /ko -->
     </div>
 
-  </div>
+  </div></div>
 
 `;
 

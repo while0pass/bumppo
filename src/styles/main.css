@@ -584,7 +584,6 @@ $layerHeight: 2rem;
 
 #bmpp-resultsInfo {
   grid-area: info;
-  max-width: 40em;
   padding: 0.7em 1em;
   font-size: smaller;
   position: relative;
