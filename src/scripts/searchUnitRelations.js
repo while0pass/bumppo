@@ -15,8 +15,8 @@ const r_sameParticipant = {
 const rp_occurrence = {
   type: 'list', name: 'Встречаемость', id: 'occurrence',
   valueList: { radioButtons: true, xorValues: [
-    { name: 'встречаются', value: true },
-    { name: 'не встречаются', value: false },
+    { name: 'должны встречаться', value: true },
+    { name: 'не должны встречаться', value: false },
   ]}};
 
 const MILLISECONDS = 'ms',
@@ -154,11 +154,17 @@ class Distance {
           unitsDistance = ko.unwrap(this.intervalInUnits.banner),
           distance = measureInMs ? msDistance : unitsDistance,
           referencePoints = REF_POINTS[this.referencePoints.value()],
-          occurrence = this.occurrence.value() ? 'встречаются' : 'не встречаются',
-          banner = `
+          _arr = this.occurrence.chosenValues(),
+          occurrence = _arr.length > 0 ? _arr[0].name : '',
+          banner = measureInMs ? `
 
-            Такие #1#, что на расстоянии ${ distance } ${ referencePoints }
-            ${ occurrence } #2#
+            Единицы типа #2# ${ occurrence }
+            на расстоянии ${ distance } ${ referencePoints }
+
+          ` : `
+
+            Единицы типа #2# ${ occurrence }
+            на удалении ${ distance } от #1#
 
           `;
       return banner;

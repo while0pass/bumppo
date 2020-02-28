@@ -703,6 +703,10 @@ query-node:last-of-type:after {
     padding-right: 2.5em !important;
   }
 
+  .ui.input& > input {
+    max-width: 15em;
+  }
+
   & .bmpp-numberControls {
     display: none;
   }
