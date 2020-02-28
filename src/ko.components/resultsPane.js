@@ -164,8 +164,9 @@ const layersTemplate = `
       </ul>
       <ul data-bind="visible: cinema.timeline.selectionEdges()[0] !== null">
         <li data-bind="click: playAllVisible">
-          <i class="ui disabled play icon"></i>
-          all
+          <i class="ui disabled play icon"
+            data-bind="class: cinema.canPlayOrPause"></i>
+          win
         </li>
         <li data-bind="click: playPreSelection">pre</li>
         <li data-bind="click: playSelection">sel</li>

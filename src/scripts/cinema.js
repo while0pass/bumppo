@@ -139,6 +139,9 @@ class Film {
   }
 }
 
+const PLAY_CSS_CLASS = 'play',
+      PAUSE_CSS_CLASS = 'pause';
+
 class Cinema {
   constructor(timeline) {
     this.films = {};
@@ -153,6 +156,7 @@ class Cinema {
     this.activeRecordId = ko.observable(null);
     this.activeFilmType = ko.observable(null);
     this.activeDataItem = ko.observable(null);
+    this.canPlayOrPause = ko.observable(PLAY_CSS_CLASS);
     this.timeline = timeline;
     this.cursorStruct = this.createCursorStruct();
   }
@@ -295,6 +299,15 @@ class Cinema {
             new Film(this, { recordId: recordId, filmType: filmType });
     this.films[key] = film;
     this.hideAllBut(key);
+    if (isCreated) {
+      let cinema = this;
+      film.film.on('play', () => {
+        cinema.canPlayOrPause(PAUSE_CSS_CLASS);
+      });
+      film.film.on('pause', () => {
+        cinema.canPlayOrPause(PLAY_CSS_CLASS);
+      });
+    }
     return [film, isCreated];
   }
   pauseAll() {
