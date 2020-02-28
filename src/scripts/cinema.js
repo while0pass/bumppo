@@ -4,15 +4,15 @@ import Plyr from 'plyr';
 
 import cinematheque from '../video_data.js';
 
-const plyrOpts = {
+var plyrOpts = {
   clickToPlay: true,
-  controls: ['play', 'current-time', 'mute', 'volume', 'fullscreen'],
+  controls: ['play', 'current-time', 'mute', 'volume', 'fullscreen', 'settings'],
   debug: false && !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
   invertTime: false,
   fullscreen: { enabled: true, fallback: true, iosNative: false },
   ratio: '16:9',
-  //settings: ['speed'],
-  //speed: { selected: 1, options: [0.5, 0.75, 1] },
+  settings: ['speed'],
+  speed: { selected: 1, options: [0.5, 0.75, 1] },
 };
 
 //const performance = window.performance || window.Date;
@@ -45,7 +45,7 @@ class Film {
 
           `);
 
-    jQuery(this.cinema.screen).append(element);
+    jQuery(cinema.screen).append(element);
     element.on('mouseenter', () => {
       self.isMouseWithin = true;
     });
@@ -61,8 +61,33 @@ class Film {
   deactivateIFrame() {
     this.element.css({ zIndex: -1000 });
   }
+  getPlyrOpts(cinema) {
+    if (plyrOpts.listeners === undefined) {
+      plyrOpts.listeners = {
+        play: function () {
+          const recordId = cinema.activeRecordId(),
+                filmType = cinema.activeFilmType(),
+                film = cinema.getFilm(recordId, filmType)[0];
+          if (film.film.playing) {
+            cinema._isFilmPausedByUser = true;
+          } else {
+            // play the selected interval
+            let [xStart, xEnd] = cinema.timeline.selectionEdges();
+            // if no selected interval play interval visible within the window
+            if (xStart === null) {
+              xStart = cinema.timeline.getWindowStart();
+              xEnd = cinema.timeline.getWindowEnd();
+            }
+            cinema.prepareEpisode(xStart, xEnd);
+          }
+        }
+      };
+    }
+    return plyrOpts;
+  }
   createFilm(cinema, element) {
     let self = this,
+        plyrOpts = this.getPlyrOpts(cinema),
         film = new Plyr(element.find('video'), plyrOpts),
         showLoader = () => { cinema.loader.show(); },
         hideLoader = () => { cinema.loader.hide(); },
@@ -196,6 +221,7 @@ class Cinema {
       film.currentTime = begin;
       film.play();
     }
+    this._isFilmPausedByUser = false;
     this.hideCurtain();
   }
   showFilm(recordId, filmType, dataItem) {
@@ -213,6 +239,33 @@ class Cinema {
     begin /= 1000;
     end /= 1000;
     cinema._play(film, isCreated, begin, end);
+  }
+  prepareEpisode(begin, end) {
+    if (this._isFilmPausedByUser) {
+      this._isFilmPausedByUser = false;
+      return;
+    }
+    let recordId = this.activeRecordId(),
+        filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      let [film, isCreated] = this.getFilm(recordId, filmType);
+      begin /= 1000;
+      end /= 1000;
+      let isBeginChanged = Math.abs(film.episode.begin - begin) > 1e-3,
+          isEndChanged = Math.abs(film.episode.end - end) > 1e-3;
+      if (isBeginChanged) film.episode.begin = begin;
+      if (isEndChanged) film.episode.end = end;
+      film = film.film;
+      if (isCreated) {
+        film.once('loadedmetadata', function () {
+          film.currentTime = begin;
+        });
+      } else {
+        if (isBeginChanged) {
+          film.currentTime = begin;
+        }
+      }
+    }
   }
   showEpisode(begin, end) {
     let recordId = this.activeRecordId(),

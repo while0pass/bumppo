@@ -544,6 +544,18 @@ function viewModelFactory(params) {
             xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
             xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start;
         cinema.showEpisode(xStart, xEnd);
+        // TODO: Проверить, в чем разница между подсчетом xStart, xEnd
+        // в данной функции и timeline.getWindowStart()
+        // и timeline.getWindowEnd().
+        //
+        //   console.log(xStart, xEnd,
+        //     timeline.getWindowStart(), timeline.getWindowEnd());
+        //
+        // Кажется, для вычисления xStart и xEnd в функциях playAllVisible,
+        // playPreSelection, playSelection, playPostSelection можно
+        // использовать timeline.getWindowStart() и timeline.getWindowEnd().
+        //
+        // Одно из свидетельств того, что сам автор плохо знает свой код ;)
       },
       playPreSelection = () => {
         let windowLeft = elTL.getBoundingClientRect().left,
