@@ -65,6 +65,7 @@ const template = `
 
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
+      slug = null,
       noProxyOptions = ko.computed(() => node.isProxy &&
         node.parentNode.refOpts().length === 0),
       addUnitPopupOpts = {
@@ -84,7 +85,21 @@ var viewModelFactory = (params, componentInfo) => {
         }
       };
 
-  new Slug(params.draw, componentInfo.element, node);
+  if (node.parentNode !== null) {
+    new Slug(params.draw, componentInfo.element, node);
+  } else {
+    if (node.childNodes().length > 0) {
+      slug = new Slug(params.draw, componentInfo.element, node);
+    }
+    node.childNodes.subscribe(function (arr) {
+      if (arr.length > 0 && slug === null) {
+        slug = new Slug(params.draw, componentInfo.element, node);
+      } else if (arr.length === 0 && slug !== null) {
+        slug.dispose();
+        slug = null;
+      }
+    });
+  }
 
   jQuery(document).ready(() => {
     let x = jQuery(componentInfo.element);
