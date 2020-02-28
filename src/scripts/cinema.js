@@ -149,12 +149,12 @@ class Cinema {
   constructor(timeline) {
     this.films = {};
     this.filmTypes = [
-      { id: 'N-vi', disabled: false },
-      { id: 'N-ey', disabled: false },
-      { id: 'C-vi', disabled: false },
-      { id: 'R-vi', disabled: false },
-      { id: 'R-ey', disabled: false },
-      { id: 'W-vi', disabled: false },
+      { id: 'N-vi', disabled: false, title: 'Индивидуальное видео Рассказчика' },
+      { id: 'N-ey', disabled: false, title: 'Видео с айтрекера Рассказчика' },
+      { id: 'C-vi', disabled: false, title: 'Индивидуальное видео Комментатора' },
+      { id: 'R-vi', disabled: false, title: 'Индивидуальное видео Пересказчика' },
+      { id: 'R-ey', disabled: false, title: 'Видео с айтрекера Пересказчика' },
+      { id: 'W-vi', disabled: false, title: 'Видео общего плана' },
     ];
     this.activeRecordId = ko.observable(null);
     this.activeFilmType = ko.observable(null);

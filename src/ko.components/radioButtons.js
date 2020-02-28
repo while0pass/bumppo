@@ -5,7 +5,8 @@ const template = `
   <div class="ui small basic buttons" data-bind="foreach: valueList.items">
     <button class="ui button"
       data-bind="css: { active: userChecked, icon: $data.icon },
-                 event: { click: function () { userChecked(true); } }">
+                 event: { click: function () { userChecked(true); } },
+                 attr: { title: title }">
 
       <!-- ko ifnot: $data.icon -->
         <span data-bind="html: name"></span>

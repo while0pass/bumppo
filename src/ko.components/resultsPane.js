@@ -16,6 +16,7 @@ const videoTemplate = `
     <div id="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">
       <div data-bind="
         text: id,
+        attr: { title: title },
         click: $component.showAlternativeFilm,
         css: {
           disabled: disabled || !$component.cinema.activeDataItem(),
@@ -146,6 +147,7 @@ const layersTemplate = `
         <div class="bmpp-layer" data-bind="foreach: segments,
           css: { highlighted: $component.highlighted() === type }">
           <div class="bmpp-segment" data-bind="html: value,
+            attr: { title: $component.untag(value) },
             style: { width: width, left: x },
             event: { dblclick: $component.selectionFromSegment }"></div>
         </div>
@@ -153,14 +155,20 @@ const layersTemplate = `
     </div>
     <div id="bmpp-layersButtons">
       <ul>
-        <li data-bind="click: zoomAll">
+        <li data-bind="click: zoomAll"
+          title="Привести масштаб в соответствие подгруженному фрагменту">
           <i class="ui expand icon"></i>
           all
         </li>
-        <li data-bind="click: zoomIn">in</li>
-        <li data-bind="click: zoomOut">out</li>
-        <li data-bind="click: zoomSel">sel</li>
-        <li data-bind="click: selectionBak">bak</li>
+        <li data-bind="click: zoomIn"
+          title="Увеличить масштаб">in</li>
+        <li data-bind="click: zoomOut"
+          title="Уменьшить масштаб в рамках подгруженного фрагмента">out</li>
+        <li data-bind="click: zoomSel"
+          title="Привести масштаб в соответствие выделенному фрагменту"
+          >sel</li>
+        <li data-bind="click: selectionBak"
+          title="Вернуть прежнее выделение">bak</li>
       </ul>
       <ul data-bind="visible: cinema.timeline.selectionEdges()[0] !== null">
         <li data-bind="click: cinema.playOrPause.bind(cinema)"
@@ -170,7 +178,8 @@ const layersTemplate = `
         </li>
         <!-- ko foreach: playTypes -->
           <li data-bind="click: setPlayType, text: label,
-            css: { active: $component.cinema.playType() === playType }"></li>
+            css: { active: $component.cinema.playType() === playType },
+            attr: { title: title }"></li>
         <!-- /ko -->
       </ul>
     </div>
@@ -589,21 +598,29 @@ function viewModelFactory(params) {
     zoomOut();
   });
 
-  timeline.afterInitDom();
+  function untag(html) {
+    return html.replace(/<[^>]+>/g, '')
+      .replace('"', '&quot;')
+      .replace("'", '&apos;'); // eslint-disable-line quotes
+  }
 
   const playTypes = [
-    { label: 'win', playType: cinema.playTypes.PLAY_VISIBLE, setPlayType },
+    { label: 'win', playType: cinema.playTypes.PLAY_VISIBLE, setPlayType,
+      title: 'Проигрывать фрагмент видео, умещающийся в окне слоёв' },
     { label: 'pre', playType: cinema.playTypes.PLAY_PRE_SELECTION,
-      setPlayType },
-    { label: 'sel', playType: cinema.playTypes.PLAY_SELECTION, setPlayType },
+      setPlayType, title: 'Проигрывать фрагмент видео до выделения' },
+    { label: 'sel', playType: cinema.playTypes.PLAY_SELECTION, setPlayType,
+      title: 'Проигрывать фрагмент видео, соостветствующий выделению' },
     { label: 'post', playType: cinema.playTypes.PLAY_POST_SELECTION,
-      setPlayType },
+      setPlayType, title: 'Проигрывать фрагмент видео после выделения' },
   ];
+
+  timeline.afterInitDom();
 
   return {
     resultsData: params.resultsData,
     activeResult: params.viewModel.activeResult,
-    layersStruct, cinema, selectionFromSegment, highlighted,
+    layersStruct, cinema, selectionFromSegment, highlighted, untag,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
     zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,

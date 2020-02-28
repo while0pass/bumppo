@@ -37,10 +37,14 @@ const END_BGN = 'begin_2_end_1',
 const rp_referencePoints = {
   type: 'list', name: 'Точки отсчета', id: 'refPoints',
   valueList: { radioButtons: true, xorValues: [
-    { name: 'от конца #1# до начала #2#', icon: 'align center', value: END_BGN },
-    { name: 'от начала #1# до конца #2#', icon: 'align justify', value: BGN_END },
-    { name: 'от начала #1# до начала #2#', icon: 'align left', value: BGN_BGN },
-    { name: 'от конца #1# до конца #2#', icon: 'align right', value: END_END },
+    { name: 'от конца #1# до начала #2#', icon: 'align center',
+      value: END_BGN, title: 'От конца первой единицы до начала второй' },
+    { name: 'от начала #1# до конца #2#', icon: 'align justify',
+      value: BGN_END, title: 'От начала первой единицы до конца второй' },
+    { name: 'от начала #1# до начала #2#', icon: 'align left',
+      value: BGN_BGN , title: 'От начала первой единицы до начала второй' },
+    { name: 'от конца #1# до конца #2#', icon: 'align right',
+      value: END_END, title: 'От конца первой единицы до конца второй' },
   ]}};
 
 const rp_msDistance = {
@@ -111,6 +115,8 @@ const DISTANCE_RELATION_TYPE = Symbol('distance'),
   интерпретируется как интервал «от&nbsp;0 до&nbsp;0». Значения задаются
   в миллисекундах. Если X и Y являются единицам одного типа, между началом
   X и концом Y можно задать расстояние в терминах единицы данного типа.</p>
+
+  <p>Расстояние можно указывать в отрицательных единицах.</p>
 
 `;
 
