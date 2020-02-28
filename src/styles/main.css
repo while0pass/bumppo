@@ -378,6 +378,13 @@ $layersPanelButtonsHeight: 2rem;
         &:hover {
           background-color: $bmppBorderColor;
         }
+
+        &.active {
+          background-color: green;
+          color: white;
+          font-weight: bold;
+          letter-spacing: 0.05em;
+        }
       }
 
       & ul + ul li:first-of-type {

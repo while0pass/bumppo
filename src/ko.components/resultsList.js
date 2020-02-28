@@ -146,6 +146,7 @@ var viewModelFactory = function (params) {
       vM.loadLayers(data);
     }
     vM.showResultsOnly(false);
+    cinema.playType(cinema.playTypes.PLAY_SELECTION);
     cinema.showFilm(data.record_id, data.filmType, data);
   }
 

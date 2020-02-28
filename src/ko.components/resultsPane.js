@@ -16,7 +16,7 @@ const videoTemplate = `
     <div id="bmpp-videoChoices" data-bind="foreach: cinema.filmTypes">
       <div data-bind="
         text: id,
-        click: $component.showFilm,
+        click: $component.showAlternativeFilm,
         css: {
           disabled: disabled || !$component.cinema.activeDataItem(),
           current: $component.cinema.activeFilmType() === id
@@ -163,14 +163,15 @@ const layersTemplate = `
         <li data-bind="click: selectionBak">bak</li>
       </ul>
       <ul data-bind="visible: cinema.timeline.selectionEdges()[0] !== null">
-        <li data-bind="click: playAllVisible">
+        <li data-bind="click: cinema.playOrPause.bind(cinema)"
+            style="border-right: none; padding-right: 0.05em">
           <i class="ui disabled play icon"
             data-bind="class: cinema.canPlayOrPause"></i>
-          win
         </li>
-        <li data-bind="click: playPreSelection">pre</li>
-        <li data-bind="click: playSelection">sel</li>
-        <li data-bind="click: playPostSelection">post</li>
+        <!-- ko foreach: playTypes -->
+          <li data-bind="click: setPlayType, text: label,
+            css: { active: $component.cinema.playType() === playType }"></li>
+        <!-- /ko -->
       </ul>
     </div>
 
@@ -533,63 +534,14 @@ function viewModelFactory(params) {
         previousSelection = x;
       };
 
-  let playAllVisible = () => {
-        let windowLeft = elTL.getBoundingClientRect().left,
-            windowWidth = elTL.clientWidth, // NOTE: ##cWgBCR##
-            windowRight = windowLeft + windowWidth, // NOTE: ##cWgBCR##
-            { left: canvasLeft, width: canvasWidth } =
-              elTC.getBoundingClientRect(),
-            lS = layersStruct(),
-            start = lS.time.start,
-            duration = lS.duration,
-            xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
-            xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start;
-        cinema.showEpisode(xStart, xEnd);
-        // TODO: Проверить, в чем разница между подсчетом xStart, xEnd
-        // в данной функции и timeline.getWindowStart()
-        // и timeline.getWindowEnd().
-        //
-        //   console.log(xStart, xEnd,
-        //     timeline.getWindowStart(), timeline.getWindowEnd());
-        //
-        // Кажется, для вычисления xStart и xEnd в функциях playAllVisible,
-        // playPreSelection, playSelection, playPostSelection можно
-        // использовать timeline.getWindowStart() и timeline.getWindowEnd().
-        //
-        // Одно из свидетельств того, что сам автор плохо знает свой код ;)
+  let setPlayType = playTypeModel => {
+        cinema.playType(playTypeModel.playType);
+        cinema.play();
       },
-      playPreSelection = () => {
-        let windowLeft = elTL.getBoundingClientRect().left,
-            { left: canvasLeft, width: canvasWidth } =
-              elTC.getBoundingClientRect(),
-            lS = layersStruct(),
-            start = lS.time.start,
-            duration = lS.duration,
-            xStart = (windowLeft - canvasLeft) / canvasWidth * duration + start,
-            xEnd = timeline.selectionEdges()[0];
-        cinema.showEpisode(xStart, xEnd);
-      },
-      playPostSelection = () => {
-        let windowLeft = elTL.getBoundingClientRect().left,
-            windowWidth = elTL.clientWidth, // NOTE: ##cWgBCR##
-            windowRight = windowLeft + windowWidth, // NOTE: ##cWgBCR##
-            { left: canvasLeft, width: canvasWidth } =
-              elTC.getBoundingClientRect(),
-            lS = layersStruct(),
-            start = lS.time.start,
-            duration = lS.duration,
-            xEnd = (windowRight - canvasLeft) / canvasWidth * duration + start,
-            xStart = timeline.selectionEdges()[1];
-        cinema.showEpisode(xStart, xEnd);
-      },
-      playSelection = () => {
-        cinema.showEpisode(...timeline.selectionEdges());
-      },
-      showFilm = data => {
+      showAlternativeFilm = data => {
         let recordId = cinema.activeRecordId(),
             dataItem = cinema.activeDataItem();
-        params.viewModel.showResultsOnly(false);
-        cinema.showFilm(recordId, data.id, dataItem);
+        cinema.showAlternativeFilm(recordId, data.id, dataItem);
       };
 
   elLL.addEventListener('scroll', propagateScroll);
@@ -639,15 +591,23 @@ function viewModelFactory(params) {
 
   timeline.afterInitDom();
 
+  const playTypes = [
+    { label: 'win', playType: cinema.playTypes.PLAY_VISIBLE, setPlayType },
+    { label: 'pre', playType: cinema.playTypes.PLAY_PRE_SELECTION,
+      setPlayType },
+    { label: 'sel', playType: cinema.playTypes.PLAY_SELECTION, setPlayType },
+    { label: 'post', playType: cinema.playTypes.PLAY_POST_SELECTION,
+      setPlayType },
+  ];
+
   return {
     resultsData: params.resultsData,
     activeResult: params.viewModel.activeResult,
     layersStruct, cinema, selectionFromSegment, highlighted,
     highlight: layer => highlighted(layer.type),
     dehighlight: layer => highlighted() === layer.type && highlighted(null),
-    playAllVisible, playPreSelection, playPostSelection, playSelection,
     zoomIn, zoomOut, zoomAll, zoomSel, selectionBak,
-    showFilm,
+    showAlternativeFilm, playTypes,
     searchStatus: params.viewModel.searchStatus,
     resultsError: params.viewModel.resultsError,
     isResultsPaneOn: params.viewModel.isResultsPaneOn,

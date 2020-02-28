@@ -70,15 +70,11 @@ class Film {
                 film = cinema.getFilm(recordId, filmType)[0];
           if (film.film.playing) {
             cinema._isFilmPausedByUser = true;
+          } else if (film.film.paused && cinema._isFilmPausedByUser) {
+            cinema._isFilmPausedByUser = false;
           } else {
-            // play the selected interval
-            let [xStart, xEnd] = cinema.timeline.selectionEdges();
-            // if no selected interval play interval visible within the window
-            if (xStart === null) {
-              xStart = cinema.timeline.getWindowStart();
-              xEnd = cinema.timeline.getWindowEnd();
-            }
-            cinema.prepareEpisode(xStart, xEnd);
+            const prepareInsteadOfShow = true;
+            cinema.play(prepareInsteadOfShow);
           }
         }
       };
@@ -142,6 +138,13 @@ class Film {
 const PLAY_CSS_CLASS = 'play',
       PAUSE_CSS_CLASS = 'pause';
 
+const playTypes = {
+  PLAY_SELECTION: Symbol('play selection'),
+  PLAY_PRE_SELECTION: Symbol('play pre selection'),
+  PLAY_POST_SELECTION: Symbol('play post selection'),
+  PLAY_VISIBLE: Symbol('play visible'),
+};
+
 class Cinema {
   constructor(timeline) {
     this.films = {};
@@ -157,6 +160,8 @@ class Cinema {
     this.activeFilmType = ko.observable(null);
     this.activeDataItem = ko.observable(null);
     this.canPlayOrPause = ko.observable(PLAY_CSS_CLASS);
+    this.playType = ko.observable(playTypes.PLAY_SELECTION);
+    this.playTypes = playTypes;
     this.timeline = timeline;
     this.cursorStruct = this.createCursorStruct();
   }
@@ -228,6 +233,43 @@ class Cinema {
     this._isFilmPausedByUser = false;
     this.hideCurtain();
   }
+  play(prepareInsteadOfShow=false) {
+    var xStart, xEnd,
+        method = prepareInsteadOfShow ? 'prepareEpisode' : 'showEpisode',
+        winStart = this.timeline.getWindowStart(),
+        winEnd = this.timeline.getWindowEnd(),
+        [selStart, selEnd] = this.timeline.selectionEdges();
+    switch (this.playType()) {
+    case playTypes.PLAY_SELECTION:
+      [xStart, xEnd] = [selStart || winStart, selEnd || winEnd];
+      break;
+    case playTypes.PLAY_PRE_SELECTION:
+      [xStart, xEnd] = [winStart, selStart || winEnd];
+      break;
+    case playTypes.PLAY_POST_SELECTION:
+      [xStart, xEnd] = [selEnd || winStart, winEnd];
+      break;
+    case playTypes.PLAY_VISIBLE:
+      [xStart, xEnd] = [winStart, winEnd];
+    }
+    this[method](xStart, xEnd);
+  }
+  playOrPause() {
+    let recordId = this.activeRecordId(),
+        filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      let [film, isCreated] = this.getFilm(recordId, filmType);
+      if (film.film.playing && !isCreated) {
+        this._isFilmPausedByUser = true;
+        film.film.pause();
+      } else if (film.film.paused && this._isFilmPausedByUser && !isCreated) {
+        this._isFilmPausedByUser = false;
+        film.film.play();
+      } else {
+        this.play();
+      }
+    }
+  }
   showFilm(recordId, filmType, dataItem) {
     const cinema = this;
     if (!dataItem || recordId === null || !filmType) return;
@@ -243,6 +285,15 @@ class Cinema {
     begin /= 1000;
     end /= 1000;
     cinema._play(film, isCreated, begin, end);
+  }
+  showAlternativeFilm(recordId, filmType, dataItem) {
+    const cinema = this;
+    if (!dataItem || recordId === null || !filmType) return;
+    cinema.pauseAll();
+    cinema.activeRecordId(recordId);
+    cinema.activeFilmType(filmType);
+    cinema.activeDataItem(dataItem);
+    cinema.play();
   }
   prepareEpisode(begin, end) {
     if (this._isFilmPausedByUser) {
