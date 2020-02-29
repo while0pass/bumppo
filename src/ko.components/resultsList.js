@@ -32,7 +32,7 @@ const template = `
     <!-- ko foreach: resultsWindow -->
 
       <div class="bmpp-result" data-bind="
-        event: { mouseover: $component.hoveredItem },
+        event: { mouseover: $component.hoveredItem, click: $component.showFilm },
         css: { currentItem: $data === $component.cinema.activeDataItem() },
         style: { top: $component.resultHeight() * ix }">
 
@@ -40,7 +40,7 @@ const template = `
           data-bind="text: match.beginTime + '–' + match.endTime"></div>
         <div class="bmpp-duration" data-bind="text: match.duration"></div>
         <div class="bmpp-unitValue" data-bind="text: match.value"></div>
-        <div class="bmpp-transcription" data-bind="click: $component.showFilm">
+        <div class="bmpp-transcription">
           <div data-bind="html: match.transcription"></div>
         </div>
 

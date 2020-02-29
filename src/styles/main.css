@@ -365,7 +365,9 @@ $layersPanelButtonsHeight: 2rem;
         margin: 0 3em 0 0;
         padding: 0;
         display: flex;
-        align-items: baseline;
+        align-items: stretch; /* NOTE: Со значение baseline надписи в кнопках
+          выравниваются по базовой линии, но у кнопок без пиктограмм возникают
+          зазоры сверху */
       }
 
       & ul li {
@@ -927,6 +929,7 @@ query-node:last-of-type:after {
     position: absolute;
     right: 0;
     left: 0;
+    cursor: pointer;
 
     &:last-of-type {
       border-bottom: none;
@@ -996,7 +999,6 @@ query-node:last-of-type:after {
     white-space: nowrap;
   }
   & .bmpp-transcription {
-    cursor: pointer;
     position: relative;
     flex: 1 0 auto;
     width: auto;
