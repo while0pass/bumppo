@@ -170,7 +170,7 @@ const layersTemplate = `
         <li data-bind="click: selectionBak"
           title="Вернуть прежнее выделение">bak</li>
       </ul>
-      <ul data-bind="visible: cinema.timeline.selectionEdges()[0] !== null">
+      <ul>
         <li data-bind="click: cinema.playOrPause.bind(cinema)"
             style="border-right: none; padding-right: 0.05em">
           <i class="ui disabled play icon"
