@@ -345,6 +345,112 @@
         "record_id": "04",
         "is_main": true
       }
+    ],
+
+
+
+    [
+      {
+        "show_tiers": {
+          "C-vLineHTMLTranslit": "\\sobiraet (0.18) (ə 0.63) grushi sebe v (ˀ 0.36) /f<u>a</u>rtuk,",
+          "C-vLineTranslation": "he gathers pears in his apron"
+        },
+        "value": "C-vE009",
+        "c_1": {
+          "id": "C-vE009",
+          "value": "C-vE009",
+          "time": {
+            "begin": 232020,
+            "end": 235340
+          }
+        },
+        "tier": "C-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0233",
+          "value": "R-oF0233",
+          "time": {
+            "end": 235420
+          }
+        },
+        "c_1p0": {
+          "tier": "C_vLineType",
+          "id": "C-vE009",
+          "value": "EDU",
+          "time": {
+            "begin": 235340,
+            "end": 235340
+          }
+        },
+        "time": {
+          "begin": 232020,
+          "end": 235340
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vLineHTMLTranslit": "% blizhe \\vseg<u>о</u> k nim-m."
+        },
+        "value": "N-vE204",
+        "tier": "N-vLine",
+        "time": {
+          "begin": 448486,
+          "end": 449608
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTMLTranslit": "A /koz<u>а</u><sup>ˀ</sup>,"
+        },
+        "value": "R-vE036",
+        "tier": "R-vLine",
+        "time": {
+          "begin": 601167,
+          "end": 601975
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTMLTranslit": "oni naxodjat (ə 0.35) е= || (ˀ 0.21) (ɯ 0.34) /shlj<u>a</u>pu mal'chika,",
+          "R-vLineTranslation": "they find the boy's hat"
+        },
+        "value": "R-vE188",
+        "tier": "R-vLine",
+        "time": {
+          "begin": 990558,
+          "end": 993192
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTMLTranslit": "koz-u",
+          "R-vSegmGlossing": "goat-SG.ACC"
+        },
+        "value": "R-vW12345",
+        "tier": "R-vSegm",
+        "time": {
+          "begin": 990558,
+          "end": 993192
+        },
+        "record_id": "22",
+        "is_main": true
+      }
     ]
   ]
 }

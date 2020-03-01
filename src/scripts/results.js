@@ -3,48 +3,92 @@ import { LAYER_PARENT_MAP } from './layers.js';
 
 const R = /^[^\d]*(\d+).*$/g;
 
+function translateTierValue(tier, match) {
+  let value = tier in match.tiers ? match.tiers[tier].trim() : '',
+      text = tier in tier2val && value ? tier2val[tier](value) : value;
+  return text;
+}
+
+function defaultTemplate(tiers, match) {
+  // Для всех переданных имен слоев, находим значения, "переводим" их и
+  // объединяем через точку с запятой.
+  return tiers.map(tier => translateTierValue(tier, match)).join('; ');
+}
+
+function vLineTemplate(tiers, match) {
+  const [html, htmlTranslit, translation] = tiers.map(
+    tier => translateTierValue(tier, match));
+  if (html) return html;
+  if (htmlTranslit && translation) return `
+    ${ htmlTranslit } <span class="bmpp-translation">‘${ translation }’</span>
+  `;
+  return htmlTranslit;
+}
+
+function vSegmTemplate(tiers, match) {
+  const [html, htmlTranslit, gloss] = tiers.map(
+    tier => translateTierValue(tier, match));
+  if (html) return html;
+  if (htmlTranslit && gloss) return `
+    ${ htmlTranslit } <span class="bmpp-gloss">${ gloss }</span>
+  `;
+  return htmlTranslit;
+}
+
 const tierMap = {
-  'N-vLine': ['N-vLineHTML'],
-  'C-vLine': ['C-vLineHTML'],
-  'R-vLine': ['R-vLineHTML'],
+  'N-vLine': {
+    tiers: ['N-vLineHTML', 'N-vLineHTMLTranslit', 'N-vLineTranslation'],
+    template: vLineTemplate },
+  'C-vLine': {
+    tiers: ['C-vLineHTML', 'C-vLineHTMLTranslit', 'C-vLineTranslation'],
+    template: vLineTemplate },
+  'R-vLine': {
+    tiers: ['R-vLineHTML', 'R-vLineHTMLTranslit', 'R-vLineTranslation'],
+    template: vLineTemplate },
 
-  'N-vSegm': ['N-vSegmHTML'],
-  'C-vSegm': ['C-vSegmHTML'],
-  'R-vSegm': ['R-vSegmHTML'],
+  'N-vSegm': {
+    tiers: ['N-vSegmHTML', 'N-vSegmHTMLTranslit', 'N-vSegmGlossing'],
+    template: vSegmTemplate },
+  'C-vSegm': {
+    tiers: ['C-vSegmHTML', 'C-vSegmHTMLTranslit', 'C-vSegmGlossing'],
+    template: vSegmTemplate },
+  'R-vSegm': {
+    tiers: ['R-vSegmHTML', 'R-vSegmHTMLTranslit', 'R-vSegmGlossing'],
+    template: vSegmTemplate },
 
-  'N-vPause': ['N-vPauseHTML'],
-  'C-vPause': ['C-vPauseHTML'],
-  'R-vPause': ['R-vPauseHTML'],
+  'N-vPause': { tiers: ['N-vPauseHTML'] },
+  'C-vPause': { tiers: ['C-vPauseHTML'] },
+  'R-vPause': { tiers: ['R-vPauseHTML'] },
 
-  'N-vCollat': ['N-vCollatForm'],
-  'C-vCollat': ['C-vCollatForm'],
-  'R-vCollat': ['R-vCollatForm'],
+  'N-vCollat': { tiers: ['N-vCollatForm'] },
+  'C-vCollat': { tiers: ['C-vCollatForm'] },
+  'R-vCollat': { tiers: ['R-vCollatForm'] },
 
-  'N-mRtMovement': ['N-mRtMtType'],
-  'N-mLtMovement': ['N-mLtMtType'],
-  'C-mRtMovement': ['C-mRtMtType'],
-  'C-mLtMovement': ['C-mLtMtType'],
-  'R-mRtMovement': ['R-mRtMtType'],
-  'R-mLtMovement': ['R-mLtMtType'],
+  'N-mRtMovement': { tiers: ['N-mRtMtType'] },
+  'N-mLtMovement': { tiers: ['N-mLtMtType'] },
+  'C-mRtMovement': { tiers: ['C-mRtMtType'] },
+  'C-mLtMovement': { tiers: ['C-mLtMtType'] },
+  'R-mRtMovement': { tiers: ['R-mRtMtType'] },
+  'R-mLtMovement': { tiers: ['R-mLtMtType'] },
 
-  'N-mRtStillness': ['N-mRtStType'],
-  'N-mLtStillness': ['N-mLtStType'],
-  'C-mRtStillness': ['C-mRtStType'],
-  'C-mLtStillness': ['C-mLtStType'],
-  'R-mRtStillness': ['R-mRtStType'],
-  'R-mLtStillness': ['R-mLtStType'],
+  'N-mRtStillness': { tiers: ['N-mRtStType'] },
+  'N-mLtStillness': { tiers: ['N-mLtStType'] },
+  'C-mRtStillness': { tiers: ['C-mRtStType'] },
+  'C-mLtStillness': { tiers: ['C-mLtStType'] },
+  'R-mRtStillness': { tiers: ['R-mRtStType'] },
+  'R-mLtStillness': { tiers: ['R-mLtStType'] },
 
-  'N-mGesture': ['N-mGeHandedness', 'N-mGeStructure', 'N-mGeFunction', 'N-mGeTags'],
-  'C-mGesture': ['C-mGeHandedness', 'C-mGeStructure', 'C-mGeFunction', 'C-mGeTags'],
-  'R-mGesture': ['R-mGeHandedness', 'R-mGeStructure', 'R-mGeFunction', 'R-mGeTags'],
+  'N-mGesture': { tiers: ['N-mGeStructure'] },
+  'C-mGesture': { tiers: ['C-mGeStructure'] },
+  'R-mGesture': { tiers: ['R-mGeStructure'] },
 
-  'N-mAdaptor': ['N-mAdType'],
-  'C-mAdaptor': ['C-mAdType'],
-  'R-mAdaptor': ['R-mAdType'],
+  'N-mAdaptor': { tiers: ['N-mAdType'] },
+  'C-mAdaptor': { tiers: ['C-mAdType'] },
+  'R-mAdaptor': { tiers: ['R-mAdType'] },
 
-  'N-oFixation': ['N-oInterlocutor', 'N-oLocus'],
-  'C-oFixation': ['C-oInterlocutor', 'C-oLocus'],
-  'R-oFixation': ['R-oInterlocutor', 'R-oLocus'],
+  'N-oFixation': { tiers: ['N-oInterlocutor'] },
+  'C-oFixation': { tiers: ['C-oInterlocutor'] },
+  'R-oFixation': { tiers: ['R-oInterlocutor'] },
 };
 
 function m_func(title, map, separator=', ') {
@@ -221,22 +265,15 @@ class Match {
     return ((this.time.end - this.time.begin) / 1000).toFixed(2);
   }
   getTranscription() {
-    let transcription = '', self = this,
-        showTiers = [];
-    if (self.tier in tierMap) {
-      showTiers = tierMap[self.tier];
-    } else if (LAYER_PARENT_MAP[self.tier] in tierMap) {
-      showTiers = tierMap[LAYER_PARENT_MAP[self.tier]];
+    let showTiers = [], templateFunc;
+    if (this.tier in tierMap) {
+      ({ tiers: showTiers, template: templateFunc } = tierMap[this.tier]);
+    } else if (LAYER_PARENT_MAP[this.tier] in tierMap) {
+      const parentTier = LAYER_PARENT_MAP[this.tier];
+      ({ tiers: showTiers, template: templateFunc } = tierMap[parentTier]);
     }
-    showTiers.forEach((tier, i) => {
-      let annotation = tier in self.tiers ? self.tiers[tier].trim() : '',
-          text = tier in tier2val ? tier2val[tier](annotation) : annotation;
-      if (text) {
-        if (i > 0) transcription += '; ';
-        transcription += text;
-      }
-    });
-    return transcription;
+    templateFunc = templateFunc === undefined ? defaultTemplate : templateFunc;
+    return templateFunc(showTiers, this);
   }
 }
 

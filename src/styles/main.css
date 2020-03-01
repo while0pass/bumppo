@@ -1005,6 +1005,10 @@ query-node:last-of-type:after {
     white-space: nowrap;
     overflow-x: hidden;
   }
+  & .bmpp-translation,
+  & .bmpp-gloss {
+    color: #a00;
+  }
   & .bmpp-time,
   & .bmpp-duration {
     color: grey;
