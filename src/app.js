@@ -8,7 +8,7 @@ import { getQueryJSON, getLayersQueryJSON } from './scripts/queryJSON.js';
 import Cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
 import { getResults } from './scripts/results.js';
-import { LayersStruct } from './scripts/layers.js';
+import { LayersStruct, layersDirectory } from './scripts/layers.js';
 import { TimeLine } from './scripts/timeline.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
@@ -42,7 +42,7 @@ function viewModel() {
   this.switchOnQueryPane = switchTo(hrefs.QUERY_PANE);
   this.switchOnSubcorpusPane = switchTo(hrefs.SUBCORPUS_PANE);
   this.switchOnResultsPane = () => { self.clientHRef(hrefs.RESULTS_PANE); };
-  this.switchOnResultsOptionsPane = switchTo(hrefs.RESOPTS_PANE);
+  this.switchOnResOptsPane = switchTo(hrefs.RESOPTS_PANE);
 
   this.isQueryPaneOn = ko.computed(
     () => this.clientHRef() === hrefs.QUERY_PANE);
@@ -50,7 +50,7 @@ function viewModel() {
     () => this.clientHRef() === hrefs.SUBCORPUS_PANE);
   this.isResultsPaneOn = ko.computed(
     () => this.clientHRef() === hrefs.RESULTS_PANE);
-  this.isResultsOptionsPaneOn = ko.computed(
+  this.isResOptsPaneOn = ko.computed(
     () => this.clientHRef() === hrefs.RESOPTS_PANE);
 
   this.queryPaneView = ko.observable(null);
@@ -123,6 +123,7 @@ function viewModel() {
   this.resultsWindow = ko.observableArray([]);
   this.resultsSections = ko.observableArray([]);
   this.resultsNumber = ko.observable(null);
+  this.layersDirectory = layersDirectory;
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.

@@ -8,7 +8,9 @@
              css: { 'bmpp-sidePane_menuItem--current': isQueryPaneOn }">
   Запрос
 </div>
-<div class="bmpp-sidePane_menuItem ui vertical disabled segment">
+<div class="bmpp-sidePane_menuItem ui vertical segment"
+  data-bind="click: switchOnResOptsPane,
+             css: { 'bmpp-sidePane_menuItem--current': isResOptsPaneOn }">
   Настройки выдачи
 </div>
 <div class="bmpp-sidePane_menuItem ui vertical segment"

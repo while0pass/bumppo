@@ -83,6 +83,11 @@
       {% include 'scraps/query_pane.htm' %}
     </div>
 
+    <div class="bmpp-pane" data-bind="css: { visiblePane: isResOptsPaneOn }"
+      style="overflow-x: hidden; overflow-y: auto">
+      {% include 'scraps/resopts_pane.htm' %}
+    </div>
+
     {% include 'scraps/main_wait.htm' %}
 
   </div>

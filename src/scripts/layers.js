@@ -402,4 +402,6 @@ class LayersStruct {
   }
 }
 
-export { LayersStruct, layersElementIds, LAYER_PARENT_MAP };
+const layersDirectory = [];
+
+export { LayersStruct, layersDirectory, layersElementIds, LAYER_PARENT_MAP };

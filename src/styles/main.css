@@ -202,7 +202,8 @@ $videoHeight: 193px;
 }
 
 .bmpp-propertiesPane,
-.bmpp-relationsPane {
+.bmpp-relationsPane,
+.bmpp-resOptsPane {
   $buttonsHeight: 4.4em;
   $dividerHeight: 1em;
   display: flex;
@@ -224,11 +225,6 @@ $videoHeight: 193px;
     padding: 1em 0 0 6em;
     box-sizing: border-box;
   }
-}
-
-.bmpp-resultsOptionsPane {
-  width: 55em;
-  margin: 3em auto auto 6em !important;
 }
 
 .bmpp-nearLabelIcon {
