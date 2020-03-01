@@ -1,4 +1,4 @@
-//import log from './log.js';
+import { getSubstitutedPropertyValues } from './searchUnitProperties.js';
 
 const layersElementIds = {
   layers: 'bmpp-layersLayers',
@@ -395,6 +395,41 @@ function sortFunction(a, b) {
   return 0;
 }
 
+function resolveTierTemplate(template, unitProperties) {
+  if (template.indexOf('{') < 0) return [template];
+
+  let tiers = [], idMap = {};
+  const reTrim = /^\{\s*|\s*\}$/g,
+        reFields = /\{\s*[^{}]+\s*\}/g,
+        reProp = x => new RegExp(`\\{\\s*${ x }\\s*\\}`, 'g'),
+        propsIds = template.match(reFields).map(x => x.replace(reTrim, ''));
+
+  propsIds.forEach(id => {
+    idMap[id] = getSubstitutedPropertyValues(id, unitProperties);
+  });
+
+  let lens = propsIds.map(id => idMap[id].length),
+      index = propsIds.map(() => 0), // Array(propsIds.length).fill(0),
+      N = lens.reduce((a, b) => a * b);
+
+  for (let n = 0; n < N; n++) {
+    let tier = template;
+    for (let i = 0; i < propsIds.length; i++) {
+      tier = tier.replace(reProp(propsIds[i]), idMap[propsIds[i]][index[i]]);
+    }
+    tiers.push(tier);
+    index = index.map((x, i, arr) => {
+      if (i > 0) {
+        return arr[i - 1] === 0 ? (x + 1) % lens[i] : x;
+      } else {
+        return (x + 1) % lens[i];
+      }
+    });
+  }
+  tiers = tiers.sort(sortFunction);
+  return tiers;
+}
+
 class LayersStruct {
   constructor(data) {
     this._data = data || {};
@@ -429,4 +464,4 @@ class LayersStruct {
 const layersDirectory = [];
 
 export { LayersStruct, layersDirectory, layersElementIds, LAYER_PARENT_MAP,
-  tierMapForPrimaryResults };
+  resolveTierTemplate, tierMapForPrimaryResults };

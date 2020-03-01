@@ -2,7 +2,7 @@ import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists,
   SearchUnitProperty, p_participants } from './searchUnitProperties.js';
 import { NodesRelationsFormula } from './searchUnitRelations.js';
-import { tierMapForPrimaryResults } from './layers.js';
+import { tierMapForPrimaryResults, resolveTierTemplate } from './layers.js';
 import linearizeTree from './linearizeTree.js';
 import log from './log.js';
 
@@ -123,38 +123,7 @@ export class TreeNode {
     return after !== before;
   }
   getTiersFromTemplate(template) {
-    if (template.indexOf('{') < 0) return [template];
-
-    let tiers = [], idMap = {};
-    const unitPropertiesMap = this.unitProperties.unitPropertiesMap(),
-          reTrim = /^\{\s*|\s*\}$/g,
-          reFields = /\{\s*[^{}]+\s*\}/g,
-          reProp = x => new RegExp(`\\{\\s*${ x }\\s*\\}`, 'g'),
-          propsIds = template.match(reFields).map(x => x.replace(reTrim, ''));
-    propsIds.forEach(id => {
-      idMap[id] = unitPropertiesMap[id].value() || [];
-    });
-
-    let lens = propsIds.map(id => idMap[id].length),
-        index = propsIds.map(() => 0),
-        N = lens.reduce((a, b) => a * b);
-
-    for (let n = 0; n < N; n++) {
-      let tier = template;
-      for (let i = 0; i < propsIds.length; i++) {
-        tier = tier.replace(reProp(propsIds[i]), idMap[propsIds[i]][index[i]]);
-      }
-      tiers.push(tier);
-      index = index.map((x, i, arr) => {
-        if (i > 0) {
-          return arr[i - 1] === 0 ? (x + 1) % lens[i] : x;
-        } else {
-          return (x + 1) % lens[i];
-        }
-      });
-    }
-    tiers = tiers.sort();
-    return tiers;
+    return resolveTierTemplate(template, this.unitProperties);
   }
   getTiersFromListOfTemplates(listOfTemplates) {
     var tiers = [], self = this;

@@ -705,6 +705,11 @@ const propertiesLists = {
     p_mGeFunction, p_mGeTags]),
 };
 
+const templateSubstitutionMap = {
+  'p_mHand': p_mHand,
+  'p_participants': p_participants,
+};
+
 function keepZero(...args) {
   // Вычисляет аналог выражения:  arg1 || arg2 || ... || argN,
   // но считает, что цифра ноль это тоже тру.
@@ -1423,8 +1428,17 @@ class ValueListItem {
   }
 }
 
+function getSubstitutedPropertyValues(propId, unitProperties) {
+  if (unitProperties !== undefined) {
+    const unitPropertiesMap = unitProperties.unitPropertiesMap();
+    return unitPropertiesMap[propId].value() || [];
+  }
+  return templateSubstitutionMap[propId].valueList.orValues.map(x => x.value);
+}
+
 export {
   defaultPropertiesList, testPropertiesList, propertiesLists,
   SearchUnitProperty, IntervalProperty, TextProperty, ListProperty,
-  p_duration, p_participants, escapeRegExp, injectNodeNumbers, beautifyNumber
+  p_duration, p_participants, escapeRegExp, injectNodeNumbers, beautifyNumber,
+  getSubstitutedPropertyValues
 };
