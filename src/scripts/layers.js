@@ -6,6 +6,30 @@ const layersElementIds = {
   names: 'bmpp-lNContainer',
 };
 
+const tierMapForPrimaryResults = {
+  '{ p_participants }-vLine': [
+    '{ p_participants }-vLineHTML', // RU
+    //'{ p_participants }-vLineHTMLTranslit', // EN
+    //'{ p_participants }-vLineTranslate', // EN
+  ],
+  '{ p_participants }-vSegm': [
+    '{ p_participants }-vSegmHTML', // RU
+    //'{ p_participants }-vSegmHTMLTranslit', // EN
+    //'{ p_participants }-vSegmGlossing', // EN
+  ],
+  '{ p_participants }-vPause': [ '{ p_participants }-vPauseHTML' ],
+  '{ p_participants }-vCollat': [ '{ p_participants }-vCollatForm' ],
+  '{ p_participants }-m{ p_mHand }Movement': [
+    '{ p_participants }-m{ p_mHand }MtType'
+  ],
+  '{ p_participants }-m{ p_mHand }Stillness': [
+    '{ p_participants }-m{ p_mHand }StType'
+  ],
+  '{ p_participants }-mGesture': [ '{ p_participants }-mGeStructure' ],
+  '{ p_participants }-mAdaptor': [ '{ p_participants }-mAdType' ],
+  '{ p_participants }-oFixation': [ '{ p_participants }-oInterlocutor' ],
+};
+
 const LAYERS_HIERARCHY = [
 
   { name: 'N-vLine',
@@ -404,4 +428,5 @@ class LayersStruct {
 
 const layersDirectory = [];
 
-export { LayersStruct, layersDirectory, layersElementIds, LAYER_PARENT_MAP };
+export { LayersStruct, layersDirectory, layersElementIds, LAYER_PARENT_MAP,
+  tierMapForPrimaryResults };

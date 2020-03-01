@@ -2,6 +2,7 @@ import ko from 'knockout';
 import { defaultPropertiesList, propertiesLists,
   SearchUnitProperty, p_participants } from './searchUnitProperties.js';
 import { NodesRelationsFormula } from './searchUnitRelations.js';
+import { tierMapForPrimaryResults } from './layers.js';
 import linearizeTree from './linearizeTree.js';
 import log from './log.js';
 
@@ -160,6 +161,15 @@ export class TreeNode {
     listOfTemplates.forEach(template => {
       tiers = tiers.concat(self.getTiersFromTemplate(template));
     });
+    return tiers;
+  }
+  getTiersForPrimaryResults() {
+    let tiers = [],
+        tierTemplate = this.unitType().tierTemplate;
+    if (tierTemplate in tierMapForPrimaryResults) {
+      const listOfTemplates = tierMapForPrimaryResults[tierTemplate];
+      tiers = this.getTiersFromListOfTemplates(listOfTemplates);
+    }
     return tiers;
   }
   getLinear6n() {

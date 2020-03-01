@@ -145,34 +145,7 @@ function getQueryJSON(viewModel) {
 
       // Подбор дополнительных слоев для разных типов корневой единицы
       if (nodeIndex === 0) {
-        let tiers = [],
-            tierMap = {
-              '{ p_participants }-vLine': [
-                '{ p_participants }-vLineHTML', // RU
-                '{ p_participants }-vLineHTMLTranslit', // EN
-                '{ p_participants }-vLineTranslate', // EN
-              ],
-              '{ p_participants }-vSegm': [
-                '{ p_participants }-vSegmHTML', // RU
-                '{ p_participants }-vSegmHTMLTranslit', // EN
-                '{ p_participants }-vSegmGlossing', // EN
-              ],
-              '{ p_participants }-vPause': ['{ p_participants }-vPauseHTML'],
-              '{ p_participants }-vCollat': ['{ p_participants }-vCollatForm'],
-              '{ p_participants }-m{ p_mHand }Movement': [
-                '{ p_participants }-m{ p_mHand }MtType'],
-              '{ p_participants }-m{ p_mHand }Stillness': [
-                '{ p_participants }-m{ p_mHand }StType'],
-              '{ p_participants }-mGesture': [
-                '{ p_participants }-mGeStructure'],
-              '{ p_participants }-mAdaptor': ['{ p_participants }-mAdType'],
-              '{ p_participants }-oFixation': [
-                '{ p_participants }-oInterlocutor'],
-            };
-        if (unitType.tierTemplate in tierMap) {
-          tiers = node.getTiersFromListOfTemplates(tierMap[unitType.tierTemplate]);
-          showTiers = showTiers.concat(tiers);
-        }
+        showTiers = showTiers.concat(node.getTiersForPrimaryResults());
       }
 
       // Запрос на вывод в ответе дополнительных слоев
