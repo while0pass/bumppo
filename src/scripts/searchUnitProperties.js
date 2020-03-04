@@ -773,8 +773,8 @@ class SearchUnitProperty {
     this.node1 = node1;
     this.node2 = node2;
     this.id = data.id;
-    this.name = injectNodeNumbers(data.name, node1, node2);
-    this.help = data.help ? injectNodeNumbers(data.help, node1, node2) : '';
+    this.name = _getProp('name', data, node1, node2);
+    this.help = _getProp('help', data, node1, node2);
     this.value = ko.observable(null);
     this.virtualKeyboard = data.virtualKeyboard || false;
     this.isRegEx = data.isRegEx || false;
@@ -1032,10 +1032,10 @@ class ListProperty extends SearchUnitProperty {
       let value = this.value,
           values = this.unwrapValues(this.chosenValues());
 
-      this.node1.unitType(); // Реагировать на изменение типа единицы поиска.
-      // Этот вызов необходим, чтобы, если изменится тип единицы, этот
-      // computed вычислился повторно. Это важно, например, для свойств
-      // с параметром allIfEmpty === true. Свойство p_participants
+      this.node1 && this.node1.unitType(); // Реагировать на изменение типа
+      // единицы поиска. Этот вызов необходим, чтобы, если изменится тип
+      // единицы, этот computed вычислился повторно. Это важно, например,
+      // для свойств с параметром allIfEmpty === true. Свойство p_participants
       // чувствительно к типу канала, в окуломотрном канале часть галочек
       // деактивируется. Поэтому если пользователь изменил текущую единицу
       // с окуломотрной фиксации на вокальную ЭДЕ и при этом никакие участники
@@ -1099,7 +1099,8 @@ class ListProperty extends SearchUnitProperty {
             let name = ko.unwrap(parentItem.name);
             prefix = name.slice(0, 1).toLowerCase() +
               name.slice(1) + ' ' + prefix;
-            parentItem = parentItem.list.depth > 0 && parentItem.list.parentItem;
+            parentItem = parentItem.list.depth > 0
+              && parentItem.list.parentItem;
           }
           if (item.editable) {
             postfix = `«${ item.value() }»`;
@@ -1110,7 +1111,8 @@ class ListProperty extends SearchUnitProperty {
           return prefix + postfix;
         }
       ).join('; ');
-      return injectNodeNumbers(banner, this.node1, this.node2);
+      if (this.node1) return injectNodeNumbers(banner, this.node1, this.node2);
+      return banner;
     }, this);
   }
   getAllValues() {
@@ -1151,6 +1153,15 @@ class ValueList {
     if (this.isXOR && this.radioButtons) {
       this.checkFirst();
     }
+  }
+  resetToValuesByIds(ids) {
+    this.items.forEach(item => {
+      item.checked(ids.indexOf(item.id) > -1);
+      let childList = item.childList;
+      if (childList) {
+        childList.resetToValuesByIds(ids);
+      }
+    });
   }
   checkAll() {
     this.items.forEach(item => {
@@ -1200,6 +1211,10 @@ class ValueList {
   get areAllUnchecked() {
     return this.items && this.items.every(item => !item.checked());
   }
+  areAllChecked() {
+    return this.items && this.items.every(item => item.checked() &&
+      (item.childList === null || item.childList.areAllChecked()));
+  }
   invertSelection() {
     this.items.forEach(item => {
       item.checked(!item.checked());
@@ -1232,19 +1247,19 @@ function compareOnDepth(x, y, depth) {
 }
 
 function sortTwoValueListItems(a, b) {
-  let depth = 0,
-      x = compareOnDepth(a, b, depth);
-  while(x === 0 || a.list.depth < depth && b.list.depth < depth) {
-    depth += 1;
+  let x, maxDepth = Math.max(a.list.depth, b.list.depth);
+  for (let depth = 0; depth < maxDepth + 1; depth++) {
     x = compareOnDepth(a, b, depth);
+    if (x !== 0) break;
   }
   return x;
 }
 
 class ValueListItem {
   constructor(data, list) {
+    this.id = data.id;
     this.list = list;
-    this.name = injectNodeNumbers(data.name,
+    this.name = _getProp('name', data,
       list.listProperty.node1, list.listProperty.node2);
     this.title = data.title || null;
     this.icon = data.icon;
@@ -1266,7 +1281,7 @@ class ValueListItem {
   }
   getDisabledInfo() {
     let channelIds = this.disabledInChannels;
-    if (channelIds && channelIds.length > 0) {
+    if (channelIds && channelIds.length > 0 && this.list.listProperty.node1) {
       return ko.computed(function () {
         let unitType = this.list.listProperty.node1.unitType(),
             channelId = unitType && unitType.channel.id;
@@ -1421,11 +1436,17 @@ class ValueListItem {
     }, this);
   }
   getListItemOnDepth(depth) {
-    if (depth === this.list.depth) {
+    if (depth >= this.list.depth || this.list.parentItem === null) {
       return this;
     }
     return this.list.parentItem.getListItemOnDepth(depth);
   }
+}
+
+function _getProp(propName, data, node1, node2) {
+  const value = data[propName];
+  if (!node1) return value || '';
+  return value ? injectNodeNumbers(value, node1, node2) : '';
 }
 
 function getSubstitutedPropertyValues(propId, unitProperties, channel) {

@@ -1,19 +1,16 @@
 <div class="bmpp-resOptsPane">
   <div class="bmpp-paneProps"><div class="bmpp-paddedPane">
 
-    <header class="ui header">Обязательные для отображения слои</header>
+    <header class="ui header">Настройки выдачи</header>
 
-    <p>Выбранные слои будут отображаться на панели слоев в дополнение
-    к тем слоям, которые присутствуют в результате.</p>
-
-    <div data-bind="foreach: layersDirectory">
-      <span data-bind="text: $data"></span>
-    </div>
+    {% include 'scraps/resopts.htm' %}
 
   </div></div>
   <div class="bmpp-paneDivider"></div>
   <div class="bmpp-paneButtons">
       <button class="ui small button">ОК</button>
-      <button class="ui small button">Сбросить к значениям по умолчанию</button>
+      <button class="ui small button"
+        data-bind="click: resOptsAdditionalTierTypes.reset"
+        >Сбросить к значениям по умолчанию</button>
   </div>
 </div>

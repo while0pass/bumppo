@@ -8,7 +8,7 @@ import { getQueryJSON, getLayersQueryJSON } from './scripts/queryJSON.js';
 import Cinema from './scripts/cinema.js';
 import { getHRef, hrefs } from './scripts/routing.js';
 import { getResults } from './scripts/results.js';
-import { LayersStruct, layersDirectory } from './scripts/layers.js';
+import { LayersStruct, resOptsAdditionalTierTypes } from './scripts/layers.js';
 import { TimeLine } from './scripts/timeline.js';
 import { records, recordPhases, CheckboxForm } from './scripts/subcorpus.js';
 
@@ -123,7 +123,7 @@ function viewModel() {
   this.resultsWindow = ko.observableArray([]);
   this.resultsSections = ko.observableArray([]);
   this.resultsNumber = ko.observable(null);
-  this.layersDirectory = layersDirectory;
+  this.resOptsAdditionalTierTypes = resOptsAdditionalTierTypes;
   this.layersData = ko.observable(new LayersStruct());
   this.showResultsOnly = ko.observable(true);
   // Показывать только результаты без слоев.

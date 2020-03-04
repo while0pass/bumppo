@@ -1,4 +1,5 @@
-import { getSubstitutedPropertyValues } from './searchUnitProperties.js';
+import { getSubstitutedPropertyValues,
+  ListProperty } from './searchUnitProperties.js';
 
 const layersElementIds = {
   layers: 'bmpp-layersLayers',
@@ -140,7 +141,7 @@ const LAYER_TEMPLATES_HIERARCHY = [
 ];
 
 const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
-  sortFunction} = (function () {
+  sortFunction, resOptsAdditionalTierTypes} = (function () {
 
   const values = {
     p_participants: getSubstitutedPropertyValues('p_participants'),
@@ -148,7 +149,7 @@ const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
   };
 
   let layers = [],
-      layerTypes = [],
+      valueList = { orValues: [] },
       childrenMap = {},
       parentMap = {},
       orderMap = {};
@@ -162,11 +163,12 @@ const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
               tierStrings: parentTierStrings,
               tierMap: parentTierMap } = resolveTierTemplate(template),
             item = {
-              type: layerType,
-              layers: parentTierStrings,
+              id: layerType,
+              name: layerType,
+              value: parentTierStrings,
               template,
             };
-      layerTypes.push(item);
+      valueList.orValues.push(item);
       layers = layers.concat(parentTierStrings);
 
       parentTierObjects.forEach(tierObject => {
@@ -183,16 +185,18 @@ const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
 
       if (parent.children) {
         const parentItem = item;
+        parentItem.orValues = [];
         parent.children.forEach((layerTemplate, ix2) => {
           const layerType = tierTemplateToType(layerTemplate),
                 { tierObjects, tierStrings } =
                   resolveTierTemplate(layerTemplate),
                 item = {
-                  type: layerType,
-                  layers: tierStrings,
-                  template: layerTemplate,
-                  parent: parentItem };
-          layerTypes.push(item);
+                  id: layerType,
+                  name: layerType,
+                  value: tierStrings,
+                  template: layerTemplate
+                };
+          parentItem.orValues.push(item);
           layers = layers.concat(tierStrings);
 
           tierObjects.forEach(tierObject => {
@@ -229,11 +233,53 @@ const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
     return 0;
   }
 
+  const resOptsData = { type: 'list', id: 'results_opts',
+    name: 'Обязательные для отображения типы слоев',
+    help: `Типы слоев, которые будут отображаться для всех найденных
+      результатов независимо от того, участвуют данные типы слоев
+      в запросе или нет.`,
+    valueList
+  };
+
+  let resOptsAdditionalTierTypes = new ListProperty(resOptsData);
+  Object.defineProperty(resOptsAdditionalTierTypes, 'isHeaderClickable', {
+    value: true,
+    writable: false,
+  });
+  resOptsAdditionalTierTypes.onHeaderClick = function () {
+    let self = resOptsAdditionalTierTypes,
+        values = self.chosenValues(),
+        n = values.length,
+        areAllChecked = self.valueList.areAllChecked();
+    if (areAllChecked) {
+      self.valueList.uncheckAll();
+    } else if (n > 0) {
+      self.$$lastValues = values.slice();
+      self.valueList.checkAll();
+    } else {
+      self.$$lastValues.forEach(item => item.userChecked(true));
+    }
+  };
+  resOptsAdditionalTierTypes.reset = function () {
+    const defaults = [
+      'vLine',
+      'vLineHTML', // RU
+      //'vLineHTMLTranslit', // EN
+      //'vLineTranslate', // EN
+      'vSegm',
+      'vSegmHTML', // RU
+      //'vSegmHTMLTranslit', // EN
+      //'vSegmGlossing', // EN
+    ];
+    resOptsAdditionalTierTypes.valueList.resetToValuesByIds(defaults);
+  };
+  resOptsAdditionalTierTypes.reset();
+
   return {
     LAYERS: layers,
     LAYER_CHILDREN_MAP: childrenMap,
     LAYER_PARENT_MAP: parentMap,
-    sortFunction
+    sortFunction, resOptsAdditionalTierTypes
   };
 })();
 
@@ -432,7 +478,5 @@ class LayersStruct {
   }
 }
 
-const layersDirectory = [];
-
-export { LayersStruct, layersDirectory, layersElementIds, LAYER_PARENT_MAP,
-  resolveTierTemplate, tierMapForPrimaryResults };
+export { LayersStruct, layersElementIds, LAYER_PARENT_MAP,
+  resolveTierTemplate, resOptsAdditionalTierTypes, tierMapForPrimaryResults };

@@ -2,7 +2,7 @@ import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
 import { SAME_PARTICIPANT_RELATION_ID,
   DISTANCE_RELATION_TYPE, Connective } from './searchUnitRelations.js';
-import { LAYER_PARENT_MAP } from './layers.js';
+import { LAYER_PARENT_MAP, resOptsAdditionalTierTypes } from './layers.js';
 
 function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
@@ -214,13 +214,6 @@ function getQueryJSON(viewModel) {
   return JSON.stringify(query, null, 4);
 }
 
-const DEFAULT_LAYERS = [
-  '-vLine',
-  '-vLineHTML',
-  '-vSegm',
-  '-vSegmHTML',
-];
-
 const EXCLUDE_LAYERS = [
   'Stage',
 ];
@@ -231,7 +224,8 @@ function getLayersQueryJSON(data) {
   let begin = data.match.time.begin - halfDuration;
   if (begin < 0) begin = 0;
 
-  let tiers = DEFAULT_LAYERS.map(x => data.participant + x);
+  let tiers = resOptsAdditionalTierTypes.value()
+    .filter(x => x.slice(0, 1) === data.participant);
   tiers.push(data.match.tier);
   tiers = tiers.concat(Object.keys(data.match.tiers));
   tiers = tiers.concat(Object.values(data._data)
