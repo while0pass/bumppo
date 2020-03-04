@@ -32,7 +32,7 @@ onmessage = message => {
           && (isMainQueryType || data.query === 'stub');
     if (!doUseStubData) {
       doAbort(xhr);
-      doQuery(data.type, data.query);
+      doQuery(data);
     } else {
       getStubResults(data.type);
     }
@@ -49,8 +49,9 @@ function doAbort(xhr) {
   }
 }
 
-function doQuery(queryType, queryJSON) {
-  const isMainType = queryType === mainQueryType,
+function doQuery(data) {
+  const { type: queryType, query: queryJSON } = data,
+        isMainType = queryType === mainQueryType,
         xURL = isMainType ? resultsURL : tiersURL;
 
   const NOT_SENT = 0,
@@ -95,7 +96,7 @@ function doQuery(queryType, queryJSON) {
           postMessage(['results', resultsData]);
           postMessage(['status', null]);
         } else {
-          postMessage(['layers', rawData]);
+          postMessage(['layers', { data: rawData, tiers: data.tiers || [] }]);
         }
       } else {
         let message;
@@ -152,6 +153,6 @@ function getStubResults(dataType) {
     postMessage(['results', resultsData]);
     postMessage(['status', null]);
   } else {
-    postMessage(['layers', stubTiersData]);
+    postMessage(['layers', { data: stubTiersData, tiers: [] }]);
   }
 }

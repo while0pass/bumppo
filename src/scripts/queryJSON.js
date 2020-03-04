@@ -290,7 +290,7 @@ function getLayersQueryJSON(data, linear6n) {
     type: 'overlaps',
     tiers: tiers,
   };
-  return JSON.stringify(query, null, 4);
+  return { tiers, query: JSON.stringify(query, null, 4) };
 }
 
 export { getQueryJSON, getLayersQueryJSON };

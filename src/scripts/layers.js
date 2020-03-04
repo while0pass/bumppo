@@ -296,7 +296,7 @@ class Layer {
     this.children = this.getChildren();
   }
   getAndRegisterSegments() {
-    let segments = this.struct._data[this.type];
+    let segments = this.struct._data[this.type] || [];
     return segments.map(
       x => {
         let seg = new Segment(this, x);
@@ -448,16 +448,18 @@ function resolveTierTemplate(template, unitProperties, channel) {
 }
 
 class LayersStruct {
-  constructor(data) {
+  constructor(data, tiers) {
     this._data = data || {};
     this._timeBoundSegRegister = {};
-    this._availableList = this.getAvailableLayersList();
+    this._availableList = this.getAvailableLayersList(tiers, this._data);
 
     this.time = {};
     this.layers = this.getLayersFromData(this._availableList);
   }
-  getAvailableLayersList() {
-    let layersList = Object.getOwnPropertyNames(this._data);
+  getAvailableLayersList(tiers, data) {
+    let layersList = tiers instanceof Array && tiers.length > 0
+      ? tiers
+      : Object.getOwnPropertyNames(data);
     layersList = layersList.filter(layerName => LAYERS.indexOf(layerName) > -1);
     layersList.sort(sortFunction);
     return layersList;
