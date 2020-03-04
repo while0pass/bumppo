@@ -215,6 +215,10 @@ function getQueryJSON(viewModel) {
   return JSON.stringify(query, null, 4);
 }
 
+const EXCLUDE_LAYERS = [
+  'Stage',
+];
+
 function getLayersQueryJSON(data, linear6n) {
   const halfDuration = (data.match.time.end - data.match.time.begin),
         end = data.match.time.end + halfDuration;
@@ -240,6 +244,14 @@ function getLayersQueryJSON(data, linear6n) {
 
   // Обязательные слои отфильтровываем по участникам
   let tiers = resOptsAdditionalTierTypes.value().filter(byParticipants);
+
+  // Добавляем слои, присутствующие в результате
+  tiers.push(data.match.tier);
+  tiers = tiers.concat(Object.keys(data.match.tiers));
+  tiers = tiers.concat(Object.values(data._data)
+    .filter(x => x.tier && EXCLUDE_LAYERS.indexOf(x.tier) < 0)
+    .map(x => x.tier)
+  );
 
   // Добавляем слои на основе дерева запроса
   linear6n.forEach(node => {
