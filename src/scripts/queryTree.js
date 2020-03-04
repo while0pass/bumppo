@@ -123,7 +123,7 @@ export class TreeNode {
     return after !== before;
   }
   getTiersFromTemplate(template) {
-    return resolveTierTemplate(template, this.unitProperties);
+    return resolveTierTemplate(template, this.unitProperties).tierStrings;
   }
   getTiersFromListOfTemplates(listOfTemplates) {
     var tiers = [], self = this;

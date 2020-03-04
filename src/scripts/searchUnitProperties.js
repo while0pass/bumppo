@@ -705,7 +705,7 @@ const propertiesLists = {
     p_mGeFunction, p_mGeTags]),
 };
 
-const templateSubstitutionMap = {
+const templateSubstitutionPropertyMap = {
   'p_mHand': p_mHand,
   'p_participants': p_participants,
 };
@@ -1428,12 +1428,18 @@ class ValueListItem {
   }
 }
 
-function getSubstitutedPropertyValues(propId, unitProperties) {
+function getSubstitutedPropertyValues(propId, unitProperties, channel) {
   if (unitProperties !== undefined) {
     const unitPropertiesMap = unitProperties.unitPropertiesMap();
     return unitPropertiesMap[propId].value() || [];
   }
-  return templateSubstitutionMap[propId].valueList.orValues.map(x => x.value);
+  let filter = x => x;
+  if (channel !== undefined) {
+    filter = x => x.disabledInChannels === undefined
+      || x.disabledInChannels.indexOf(channel) === -1;
+  }
+  return templateSubstitutionPropertyMap[propId].valueList.orValues
+    .filter(filter).map(x => x.value);
 }
 
 export {

@@ -30,249 +30,213 @@ const tierMapForPrimaryResults = {
   '{ p_participants }-oFixation': [ '{ p_participants }-oInterlocutor' ],
 };
 
-const LAYERS_HIERARCHY = [
+const LAYER_TEMPLATES_HIERARCHY = [
 
-  { name: 'N-vLine',
-    children: [
-      'N-vLineType',
-      'N-vHTML',
-      'N-vIllocPhase',
-      'N-vCombIllocPhase',
-      'N-vParenth',
-      'N-vInSplit',
-      'N-vCitation',
-      'N-vCoConstr',
-      'N-vWordsCount',
-      'N-vPausesCount',
-      'N-vFilledCount',
-      'N-vStartFilled',
-      'N-vAccentsCount',
-      'N-vMainAccentsCount',
-      'N-vMainAccents',
-      'N-vAccentsAfterMainCount',
-      'N-vInterruptCount',
-      'N-vLineVerbatim',
-      'N-vComments',
-      'N-vLineHTML',
-    ]},
+  { channel: 'voc', tierTemplates: [
 
-  { name: 'R-vLine',
-    children: [
-      'R-vLineType',
-      'R-vHTML',
-      'R-vIllocPhase',
-      'R-vCombIllocPhase',
-      'R-vParenth',
-      'R-vInSplit',
-      'R-vCitation',
-      'R-vCoConstr',
-      'R-vWordsCount',
-      'R-vPausesCount',
-      'R-vFilledCount',
-      'R-vStartFilled',
-      'R-vAccentsCount',
-      'R-vMainAccentsCount',
-      'R-vMainAccents',
-      'R-vAccentsAfterMainCount',
-      'R-vInterruptCount',
-      'R-vLineVerbatim',
-      'R-vComments',
-      'R-vLineHTML',
-    ]},
+    { template: '{ p_participants }-vLine',
+      children: [
+        '{ p_participants }-vLineType',
+        '{ p_participants }-vLineHTML', // RU
+        //'{ p_participants }-vLineHTMLTranslit', // EN
+        //'{ p_participants }-vLineTranslate', // EN
+        '{ p_participants }-vLineVerbatim',
+        '{ p_participants }-vIllocPhase',
+        '{ p_participants }-vCombIllocPhase',
+        '{ p_participants }-vParenth',
+        '{ p_participants }-vInSplit',
+        '{ p_participants }-vCitation',
+        '{ p_participants }-vCoConstr',
+        '{ p_participants }-vComments',
+        '{ p_participants }-vWordsCount',
+        '{ p_participants }-vPausesCount',
+        '{ p_participants }-vFilledCount',
+        '{ p_participants }-vStartFilled',
+        '{ p_participants }-vAccentsCount',
+        '{ p_participants }-vMainAccentsCount',
+        '{ p_participants }-vMainAccents',
+        '{ p_participants }-vAccentsAfterMainCount',
+        '{ p_participants }-vInterruptCount',
+      ]},
+    { template: '{ p_participants }-vSegm',
+      children: [
+        '{ p_participants }-vSType',
+        '{ p_participants }-vSegmHTML', // RU
+        //'{ p_participants }-vSegmHTMLTranslit', // EN
+        //'{ p_participants }-vSegmGlossing', // EN
+        '{ p_participants }-vSForm',
+        '{ p_participants }-vNearPause',
+        '{ p_participants }-vInOutEDU',
+        '{ p_participants }-vOnom',
+        '{ p_participants }-vTruncated',
+        '{ p_participants }-vPhon',
+        '{ p_participants }-vAccents',
+        '{ p_participants }-vMainAccent',
+        '{ p_participants }-vInterrupt',
+        '{ p_participants }-vTempo',
+        '{ p_participants }-vReduction',
+        '{ p_participants }-vLength',
+        '{ p_participants }-vEmph',
+        '{ p_participants }-vRegister',
+        '{ p_participants }-vStops',
+        '{ p_participants }-vStress',
+        '{ p_participants }-vWordNum',
+        '{ p_participants }-vWordNumReversed',
+      ]},
+    { template: '{ p_participants }-vPause',
+      children: [
+        '{ p_participants }-vPauseHTML',
+        '{ p_participants }-vPauseInOutEDU',
+      ] },
+    { template: '{ p_participants }-vCollat',
+      children: [
+        '{ p_participants }-vCollatForm',
+      ] },
 
-  { name: 'C-vLine',
-    children: [
-      'C-vLineType',
-      'C-vHTML',
-      'C-vIllocPhase',
-      'C-vCombIllocPhase',
-      'C-vParenth',
-      'C-vInSplit',
-      'C-vCitation',
-      'C-vCoConstr',
-      'C-vWordsCount',
-      'C-vPausesCount',
-      'C-vFilledCount',
-      'C-vStartFilled',
-      'C-vAccentsCount',
-      'C-vMainAccentsCount',
-      'C-vMainAccents',
-      'C-vAccentsAfterMainCount',
-      'C-vInterruptCount',
-      'C-vLineVerbatim',
-      'C-vComments',
-      'C-vLineHTML',
-    ]},
+  ]},
 
-  { name: 'N-vCollat', children: ['N-vCollatForm'] },
-  { name: 'R-vCollat', children: ['R-vCollatForm'] },
-  { name: 'C-vCollat', children: ['C-vCollatForm'] },
+  { channel: 'ocul', tierTemplates: [
 
+    { template: '{ p_participants }-oFixation',
+      children: [
+        '{ p_participants }-oInterlocutor',
+        '{ p_participants }-oLocus',
+      ] },
 
-  { name: 'N-oFixation', children: ['N-oInterlocutor', 'N-oLocus'] },
-  { name: 'R-oFixation', children: ['R-oInterlocutor', 'R-oLocus'] },
+  ]},
 
+  { channel: 'manu', tierTemplates: [
 
-  { name: 'N-mLtMovement', children: ['N-mLtMtType'] },
-  { name: 'N-mRtMovement', children: ['N-mRtMtType'] },
-  { name: 'N-mLtStillness', children: ['N-mLtStType'] },
-  { name: 'N-mRtStillness', children: ['N-mRtStType'] },
-  { name: 'N-mPosture', children: ['N-mPrPhase'] },
-  { name: 'N-mPostureChange' },
-  { name: 'N-mPostureAccommodator' },
-  { name: 'N-mGesture',
-    children: [
-      'N-mGeHandedness',
-      'N-mGeStucture',
-      'N-mGeTags',
-      'N-mGeFunction',
-    ]},
-  { name: 'N-mAdaptor', children: ['N-mAdType'] },
-  { name: 'N-mGestureChain' },
-  { name: 'N-mMovementChain' },
-  { name: 'N-mComments' },
+    { template: '{ p_participants }-m{ p_mHand }Movement',
+      children: [
+        '{ p_participants }-m{ p_mHand }MtType',
+      ] },
+    { template: '{ p_participants }-m{ p_mHand }Stillness',
+      children: [
+        '{ p_participants }-m{ p_mHand }StType',
+      ] },
+    { template: '{ p_participants }-mGesture',
+      children: [
+        '{ p_participants }-mGeHandedness',
+        '{ p_participants }-mGeStucture',
+        '{ p_participants }-mGeTags',
+        '{ p_participants }-mGeFunction',
+      ]},
+    { template: '{ p_participants }-mAdaptor',
+      children: [
+        '{ p_participants }-mAdType',
+      ] },
+    { template: '{ p_participants }-mPostureChange' },
+    { template: '{ p_participants }-mPostureAccommodator' },
+    { template: '{ p_participants }-mPosture',
+      children: [
+        '{ p_participants }-mPrPhase',
+      ] },
+    { template: '{ p_participants }-mGestureChain' },
+    { template: '{ p_participants }-mMovementChain' },
+    { template: '{ p_participants }-mComments' },
 
-
-  { name: 'R-mLtMovement', children: ['R-mLtMtType'] },
-  { name: 'R-mRtMovement', children: ['R-mRtMtType'] },
-  { name: 'R-mLtStillness', children: ['R-mLtStType'] },
-  { name: 'R-mRtStillness', children: ['R-mRtStType'] },
-  { name: 'R-mPosture', children: ['R-mPrPhase'] },
-  { name: 'R-mPostureChange' },
-  { name: 'R-mPostureAccommodator' },
-  { name: 'R-mGesture',
-    children: [
-      'R-mGeHandedness',
-      'R-mGeStucture',
-      'R-mGeTags',
-      'R-mGeFunction',
-    ]},
-  { name: 'R-mAdaptor', children: ['R-mAdType'] },
-  { name: 'R-mGestureChain' },
-  { name: 'R-mMovementChain' },
-  { name: 'R-mComments' },
-
-
-  { name: 'C-mLtMovement', children: ['C-mLtMtType'] },
-  { name: 'C-mRtMovement', children: ['C-mRtMtType'] },
-  { name: 'C-mLtStillness', children: ['C-mLtStType'] },
-  { name: 'C-mRtStillness', children: ['C-mRtStType'] },
-  { name: 'C-mPosture', children: ['C-mPrPhase'] },
-  { name: 'C-mPostureChange' },
-  { name: 'C-mPostureAccommodator' },
-  { name: 'C-mGesture',
-    children: [
-      'C-mGeHandedness',
-      'C-mGeStucture',
-      'C-mGeTags',
-      'C-mGeFunction',
-    ]},
-  { name: 'C-mAdaptor', children: ['C-mAdType'] },
-  { name: 'C-mGestureChain' },
-  { name: 'C-mMovementChain' },
-  { name: 'C-mComments' },
-
-
-  { name: 'N-vPause', children: ['N-vPauseInOutEDU', 'N-vPauseHTML'] },
-  { name: 'R-vPause', children: ['R-vPauseInOutEDU', 'R-vPauseHTML'] },
-  { name: 'C-vPause', children: ['C-vPauseInOutEDU', 'C-vPauseHTML'] },
-
-
-  { name: 'N-vSegm',
-    children: [
-      'N-vTempo',
-      'N-vReduction',
-      'N-vLength',
-      'N-vInterrupt',
-      'N-vEmph',
-      'N-vRegister',
-      'N-vStops',
-      'N-vStress',
-      'N-vPhon',
-      'N-vNearPause',
-      'N-vInOutEDU',
-      'N-vOnom',
-      'N-vTruncated',
-      'N-vWordNum',
-      'N-vWordNumReversed',
-      'N-vMainAccent',
-      'N-vSType',
-      'N-vSForm',
-      'N-vAccents',
-      'N-vSegmHTML',
-    ]},
-
-  { name: 'R-vSegm',
-    children: [
-      'R-vTempo',
-      'R-vReduction',
-      'R-vLength',
-      'R-vInterrupt',
-      'R-vEmph',
-      'R-vRegister',
-      'R-vStops',
-      'R-vStress',
-      'R-vPhon',
-      'R-vNearPause',
-      'R-vInOutEDU',
-      'R-vOnom',
-      'R-vTruncated',
-      'R-vWordNum',
-      'R-vWordNumReversed',
-      'R-vMainAccent',
-      'R-vSType',
-      'R-vSForm',
-      'R-vAccents',
-      'R-vSegmHTML',
-    ]},
-
-  { name: 'C-vSegm',
-    children: [
-      'C-vTempo',
-      'C-vReduction',
-      'C-vLength',
-      'C-vInterrupt',
-      'C-vEmph',
-      'C-vRegister',
-      'C-vStops',
-      'C-vStress',
-      'C-vPhon',
-      'C-vNearPause',
-      'C-vInOutEDU',
-      'C-vOnom',
-      'C-vTruncated',
-      'C-vWordNum',
-      'C-vWordNumReversed',
-      'C-vMainAccent',
-      'C-vSType',
-      'C-vSForm',
-      'C-vAccents',
-      'C-vSegmHTML',
-    ]},
+  ]}
 ];
 
-const [LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP] = (function () {
+const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
+  sortFunction} = (function () {
+
+  const values = {
+    p_participants: getSubstitutedPropertyValues('p_participants'),
+    p_mHand: getSubstitutedPropertyValues('p_mHand'),
+  };
+
   let layers = [],
+      layerTypes = [],
       childrenMap = {},
-      parentMap = {};
-  LAYERS_HIERARCHY.forEach(topLayer => {
-    layers.push(topLayer.name);
-    if (topLayer.children) {
-      childrenMap[topLayer.name] = topLayer.children;
-      topLayer.children.forEach(layer => {
-        layers.push(layer);
-        parentMap[layer] = topLayer.name;
+      parentMap = {},
+      orderMap = {};
+
+  LAYER_TEMPLATES_HIERARCHY.forEach((channel, ix0) => {
+    channel.tierTemplates.forEach((parent, ix1) => {
+
+      const template = parent.template,
+            layerType = tierTemplateToType(template),
+            { tierObjects: parentTierObjects,
+              tierStrings: parentTierStrings,
+              tierMap: parentTierMap } = resolveTierTemplate(template),
+            item = {
+              type: layerType,
+              layers: parentTierStrings,
+              template,
+            };
+      layerTypes.push(item);
+      layers = layers.concat(parentTierStrings);
+
+      parentTierObjects.forEach(tierObject => {
+        let sortKey =
+          String(values.p_participants.indexOf(tierObject.p_participants)) +
+          String(ix0) +
+          String(ix1).padStart(3, '0');
+        if (tierObject.p_mHand) {
+          sortKey += String(values.p_mHand.indexOf(tierObject.p_mHand) + 1);
+        }
+        orderMap[tierObject] = sortKey;
+        childrenMap[tierObject] = [];
       });
-    }
+
+      if (parent.children) {
+        const parentItem = item;
+        parent.children.forEach((layerTemplate, ix2) => {
+          const layerType = tierTemplateToType(layerTemplate),
+                { tierObjects, tierStrings } =
+                  resolveTierTemplate(layerTemplate),
+                item = {
+                  type: layerType,
+                  layers: tierStrings,
+                  template: layerTemplate,
+                  parent: parentItem };
+          layerTypes.push(item);
+          layers = layers.concat(tierStrings);
+
+          tierObjects.forEach(tierObject => {
+            const parentKey = [tierObject.p_participants, tierObject.p_mHand],
+                  parentLayer = parentTierMap[parentKey],
+                  sortKey =
+                    String(values.p_participants.indexOf(
+                      tierObject.p_participants)) +
+                    String(ix0) +
+                    String(ix1).padStart(3, '0') +
+                    String(values.p_mHand.indexOf(tierObject.p_mHand) + 1) +
+                    // Свойство p_mHand используется не вовсех шаблонах слоев,
+                    // поэтому при поиске по индексу может возникать -1.
+                    // Но так как сортировать мы будем на основе символов,
+                    // а не чисел, избавляемся от возможных отрицательных
+                    // чисел, прибавляя единицу.
+                    String(ix2).padStart(3, '0');
+            orderMap[tierObject] = sortKey;
+            parentMap[tierObject] = parentLayer;
+            childrenMap[parentLayer].push(tierObject.toString());
+          });
+        });
+      }
+
+    });
   });
-  return [layers, childrenMap, parentMap];
+  layers.sort(sortFunction);
+
+  function sortFunction(a, b) {
+    let A = orderMap[a],
+        B = orderMap[b];
+    if (A < B) return -1;
+    if (A > B) return 1;
+    return 0;
+  }
+
+  return {
+    LAYERS: layers,
+    LAYER_CHILDREN_MAP: childrenMap,
+    LAYER_PARENT_MAP: parentMap,
+    sortFunction
+  };
 })();
 
-const LAYER_ORDER_MAP = (function () {
-  let orderMap = {};
-  LAYERS.forEach((layerName, ix) => { orderMap[layerName] = ix; });
-  return orderMap;
-})();
 
 const COOKED_LAYERS = {};
 
@@ -387,25 +351,21 @@ class Segment {
   }
 }
 
-function sortFunction(a, b) {
-  let A = LAYER_ORDER_MAP[a],
-      B = LAYER_ORDER_MAP[b];
-  if (A < B) return -1;
-  if (A > B) return 1;
-  return 0;
+function tierTemplateToType(template) {
+  return template.replace(/\{[^{}]+\}|-/g, '');
 }
 
-function resolveTierTemplate(template, unitProperties) {
+function resolveTierTemplate(template, unitProperties, channel) {
   if (template.indexOf('{') < 0) return [template];
 
-  let tiers = [], idMap = {};
+  let tierObjects = [], idMap = {};
   const reTrim = /^\{\s*|\s*\}$/g,
         reFields = /\{\s*[^{}]+\s*\}/g,
         reProp = x => new RegExp(`\\{\\s*${ x }\\s*\\}`, 'g'),
         propsIds = template.match(reFields).map(x => x.replace(reTrim, ''));
 
   propsIds.forEach(id => {
-    idMap[id] = getSubstitutedPropertyValues(id, unitProperties);
+    idMap[id] = getSubstitutedPropertyValues(id, unitProperties, channel);
   });
 
   let lens = propsIds.map(id => idMap[id].length),
@@ -413,11 +373,15 @@ function resolveTierTemplate(template, unitProperties) {
       N = lens.reduce((a, b) => a * b);
 
   for (let n = 0; n < N; n++) {
-    let tier = template;
+    let tier = template, tierProps = {} ;
     for (let i = 0; i < propsIds.length; i++) {
-      tier = tier.replace(reProp(propsIds[i]), idMap[propsIds[i]][index[i]]);
+      const prop = propsIds[i],
+            propVal = idMap[prop][index[i]];
+      tier = tier.replace(reProp(prop), propVal);
+      tierProps[prop] = propVal;
     }
-    tiers.push(tier);
+    tier = Object.assign(new String(tier), tierProps);
+    tierObjects.push(tier);
     index = index.map((x, i, arr) => {
       if (i > 0) {
         return arr[i - 1] === 0 ? (x + 1) % lens[i] : x;
@@ -426,8 +390,15 @@ function resolveTierTemplate(template, unitProperties) {
       }
     });
   }
-  tiers = tiers.sort(sortFunction);
-  return tiers;
+  tierObjects = tierObjects.sort(sortFunction);
+  let tierStrings = [],
+      tierMap = {};
+  tierObjects.forEach(function (tier) {
+    const tierString = tier.toString();
+    tierMap[[tier.p_participants, tier.p_mHand]] = tierString;
+    tierStrings.push(tierString);
+  });
+  return { tierObjects, tierStrings, tierMap };
 }
 
 class LayersStruct {
