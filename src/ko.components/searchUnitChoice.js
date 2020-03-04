@@ -141,8 +141,11 @@ const chosenUnitTemplate = `
       </span>
     </div>
 
-    <div data-bind="click: node.seppuku.bind(node),
-                     visible: node.depth() === 0 && node.unitType()"
+    <div data-bind="click: function () {
+                             node.seppuku();
+                             $root.resOptsAdditionalTierTypes.reset();
+                           },
+                    visible: node.depth() === 0 && node.unitType()"
       style="position: absolute; right: 1.5em; top: 1.5em; color: #a00;
       border-bottom-color: #a00; line-height: 1.3em;"
       class="bmpp-editUrl">
