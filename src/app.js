@@ -227,7 +227,7 @@ function viewModel() {
           && item.match.value === self.resultsData()[0].match.value
           && item.record_id === self.resultsData()[0].record_id
           ? 'stub'
-          : getLayersQueryJSON(item),
+          : getLayersQueryJSON(item, self.linearizedQueryTree()),
         data = { type: 'layers', query };
     worker.postMessage(['query', data]);
   };

@@ -2,7 +2,8 @@ import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
 import { SAME_PARTICIPANT_RELATION_ID,
   DISTANCE_RELATION_TYPE, Connective } from './searchUnitRelations.js';
-import { LAYER_PARENT_MAP, resOptsAdditionalTierTypes } from './layers.js';
+import { LAYER_PARENT_MAP, resOptsAdditionalTierTypes,
+  resolveTierTemplate } from './layers.js';
 
 function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
@@ -214,24 +215,56 @@ function getQueryJSON(viewModel) {
   return JSON.stringify(query, null, 4);
 }
 
-const EXCLUDE_LAYERS = [
-  'Stage',
-];
-
-function getLayersQueryJSON(data) {
+function getLayersQueryJSON(data, linear6n) {
   const halfDuration = (data.match.time.end - data.match.time.begin),
         end = data.match.time.end + halfDuration;
   let begin = data.match.time.begin - halfDuration;
   if (begin < 0) begin = 0;
 
-  let tiers = resOptsAdditionalTierTypes.value()
-    .filter(x => x.slice(0, 1) === data.participant);
-  tiers.push(data.match.tier);
-  tiers = tiers.concat(Object.keys(data.match.tiers));
-  tiers = tiers.concat(Object.values(data._data)
-    .filter(x => x.tier && EXCLUDE_LAYERS.indexOf(x.tier) < 0)
+  // Собираем всех участников, присутствующих в результате
+  let participants = new Set(),
+      byParticipants = x => participants.has(x.slice(0, 1)),
+      addParticipant = x => participants.add(x.slice(0, 1)),
+      participantAwareTier = x => typeof x === 'string' && x.match(/^[NRC]-/);
+  if (data._data.show_tiers !== undefined) {
+    Object.keys(data._data.show_tiers)
+      .filter(participantAwareTier)
+      .forEach(addParticipant);
+  }
+  if (participantAwareTier(data._data.tier)) addParticipant(data._data.tier);
+  Object.values(data._data)
     .map(x => x.tier)
-  );
+    .filter(participantAwareTier)
+    .forEach(addParticipant);
+  if (participants.size === 0) participants.add(data.participant);
+
+  // Обязательные слои отфильтровываем по участникам
+  let tiers = resOptsAdditionalTierTypes.value().filter(byParticipants);
+
+  // Добавляем слои на основе дерева запроса
+  linear6n.forEach(node => {
+    let {tierTemplate, subtierTemplate} = node.unitType();
+    tiers = tiers.concat(
+      resolveTierTemplate(tierTemplate)
+        .tierStrings.filter(byParticipants)
+    );
+    if (subtierTemplate) {
+      tiers = tiers.concat(
+        resolveTierTemplate(subtierTemplate)
+          .tierStrings.filter(byParticipants)
+      );
+    }
+    node.chosenUnitProperties().forEach(prop => {
+      if (prop.tierTemplate) {
+        tiers = tiers.concat(
+          resolveTierTemplate(prop.tierTemplate)
+            .tierStrings.filter(byParticipants)
+        );
+      }
+    });
+  });
+
+  // Добавляем все родительские слои и устраняем повторы
   tiers = tiers.reduce((a, b) => {
     if (a.indexOf(b) < 0) a.push(b);
     let parent = b in LAYER_PARENT_MAP ? LAYER_PARENT_MAP[b] : null;
