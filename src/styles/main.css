@@ -18,8 +18,8 @@ $videoHeight: 193px;
 
 @define-mixin scrollbar $bgcolor: #efefef {
   &::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
   }
 
   &::-webkit-scrollbar-track {
@@ -593,14 +593,17 @@ $layerHeight: 2rem;
   font-size: smaller;
   position: relative;
   border-bottom: 1px solid $bmppBorderColor;
+  overflow-x: hidden;
+  overflow-y: auto;
+  @mixin scrollbar;
 
   &::after {
     display: block;
     content: '';
     width: 100%;
     height: 2em;
-    position: absolute;
-    bottom: 0;
+    position: sticky;
+    bottom: -1em;
     background: linear-gradient(
       to top,
       rgba(255,255,255,1) 0%,
