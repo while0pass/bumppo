@@ -744,7 +744,7 @@ function beautifyNumber(number) {
 }
 
 function injectNumber(template, value) {
-  return template.replace('##', beautifyNumber(value));
+  return template.replace(/##/g, beautifyNumber(value));
 }
 
 function injectNodeNumbers(template, node1, node2) {

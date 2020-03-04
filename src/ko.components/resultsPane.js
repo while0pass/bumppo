@@ -599,9 +599,9 @@ function viewModelFactory(params) {
   });
 
   function untag(html) {
-    return html.replace(/<[^>]+>/g, '')
-      .replace('"', '&quot;')
-      .replace("'", '&apos;'); // eslint-disable-line quotes
+    return html.replace(/<[^>]+>/g, '');
+    // NOTE: Замена двойных кавычек на &quot; тут не требуется, поскольку
+    // ф-ция будет использоваться в программном добавлении html-атрибута.
   }
 
   const playTypes = [
