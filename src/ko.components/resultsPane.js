@@ -131,7 +131,9 @@ const layersTemplate = `
     </div>
 
     <div id="${ timelineElementIds.timeline }">
-      <div id="${ timelineElementIds.canvas }">
+      <div id="${ timelineElementIds.canvas }" data-bind="
+        attr: { title: timeUnderCursor },
+        event: { mouseover: updateTimeCanvasTitle }">
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
           <line id="${ timelineElementIds.ticks1 }" x1="0" x2="100%"
                                                     y1="0.2rem" y2="0.2rem"/>
@@ -485,6 +487,17 @@ function viewModelFactory(params) {
         cinema.seek(timePoint);
       };
 
+  let timeUnderCursor = ko.observable(),
+      updateTimeCanvasTitle = function ($data, event) {
+        let lS = layersStruct(),
+            start = lS.time.start,
+            duration = lS.duration,
+            { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
+            cursorCanvasX = event.clientX - canvasX,
+            timePoint = start + duration * cursorCanvasX / canvasWidth;
+        timeUnderCursor(getTimeTag(timePoint, 1));
+      };
+
   let zoomSel = () => {
         let [startPoint, endPoint] = timeline.selectionEdges();
         if (startPoint === null || endPoint === null) return;
@@ -637,6 +650,7 @@ function viewModelFactory(params) {
     canSearchBeAborted: params.viewModel.canSearchBeAborted,
     clearErrorOrMessage: params.viewModel.clearErrorOrMessage,
     abortLastRequest: params.viewModel.abortLastRequest,
+    timeUnderCursor, updateTimeCanvasTitle,
   };
 }
 
