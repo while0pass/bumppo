@@ -154,6 +154,23 @@ const layersTemplate = `
       </div>
     </div>
     <div id="bmpp-layersButtons">
+
+      <ul>
+        <li data-bind="click: cinema.playOrPause.bind(cinema)"
+            style="border-right: none; padding-right: 0.05em">
+          <i class="ui disabled play icon"
+            data-bind="class: cinema.canPlayOrPause,
+              attr: { title: cinema.canPlayOrPause() === 'play' ?
+                'Запуск видео' : 'Пауза' }"></i>
+        </li>
+        <li id="bmpp-currentTime" title="Положение курсора"></li>
+        <!-- ko foreach: playTypes -->
+          <li data-bind="click: setPlayType, text: label,
+            css: { active: $component.cinema.playType() === playType },
+            attr: { title: title }"></li>
+        <!-- /ko -->
+      </ul>
+
       <ul>
         <li data-bind="click: zoomAll"
           title="Привести масштаб в соответствие подгруженному фрагменту">
@@ -170,18 +187,7 @@ const layersTemplate = `
         <li data-bind="click: selectionBak"
           title="Вернуть прежнее выделение">bak</li>
       </ul>
-      <ul>
-        <li data-bind="click: cinema.playOrPause.bind(cinema)"
-            style="border-right: none; padding-right: 0.05em">
-          <i class="ui disabled play icon"
-            data-bind="class: cinema.canPlayOrPause"></i>
-        </li>
-        <!-- ko foreach: playTypes -->
-          <li data-bind="click: setPlayType, text: label,
-            css: { active: $component.cinema.playType() === playType },
-            attr: { title: title }"></li>
-        <!-- /ko -->
-      </ul>
+
     </div>
 
     <div id="${ timelineElementIds.cursor.window }">

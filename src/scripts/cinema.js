@@ -3,6 +3,7 @@ import ko from 'knockout';
 import Plyr from 'plyr';
 
 import cinematheque from '../video_data.js';
+import { getTimeTag } from './timeline.js';
 
 var plyrOpts = {
   clickToPlay: true,
@@ -205,17 +206,19 @@ class Cinema {
     //if (thisTime - lastTime < 40) return;
     //this.cursorStruct.lastTime = thisTime;
 
-    let cursor = this.cursorStruct.cursor;
-    if (!cursor) cursor = document.getElementById('bmpp-cursor');
+    let cursor = document.getElementById('bmpp-cursor'),
+        timeTag = document.getElementById('bmpp-currentTime');
     // NOTE: Нет смысла брать элемент DOM для курсора в createCursorStruct,
     // т.к. на тот момент элемента ещё в DOM не будет.
 
     let { start, width, duration } = this.cursorStruct,
+        ms = currentTime * 1000,
         position = width
-          ? String((currentTime * 1000 - start) / duration * 100) + '%'
+          ? String((ms - start) / duration * 100) + '%'
           : -100;
     cursor.setAttribute('x1', position);
     cursor.setAttribute('x2', position);
+    if (timeTag !== null) timeTag.innerHTML = getTimeTag(ms, 1);
   }
   _play(film, isCreated, begin, end) {
     film.episode.begin = begin;

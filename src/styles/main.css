@@ -356,10 +356,11 @@ $layersPanelButtonsHeight: 2rem;
       grid-area: buttons;
       border-top: 1px solid $bmppBorderColor;
       display: flex;
+      justify-content: space-between;
 
       & ul {
         list-style: none;
-        margin: 0 3em 0 0;
+        margin: 0;
         padding: 0;
         display: flex;
         align-items: stretch; /* NOTE: Со значение baseline надписи в кнопках
@@ -370,19 +371,26 @@ $layersPanelButtonsHeight: 2rem;
       & ul li {
         text-transform: uppercase;
         margin: 0;
-        padding: 0.35em;
+        padding: 0.35em 0.5em;
         border-right: 1px solid $bmppBorderColor;
         cursor: pointer;
 
-        &:hover {
+        &#bmpp-currentTime {
+          color: green;
+          cursor: auto;
+
+          &:hover {
+            background-color: white;
+          }
+        }
+
+        &:hover,
+        &.active {
           background-color: $bmppBorderColor;
         }
 
-        &.active {
-          background-color: green;
-          color: white;
-          font-weight: bold;
-          letter-spacing: 0.05em;
+        &.active:hover {
+          outline: 1px solid $grey;
         }
       }
 
