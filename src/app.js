@@ -224,13 +224,15 @@ function viewModel() {
   this.loadLayers = item => {
     self.searchStatus('Формирование запроса');
     let query = 'stub',
-        tiers = [];
+        tiers = [],
+        time = null;
     if (!window[';)'].stub
     || item.match.value !== self.resultsData()[0].match.value
     || item.record_id !== self.resultsData()[0].record_id) {
-      ({ query, tiers } = getLayersQueryJSON(item, self.linearizedQueryTree()));
+      ({ query, tiers, time } =
+        getLayersQueryJSON(item, self.linearizedQueryTree()));
     }
-    const data = { type: 'layers', query, tiers };
+    const data = { type: 'layers', query, tiers, time };
     worker.postMessage(['query', data]);
   };
 
@@ -287,7 +289,7 @@ worker.onmessage = message => {
     }
 
   } else if (messageType === 'layers') {
-    vM.layersData(new LayersStruct(data.data, data.tiers));
+    vM.layersData(new LayersStruct(data.data, data.tiers, data.time));
     vM.clearErrorOrMessage();
 
   } else if (messageType === 'status') {

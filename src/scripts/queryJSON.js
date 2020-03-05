@@ -286,11 +286,15 @@ function getLayersQueryJSON(data, linear6n) {
 
   const query = {
     record_id: data.record_id,
-    time: { begin: begin, end: end },
+    time: { begin, end },
     type: 'overlaps',
-    tiers: tiers,
+    tiers,
   };
-  return { tiers, query: JSON.stringify(query, null, 4) };
+  return {
+    query: JSON.stringify(query, null, 4),
+    time: { start: begin, end },
+    tiers,
+  };
 }
 
 export { getQueryJSON, getLayersQueryJSON };

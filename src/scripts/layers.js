@@ -371,10 +371,10 @@ class Segment {
     }
   }
   redefineOverallTime() {
-    if (this.time) {
-      let overallTime = this.layer.struct.time,
-          timeIsNotDefined = !Object.prototype
-            .hasOwnProperty.call(overallTime, 'start');
+    let overallTime = this.layer.struct.time;
+    if (this.time && !overallTime.predefined) {
+      let timeIsNotDefined = !Object.prototype
+        .hasOwnProperty.call(overallTime, 'start');
       if (timeIsNotDefined || this.time.start < overallTime.start) {
         overallTime.start = this.time.start;
       }
@@ -448,13 +448,19 @@ function resolveTierTemplate(template, unitProperties, channel) {
 }
 
 class LayersStruct {
-  constructor(data, tiers) {
+  constructor(data, tiers, time) {
     this._data = data || {};
     this._timeBoundSegRegister = {};
     this._availableList = this.getAvailableLayersList(tiers, this._data);
 
-    this.time = {};
+    this.time = this.getTime(time);
     this.layers = this.getLayersFromData(this._availableList);
+  }
+  getTime(time) {
+    if (time && typeof time.start === 'number') {
+      return { ...time, predefined: true };
+    }
+    return {};
   }
   getAvailableLayersList(tiers, data) {
     let layersList = tiers instanceof Array && tiers.length > 0
