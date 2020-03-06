@@ -487,6 +487,7 @@ $layerHeight: 2rem;
   overflow: hidden;
   padding: 0.35rem 0.5rem;
   font-size: smaller;
+  white-space: nowrap;
 
   &:hover,
   .highlighted & {
@@ -498,6 +499,36 @@ $layerHeight: 2rem;
   .no-highlight .highlighted & {
     background-color: #efefef;
     border: 1px solid #ddd;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1rem;
+    background: linear-gradient(
+      90deg,
+      rgba(239,239,239,0) 0%,
+      rgba(239,239,239,1) 100%
+    );
+  }
+  &:hover::after,
+  .highlighted &::after {
+    background: linear-gradient(
+      90deg,
+      rgba(204,204,204,0) 0%,
+      rgba(204,204,204,1) 100%
+    );
+  }
+  .no-highlight &:hover::after,
+  .no-highlight .highlighted &:after {
+    background: linear-gradient(
+      90deg,
+      rgba(239,239,239,0) 0%,
+      rgba(239,239,239,1) 100%
+    );
   }
 }
 
