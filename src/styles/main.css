@@ -368,7 +368,6 @@ $layersPanelButtonsHeight: 2rem;
       }
 
       & ul li {
-        text-transform: uppercase;
         margin: 0;
         padding: 0.35em 0.5em;
         border-right: 1px solid $bmppBorderColor;
@@ -376,20 +375,39 @@ $layersPanelButtonsHeight: 2rem;
 
         &#bmpp-currentTime {
           color: green;
-          cursor: auto;
-
-          &:hover {
-            background-color: white;
-          }
         }
 
         &:hover,
         &.active {
           background-color: $bmppBorderColor;
         }
-
         &.active:hover {
           outline: 1px solid $grey;
+        }
+        &.unhovered:hover {
+          background-color: white;
+          cursor: auto;
+        }
+
+        & .ui.icon.arrow {
+          position: relative;
+          top: -0.05em;
+        }
+        & .ui.icon.arrow.left:before {
+          border-left: 0.15em solid;
+          margin-left: 0.25em;
+        }
+        & .ui.icon.arrow.right:before {
+          border-right: 0.15em solid;
+          margin-right: 0.25em;
+        }
+
+        & input.ui.input {
+          position: relative;
+          top: -0.15em;
+          text-align: center;
+          width: 7em;
+          border: 1px solid transparent;
         }
       }
 

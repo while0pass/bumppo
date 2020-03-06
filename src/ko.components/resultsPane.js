@@ -1,4 +1,3 @@
-import log from '../scripts/log.js';
 import ko from 'knockout';
 import { layersElementIds } from '../scripts/layers.js';
 import { timelineElementIds, getTimeTag } from '../scripts/timeline.js';
@@ -165,7 +164,8 @@ const layersTemplate = `
               attr: { title: cinema.canPlayOrPause() === 'play' ?
                 'Запуск видео' : 'Пауза' }"></i>
         </li>
-        <li id="bmpp-currentTime" title="Положение курсора"></li>
+        <li id="bmpp-currentTime" class="unhovered" title="Положение курсора">
+        </li>
         <!-- ko foreach: playTypes -->
           <li data-bind="click: setPlayType, text: label,
             css: { active: $component.cinema.playType() === playType },
@@ -174,20 +174,50 @@ const layersTemplate = `
       </ul>
 
       <ul>
-        <li data-bind="click: zoomAll"
-          title="Привести масштаб в соответствие подгруженному фрагменту">
-          <i class="ui expand icon"></i>
-          all
+        <li data-bind="click: expandLeft,
+            attr: { title: 'Расширить загруженный временно́й интервал на ' +
+              expandStep() + ' сек влево' }">
+          <i class="ui left arrow disabled icon"></i>
         </li>
-        <li data-bind="click: zoomIn"
-          title="Увеличить масштаб">in</li>
+        <li title="Шаг расширения временно́го интервала в секундах, допустимы дробные значения">
+          <input class="ui input" style="width: 2em"
+            data-bind="value: expandStep">
+        </li>
+        <li data-bind="click: expandRight,
+            attr: { title: 'Расширить загруженный временно́й интервал на ' +
+              expandStep() + ' сек влево' }">
+          <i class="ui right arrow disabled icon"></i>
+        </li>
+      </ul>
+
+      <ul>
+        <li title="Начало загруженного временно́го интервала">
+          <input class="ui input" data-bind="value: loadedIntervalStart">
+        </li>
+        <li title="Конец загруженного временно́го интервала">
+          <input class="ui input" data-bind="value: loadedIntervalEnd">
+        </li>
+        <li title="Длительность загруженного временно́го интервала в секундах">
+          <input class="ui input" style="width: 4em"
+            data-bind="value: loadedIntervalDuration">
+        </li>
+      </ul>
+
+      <ul>
+        <li data-bind="click: zoomAll"
+  title="Привести масштаб в соответствие загруженному временно́му интервалу">
+          <i class="ui expand icon"></i>
+          ALL
+        </li>
+        <li data-bind="click: zoomIn" title="Увеличить масштаб">IN</li>
         <li data-bind="click: zoomOut"
-          title="Уменьшить масштаб в рамках подгруженного фрагмента">out</li>
+  title="Уменьшить масштаб в рамках загруженного временно́го интервала"
+          >OUT</li>
         <li data-bind="click: zoomSel"
-          title="Привести масштаб в соответствие выделенному фрагменту"
-          >sel</li>
+  title="Привести масштаб в соответствие выделенному временно́му интервалу"
+          >SEL</li>
         <li data-bind="click: selectionBak"
-          title="Вернуть прежнее выделение">bak</li>
+          title="Вернуть прежнее выделение">BAK</li>
       </ul>
 
     </div>
@@ -461,7 +491,6 @@ function viewModelFactory(params) {
             { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
-        log('cursor under', getTimeTag(timePoint, 1));
         isDragging = [timePoint, cursorCanvasX, timeline.selectionEdges()];
         document.body.classList.add('no-highlight');
         document.body.addEventListener('mousemove', mousemove);
@@ -481,7 +510,6 @@ function viewModelFactory(params) {
             { left: canvasX, width: canvasWidth } = elTC.getBoundingClientRect(),
             cursorCanvasX = event.clientX - canvasX,
             timePoint = start + duration * cursorCanvasX / canvasWidth;
-        log('cursor under', getTimeTag(timePoint, 1));
         previousSelection = timeline.selectionEdges();
         timeline.selectionEdges([null, null]);
         cinema.seek(timePoint);
@@ -624,15 +652,104 @@ function viewModelFactory(params) {
   }
 
   const playTypes = [
-    { label: 'win', playType: cinema.playTypes.PLAY_VISIBLE, setPlayType,
-      title: 'Проигрывать фрагмент видео, умещающийся в окне слоёв' },
-    { label: 'pre', playType: cinema.playTypes.PLAY_PRE_SELECTION,
+    { label: 'WIN', playType: cinema.playTypes.PLAY_VISIBLE, setPlayType,
+      title: 'Проигрывать видео на временно́м интервале, соответствующем '
+        + 'видимой области окна со слоями' },
+    { label: 'PRE', playType: cinema.playTypes.PLAY_PRE_SELECTION,
       setPlayType, title: 'Проигрывать фрагмент видео до выделения' },
-    { label: 'sel', playType: cinema.playTypes.PLAY_SELECTION, setPlayType,
-      title: 'Проигрывать фрагмент видео, соостветствующий выделению' },
-    { label: 'post', playType: cinema.playTypes.PLAY_POST_SELECTION,
+    { label: 'SEL', playType: cinema.playTypes.PLAY_SELECTION, setPlayType,
+      title: 'Проигрывать видео на выделенном временно́м интервале' },
+    { label: 'POST', playType: cinema.playTypes.PLAY_POST_SELECTION,
       setPlayType, title: 'Проигрывать фрагмент видео после выделения' },
   ];
+
+  const _start = ko.pureComputed({
+          read: () => layersStruct().time.start,
+          write: start => {
+            const vM = params.viewModel,
+                  time = { start, end: layersStruct().time.end };
+            vM.loadLayers(vM.activeResult(), time);
+          }
+        }),
+        _end = ko.pureComputed({
+          read: () => layersStruct().time.end,
+          write: end => {
+            const vM = params.viewModel,
+                  time = { start: layersStruct().time.start, end };
+            vM.loadLayers(vM.activeResult(), time);
+          }
+        }),
+        MAX_DURATION_IN_MS = 12e4,
+        _duration = ko.pureComputed({
+          read: () => layersStruct().duration,
+          write: dur => {
+            if (dur > MAX_DURATION_IN_MS) dur = MAX_DURATION_IN_MS;
+            const vM = params.viewModel,
+                  activeResult = vM.activeResult(),
+                  { begin: iStart, end: iEnd } = activeResult.match.time,
+                  iDuration = iEnd - iStart,
+                  mid = iStart + iDuration / 2,
+                  halfDuration = dur / 2 < iDuration ? iDuration : dur / 2,
+                  start = mid - halfDuration < 0 ? 0 : mid - halfDuration,
+                  end = mid + halfDuration,
+                  time = { start, end };
+            vM.loadLayers(activeResult, time);
+          }
+        }),
+        timePointExtender = { timePoint: true, notifyAlways: true },
+        durationExtender = { notifyAlways: true,
+          numeric: {
+            isNullable: false,
+            maxDecimalDigits: 3,
+            min: 0,
+            max: MAX_DURATION_IN_MS / 1000,
+            modifier: {
+              forward: x => x / 1000,
+              backward: x => x * 1000
+            },
+            regexp: /[^\d.]/g,
+          }
+        },
+        stepExtender = { notifyAlways: true,
+          numeric: {
+            default: 1,
+            isNullable: false,
+            maxDecimalDigits: 3,
+            min: 0,
+            regexp: /[^\d.]/g,
+          }
+        },
+        loadedIntervalStart = _start.extend(timePointExtender),
+        loadedIntervalEnd = _end.extend(timePointExtender),
+        loadedIntervalDuration = _duration.extend(durationExtender),
+        expandStep = ko.observable().extend(stepExtender),
+        expandLeft = function () {
+          const vM = params.viewModel,
+                step = expandStep() * 1000,
+                { time: { start: iStart, end } } = layersStruct();
+          let start = iStart;
+          if (step <= 0 || start === 0) return;
+          start -= step;
+          if (start < end - MAX_DURATION_IN_MS) {
+            start = end - MAX_DURATION_IN_MS;
+          }
+          if (start < 0) start = 0;
+          if (start >= iStart) return;
+          vM.loadLayers(vM.activeResult(), { start, end });
+        },
+        expandRight = function () {
+          const vM = params.viewModel,
+                step = expandStep() * 1000,
+                { time: { start, end: iEnd } } = layersStruct();
+          let end = iEnd;
+          if (step <= 0) return;
+          end += step;
+          if (end > start + MAX_DURATION_IN_MS) {
+            end = start + MAX_DURATION_IN_MS;
+          }
+          if (end <= iEnd) return;
+          vM.loadLayers(vM.activeResult(), { start, end });
+        };
 
   timeline.afterInitDom();
 
@@ -651,6 +768,8 @@ function viewModelFactory(params) {
     clearErrorOrMessage: params.viewModel.clearErrorOrMessage,
     abortLastRequest: params.viewModel.abortLastRequest,
     timeUnderCursor, updateTimeCanvasTitle,
+    loadedIntervalStart, loadedIntervalEnd, loadedIntervalDuration,
+    expandStep, expandLeft, expandRight,
   };
 }
 

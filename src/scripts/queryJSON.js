@@ -219,10 +219,16 @@ const EXCLUDE_LAYERS = [
   'Stage',
 ];
 
-function getLayersQueryJSON(data, linear6n) {
-  const halfDuration = (data.match.time.end - data.match.time.begin),
-        end = data.match.time.end + halfDuration;
-  let begin = data.match.time.begin - halfDuration;
+function getLayersQueryJSON(data, linear6n, time=null) {
+  let begin, end;
+  if (time === null) {
+    const halfDuration = (data.match.time.end - data.match.time.begin);
+    begin = data.match.time.begin - halfDuration;
+    end = data.match.time.end + halfDuration;
+  } else {
+    begin = time.start;
+    end = time.end;
+  }
   if (begin < 0) begin = 0;
 
   // Собираем всех участников, присутствующих в результате

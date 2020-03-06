@@ -221,16 +221,16 @@ function viewModel() {
     }
     worker.postMessage(['abort', null]);
   };
-  this.loadLayers = item => {
+  this.loadLayers = (item, time=null) => {
     self.searchStatus('Формирование запроса');
     let query = 'stub',
         tiers = [],
-        time = null;
+        $ = self.resultsData();
     if (!window[';)'].stub
-    || item.match.value !== self.resultsData()[0].match.value
-    || item.record_id !== self.resultsData()[0].record_id) {
+    || item.match.value !== $[0].match.value
+    || item.record_id !== $[0].record_id) {
       ({ query, tiers, time } =
-        getLayersQueryJSON(item, self.linearizedQueryTree()));
+        getLayersQueryJSON(item, self.linearizedQueryTree(), time));
     }
     const data = { type: 'layers', query, tiers, time };
     worker.postMessage(['query', data]);

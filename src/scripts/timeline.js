@@ -93,6 +93,26 @@ function getTimeTag(timePoint, unit) {
   return timeTag;
 }
 
+function timeTagToMs(tag) {
+  let parts = tag.split(':');
+  switch (parts.length) {
+  case 2:
+    parts.unshift('00');
+    break;
+  case 3:
+    break;
+  default:
+    return null;
+  }
+  parts = parts.map(x => parseFloat(x.replace(/[^\d.]/g, ''), 10));
+  const [h, m, s] = parts,
+        ms = (h * 3600 + m * 60 + s) * 1000;
+  if (isNaN(ms) || ms === Infinity) {
+    return null;
+  }
+  return ms;
+}
+
 class TimePoint {
   constructor(point, timeline) {
     this.point = point;
@@ -364,4 +384,4 @@ class TimeLine {
   }
 }
 
-export { TimeLine, getTimeTag, timelineElementIds, MS };
+export { TimeLine, getTimeTag, timeTagToMs, timelineElementIds, MS };
