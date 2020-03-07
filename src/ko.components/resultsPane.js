@@ -651,6 +651,15 @@ function viewModelFactory(params) {
     // ф-ция будет использоваться в программном добавлении html-атрибута.
   }
 
+  function indicateUseless() {
+    if (indicateUseless.sound === undefined) {
+      let sound = new Audio('/useless.mp3');
+      sound.volume = 0.5;
+      indicateUseless.sound = sound;
+    }
+    indicateUseless.sound.play();
+  }
+
   const playTypes = [
     { label: 'WIN', playType: cinema.playTypes.PLAY_VISIBLE, setPlayType,
       title: 'Проигрывать видео на временно́м интервале, соответствующем '
@@ -728,13 +737,19 @@ function viewModelFactory(params) {
                 step = expandStep() * 1000,
                 { time: { start: iStart, end } } = layersStruct();
           let start = iStart;
-          if (step <= 0 || start === 0) return;
+          if (step <= 0 || start === 0) {
+            indicateUseless();
+            return;
+          }
           start -= step;
           if (start < end - MAX_DURATION_IN_MS) {
             start = end - MAX_DURATION_IN_MS;
           }
           if (start < 0) start = 0;
-          if (start >= iStart) return;
+          if (start >= iStart) {
+            indicateUseless();
+            return;
+          }
           vM.loadLayers(vM.activeResult(), { start, end });
         },
         expandRight = function () {
@@ -742,12 +757,18 @@ function viewModelFactory(params) {
                 step = expandStep() * 1000,
                 { time: { start, end: iEnd } } = layersStruct();
           let end = iEnd;
-          if (step <= 0) return;
+          if (step <= 0) {
+            indicateUseless();
+            return;
+          }
           end += step;
           if (end > start + MAX_DURATION_IN_MS) {
             end = start + MAX_DURATION_IN_MS;
           }
-          if (end <= iEnd) return;
+          if (end <= iEnd) {
+            indicateUseless();
+            return;
+          }
           vM.loadLayers(vM.activeResult(), { start, end });
         };
 

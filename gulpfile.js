@@ -119,6 +119,7 @@ function assets() {
     src('src/scraps/ref01.svg').pipe(dest('.build')),
     src('src/scraps/ref10.svg').pipe(dest('.build')),
     src('src/scraps/ref11.svg').pipe(dest('.build')),
+    src('bin/useless.mp3').pipe(dest('.build')),
   );
 }
 
