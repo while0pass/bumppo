@@ -636,13 +636,29 @@ function viewModelFactory(params) {
   ro2.observe(elTL);
 
   // При смене слоев сбрасываем параметры
-  layersStruct.subscribe(() => {
-    let { begin: start, end } = params.viewModel.activeResult().match.time,
-        segment = { time: { start, end }};
-    timeline.selectionEdges([null, null]);
-    selectionFromSegment(segment);
-    zoomSel();
-    zoomOut();
+  layersStruct.subscribe(value => {
+    if (value.previousState) {
+      const { cursor, selection, window: [windowStart, windowEnd] } =
+              value.previousState,
+            windowWidth = elTL.clientWidth,
+            canvasStart = value.time.start,
+            canvasDuration = value.duration,
+            windowDuration = windowStart - windowEnd,
+            canvasWidth = windowWidth / windowDuration * canvasDuration,
+            scroll = (windowStart - canvasStart) /
+              canvasDuration * canvasWidth;
+      syncWidth(canvasWidth);
+      syncScrollLeft(scroll);
+      cinema.getLastFilm()[0].film.currentTime = cursor;
+      timeline.selectionEdges(selection);
+    } else {
+      let { begin: start, end } = params.viewModel.activeResult().match.time,
+          segment = { time: { start, end }};
+      timeline.selectionEdges([null, null]);
+      selectionFromSegment(segment);
+      zoomSel();
+      zoomOut();
+    }
   });
 
   function untag(html) {
@@ -658,6 +674,25 @@ function viewModelFactory(params) {
       indicateUseless.sound = sound;
     }
     indicateUseless.sound.play();
+  }
+
+  function captureState() { // ;)
+    const windowLeft = elTL.getBoundingClientRect().left,
+          windowWidth = elTL.clientWidth,
+          windowRight = windowLeft + windowWidth,
+          { left: canvasLeft, width: canvasWidth } =
+            elTC.getBoundingClientRect(), // NOTE: ##cWgBCR##
+          lS = layersStruct(),
+          start = lS.time.start,
+          duration = lS.duration,
+          quotient = duration / canvasWidth,
+          windowStart = start + quotient * (windowLeft - canvasLeft),
+          windowEnd = start + quotient * (windowRight - canvasLeft);
+    return {
+      cursor: cinema.getLastFilm()[0].film.currentTime,
+      selection: timeline.selectionEdges(),
+      window: [windowStart, windowEnd]
+    };
   }
 
   const playTypes = [
@@ -682,7 +717,7 @@ function viewModelFactory(params) {
               start = end - MAX_DURATION_IN_MS;
             }
             if (start !== layersStruct().time.start) {
-              vM.loadLayers(vM.activeResult(), { start, end });
+              vM.loadLayers(vM.activeResult(), { start, end }, captureState());
             }
           }
         }),
@@ -695,7 +730,7 @@ function viewModelFactory(params) {
               end = start + MAX_DURATION_IN_MS;
             }
             if (end !== layersStruct().time.end) {
-              vM.loadLayers(vM.activeResult(), { start, end });
+              vM.loadLayers(vM.activeResult(), { start, end }, captureState());
             }
           }
         }),
@@ -712,7 +747,7 @@ function viewModelFactory(params) {
                   start = mid - halfDuration < 0 ? 0 : mid - halfDuration,
                   end = mid + halfDuration,
                   time = { start, end };
-            vM.loadLayers(activeResult, time);
+            vM.loadLayers(activeResult, time, captureState());
           }
         }),
         timePointExtender = { timePoint: true, notifyAlways: true },
@@ -760,7 +795,7 @@ function viewModelFactory(params) {
             indicateUseless();
             return;
           }
-          vM.loadLayers(vM.activeResult(), { start, end });
+          vM.loadLayers(vM.activeResult(), { start, end }, captureState());
         },
         expandRight = function () {
           const vM = params.viewModel,
@@ -779,7 +814,7 @@ function viewModelFactory(params) {
             indicateUseless();
             return;
           }
-          vM.loadLayers(vM.activeResult(), { start, end });
+          vM.loadLayers(vM.activeResult(), { start, end }, captureState());
         };
 
   timeline.afterInitDom();

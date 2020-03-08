@@ -66,9 +66,8 @@ class Film {
     if (plyrOpts.listeners === undefined) {
       plyrOpts.listeners = {
         play: function () {
-          const recordId = cinema.activeRecordId(),
-                filmType = cinema.activeFilmType(),
-                film = cinema.getFilm(recordId, filmType)[0];
+          const film = cinema.getLastFilm()[0];
+          if (!film) return;
           if (film.film.playing) {
             cinema._isFilmPausedByUser = true;
           } else if (film.film.paused && cinema._isFilmPausedByUser) {
@@ -258,10 +257,8 @@ class Cinema {
     this[method](xStart, xEnd);
   }
   playOrPause() {
-    let recordId = this.activeRecordId(),
-        filmType = this.activeFilmType();
-    if (recordId && filmType) {
-      let [film, isCreated] = this.getFilm(recordId, filmType);
+    let [film, isCreated] = this.getLastFilm();
+    if (film) {
       if (film.film.playing && !isCreated) {
         this._isFilmPausedByUser = true;
         film.film.pause();
@@ -303,10 +300,8 @@ class Cinema {
       this._isFilmPausedByUser = false;
       return;
     }
-    let recordId = this.activeRecordId(),
-        filmType = this.activeFilmType();
-    if (recordId && filmType) {
-      let [film, isCreated] = this.getFilm(recordId, filmType);
+    let [film, isCreated] = this.getLastFilm();
+    if (film) {
       begin /= 1000;
       end /= 1000;
       let isBeginChanged = Math.abs(film.episode.begin - begin) > 1e-3,
@@ -326,23 +321,29 @@ class Cinema {
     }
   }
   showEpisode(begin, end) {
-    let recordId = this.activeRecordId(),
-        filmType = this.activeFilmType();
-    if (recordId && filmType) {
-      let [film, isCreated] = this.getFilm(recordId, filmType);
+    const [film, isCreated] = this.getLastFilm();
+    if (film) {
       begin /= 1000;
       end /= 1000;
       this._play(film, isCreated, begin, end);
     }
   }
   seek(timePoint) {
-    let recordId = this.activeRecordId(),
-        filmType = this.activeFilmType();
-    if (recordId && filmType) {
-      let film = this.getFilm(recordId, filmType)[0];
+    const film = this.getLastFilm()[0];
+    if (film) {
       timePoint /= 1000;
       film.film.currentTime = timePoint;
       this.placeCursor(timePoint);
+    }
+  }
+  getLastFilm() {
+    const recordId = this.activeRecordId(),
+          filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      return this.getFilm(recordId, filmType);
+    } else {
+      const film = null, isCreated = null;
+      return [film, isCreated];
     }
   }
   getFilm(recordId, filmType) {

@@ -221,7 +221,7 @@ function viewModel() {
     }
     worker.postMessage(['abort', null]);
   };
-  this.loadLayers = (item, time=null) => {
+  this.loadLayers = (item, time=null, state=null) => {
     self.searchStatus('Формирование запроса');
     let query = 'stub',
         tiers = [],
@@ -232,7 +232,7 @@ function viewModel() {
       ({ query, tiers, time } =
         getLayersQueryJSON(item, self.linearizedQueryTree(), time));
     }
-    const data = { type: 'layers', query, tiers, time };
+    const data = { type: 'layers', query, tiers, time, state };
     worker.postMessage(['query', data]);
   };
 
@@ -289,7 +289,8 @@ worker.onmessage = message => {
     }
 
   } else if (messageType === 'layers') {
-    vM.layersData(new LayersStruct(data.data, data.tiers, data.time));
+    vM.layersData(new LayersStruct(data.data,
+      data.tiers, data.time, data.state));
     vM.clearErrorOrMessage();
 
   } else if (messageType === 'status') {

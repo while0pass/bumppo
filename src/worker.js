@@ -100,6 +100,7 @@ function doQuery(data) {
             data: rawData,
             tiers: data.tiers || [],
             time: data.time,
+            state: data.state,
           }]);
         }
       } else {
@@ -157,6 +158,7 @@ function getStubResults(dataType) {
     postMessage(['results', resultsData]);
     postMessage(['status', null]);
   } else {
-    postMessage(['layers', { data: stubTiersData, tiers: [], time: null }]);
+    postMessage(['layers', { data: stubTiersData,
+      tiers: [], time: null, state: null }]);
   }
 }

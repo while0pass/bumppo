@@ -448,13 +448,14 @@ function resolveTierTemplate(template, unitProperties, channel) {
 }
 
 class LayersStruct {
-  constructor(data, tiers, time) {
+  constructor(data, tiers, time, state) {
     this._data = data || {};
     this._timeBoundSegRegister = {};
     this._availableList = this.getAvailableLayersList(tiers, this._data);
 
     this.time = this.getTime(time);
     this.layers = this.getLayersFromData(this._availableList);
+    if (state) this.previousState = state;
   }
   getTime(time) {
     if (time && typeof time.start === 'number') {
