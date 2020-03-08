@@ -52,6 +52,15 @@ function viewModel() {
     () => this.clientHRef() === hrefs.RESULTS_PANE);
   this.isResOptsPaneOn = ko.computed(
     () => this.clientHRef() === hrefs.RESOPTS_PANE);
+  self.isResOptsPaneOn.subscribe(on => {
+    if (!self.activeResult()) return;
+    const slug = self.resOptsAdditionalTierTypes.value().join('');
+    if (on) {
+      self._lastResOpts = slug;
+    } else {
+      if (slug !== self._lastResOpts) self.loadLayers.reload();
+    }
+  });
 
   this.queryPaneView = ko.observable(null);
   this.queryPaneView.isTreeVisible = ko.computed(

@@ -722,6 +722,12 @@ function viewModelFactory(params) {
       setPlayType, title: 'Проигрывать фрагмент видео после выделения' },
   ];
 
+  params.viewModel.loadLayers.reload = function () {
+    const vM = params.viewModel,
+          time = layersStruct().time;
+    vM.loadLayers(vM.activeResult(), time, captureState());
+  };
+
   const MAX_DURATION_IN_MS = 12e4,
         _start = ko.pureComputed({
           read: () => layersStruct().time.start,
