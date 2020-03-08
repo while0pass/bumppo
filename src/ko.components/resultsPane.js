@@ -656,7 +656,7 @@ function viewModelFactory(params) {
       syncWidth(canvasWidth);
       syncScrollLeft(scrollLeft);
       timeline.selectionEdges(selection);
-      cinema.getLastFilm()[0].film.currentTime = cursor;
+      cinema.seek(cursor);
     } else {
       const { begin: start, end } = params.viewModel.activeResult().match.time,
             segment = { time: { start, end }},
@@ -701,9 +701,10 @@ function viewModelFactory(params) {
           duration = lS.duration,
           quotient = duration / canvasWidth,
           windowStart = start + quotient * (windowLeft - canvasLeft),
-          windowEnd = start + quotient * (windowRight - canvasLeft);
+          windowEnd = start + quotient * (windowRight - canvasLeft),
+          currentTimeInMs = cinema.getLastFilm()[0].film.currentTime * 1000;
     return {
-      cursor: cinema.getLastFilm()[0].film.currentTime,
+      cursor: currentTimeInMs,
       selection: timeline.selectionEdges(),
       window: [windowStart, windowEnd]
     };

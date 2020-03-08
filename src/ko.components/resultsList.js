@@ -141,9 +141,9 @@ var viewModelFactory = function (params) {
   resultsDiv.addEventListener('scroll', rerenderItems);
 
   function showFilm(data) {
-    const timePoint = data.match.time.begin;
+    const timePointInMs = data.match.time.begin;
     vM.showResultsOnly(false);
-    cinema.preloadFilm(data.record_id, data.filmType, timePoint);
+    cinema.preloadFilm(data.record_id, data.filmType, timePointInMs);
     if (data !== cinema.activeDataItem()) {
       activeResult(data);
       vM.loadLayers(data);

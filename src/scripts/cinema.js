@@ -114,7 +114,10 @@ class Film {
           // Поправляем курсор, если он немного проскочил отметку паузы
           if (lastEnd > 0) {
             let delta = film.currentTime - lastEnd;
-            if (delta > 0 && delta < 0.5) cinema.placeCursor(lastEnd);
+            if (delta > 0 && delta < 0.5) {
+              film.currentTime = lastEnd;
+              cinema.placeCursor(lastEnd);
+            }
             lastEnd = 0;
           }
         };
@@ -198,7 +201,7 @@ class Cinema {
     }, this);
     return struct;
   }
-  placeCursor(currentTime) {
+  placeCursor(currentTimeInSeconds) {
     // Ограничимся 25 кадрами в сек.
     //let lastTime = this.cursorStruct.lastTime,
     //    thisTime = performance.now();
@@ -211,7 +214,7 @@ class Cinema {
     // т.к. на тот момент элемента ещё в DOM не будет.
 
     let { start, width, duration } = this.cursorStruct,
-        ms = currentTime * 1000,
+        ms = currentTimeInSeconds * 1000,
         position = width
           ? String((ms - start) / duration * 100) + '%'
           : -100;
@@ -329,13 +332,12 @@ class Cinema {
       this._play(film, isCreated, begin, end);
     }
   }
-  seek(timePoint) {
-    const film = this.getLastFilm()[0];
-    if (film) {
-      timePoint /= 1000;
-      film.film.currentTime = timePoint;
-      this.placeCursor(timePoint);
-    }
+  seek(ms) {
+    console.log('seek');
+    const film = this.getLastFilm()[0],
+          s = ms / 1000;
+    if (film) film.film.currentTime = s;
+    this.placeCursor(s);
   }
   getLastFilm() {
     const recordId = this.activeRecordId(),
@@ -347,10 +349,10 @@ class Cinema {
       return [film, isCreated];
     }
   }
-  preloadFilm(recordId, filmType, timePoint) {
+  preloadFilm(recordId, filmType, timePointInMs) {
     const [film, isCreated] = this.getFilm(recordId, filmType);
     if (isCreated) film.notYetPlayed = true;
-    else this.seek(timePoint);
+    else this.seek(timePointInMs);
   }
   getFilm(recordId, filmType) {
     const key = recordId + filmType,
