@@ -614,11 +614,16 @@ function viewModelFactory(params) {
   elTL.addEventListener('dblclick', dblclick);
 
   // Наблюдаем за изменениями ширины полотна для слоев
-  let onResizeTimelineCanvas = entries => {
+  let hackSyncScrollLeft = false,
+      onResizeTimelineCanvas = entries => {
         const canvas = entries[0],
               width = canvas.contentRect.width;
         timeline.canvasWidth(width);
         syncWidth(width);
+        if (hackSyncScrollLeft) {
+          syncScrollLeft(elTL.scrollLeft);
+          hackSyncScrollLeft = false;
+        }
         timeline.commitPoints(performance.now());
       },
       ro1 = new ResizeObserver(onResizeTimelineCanvas);
@@ -645,19 +650,27 @@ function viewModelFactory(params) {
             canvasDuration = value.duration,
             windowDuration = windowStart - windowEnd,
             canvasWidth = windowWidth / windowDuration * canvasDuration,
-            scroll = (windowStart - canvasStart) /
+            scrollLeft = (windowStart - canvasStart) /
               canvasDuration * canvasWidth;
       syncWidth(canvasWidth);
-      syncScrollLeft(scroll);
-      cinema.getLastFilm()[0].film.currentTime = cursor;
+      syncScrollLeft(scrollLeft);
       timeline.selectionEdges(selection);
+      cinema.getLastFilm()[0].film.currentTime = cursor;
     } else {
-      let { begin: start, end } = params.viewModel.activeResult().match.time,
-          segment = { time: { start, end }};
+      const { begin: start, end } = params.viewModel.activeResult().match.time,
+            segment = { time: { start, end }},
+            withoutSeek = true;
       timeline.selectionEdges([null, null]);
-      selectionFromSegment(segment);
+      selectionFromSegment(segment, withoutSeek);
       zoomSel();
       zoomOut();
+      hackSyncScrollLeft = true; // HACK: При первом запуске видео, кажется
+      // если слои ещё не отрисованы до конца бразуером, syncScrollLeft
+      // оказывается примененным частично (к elTL и к elCC, но не к elLL).
+      // В итоге слои оказываются без горизонтальной прокрутки без правильной
+      // привязке к временной шкале. Выделение привязано к временной шкале
+      // правильно, но из-за неправильного горизонатального смещения слоев не
+      // совпадает с сегментами, которые должны быть выделены.
     }
   });
 
