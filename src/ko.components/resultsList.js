@@ -87,7 +87,11 @@ var viewModelFactory = function (params) {
 
         if (vM._lock_ChangeLayout) {
           if (rerenderId !== null) clearTimeout(rerenderId);
-          rerenderId = setTimeout(rerenderItems, 500);
+          rerenderId = setTimeout(rerenderItems, 1000); // NOTE: Этот таймаут
+          // должен превосходить по значению таймаут на прокрутку выделенного
+          // элемента в зону видимости (см. ##sivto##), иначе элементы могут
+          // перерендериться раньше, чем начнется прокрутка, и нужный элемент
+          // не будет отрисован, а значит и не будет прокручен.
           return;
         }
 

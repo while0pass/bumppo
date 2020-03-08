@@ -147,7 +147,7 @@ function viewModel() {
         if (element !== null) element.scrollIntoView(opts);
         self._lock_ChangeLayout = false;
       };
-      setTimeout(func, 500);
+      setTimeout(func, 500);  // ##sivto##
     }
   });
 
