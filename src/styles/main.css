@@ -508,6 +508,7 @@ $layerHeight: 2rem;
   white-space: nowrap;
 
   &:hover,
+  &.matched,
   .highlighted & {
     background-color: $lightGrey;
     border: 1px solid #aaa;
@@ -533,6 +534,7 @@ $layerHeight: 2rem;
     );
   }
   &:hover::after,
+  &.matched::after,
   .highlighted &::after {
     background: linear-gradient(
       90deg,

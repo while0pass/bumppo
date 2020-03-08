@@ -298,8 +298,12 @@ worker.onmessage = message => {
     }
 
   } else if (messageType === 'layers') {
-    vM.layersData(new LayersStruct(data.data,
-      data.tiers, data.time, data.state));
+    const lS = new LayersStruct(
+      vM.activeResult(),
+      data.data, data.tiers,
+      data.time, data.state
+    );
+    vM.layersData(lS);
     vM.clearErrorOrMessage();
     if (data.state === null) {
       const cinema = vM.cinema,

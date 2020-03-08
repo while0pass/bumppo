@@ -333,7 +333,6 @@ class Cinema {
     }
   }
   seek(ms) {
-    console.log('seek');
     const film = this.getLastFilm()[0],
           s = ms / 1000;
     if (film) film.film.currentTime = s;

@@ -149,6 +149,7 @@ const layersTemplate = `
           css: { highlighted: $component.highlighted() === type }">
           <div class="bmpp-segment" data-bind="html: value,
             attr: { title: $component.untag(value) },
+            css: { matched: matched },
             style: { width: width, left: x },
             event: { dblclick: $component.selectionFromSegment }"></div>
         </div>

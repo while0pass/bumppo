@@ -323,6 +323,7 @@ class Segment {
     this.value = data.value;
     this.time = null;
     this.parent = null;
+    this.matched = layer.struct._activeResult.match.value === data.value;
 
     this.tune(data);
   }
@@ -448,7 +449,8 @@ function resolveTierTemplate(template, unitProperties, channel) {
 }
 
 class LayersStruct {
-  constructor(data, tiers, time, state) {
+  constructor(activeResult, data, tiers, time, state) {
+    this._activeResult = activeResult || {};
     this._data = data || {};
     this._timeBoundSegRegister = {};
     this._availableList = this.getAvailableLayersList(tiers, this._data);
