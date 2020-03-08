@@ -292,6 +292,12 @@ worker.onmessage = message => {
     vM.layersData(new LayersStruct(data.data,
       data.tiers, data.time, data.state));
     vM.clearErrorOrMessage();
+    if (data.state === null) {
+      const cinema = vM.cinema,
+            aR = vM.activeResult();
+      cinema.playType(cinema.playTypes.PLAY_SELECTION);
+      cinema.showFilm(aR.record_id, aR.filmType, aR);
+    }
 
   } else if (messageType === 'status') {
     vM.searchStatus(data);

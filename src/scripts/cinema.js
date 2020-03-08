@@ -164,6 +164,7 @@ class Cinema {
     this.playTypes = playTypes;
     this.timeline = timeline;
     this.cursorStruct = this.createCursorStruct();
+    this.preloaded = {};
   }
   get screen() {
     if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
@@ -277,11 +278,10 @@ class Cinema {
     cinema.activeRecordId(recordId);
     cinema.activeFilmType(filmType);
     cinema.activeDataItem(dataItem);
-    // FIXME: Убрать костыли для разных версий dataItem, когда новая
-    // версия устаканится.
-    let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
-        end = (dataItem.after? dataItem.after: dataItem.match).time.end,
+    let begin = dataItem.match.time.begin,
+        end = dataItem.match.time.end,
         [film, isCreated] = cinema.getFilm(recordId, filmType);
+    delete cinema.preloaded[recordId + filmType];
     begin /= 1000;
     end /= 1000;
     cinema._play(film, isCreated, begin, end);
@@ -346,9 +346,15 @@ class Cinema {
       return [film, isCreated];
     }
   }
+  preloadFilm(recordId, filmType, timePoint) {
+    const isCreated = this.getFilm(recordId, filmType)[1];
+    if (isCreated) this.preloaded[recordId + filmType] = true;
+    else this.seek(timePoint);
+  }
   getFilm(recordId, filmType) {
     const key = recordId + filmType,
           isAvailable = key in this.films,
+          isPreloaded = this.preloaded[key],
           isCreated = !isAvailable,
           film = isAvailable ? this.films[key] :
             new Film(this, { recordId: recordId, filmType: filmType });
@@ -363,7 +369,7 @@ class Cinema {
         cinema.canPlayOrPause(PLAY_CSS_CLASS);
       });
     }
-    return [film, isCreated];
+    return [film, isCreated || isPreloaded];
   }
   pauseAll() {
     let films = this.films;

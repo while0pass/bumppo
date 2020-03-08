@@ -141,13 +141,17 @@ var viewModelFactory = function (params) {
   resultsDiv.addEventListener('scroll', rerenderItems);
 
   function showFilm(data) {
+    const timePoint = data.match.time.begin;
+    cinema.preloadFilm(data.record_id, data.filmType, timePoint);
     if (data !== cinema.activeDataItem()) {
       activeResult(data);
       vM.loadLayers(data);
+      // Запуск видео произойдет автоматически после отрисовки слоев
+    } else {
+      cinema.playType(cinema.playTypes.PLAY_SELECTION);
+      cinema.showFilm(data.record_id, data.filmType, data);
     }
     vM.showResultsOnly(false);
-    cinema.playType(cinema.playTypes.PLAY_SELECTION);
-    cinema.showFilm(data.record_id, data.filmType, data);
   }
 
   return {

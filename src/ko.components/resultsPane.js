@@ -306,12 +306,13 @@ function viewModelFactory(params) {
       };
 
   let isDblClickedSegment = false,
-      selectionFromSegment = segment => {
+      selectionFromSegment = (segment, withoutSeek=false) => {
         let time = segment.time;
         isDblClickedSegment = true;
         document.body.classList.remove('no-highlight');
         previousSelection = timeline.selectionEdges();
         timeline.selectionEdges([time.start, time.end]);
+        if (withoutSeek) return;
         cinema.seek(time.start);
       },
 
