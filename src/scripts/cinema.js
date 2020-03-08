@@ -164,7 +164,6 @@ class Cinema {
     this.playTypes = playTypes;
     this.timeline = timeline;
     this.cursorStruct = this.createCursorStruct();
-    this.preloaded = {};
   }
   get screen() {
     if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
@@ -223,13 +222,15 @@ class Cinema {
   _play(film, isCreated, begin, end) {
     film.episode.begin = begin;
     film.episode.end = end;
-    film = film.film;
-    if (isCreated) {
-      film.once('loadedmetadata', function () {
+    if (isCreated || film.notYetPlayed) {
+      delete film.notYetPlayed;
+      film = film.film;
+      film.once('canplay', function () {
         film.currentTime = begin;
         film.play();
       });
     } else {
+      film = film.film;
       film.currentTime = begin;
       film.play();
     }
@@ -260,10 +261,11 @@ class Cinema {
   playOrPause() {
     let [film, isCreated] = this.getLastFilm();
     if (film) {
-      if (film.film.playing && !isCreated) {
+      if (film.film.playing && !isCreated && !film.notYetPlayed) {
         this._isFilmPausedByUser = true;
         film.film.pause();
-      } else if (film.film.paused && this._isFilmPausedByUser && !isCreated) {
+      } else if (film.film.paused && this._isFilmPausedByUser
+        && !isCreated && !film.notYetPlayed) {
         this._isFilmPausedByUser = false;
         film.film.play();
       } else {
@@ -281,7 +283,6 @@ class Cinema {
     let begin = dataItem.match.time.begin,
         end = dataItem.match.time.end,
         [film, isCreated] = cinema.getFilm(recordId, filmType);
-    delete cinema.preloaded[recordId + filmType];
     begin /= 1000;
     end /= 1000;
     cinema._play(film, isCreated, begin, end);
@@ -347,14 +348,13 @@ class Cinema {
     }
   }
   preloadFilm(recordId, filmType, timePoint) {
-    const isCreated = this.getFilm(recordId, filmType)[1];
-    if (isCreated) this.preloaded[recordId + filmType] = true;
+    const [film, isCreated] = this.getFilm(recordId, filmType);
+    if (isCreated) film.notYetPlayed = true;
     else this.seek(timePoint);
   }
   getFilm(recordId, filmType) {
     const key = recordId + filmType,
           isAvailable = key in this.films,
-          isPreloaded = this.preloaded[key],
           isCreated = !isAvailable,
           film = isAvailable ? this.films[key] :
             new Film(this, { recordId: recordId, filmType: filmType });
@@ -369,7 +369,7 @@ class Cinema {
         cinema.canPlayOrPause(PLAY_CSS_CLASS);
       });
     }
-    return [film, isCreated || isPreloaded];
+    return [film, isCreated];
   }
   pauseAll() {
     let films = this.films;
