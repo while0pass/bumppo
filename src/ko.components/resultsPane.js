@@ -672,23 +672,33 @@ function viewModelFactory(params) {
       setPlayType, title: 'Проигрывать фрагмент видео после выделения' },
   ];
 
-  const _start = ko.pureComputed({
+  const MAX_DURATION_IN_MS = 12e4,
+        _start = ko.pureComputed({
           read: () => layersStruct().time.start,
           write: start => {
             const vM = params.viewModel,
-                  time = { start, end: layersStruct().time.end };
-            vM.loadLayers(vM.activeResult(), time);
+                  end = layersStruct().time.end;
+            if (end - start > MAX_DURATION_IN_MS) {
+              start = end - MAX_DURATION_IN_MS;
+            }
+            if (start !== layersStruct().time.start) {
+              vM.loadLayers(vM.activeResult(), { start, end });
+            }
           }
         }),
         _end = ko.pureComputed({
           read: () => layersStruct().time.end,
           write: end => {
             const vM = params.viewModel,
-                  time = { start: layersStruct().time.start, end };
-            vM.loadLayers(vM.activeResult(), time);
+                  start = layersStruct().time.start;
+            if (start + MAX_DURATION_IN_MS < end) {
+              end = start + MAX_DURATION_IN_MS;
+            }
+            if (end !== layersStruct().time.end) {
+              vM.loadLayers(vM.activeResult(), { start, end });
+            }
           }
         }),
-        MAX_DURATION_IN_MS = 12e4,
         _duration = ko.pureComputed({
           read: () => layersStruct().duration,
           write: dur => {
@@ -721,7 +731,7 @@ function viewModelFactory(params) {
         },
         stepExtender = { notifyAlways: true,
           numeric: {
-            default: 1,
+            default: 2.5,
             isNullable: false,
             maxDecimalDigits: 3,
             min: 0,
