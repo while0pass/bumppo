@@ -29,7 +29,9 @@ overrides:
   - files: src/worker.js
     env:
       worker: true
-  - files: gulpfile.js
+  - files:
+      - gulpfile.js
+      - lite-server.config.js
     env:
       browser: false
       node: true
