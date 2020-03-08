@@ -223,22 +223,32 @@ class Cinema {
     if (timeTag !== null) timeTag.innerHTML = getTimeTag(ms, 1);
   }
   _play(film, isCreated, begin, end) {
+    const cinema = this;
     film.episode.begin = begin;
     film.episode.end = end;
-    if (isCreated || film.notYetPlayed) {
-      delete film.notYetPlayed;
-      film = film.film;
-      film.once('canplay', function () {
+    film = film.film;
+    const HAVE_METADATA = 1,
+          HAVE_ENOUGH_DATA = 4;
+    if (film.media.readyState < HAVE_METADATA) {
+      film.once('loadedmetadata', function () {
         film.currentTime = begin;
-        film.play();
+        func();
       });
-    } else {
-      film = film.film;
+    } else func();
+    function func() {
       film.currentTime = begin;
-      film.play();
+      if (isCreated || film.media.readyState < HAVE_ENOUGH_DATA
+      || film.notYetPlayed) {
+        film.once('canplay', function () {
+          film.play();
+        });
+      } else {
+        film.play();
+      }
+      delete film.notYetPlayed;
+      cinema._isFilmPausedByUser = false;
+      cinema.hideCurtain();
     }
-    this._isFilmPausedByUser = false;
-    this.hideCurtain();
   }
   play(prepareInsteadOfShow=false) {
     var xStart, xEnd,
