@@ -142,6 +142,7 @@ var viewModelFactory = function (params) {
 
   function showFilm(data) {
     const timePoint = data.match.time.begin;
+    vM.showResultsOnly(false);
     cinema.preloadFilm(data.record_id, data.filmType, timePoint);
     if (data !== cinema.activeDataItem()) {
       activeResult(data);
@@ -151,7 +152,6 @@ var viewModelFactory = function (params) {
       cinema.playType(cinema.playTypes.PLAY_SELECTION);
       cinema.showFilm(data.record_id, data.filmType, data);
     }
-    vM.showResultsOnly(false);
   }
 
   return {

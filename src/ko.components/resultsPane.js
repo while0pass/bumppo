@@ -649,7 +649,7 @@ function viewModelFactory(params) {
             windowWidth = elTL.clientWidth,
             canvasStart = value.time.start,
             canvasDuration = value.duration,
-            windowDuration = windowStart - windowEnd,
+            windowDuration = windowEnd - windowStart,
             canvasWidth = windowWidth / windowDuration * canvasDuration,
             scrollLeft = (windowStart - canvasStart) /
               canvasDuration * canvasWidth;
