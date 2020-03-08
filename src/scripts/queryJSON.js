@@ -2,8 +2,7 @@ import { p_duration, TextProperty, IntervalProperty,
   ListProperty } from './searchUnitProperties.js';
 import { SAME_PARTICIPANT_RELATION_ID,
   DISTANCE_RELATION_TYPE, Connective } from './searchUnitRelations.js';
-import { LAYER_PARENT_MAP, resOptsAdditionalTierTypes,
-  resolveTierTemplate } from './layers.js';
+import { LAYER_PARENT_MAP, resOpts, resolveTierTemplate } from './layers.js';
 
 function escapeRegExpELAN(string) {
   return string.replace(/[-.*+^?{}()|[\]\\]/g, '\\$&');
@@ -246,10 +245,12 @@ function getLayersQueryJSON(data, linear6n, time=null) {
     .map(x => x.tier)
     .filter(participantAwareTier)
     .forEach(addParticipant);
+  const ap = resOpts['additional_participants'].value();
+  if (ap !== null) ap.forEach(addParticipant);
   if (participants.size === 0) participants.add(data.participant);
 
   // Обязательные слои отфильтровываем по участникам
-  let tiers = resOptsAdditionalTierTypes.value().filter(byParticipants);
+  let tiers = resOpts['additional_tier_types'].value().filter(byParticipants);
 
   // Добавляем слои, присутствующие в результате
   tiers.push(data.match.tier);

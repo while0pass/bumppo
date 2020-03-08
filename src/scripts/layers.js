@@ -233,7 +233,7 @@ const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
     return 0;
   }
 
-  const resOptsData = { type: 'list', id: 'results_opts',
+  const att = { type: 'list', id: 'additional_tier_types',
     name: 'Обязательные для отображения типы слоев',
     help: `Типы слоев, которые будут отображаться для всех найденных
       результатов независимо от того, участвуют данные типы слоев
@@ -241,7 +241,7 @@ const {LAYERS, LAYER_CHILDREN_MAP, LAYER_PARENT_MAP,
     valueList
   };
 
-  let resOptsAdditionalTierTypes = new ListProperty(resOptsData);
+  let resOptsAdditionalTierTypes = new ListProperty(att);
   Object.defineProperty(resOptsAdditionalTierTypes, 'isHeaderClickable', {
     value: true,
     writable: false,
@@ -489,5 +489,27 @@ class LayersStruct {
   }
 }
 
+const ap = { type: 'list', id: 'additional_participants',
+  name: 'Обязательные для отображения участники',
+  help: `По умолчанию отображаются слои только тех участников, которые
+    присутствуют в текущем элементе выборки.`,
+  valueList: { orValues: [
+    { name: 'Рассказчик', value: 'N' },
+    { name: 'Комментатор', value: 'C' },
+    { name: 'Пересказчик', value: 'R' }
+  ]}
+};
+let resOptsAdditionalParticipants = new ListProperty(ap);
+resOptsAdditionalParticipants.reset = function () {
+  resOptsAdditionalParticipants.valueList.uncheckAll();
+};
+
+let resOpts = [
+  resOptsAdditionalParticipants,
+  resOptsAdditionalTierTypes,
+];
+resOpts.forEach((item, index, array) => array[item.id] = item);
+resOpts.reset = () => resOpts.forEach(opt => opt.reset());
+
 export { LayersStruct, layersElementIds, LAYER_PARENT_MAP,
-  resolveTierTemplate, resOptsAdditionalTierTypes, tierMapForPrimaryResults };
+  resolveTierTemplate, resOpts, tierMapForPrimaryResults };

@@ -1,4 +1,5 @@
-<div class="ui segment" data-bind="with: resOptsAdditionalTierTypes">
+<!-- ko foreach: resOpts -->
+<div class="ui segment" data-bind="with: $data">
 
   <div class="ui top attached large label">
     <header class="bmpp-propertyHeader" data-bind="text: name,
@@ -16,3 +17,4 @@
   <bmpp-value-list params="valueList: valueList"></bmpp-value-list>
 
 </div>
+<!-- /ko -->

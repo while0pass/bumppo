@@ -143,7 +143,7 @@ const chosenUnitTemplate = `
 
     <div data-bind="click: function () {
                              node.seppuku();
-                             $root.resOptsAdditionalTierTypes.reset();
+                             $root.resOpts.reset();
                            },
                     visible: node.depth() === 0 && node.unitType()"
       style="position: absolute; right: 1.5em; top: 1.5em; color: #a00;
