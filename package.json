@@ -43,6 +43,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-terser": "^1.2.0",
     "http-proxy-middleware": "^0.20.0",
+    "ip": "^1.1.5",
     "lite-server": "^2.5.4",
     "postcss-calc": "^7.0.1",
     "postcss-color-function": "^4.1.0",

@@ -2,11 +2,11 @@ import stubResultsData from './response_data_new2.json';
 import stubTiersData from './response_tiers3.json';
 
 /* eslint-disable no-undef,no-constant-condition */
-const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION
+const searchEngineURL = $_CONFIG.BUMPPO_ENV_IS_PRODUCTION
   ? '$_CONFIG.BUMPPO_REMOTE_SERVER.origin'
-  : ('$_CONFIG.BUMPPO_LOCAL_SERVER'
+  : '$_CONFIG.BUMPPO_LOCAL_SERVER'
     ? '$_CONFIG.BUMPPO_LOCAL_SERVER'
-    : 'http://localhost:' + '$_CONFIG.BUMPPO_LOCAL_PORT'));
+    : '$_CONFIG.BUMPPO_LOCAL_PROXY:$_CONFIG.BUMPPO_LOCAL_PORT';
 
 const resultsURL = searchEngineURL + '$_CONFIG.BUMPPO_REMOTE_SERVER.resultsPath',
       tiersURL = searchEngineURL + '$_CONFIG.BUMPPO_REMOTE_SERVER.tiersPath';
