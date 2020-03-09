@@ -1,14 +1,40 @@
 $bmppBorderColor: rgba(34, 36, 38, .15);
 $green: #21ba45;
+$darkGreen: #2c662d;
+$teal: #009c95;
+$tealBlue: #276f86;
 $blue: #2185d0;
+$cyan: #f8ffff;
+$lightGrey: #ccc;
 $grey: #767676;
 $red: #db2828;
+$darkRed: #9f3a38;
 $black: #1c1b1d;
 $borderWidth: 0.3em;
 $sidePaneWidth: 14vw;
 $mainWaitWidth: calc(100vw - $sidePaneWidth - $borderWidth);
 $videoWidth: 342px;
 $videoHeight: 193px;
+
+@define-mixin scrollbar $bgcolor: #efefef {
+  &::-webkit-scrollbar {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $bgcolor;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.33rem;
+    background-color: #aaa;
+  }
+}
+
+* {
+  user-select: none;
+}
 
 .bmpp-uiLayout {
   display: flex;
@@ -17,21 +43,48 @@ $videoHeight: 193px;
 }
 
 .bmpp-main {
-  display: flex;
   width: 100vw;
+  position: relative;
+  display: flex;
   flex-direction: column;
   align-items: stretch;
-  overflow-y: scroll;
-  padding-bottom: 3em;
-  position: relative;
+  overflow: hidden;
 
   &.no-pad {
-    overflow-y: hidden;
     padding: 0;
+  }
+
+  &:before {
+    background-color: white;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0; /* Слой, за которым будет скрываться всё неотображаемое
+                в данный момент содержимое основной области страницы */
   }
 }
 
-#bmpp-mainWait {
+.bmpp-pane {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.visiblePane {
+  z-index: 1 !important;
+}
+
+
+
+.bmpp-wait {
   box-sizing: border-box;
   position: fixed;
   top: 0;
@@ -41,7 +94,14 @@ $videoHeight: 193px;
   z-index: 1001;
   border-left: $borderWidth solid transparent!important;
 
-  & .button {
+  .bmpp-resultsPane & {
+    width: auto;
+    height: auto;
+    position: relative;
+    grid-area: layers;
+  }
+
+  & .button.bmpp-cancel {
     $colorChannels: 219, 40, 40;
     background-color: rgba(255, 255, 255, 1) !important;
     color: rgba($colorChannels, 0.5) !important;
@@ -59,13 +119,17 @@ $videoHeight: 193px;
     }
   }
 
-  & .negative.message a:link,
-  & .negative.message a:visited,
-  & .negative.message a:hover,
-  & .negative.message a:focus {
-    color: inherit;
-    display: inline-block;
-    border-bottom: 1px dotted #9f3a38;
+  & .negative.message {
+    padding-right: 2.5em;
+
+    & a:link,
+    & a:visited,
+    & a:hover,
+    & a:focus {
+      color: inherit;
+      display: inline-block;
+      border-bottom: 1px dotted $darkRed;
+    }
   }
 }
 
@@ -120,38 +184,47 @@ $videoHeight: 193px;
   }
 }
 
+.bmpp-subcorpus {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding-top: 3em;
+  padding-left: 6em;
+  width: 55em;
+}
+
 .bmpp-paddedPane {
   width: 55em;
   margin: 3em auto auto 6em !important;
 }
 
-.bmpp-propertiesPane {
+.bmpp-propertiesPane,
+.bmpp-relationsPane,
+.bmpp-resOptsPane {
   $buttonsHeight: 4.4em;
   $dividerHeight: 1em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
-  &Props {
+  & .bmpp-paneProps {
     height: calc(100vh - $buttonsHeight - $dividerHeight);
     overflow-y: scroll;
     overflow-x: hidden;
 
   }
-  &Divider {
+  & .bmpp-paneDivider {
     height: $dividerHeight;
     border-bottom: 1px solid rgba(34, 36, 38, .05);
   }
-  &Buttons {
+  & .bmpp-paneButtons {
     height: $buttonsHeight;
     padding: 1em 0 0 6em;
     box-sizing: border-box;
   }
-}
-
-.bmpp-resultsOptionsPane {
-  width: 55em;
-  margin: 3em auto auto 6em !important;
 }
 
 .bmpp-nearLabelIcon {
@@ -162,22 +235,339 @@ $videoHeight: 193px;
   top: .8em;
 }
 
-.bmpp-resultsPane {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow: hidden;
+$layersPanelTimelineHeight: 2rem;
+$layersPanelButtonsHeight: 2rem;
 
-  &_video {
+.bmpp-resultsPane {
+  display: grid;
+  height: 100%;
+  grid-template-areas: "video  results info"
+                       "layers layers  layers";
+  grid-template-rows: $videoHeight auto;
+  grid-template-columns: auto 1fr auto;
+  overflow: hidden;
+  transition: all 1s ease-out;
+
+  &.no-layers {
+    grid-template-areas: "video info"
+                         "results results";
+    grid-template-columns: auto 1fr;
+    transition: all 1s ease-out;
+
+    & #bmpp-layers {
+      display: none !important;
+      transition: all 1s ease-out;
+    }
+  }
+
+  & #bmpp-video {
+    grid-area: video;
     border-bottom: 1px solid $bmppBorderColor;
     background-color: white;
     display: flex;
     height: $videoHeight !important;
-    flex: 0 0 auto;
     overflow: hidden;
   }
-  &_results {
-    overflow-y: scroll;
+
+  & #bmpp-results {
+    transition: all 1s ease-out;
+    grid-area: results;
+    border-bottom: 1px solid $bmppBorderColor;
+    border-right: 1px solid $bmppBorderColor;
+    overflow-x: hidden;
+    position: relative;
+
+    &::after {
+      display: block;
+      content: '';
+      height: 2em;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(
+        to top,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,1) 40%,
+        rgba(255,255,255,0) 100%
+      );
+    }
+
+    @mixin scrollbar;
+  }
+
+  & #bmpp-layers {
+    transition: all 1s ease-out;
+    overflow: hidden;
+    grid-area: layers;
+
+    display: grid;
+    grid-template-areas: "names timeline"
+                         "names layers"
+                         "names buttons";
+    grid-template-rows: $layersPanelTimelineHeight 1fr $layersPanelButtonsHeight;
+    grid-template-columns: 15rem auto;
+
+    & #bmpp-layersNames {
+      grid-area: names;
+      border-right: 1px solid $bmppBorderColor;
+      height: 100%;
+      position: relative;
+
+      & #bmpp-lNContainer {
+        position: absolute;
+        top: $layersPanelTimelineHeight;
+        bottom: $layersPanelButtonsHeight;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+      }
+    }
+
+    & #bmpp-timeline {
+      grid-area: timeline;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+
+      overflow-y: scroll; /* ##overflowy## */
+      @mixin scrollbar #fff;
+    }
+
+    & #bmpp-layersLayers {
+      grid-area: layers;
+      position: relative;
+      overflow-x: auto;
+
+      overflow-y: scroll; /* Этот блок должен идти одновременно
+                             с блоком ##overflowy## */
+      @mixin scrollbar;
+
+      & #bmpp-layersCanvas {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+    }
+
+    & #bmpp-layersButtons {
+      grid-area: buttons;
+      border-top: 1px solid $bmppBorderColor;
+      display: flex;
+      justify-content: space-between;
+
+      & ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: stretch; /* NOTE: Со значение baseline надписи в кнопках
+          выравниваются по базовой линии, но у кнопок без пиктограмм возникают
+          зазоры сверху */
+      }
+
+      & ul li {
+        margin: 0;
+        padding: 0.35em 0.5em;
+        border-right: 1px solid $bmppBorderColor;
+        cursor: pointer;
+
+        &#bmpp-currentTime {
+          color: green;
+        }
+
+        &:hover,
+        &.active {
+          background-color: $bmppBorderColor;
+        }
+        &.active:hover {
+          outline: 1px solid $grey;
+        }
+        &.unhovered:hover {
+          background-color: white;
+          cursor: auto;
+        }
+
+        & .ui.icon.arrow {
+          position: relative;
+          top: -0.05em;
+        }
+        & .ui.icon.arrow.left:before {
+          border-left: 0.15em solid;
+          margin-left: 0.25em;
+        }
+        & .ui.icon.arrow.right:before {
+          border-right: 0.15em solid;
+          margin-right: 0.25em;
+        }
+
+        & input.ui.input {
+          position: relative;
+          top: -0.15em;
+          text-align: center;
+          width: 7em;
+          border: 1px solid transparent;
+        }
+      }
+
+      & ul + ul li:first-of-type {
+        border-left: 1px solid $bmppBorderColor;
+      }
+    }
+
+  }
+}
+
+#bmpp-timelineCanvas {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+$tickColor: #aaa;
+
+#bmpp-timelineTicks1 {
+  stroke-width: 0.4rem;
+  stroke: $tickColor;
+  stroke-dasharray: 1px 4px;
+  stroke-dashoffset: 0px;
+}
+
+#bmpp-timelineTicks2 {
+  stroke-width: 0.7rem;
+  stroke: $tickColor;
+  stroke-dasharray: 1px 24px;
+  stroke-dashoffset: 0px;
+}
+
+.bmpp-timeTag {
+  text-align: center;
+  font-size: x-small;
+  padding: 0;
+  margin: 0;
+  color: $tickColor;
+  position: absolute;
+  top: 0.7rem;
+  height: 1rem;
+}
+
+#bmpp-cursorAndSelection {
+  grid-area: timeline / timeline / layers;
+  overflow: hidden;
+  position: relative;
+  pointer-events: none;
+}
+
+#bmpp-cursorSVG {
+  position: absolute;
+}
+
+#bmpp-cursor {
+  stroke: red;
+  stroke-width: 1px;
+  position: absolute;
+}
+
+#bmpp-selection {
+  stroke: green;
+  stroke-opacity: 0.5;
+  stroke-width: 1px;
+  fill: green;
+  fill-opacity: 0.2;
+  position: absolute;
+}
+
+$layerHeight: 2rem;
+
+.bmpp-layer {
+  position: relative;
+  width: 100%;
+  height: $layerHeight;
+  border-bottom: 1px dashed $lightGrey;
+
+  &.highlighted {
+    background-color: $lightGrey;
+  }
+
+  .no-highlight &.highlighted {
+    background-color: white;
+  }
+}
+
+.bmpp-segment {
+  position: absolute;
+  height: $layerHeight;
+  background-color: #efefef;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  padding: 0.35rem 0.5rem;
+  font-size: smaller;
+  white-space: nowrap;
+
+  &:hover,
+  &.matched,
+  .highlighted & {
+    background-color: $lightGrey;
+    border: 1px solid #aaa;
+  }
+
+  .no-highlight &:hover,
+  .no-highlight .highlighted & {
+    background-color: #efefef;
+    border: 1px solid #ddd;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1rem;
+    background: linear-gradient(
+      90deg,
+      rgba(239,239,239,0) 0%,
+      rgba(239,239,239,1) 100%
+    );
+  }
+  &:hover::after,
+  &.matched::after,
+  .highlighted &::after {
+    background: linear-gradient(
+      90deg,
+      rgba(204,204,204,0) 0%,
+      rgba(204,204,204,1) 100%
+    );
+  }
+  .no-highlight &:hover::after,
+  .no-highlight .highlighted &:after {
+    background: linear-gradient(
+      90deg,
+      rgba(239,239,239,0) 0%,
+      rgba(239,239,239,1) 100%
+    );
+  }
+}
+
+.bmpp-layerName {
+  height: $layerHeight;
+  padding: 0.4rem 1rem;
+  font-size: smaller;
+  overflow: hidden;
+
+  &.sublayer {
+    padding-left: 2rem;
+  }
+
+  &:hover {
+    background-color: $lightGrey;
+  }
+
+  .no-highlight &:hover {
+    background-color: white;
   }
 }
 
@@ -188,8 +578,33 @@ $videoHeight: 193px;
   height: $videoHeight;
 }
 
+.plyr--video {
+  width: $videoWidth;
+  height: $videoHeight;
+
+  & .plyr__control.plyr__tab-focus,
+  & .plyr__control:hover,
+  & .plyr__control[aria-expanded=true] {
+    background-color: green;
+  }
+}
+.plyr--full-ui input[type=range] {
+  color: green;
+}
+.plyr__control.plyr__control--overlaid {
+  background-color: green;
+}
+.plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::before {
+  background-color: green;
+}
 .plyr__video-wrapper {
   padding-bottom: $videoHeight !important;
+}
+.plyr--video video {
+  background: radial-gradient(
+    ellipse at top right,
+    rgba(0,120,0,1) 0%,
+    rgba(0,36,0,1) 100%);
 }
 
 .bmpp-videoCurtain {
@@ -206,7 +621,7 @@ $videoHeight: 193px;
   z-index: 1001;
 }
 
-.bmpp-videoLoader {
+#bmpp-videoLoader {
   z-index: 10001;
   visibility: visible;
   position: absolute;
@@ -231,19 +646,23 @@ $videoHeight: 193px;
   border-color: #ffcc00 #880088 #008800 #008800cc;
 }
 
-.bmpp-resultsInfo {
-  max-width: 40em;
+#bmpp-resultsInfo {
+  grid-area: info;
   padding: 0.7em 1em;
   font-size: smaller;
   position: relative;
+  border-bottom: 1px solid $bmppBorderColor;
+  overflow-x: hidden;
+  overflow-y: auto;
+  @mixin scrollbar;
 
   &::after {
     display: block;
     content: '';
     width: 100%;
     height: 2em;
-    position: absolute;
-    bottom: 0;
+    position: sticky;
+    bottom: -1em;
     background: linear-gradient(
       to top,
       rgba(255,255,255,1) 0%,
@@ -253,7 +672,7 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-videoChoices {
+#bmpp-videoChoices {
   display: flex;
   flex-flow: column nowrap;
   border-right: 1px solid $bmppBorderColor;
@@ -311,23 +730,23 @@ $videoHeight: 193px;
 }
 
 .bmpp-queryElement {
-  min-height: 10em;
+  min-height: 8em;
+
+  &.tertiary .ui.basic.icon.button.bmpp-removeButton {
+    & .icon {
+      color: #aaa !important;
+    }
+
+    &:hover .icon {
+      color: $red !important;
+    }
+  }
 }
 
-.bmpp-queryTreeHandles {
-  position: absolute;
-  right: auto;
-  left: 100%;
-  top: 0.45em;
-  width: 6em;
-  padding-left: 1em;
-
-  & .ui.icon {
-    cursor: pointer;
-  }
-  &.bmpp-queryTreeHandles2 {
-    left: calc(100% + 1em);
-  }
+query-node:last-of-type:after {
+  display: block;
+  content: '';
+  height: 3rem;
 }
 
 .bmpp-number {
@@ -336,8 +755,16 @@ $videoHeight: 193px;
   align-items: baseline;
   margin-right: 1em;
 
-  label {
+  & label {
     margin-right: 1em;
+  }
+
+  & input {
+    padding-right: 2.5em !important;
+  }
+
+  .ui.input& > input {
+    max-width: 15em;
   }
 
   & .bmpp-numberControls {
@@ -359,12 +786,15 @@ $videoHeight: 193px;
                   font-size .1s ease !important;
       position: absolute;
       overflow: hidden;
+
       &:hover {
         font-size: large !important;
       }
-      &:last-of-type {
+
+      &.sort.down {
         top: 50%;
       }
+
       &::before {
         position: absolute;
         top: 5%;
@@ -373,7 +803,8 @@ $videoHeight: 193px;
         right: 0;
         line-height: 0!important;
       }
-      &:first-of-type::before {
+
+      &.sort.up::before {
         bottom: 5%;
         top: 95%;
       }
@@ -381,51 +812,41 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-queryDistances {
-  margin: 1em auto !important;
+.bmpp-relationsFormula1 {
+  $x: 1em;
+  $x2: 1.5em;
+  $color: rgba(212, 212, 212, 0.2);
+  margin: calc($x - $x) 1em;
   position: relative;
+  padding: calc(1em + $x) $x2 calc(2.6em + $x);
+  background-color: $color;
 
-  &--toOtherElement {
-    margin-top: 3em !important;
-  }
+  & .bmpp-relationsEdit {
+    position: absolute;
+    bottom: calc(0.8em + $x);
+    left: 0.2em;
 
-  .bmpp-queryDistance {
-    min-height: 4em;
-
-    & .ui.form {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-
-      & .field {
-        margin-right: 1em;
-        &.bmpp-units {
-          width: 8em !important;
-        }
-        &.bmpp-points {
-          width: 14em !important;
-        }
-      }
-
-      & .bmpp-units .text {
-        border-bottom: 1px grey dashed !important;
-      }
-
-      & input[type="number"] {
-        width: 6em !important;
-      }
-
-      & .ui.selection.dropdown {
-        height: 2em !important;
-        padding-top: .5em !important;
-      }
+    & .bmpp-editUrl {
+        margin-left: $x2;
     }
   }
+}
+.bmpp-relationsFormula2 {
+  position: relative;
+  margin-top: 5em;
+  padding-top: 1em;
 
-  .bmpp-queryDistanceHelp {
+  &::before {
+    $height: 3em;
+    $color: rgba(212, 212, 212, 0.2);
     position: absolute;
-    top: 1em !important;
-    right: .5em !important;
+    left: 0;
+    right: 0;
+    top: -$height;
+    height: $height;
+    content: '';
+    background: linear-gradient(0deg, $color 0%,
+                                      color($color a(0)) 100%);
   }
 }
 
@@ -496,10 +917,6 @@ $videoHeight: 193px;
   }
 }
 
-.bmpp-negativeNode {
-  padding-top: 3.4em!important;
-}
-
 .bmpp-valueList {
   margin: 0;
   padding: 0;
@@ -515,7 +932,7 @@ $videoHeight: 193px;
 }
 
 .bmpp-listItemValue {
-  color: #2c662d;
+  color: $darkGreen;
   padding: 0 0.1em;
 }
 
@@ -524,11 +941,15 @@ $videoHeight: 193px;
   margin: 0.7em 0 0 2.4em;
 }
 
-.bmpp-propertyHeader {
+.bmpp-propertyHeader,
+.bmpp-relationHeader {
   user-select: none;
 
   &.clickable {
     cursor: copy;
+  }
+  & .ui.circular.label {
+    background-color: $lightGrey;
   }
 }
 
@@ -544,58 +965,116 @@ $videoHeight: 193px;
 .bmpp-bannerPropvalue {
 }
 
-.bmpp-searchResult {
+.bmpp-searchResults {
   width: 100%;
-  display: grid;
-  grid-template-columns: auto auto auto 1fr;
-  column-gap: 0.66em;
-  align-items: baseline;
+  position: relative;
 
-  & .divider {
-    grid-column: 1 / span 4;
+  $shortTransitionTime: 0.3s;
+  $transitionTime: 0.5s;
+
+  & #bmpp-referenceResult {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1000;
+  }
+
+  & .bmpp-result {
+    display: flex;
     border: none;
-    border-top: 1px solid $bmppBorderColor;
-    padding: 0.5em 0 0 0;
-    margin: 0.5em 0 0 0;
+    border-bottom: 1px solid $bmppBorderColor;
+    padding: 0.5em 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    left: 0;
+    cursor: pointer;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    /* ::after нужен для изменения цвета всей строки сетки,
+     * а ::before -- для срабатывания :hover на всей строке,
+     * а не только на .bmpp-transcription */
+    &::after,
+    &::before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: -0.1em;
+      bottom: -0.1em;
+      left: -10em;
+      right: -10em;
+    }
+
+    &::after {
+      z-index: -1;
+    }
+
+    &:hover::after {
+      background-color: color(green a(0.1));
+      transition: background-color $shortTransitionTime;
+    }
+    &.currentItem::after {
+      background-color: color(green a(0.1));
+      transition: background-color $transitionTime;
+    }
+    &.currentItem:hover::after {
+      background-color: color(green a(0.25));
+      transition: background-color $shortTransitionTime;
+    }
   }
+
   & .bmpp-recordLabel {
-    position: absolute !important;
-    right: 1em;
-    &.bmpp-initialRecordLabel {
-      top: 1em;
-    }
-    &.transparent {
-      opacity: 0.2;
+    position: sticky !important;
+    top: 1em;
+    float: right;
+    z-index: 100;
+    box-shadow: 0 0 0.3em 0.1em white;
+    transition: background-color $transitionTime,
+                color $transitionTime;
+
+    &.currentItem,
+    &.hoveredItem {
+      color: white !important;
+      background-color: green !important;
+      transition: color $transitionTime,
+                  background-color $transitionTime;
     }
   }
+
+  & .bmpp-recordLabelBumper {
+    clear: right;
+    padding: 0.3em 0;
+  }
+
   & .bmpp-unitValue {
     text-align: right;
     color: green;
     font-size: smaller;
-    cursor: pointer;
-    grid-column: 3;
+    margin-right: 0.66em;
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
   & .bmpp-transcription {
-    cursor: pointer;
-    padding-right: 7em;
-    grid-column: 4;
+    position: relative;
+    flex: 1 0 auto;
+    width: auto;
+    white-space: nowrap;
+    overflow-x: hidden;
   }
-  & .bmpp-context {
-    color: grey;
-    cursor: auto !important;
+  & .bmpp-translation,
+  & .bmpp-gloss {
+    color: #a00;
   }
   & .bmpp-time,
   & .bmpp-duration {
-    font-size: smaller;
     color: grey;
+    font-size: smaller;
     text-align: right;
-    cursor: auto;
-  }
-  & .bmpp-time {
-    grid-column: 1;
-  }
-  & .bmpp-duration {
-    grid-column: 2;
+    margin-right: 0.66em;
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 
@@ -632,5 +1111,152 @@ $videoHeight: 193px;
       top: -1em;
       left: 1em;
     }
+  }
+}
+
+.bmpp-relationBanner {
+  background-color: $cyan;
+  color: $tealBlue;
+  margin: -1.5em -1em 0;
+  padding: 1.2em 1em 1.5em;
+  position: relative;
+
+  &::after {
+    $height: 1.5em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -$height;
+    height: $height;
+    content: '';
+    background: linear-gradient(180deg, $cyan 0%,  /* ##grad## */
+                                        color($cyan a(0)) 100%);
+  }
+
+  & .ui.circular.label {
+    color: $tealBlue;
+    background-color: transparent;
+    border: 1px solid $tealBlue;
+    padding: 0.4em 0 0 !important;
+  }
+}
+
+search-unit-property .ui.circular.label,
+search-unit-relation .ui.circular.label {
+}
+
+relations-formula .ui.circular.label {
+    color: color($black a(0.4));
+    background-color: transparent;
+    border: 1px solid color($black a(0.4));
+    padding: 0.4em 0 0 !important;
+}
+
+.bmpp-unitsRadioButtons {
+  position: relative; /* Необходимо для того, чтобы градиент ##grad## был под
+    кнопками, а не поверх них. */
+}
+
+.bmpp-relation {
+  margin-bottom: 1em !important;
+}
+.bmpp-relationItem {
+  padding-top: 1.5em !important;
+}
+
+.ui.icon.button {
+
+  &.bmpp-addButton {
+    position: absolute;
+    right: 0.1rem;
+    bottom: 0.2rem;
+
+    .bmpp-queryElement & {
+      right: 1rem;
+      bottom: 0.5rem;
+    }
+  }
+
+  &.bmpp-removeButton {
+    position: absolute;
+    right: 0.05rem;
+    top: 1rem;
+    box-shadow: none !important;
+    background-color: transparent !important;
+
+    & .icon {
+      color: $red !important;
+      transform: none;
+      transition: transform 0.3s;
+    }
+
+    &:hover .icon {
+      transform: rotate(0.75turn);
+      transition: transform 0.3s;
+    }
+
+    &.bmpp-removeButton1 {
+      top: 3.5rem;
+    }
+
+    .bmpp-queryElement & {
+      top: 0.7rem;
+      right: 0.4rem;
+    }
+  }
+}
+
+unit-proxy .ui.grey.circular.label {
+  cursor: pointer;
+}
+
+.bmpp-unitProps {
+  margin: 1.5em 0 2.5em 0;
+}
+
+distance-relation button.ui.icon {
+  padding: 0 1em;
+}
+
+distance-relation .ui.icon.align {
+  width: 1.5em;
+  background-size: 1.3em;
+  background-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  &::before {
+    content: '';
+  }
+  &.left {
+    background-image: url(ref00.svg);
+    mask-image: url(ref00.svg);
+  }
+  &.right {
+    background-image: url(ref11.svg);
+    mask-image: url(ref11.svg);
+  }
+  &.center {
+    background-image: url(ref10.svg);
+    mask-image: url(ref10.svg);
+  }
+  &.justify {
+    background-image: url(ref01.svg);
+    mask-image: url(ref01.svg);
+  }
+}
+
+@supports (mask: url('')) {
+  distance-relation .ui.icon.align.left,
+  distance-relation .ui.icon.align.right,
+  distance-relation .ui.icon.align.center,
+  distance-relation .ui.icon.align.justify {
+    background-image: none;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+
+  distance-relation button.ui.icon:hover .ui.icon.align,
+  distance-relation button.ui.icon.active .ui.icon.align {
+    background-color: rgba(0, 0, 0, 0.95);
   }
 }

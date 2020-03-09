@@ -1,31 +1,41 @@
 import ko from 'knockout';
-import { defaultPropertiesList, propertiesLists, SearchUnitProperty } from './searchUnitProperties.js';
+import { defaultPropertiesList, propertiesLists,
+  SearchUnitProperty, p_participants } from './searchUnitProperties.js';
+import { NodesRelationsFormula } from './searchUnitRelations.js';
+import { tierMapForPrimaryResults, resolveTierTemplate } from './layers.js';
+import linearizeTree from './linearizeTree.js';
+import log from './log.js';
 
 export class TreeNode {
-  constructor(parentNode=null, negative=false) {
+  constructor(parentNode=null) {
+    this.id = window.performance.now();
     this.parentNode = parentNode;
     this.childNodes = ko.observableArray([]);
-    this.relationsToParentNode = ko.observableArray([]);
+    this.proxyChildNodes = ko.observableArray([]);
 
     this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
     this.level = ko.observable(0);
     this.serialNumber = ko.observable(0);
-    this.negative = ko.observable(negative);
-    this.unitType = ko.observable(null);
+    this.unitType = ko.observable(null);  // см. searchUnits
     this.unitProperties = ko.observableArray([]);
     this.isEditStateForUnitType = ko.observable(true);
+    this.linear6n = parentNode ? parentNode.linear6n : this.getLinear6n();
+    this.refOrigins = parentNode ? parentNode.refOrigins : this.getRefOrigins();
+    this.refOpts = this.getReferenceOptions();
 
-    this.tuneRelations();
     this.tuneUnitProperties();
+    this.relationsFormula = this.getRelationsFormula();
   }
-  tuneRelations() {
+  getRelationsFormula() {
     if (this.parentNode !== null) {
-      this.addRelation();
+      return new NodesRelationsFormula(this.parentNode, this);
     }
+    return null;
   }
   tuneUnitProperties() {
-    let unitProperties = this.unitProperties;
-    this.unitType.subscribe(unitType => {
+    let self = this,
+        unitProperties = self.unitProperties;
+    self.unitType.subscribe(unitType => {
       if (unitType === null) {
         unitProperties([]);
       } else {
@@ -46,11 +56,10 @@ export class TreeNode {
                 prop => prop.id === newPropertyData.id
               );
           if (oldProperty) {
-            oldProperty.changeUnitType(unitType);
             newUnitTypeProperties.push(oldProperty);
           } else {
             let newProperty = SearchUnitProperty
-              .createByType(newPropertyData, unitType);
+              .createByType(newPropertyData, self);
             newUnitTypeProperties.push(newProperty);
           }
         }
@@ -66,26 +75,42 @@ export class TreeNode {
       return propsMap;
     });
   }
-  addChild(negative=false) {
-    var child = new TreeNode(this, negative);
+  addChild() {
+    var child = new TreeNode(this);
     this.childNodes.push(child);
   }
-  addRelation() {
-    this.relationsToParentNode.push(new NodesRelation(this.parentNode, this));
+  addChildProxy() {
+    var refOpts = this.refOpts(),
+        proxyFor = refOpts.length === 1 ? refOpts[0] : null,
+        child = new TreeNodeProxy(this, proxyFor);
+    this.childNodes.push(child);
   }
-  removeRelation(relation) {
-    this.relationsToParentNode.remove(relation);
+  resetRelationsFormula() {
+    this.relationsFormula.resetToDefault();
+  }
+  areRelationsChanged() {
+    let rf = this.relationsFormula,
+        before = rf.$oldRelationsSummary || '',
+        after = rf.chosenRelations()
+          .map(rel => ko.unwrap(rel.banner)).join('');
+    this.$oldRelationsSummary = after;
+    return after !== before;
   }
   seppuku() {
-    for (let childNode of this.childNodes()) {
+    for (let proxyChildNode of this.proxyChildNodes().slice()) {
+      proxyChildNode.seppuku();
+    }
+
+    for (let childNode of this.childNodes().slice()) {
       childNode.seppuku();
     }
-    this.relationsToParentNode.removeAll();
-    this.childNodes.removeAll();
-    this.unitType(null);
+
     if (this.parentNode) {
       this.parentNode.childNodes.remove(this);
     }
+
+    this.relationsFormula && this.relationsFormula.seppuku();
+    this.unitType(null);
   }
   clearAllProperties() {
     this.chosenUnitProperties().forEach(prop => prop.clear());
@@ -98,38 +123,7 @@ export class TreeNode {
     return after !== before;
   }
   getTiersFromTemplate(template) {
-    if (template.indexOf('{') < 0) return [template];
-
-    let tiers = [], idMap = {};
-    const unitPropertiesMap = this.unitProperties.unitPropertiesMap(),
-          reTrim = /^\{\s*|\s*\}$/g,
-          reFields = /\{\s*[^{}]+\s*\}/g,
-          reProp = x => new RegExp(`\\{\\s*${ x }\\s*\\}`, 'g'),
-          propsIds = template.match(reFields).map(x => x.replace(reTrim, ''));
-    propsIds.forEach(id => {
-      idMap[id] = unitPropertiesMap[id].value() || [];
-    });
-
-    let lens = propsIds.map(id => idMap[id].length),
-        index = propsIds.map(() => 0),
-        N = lens.reduce((a, b) => a * b);
-
-    for (let n = 0; n < N; n++) {
-      let tier = template;
-      for (let i = 0; i < propsIds.length; i++) {
-        tier = tier.replace(reProp(propsIds[i]), idMap[propsIds[i]][index[i]]);
-      }
-      tiers.push(tier);
-      index = index.map((x, i, arr) => {
-        if (i > 0) {
-          return arr[i - 1] === 0 ? (x + 1) % lens[i] : x;
-        } else {
-          return (x + 1) % lens[i];
-        }
-      });
-    }
-    tiers = tiers.sort();
-    return tiers;
+    return resolveTierTemplate(template, this.unitProperties).tierStrings;
   }
   getTiersFromListOfTemplates(listOfTemplates) {
     var tiers = [], self = this;
@@ -138,40 +132,113 @@ export class TreeNode {
     });
     return tiers;
   }
-}
-
-export class NodesRelation {
-  constructor(parentNode, childNode) {
-    this.parentNode = parentNode;
-    this.childNode = childNode;
-
-    this.from = ko.observable(0);
-    this.to = ko.observable(0);
-
-    this.units = ko.observable('ms');
-    this.parentNodeRefPoint = ko.observable('end');
-    this.childNodeRefPoint = ko.observable('begin');
-
-    this.tune();
+  getTiersForPrimaryResults() {
+    let tiers = [],
+        tierTemplate = this.unitType().tierTemplate;
+    if (tierTemplate in tierMapForPrimaryResults) {
+      const listOfTemplates = tierMapForPrimaryResults[tierTemplate];
+      tiers = this.getTiersFromListOfTemplates(listOfTemplates);
+    }
+    return tiers;
   }
-  tune() {
-    this.oldValues = {};
-    // Активация кнопки поиска при изменении значений в полях
-    ko.computed(function () {
-      let from = this.from(), to = this.to(), units = this.units(),
-          pNRefPoint = this.parentNodeRefPoint(),
-          cNRefPoint = this.childNodeRefPoint(),
-          oldValues = this.oldValues;
-      if (from !== oldValues.from || to !== oldValues.to ||
-        units !== oldValues.units || pNRefPoint !== oldValues.pNRefPoint ||
-        cNRefPoint !== oldValues.cNRefPoint) {
-        this.isQueryNew && this.isQueryNew(true);
+  getLinear6n() {
+    return ko.computed(function () {
+      let tree = linearizeTree(this);
+      for (let node of tree) {
+        node.childNodes && node.childNodes();
       }
-      this.oldValues.from = from;
-      this.oldValues.to = to;
-      this.oldValues.units = units;
-      this.oldValues.pNRefPoint = pNRefPoint;
-      this.oldValues.cNRefPoint = cNRefPoint;
+      return tree;
     }, this);
   }
+  getRefOrigins() {
+    return ko.computed(function () {
+      return this.linear6n().filter(
+        x => !x.isProxy && x.proxyChildNodes().length > 0);
+    }, this);
+  }
+  getReferenceOptions() {
+    return ko.computed(() => {
+      let node1 = this,
+          noCoincide = (x, y) => x != y,
+          isNotProxy = x => !x.isProxy,
+          isNotChild = (x, y) => !y.childNodes || y.childNodes.peek()
+            .every(child => x !== (child.isProxy ? child.node.peek() : child)),
+          isNotProxyChild = (x, y) => !y.proxyChildNodes ||
+            y.proxyChildNodes.peek()
+              .every(proxyChild => x !== proxyChild.parentNode),
+          isNotParent = (x, y) => !y.parentNode || x !== y.parentNode,
+          noAdjacentNodes = node2 =>
+            noCoincide(node1, node2)
+            && isNotProxy(node2)
+            && isNotParent(node1, node2)
+            && isNotChild(node1, node2)
+            && isNotProxyChild(node1, node2),
+          refOpts = this.linear6n().filter(noAdjacentNodes);
+
+      node1.serialNumber.peek() && log('Node', node1.serialNumber.peek(), '-->',
+        refOpts.map(x => x.serialNumber.peek().toString()).join(', '));
+
+      return refOpts;
+    }, this).extend({ rateLimit: 400 });
+  }
+  getParticipants() {
+    let x = this.unitProperties.unitPropertiesMap();
+    return x[p_participants.id].value();
+  }
+}
+
+
+export class TreeNodeProxy {
+  constructor(parentNode, node=null) {
+    this.parentNode = parentNode;
+    this.node = this.trackNode(node);
+    this.depth = ko.observable(parentNode && (parentNode.depth() + 1) || 0);
+    this.level = ko.observable(0);
+    this.relationsFormula = new NodesRelationsFormula(parentNode, this);
+  }
+  trackNode(node) {
+    let proxiedNode = ko.observable();
+    proxiedNode.subscribe(this.nodeUnlink, this, 'beforeChange');
+    proxiedNode.subscribe(this.nodeLink, this, 'change');
+    proxiedNode(node);
+    return proxiedNode;
+  }
+  nodeUnlink(node) {
+    node && node.proxyChildNodes.remove(this);
+  }
+  nodeLink(node) {
+    if (node) {
+      let ix = node.proxyChildNodes.indexOf(this);
+      if (ix === -1) {
+        node.proxyChildNodes.push(this);
+      }
+    }
+  }
+  seppuku() {
+    this.nodeUnlink(this.node());
+    this.parentNode.childNodes.remove(this);
+    this.relationsFormula.seppuku();
+  }
+}
+
+TreeNode.prototype.isProxy = false;
+TreeNodeProxy.prototype.isProxy = true;
+
+// Проксирование свойств и методов TreeNode в TreeNodeProxy
+const PROXIED_PROPS = [
+  'areRelationsChanged',
+  'chosenUnitProperties',
+  'getParticipants',
+  'serialNumber',
+  'unitType',
+  'unitProperties',
+];
+
+for (let prop of PROXIED_PROPS) {
+  Object.defineProperty(TreeNodeProxy.prototype, prop, {
+    get: function () {
+      let node = this.node();
+      return node && node[prop] || undefined;
+    }
+  });
 }

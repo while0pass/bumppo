@@ -1,62 +1,73 @@
+import ko from 'knockout';
 import jQuery from 'jquery';
 import { Slug } from '../scripts/drawQueryTree.js';
 
+const nodeTemplate = `
+
+  <search-unit-choice params="node: node,
+    queryPartsNonReadiness: $root.queryPartsNonReadiness,
+    isQueryNew: $root.isQueryNew">
+  </search-unit-choice>
+
+  <button class="ui small basic icon button bmpp-removeButton"
+    data-content="Удалить единицу поиска со всеми зависимостями"
+    data-bind="visible: node.depth() > 0,
+      click: function () { node.seppuku(); $root.isQueryNew(true); }">
+    <i class="ui close icon"></i>
+  </button>
+
+  <button class="blue ui mini icon button bmpp-addButton bmpp-addUnit"
+      data-content="Добавить единицу поиска"
+      data-bind="click: node.addChild.bind(node, false),
+                 visible: node.unitType() !== null">
+    <i class="ui plus icon"></i>
+  </button>
+
+  <button class="blue ui mini icon button bmpp-addButton bmpp-addUnit"
+      style="right: 4.5em"
+      data-content="Добавить ссылку на другую имеющуюся единицу поиска"
+      data-bind="click: node.addChildProxy.bind(node, false),
+        visible: node.unitType() !== null && node.refOpts().length > 0">
+    <i class="ui linkify icon"></i>
+  </button>
+
+`;
+
+const nodeProxyTemplate = `
+
+  <unit-proxy params="node: node,
+    queryPartsNonReadiness: $root.queryPartsNonReadiness"></unit-proxy>
+
+  <button class="ui small basic icon button bmpp-removeButton"
+    data-content="Удалить ссылку на единицу поиска"
+    data-bind="visible: node.depth() > 0,
+      click: function () { node.seppuku(); $root.isQueryNew(true); }">
+    <i class="ui close icon"></i>
+  </button>
+
+`;
+
 const template = `
 
-  <div class="bmpp-queryElement ui segment"
-    data-bind="css: { 'bmpp-negativeNode': node.negative }">
-
-    <div class="bmpp-queryTreeHandles">
-
-      <i class="ui disabled green down arrow icon bmpp-addPositiveUnit"
-        data-bind="click: node.addChild.bind(node, false),
-          visible: !node.negative() && node.unitType() !== null"></i>
-
-      <!--
-      <i class="ui disabled red down arrow icon bmpp-addNegativeUnit"
-        data-bind="click: node.addChild.bind(node, true),
-          visible: !node.negative() && node.unitType() !== null"></i>
-      -->
-
-      <i class="ui disabled grey close icon"
-        title="Удалить единицу поиска со всеми зависимостями"
-        data-bind="visible: node.depth() > 0,
-          click: function () {
-                   node.seppuku();
-                   $root.isQueryNew(true);
-                 }"></i>
+  <!-- ko ifnot: node.isProxy -->
+    <div class="bmpp-queryElement ui segment">
+      ${ nodeTemplate }
     </div>
+  <!-- /ko -->
 
-    <div class="ui top attached basic red label"
-      data-bind="visible: node.negative">
-      НЕТ
-      <i class="disabled grey question circle outline icon
-        bmpp-nearLabelIcon bmpp-negativeUnitHelp"></i>
-      <div class="ui basic popup hidden">
-        <header class="ui header">Отрицательное условие</header>
-
-        <p>При отрицательном условии ищутся контексты, в которых
-        <strong>нет</strong> единиц, обладающих указанными свойствами,
-        и располагающихся на указанном расстоянии.</p>
-
-        <p>Отрицательное условие всегда является терминальным: к ветке запроса,
-        заканчивающейся этой единицей, нельзя добавить еще одну единицу.</p>
-      </div>
+  <!-- ko if: node.isProxy -->
+    <div class="bmpp-queryElement ui tertiary segment">
+      ${ nodeProxyTemplate }
     </div>
-
-    <search-unit-choice params="node: node,
-      queryPartsNonReadiness: $root.queryPartsNonReadiness,
-      editNodeProperties: $root.queryPaneView.editNodeProperties,
-      finishEditingNodeProperties: $root.queryPaneView.finishEditingNodeProperties,
-      isQueryNew: $root.isQueryNew">
-    </search-unit-choice>
-
-  </div>
+  <!-- /ko -->
 
 `;
 
 var viewModelFactory = (params, componentInfo) => {
   let node = params.node,
+      slug = null,
+      noProxyOptions = ko.computed(() => node.isProxy &&
+        node.parentNode.refOpts().length === 0),
       addUnitPopupOpts = {
         variation: 'basic',
         position: 'bottom right',
@@ -74,17 +85,27 @@ var viewModelFactory = (params, componentInfo) => {
         }
       };
 
-  new Slug(params.draw, componentInfo.element, node);
+  if (node.parentNode !== null) {
+    new Slug(params.draw, componentInfo.element, node);
+  } else {
+    if (node.childNodes().length > 0) {
+      slug = new Slug(params.draw, componentInfo.element, node);
+    }
+    node.childNodes.subscribe(function (arr) {
+      if (arr.length > 0 && slug === null) {
+        slug = new Slug(params.draw, componentInfo.element, node);
+      } else if (arr.length === 0 && slug !== null) {
+        slug.dispose();
+        slug = null;
+      }
+    });
+  }
 
   jQuery(document).ready(() => {
     let x = jQuery(componentInfo.element);
-    addUnitPopupOpts.content = 'Добавить единицу поиска';
-    x.find('.bmpp-addPositiveUnit').popup(addUnitPopupOpts);
-    addUnitPopupOpts.content = 'Добавить отрицательную единицу поиска';
-    x.find('.bmpp-addNegativeUnit').popup(addUnitPopupOpts);
-    x.find('.bmpp-negativeUnitHelp').popup({ inline: true });
+    x.find('.bmpp-addUnit').popup(addUnitPopupOpts);
   });
-  return { node: node };
+  return { node, noProxyOptions };
 };
 
 export default {

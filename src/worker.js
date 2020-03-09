@@ -1,33 +1,59 @@
+import stubResultsData from './response_data_new2.json';
+import stubTiersData from './response_tiers3.json';
+
 /* eslint-disable no-undef,no-constant-condition */
-const searchEngineURL = ($_CONFIG.BUMPPO_ENV_IS_PRODUCTION ?
-  '$_CONFIG.BUMPPO_REMOTE_SERVER.origin' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path':
-  ('$_CONFIG.BUMPPO_LOCAL_SERVER' ?
-    '$_CONFIG.BUMPPO_LOCAL_SERVER' : 'http://localhost:' +
-    '$_CONFIG.BUMPPO_LOCAL_PORT' + '$_CONFIG.BUMPPO_REMOTE_SERVER.path'));
+const searchEngineURL = $_CONFIG.BUMPPO_ENV_IS_PRODUCTION
+  ? '$_CONFIG.BUMPPO_REMOTE_SERVER.origin'
+  : '$_CONFIG.BUMPPO_LOCAL_SERVER'
+    ? '$_CONFIG.BUMPPO_LOCAL_SERVER'
+    : '$_CONFIG.BUMPPO_LOCAL_PROXY:$_CONFIG.BUMPPO_LOCAL_PORT';
+
+const resultsURL = searchEngineURL + '$_CONFIG.BUMPPO_REMOTE_SERVER.resultsPath',
+      tiersURL = searchEngineURL + '$_CONFIG.BUMPPO_REMOTE_SERVER.tiersPath';
+
+const notSameOrigin = self.location.origin !==
+  (new URL('$_CONFIG.BUMPPO_REMOTE_SERVER.origin')).origin;
 /* eslint-enable no-undef,no-constant-condition */
 
-var xhr, searchData = { total: 0, sent: 0, inc: 30, results: [] };
+const mainQueryType = 'results'; // 'results' vs. 'layers'
 
-/*eslint-disable-next-line no-unused-vars */
-onmessage = (message) => {
+var xhr,
+    resultsData = { total: 0, results: [] },
+    aborted = false,
+    useStubData = false;
+
+onmessage = message => {
   let [messageType, data] = message.data;
-  if (messageType === 'query') {
-    doAbort(xhr);
-    doQuery(data);
+  if (messageType === 'stub') {
+    useStubData = true;
+  } else if (messageType === 'query') {
+    let isMainQueryType = data.type === mainQueryType,
+        doUseStubData = useStubData
+          && (isMainQueryType || data.query === 'stub');
+    if (!doUseStubData) {
+      doAbort(xhr);
+      doQuery(data);
+    } else {
+      getStubResults(data.type);
+    }
   } else if (messageType === 'abort') {
     doAbort(xhr);
-  } else if (messageType === 'results1') {
-    sendOtherResults();
   }
 };
 
 function doAbort(xhr) {
   if (xhr) {
+    aborted = true;
+    setTimeout(function () { aborted = false; }, 2000);
     xhr.abort();
   }
 }
 
 function doQuery(data) {
+  const { type: queryType, query: queryJSON } = data,
+        isMainType = queryType === mainQueryType,
+        xURL = isMainType ? resultsURL : tiersURL;
+
   const NOT_SENT = 0,
         OPENED = 1,
         HEADERS_RECEIVED = 2,
@@ -48,22 +74,51 @@ function doQuery(data) {
       if (xhr.status >= 200 && xhr.status < 300) {
         postMessage(['status', 'Обработка данных']);
         postMessage(['noabort', null]);
-        let rawData = JSON.parse(xhr.responseText);
-        searchData.sent = 0;
-        searchData.total = rawData.results.length;
-        searchData.results = rawData.results;
-        postMessage(['status', 'Отрисовка результатов']);
-        sendFirstResults();
+
+        try {
+          var rawData = JSON.parse(xhr.responseText);
+        } catch (error) {
+          let message = `Полученные данные не соответствуют
+                         спецификации JSON: «${ error }».`;
+          postMessage(['error', message]);
+          return;
+        }
+
+        if (rawData.error) {
+          postMessage(['error', rawData.error]);
+          return;
+        }
+
+        if (isMainType) {
+          resultsData.total = rawData.results.length;
+          resultsData.results = rawData.results;
+          postMessage(['status', 'Отрисовка результатов']);
+          postMessage(['results', resultsData]);
+          postMessage(['status', null]);
+        } else {
+          postMessage(['layers', {
+            data: rawData,
+            tiers: data.tiers || [],
+            time: data.time,
+            state: data.state,
+          }]);
+        }
       } else {
         let message;
         if (xhr.status !== 0) {
           message = `${ xhr.status } ${ xhr.statusText }`;
         } else {
-          message = `Поисковый сервер недоступен или отвечает без учета <a
-            href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
-            target="_blank">политики CORS</a>.`;
+          message = 'Поисковый сервер недоступен';
+          if (notSameOrigin) {
+            message += ` или отвечает без учета <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+              target="_blank">политики CORS</a>`;
+          }
+          message += '.';
         }
-        postMessage(['error', message]);
+        if (!aborted) {
+          postMessage(['error', message]);
+        }
       }
     }
   });
@@ -84,28 +139,25 @@ function doQuery(data) {
     }
   });
   xhr.addEventListener('abort', () => {
-    postMessage(['status', 'Запрос отменен']);
+    postMessage(['aborted', null]);
   });
-  // eslint-disable-next-line no-undef
-  xhr.open('GET', searchEngineURL + '?data=' + encodeURIComponent(data),
-    asynchronously);
-  xhr.send();
-  //xhr.open('POST', searchEngineURL, asynchronously);
-  //xhr.send(data);
+  //xhr.open('GET', xURL + '?data=' + encodeURIComponent(queryJSON),
+  //  asynchronously);
+  //xhr.send();
+  xhr.open('POST', xURL, asynchronously);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('data=' + encodeURIComponent(queryJSON));
 }
 
-function sendFirstResults() {
-  let firstResults = searchData.results.slice(0, searchData.inc);
-  postMessage(['results0', {
-    total: searchData.total,
-    results: firstResults
-  }]);
-  searchData.sent = firstResults.length;
-}
-
-function sendOtherResults() {
-  let { sent, inc, results } = searchData,
-      resultsPortion = results.slice(sent, sent + inc);
-  postMessage(['results1', resultsPortion]);
-  searchData.sent += resultsPortion.length;
+function getStubResults(dataType) {
+  if (dataType === mainQueryType) {
+    resultsData.total = stubResultsData.results.length;
+    resultsData.results = stubResultsData.results;
+    postMessage(['status', 'Отрисовка результатов']);
+    postMessage(['results', resultsData]);
+    postMessage(['status', null]);
+  } else {
+    postMessage(['layers', { data: stubTiersData,
+      tiers: [], time: null, state: null }]);
+  }
 }

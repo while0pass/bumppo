@@ -1,47 +1,94 @@
+import { getTimeTag, MS } from './timeline.js';
+import { LAYER_PARENT_MAP } from './layers.js';
+
 const R = /^[^\d]*(\d+).*$/g;
 
+function translateTierValue(tier, match) {
+  let value = tier in match.tiers ? match.tiers[tier].trim() : '',
+      text = tier in tier2val && value ? tier2val[tier](value) : value;
+  return text;
+}
+
+function defaultTemplate(tiers, match) {
+  // Для всех переданных имен слоев, находим значения, "переводим" их и
+  // объединяем через точку с запятой.
+  return tiers.map(tier => translateTierValue(tier, match)).join('; ');
+}
+
+function vLineTemplate(tiers, match) {
+  const [html, htmlTranslit, translation] = tiers.map(
+    tier => translateTierValue(tier, match));
+  if (html) return html;
+  if (htmlTranslit && translation) return `
+    ${ htmlTranslit } <span class="bmpp-translation">‘${ translation }’</span>
+  `;
+  return htmlTranslit;
+}
+
+function vSegmTemplate(tiers, match) {
+  const [html, htmlTranslit, gloss] = tiers.map(
+    tier => translateTierValue(tier, match));
+  if (html) return html;
+  if (htmlTranslit && gloss) return `
+    ${ htmlTranslit } <span class="bmpp-gloss">${ gloss }</span>
+  `;
+  return htmlTranslit;
+}
+
 const tierMap = {
-  'N-vLine': ['N-vLineHTML'],
-  'C-vLine': ['C-vLineHTML'],
-  'R-vLine': ['R-vLineHTML'],
+  'N-vLine': {
+    tiers: ['N-vLineHTML', 'N-vLineHTMLTranslit', 'N-vLineTranslation'],
+    template: vLineTemplate },
+  'C-vLine': {
+    tiers: ['C-vLineHTML', 'C-vLineHTMLTranslit', 'C-vLineTranslation'],
+    template: vLineTemplate },
+  'R-vLine': {
+    tiers: ['R-vLineHTML', 'R-vLineHTMLTranslit', 'R-vLineTranslation'],
+    template: vLineTemplate },
 
-  'N-vSegm': ['N-vSegmHTML'],
-  'C-vSegm': ['C-vSegmHTML'],
-  'R-vSegm': ['R-vSegmHTML'],
+  'N-vSegm': {
+    tiers: ['N-vSegmHTML', 'N-vSegmHTMLTranslit', 'N-vSegmGlossing'],
+    template: vSegmTemplate },
+  'C-vSegm': {
+    tiers: ['C-vSegmHTML', 'C-vSegmHTMLTranslit', 'C-vSegmGlossing'],
+    template: vSegmTemplate },
+  'R-vSegm': {
+    tiers: ['R-vSegmHTML', 'R-vSegmHTMLTranslit', 'R-vSegmGlossing'],
+    template: vSegmTemplate },
 
-  'N-vPause': ['N-vPauseHTML'],
-  'C-vPause': ['C-vPauseHTML'],
-  'R-vPause': ['R-vPauseHTML'],
+  'N-vPause': { tiers: ['N-vPauseHTML'] },
+  'C-vPause': { tiers: ['C-vPauseHTML'] },
+  'R-vPause': { tiers: ['R-vPauseHTML'] },
 
-  'N-vCollat': ['N-vCollatForm'],
-  'C-vCollat': ['C-vCollatForm'],
-  'R-vCollat': ['R-vCollatForm'],
+  'N-vCollat': { tiers: ['N-vCollatForm'] },
+  'C-vCollat': { tiers: ['C-vCollatForm'] },
+  'R-vCollat': { tiers: ['R-vCollatForm'] },
 
-  'N-mRtMovement': ['N-mRtMtType'],
-  'N-mLtMovement': ['N-mLtMtType'],
-  'C-mRtMovement': ['C-mRtMtType'],
-  'C-mLtMovement': ['C-mLtMtType'],
-  'R-mRtMovement': ['R-mRtMtType'],
-  'R-mLtMovement': ['R-mLtMtType'],
+  'N-mRtMovement': { tiers: ['N-mRtMtType'] },
+  'N-mLtMovement': { tiers: ['N-mLtMtType'] },
+  'C-mRtMovement': { tiers: ['C-mRtMtType'] },
+  'C-mLtMovement': { tiers: ['C-mLtMtType'] },
+  'R-mRtMovement': { tiers: ['R-mRtMtType'] },
+  'R-mLtMovement': { tiers: ['R-mLtMtType'] },
 
-  'N-mRtStillness': ['N-mRtStType'],
-  'N-mLtStillness': ['N-mLtStType'],
-  'C-mRtStillness': ['C-mRtStType'],
-  'C-mLtStillness': ['C-mLtStType'],
-  'R-mRtStillness': ['R-mRtStType'],
-  'R-mLtStillness': ['R-mLtStType'],
+  'N-mRtStillness': { tiers: ['N-mRtStType'] },
+  'N-mLtStillness': { tiers: ['N-mLtStType'] },
+  'C-mRtStillness': { tiers: ['C-mRtStType'] },
+  'C-mLtStillness': { tiers: ['C-mLtStType'] },
+  'R-mRtStillness': { tiers: ['R-mRtStType'] },
+  'R-mLtStillness': { tiers: ['R-mLtStType'] },
 
-  'N-mGesture': ['N-mGeHandedness', 'N-mGeStructure', 'N-mGeFunction', 'N-mGeTags'],
-  'C-mGesture': ['C-mGeHandedness', 'C-mGeStructure', 'C-mGeFunction', 'C-mGeTags'],
-  'R-mGesture': ['R-mGeHandedness', 'R-mGeStructure', 'R-mGeFunction', 'R-mGeTags'],
+  'N-mGesture': { tiers: ['N-mGeStructure'] },
+  'C-mGesture': { tiers: ['C-mGeStructure'] },
+  'R-mGesture': { tiers: ['R-mGeStructure'] },
 
-  'N-mAdaptor': ['N-mAdType'],
-  'C-mAdaptor': ['C-mAdType'],
-  'R-mAdaptor': ['R-mAdType'],
+  'N-mAdaptor': { tiers: ['N-mAdType'] },
+  'C-mAdaptor': { tiers: ['C-mAdType'] },
+  'R-mAdaptor': { tiers: ['R-mAdType'] },
 
-  'N-oFixation': ['N-oInterlocutor', 'N-oLocus'],
-  'C-oFixation': ['C-oInterlocutor', 'C-oLocus'],
-  'R-oFixation': ['R-oInterlocutor', 'R-oLocus'],
+  'N-oFixation': { tiers: ['N-oInterlocutor'] },
+  'C-oFixation': { tiers: ['C-oInterlocutor'] },
+  'R-oFixation': { tiers: ['R-oInterlocutor'] },
 };
 
 function m_func(title, map, separator=', ') {
@@ -75,7 +122,7 @@ const m_mMtType = m_func('', {  // Тип движения
 
 const m_mStType = m_func('', {  // Тип неподвижности
   'Hold': 'удержание',
-  'Reset': 'покой',
+  'Rest': 'покой',
   'Frozen': 'зависание',
 });
 
@@ -197,7 +244,7 @@ const tier2val = {
   'R-oLocus': m_oLocus,
 };
 
-class ContextOrMatch {
+class Match {
   constructor(data, result) {
     this.result = result;
     this.time = data.time;
@@ -207,37 +254,43 @@ class ContextOrMatch {
     this.transcription = this.getTranscription();
   }
   get beginTime() {
-    return (this.time.begin / 1000).toFixed(2);
+    if (!this._begin) this._begin = getTimeTag(this.time.begin, MS);
+    return this._begin;
   }
   get endTime() {
-    return (this.time.end / 1000).toFixed(2);
+    if (!this._end) this._end = getTimeTag(this.time.end, MS);
+    return this._end;
   }
   get duration() {
     return ((this.time.end - this.time.begin) / 1000).toFixed(2);
   }
   getTranscription() {
-    let transcription = '', self = this,
-        showTiers = this.tier in tierMap ? tierMap[this.tier] : [];
-    showTiers.forEach((tier, i) => {
-      let annotation = tier in self.tiers ? self.tiers[tier].trim() : '',
-          text = tier in tier2val ? tier2val[tier](annotation) : annotation;
-      if (text) {
-        if (i > 0) transcription += '; ';
-        transcription += text;
-      }
-    });
-    return transcription;
+    let showTiers = [], templateFunc;
+    if (this.tier in tierMap) {
+      ({ tiers: showTiers, template: templateFunc } = tierMap[this.tier]);
+    } else if (LAYER_PARENT_MAP[this.tier] in tierMap) {
+      const parentTier = LAYER_PARENT_MAP[this.tier];
+      ({ tiers: showTiers, template: templateFunc } = tierMap[parentTier]);
+    }
+    templateFunc = templateFunc === undefined ? defaultTemplate : templateFunc;
+    return templateFunc(showTiers, this);
   }
 }
 
-export class Result {
+class Result {
   constructor(data) {
-    this.record_id = this.getRecordId(data[0] && data[0].record_id || '');
-    this.participant = data[0] && data[0].participant || '';
-    [this.before, this.match, this.after] = this.getMatchAndContext(data);
+    // NOTE: удалить после миграции на новую версию API результатов
+    if (Array.isArray(data)) { data = data[0]; }
+
+    this._data = data;
+
+    this.record_id = this.getRecordId(data && data.record_id || '');
+    this.match = new Match(data, this),
+    this.participant = data.participant || data.tier && data.tier[0] || '';
     this.filmType = this.getFilmType();
 
-    this.setup();
+    this.ix = null; // Номер результата в выборке, нумерация с 0
+    this.record_ix = null; // То же, но в рамках одной записи, а не всей выборки
   }
   getRecordId(raw_record_id) {
     let splits = raw_record_id.split(R);
@@ -246,60 +299,73 @@ export class Result {
     }
     return 'NoID';
   }
-  setup() {
-    this.previousItem = null;
-  }
-  setPreviousItem(item) {
-    this.previousItem = item;
-  }
-  getMatchAndContext(data) {
-    let before = null, match = null, after = null;
-    if (data instanceof Array) {
-      if (data.length === 3) {
-        if (data[1].is_main) {
-          [before, match, after] = data;
-        } else if (data[0].is_main) {
-          [match, before, after] = data;
-        } else if (data[2].is_main) {
-          [before, after, match] = data;
-        }
-      } else if (data.length === 2) {
-        if (data[1].is_main) {
-          [before, match] = data;
-        } else if (data[0].is_main) {
-          [match, after] = data;
-        }
-      } else if (data.length === 1) {
-        match = data[0];
-      }
-    }
-    return [
-      before && new ContextOrMatch(before, this),
-      new ContextOrMatch(match, this),
-      after && new ContextOrMatch(after, this)
-    ];
-  }
   getFilmType() {
     let filmType = this.match.tier.slice(-10) === '-oFixation' ? 'ey' : 'vi';
     return `${ this.participant }-${ filmType }`;
   }
-}
-
-
-export function getResults(list) {
-  let results = list.map(item => new Result(item));
-  results.forEach((item, index, array) => {
-    let previousItem = index > 0 ? array[index - 1] : null;
-    item.setPreviousItem(previousItem);
-  });
-  return results;
-}
-
-export function concatResults(oldOnesKoObservable, newOnes) {
-  let n = oldOnesKoObservable().length;
-  if (n > 0) {
-    let previousItem = oldOnesKoObservable()[n - 1];
-    newOnes[0].setPreviousItem(previousItem);
+  forJSON() {
+    return this._data;
   }
-  oldOnesKoObservable.splice(n, 0, ...newOnes);
 }
+
+
+const referenceResultData = {
+  show_tiers: { 'C-vLineHTML':
+    '\\собирает (0.18) (ə 0.63) груши себе в (ˀ 0.36) /ф<u>а</u>ртук,' },
+  value: 'C-vE009',
+  c_1: {
+    id: 'C-vE009',
+    value: 'C-vE009',
+    time: { begin: 232020, end: 235340 }
+  },
+  tier: 'C-vLine',
+  c_2: {
+    tier: 'R_oFixation',
+    id: 'R-oF0233',
+    value: 'R-oF0233',
+    time: { end: 235420 }
+  },
+  c_1p0: {
+    tier: 'C_vLineType',
+    id: 'C-vE009',
+    value: 'EDU',
+    time: { begin: 235340, end: 235340 }
+  },
+  time: { begin: 232020, end: 235340 },
+  record_id: '22',
+  is_main: true
+};
+const referenceResult = new Result(referenceResultData);
+
+
+function getResults(dataItems) {
+  let results = dataItems.map(item => new Result(item)),
+      sections = [],
+      record_ix = 0;
+  results.forEach((item, index, array) => {
+    item.ix = index;
+    item.record_ix = record_ix;
+    record_ix += 1;
+
+    if (index === 0 || item.record_id !== array[index - 1].record_id) {
+      var prevSection = sections.length > 0 ? sections.slice(-1)[0] : null,
+          nextSection = {
+            firstItem: item,
+            firstIndex: index,
+            sectionLength: 1,
+          };
+      sections.push(nextSection);
+      if (prevSection !== null) {
+        prevSection.sectionLength = index - prevSection.firstIndex;
+      }
+      record_ix = 0;
+    }
+    if (index === array.length - 1) {
+      let lastSection = sections.slice(-1)[0];
+      lastSection.sectionLength = index + 1 - lastSection.firstIndex;
+    }
+  });
+  return [results, sections];
+}
+
+export { Result, getResults, referenceResult };

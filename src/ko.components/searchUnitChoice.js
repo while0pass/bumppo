@@ -77,16 +77,10 @@ const unitChoiceTemplate = `
 
 `;
 
-const chosenUnitTemplate = `
-  <div>
-    <!-- ko with: activeChannel -->
-    <button class="ui button bmpp-channelSlug"
-      data-bind="css: channel.color, text: channel.id,
-        popup: tooltip, popupOpts: channelPopupOpts">
-    </button>
-    <!-- /ko -->
+const unitTypeTemplate = `
 
-    <!-- ko with: node.unitType -->
+  <!-- ko with: node.unitType -->
+
     <span class="bmpp-unitTypeAndGroup">
       <!-- ko if: group -->
         <span data-bind="textLowercaseFirstChar: group.name"
@@ -99,36 +93,60 @@ const chosenUnitTemplate = `
           style="padding-left: .5em;"></strong>
       </span>
     </span>
-    <!-- /ko -->
 
-    <!-- ko if: node.chosenUnitProperties().length > 0 -->
-    <div data-bind="foreach: node.chosenUnitProperties"
-      style="margin: 1.5em 0 2.5em 0"
+  <!-- /ko -->
+
+`;
+
+const unitPropsTemplate = `
+
+  <!-- ko if: node.chosenUnitProperties().length > 0 -->
+
+    <div data-bind="foreach: node.chosenUnitProperties" class="bmpp-unitProps"
       ><!-- ko if: $index() === 0 --><span class="bmpp-bannerPropname"
-      data-bind="text: name"></span><span class="bmpp-bannerText"
+      data-bind="html: name"></span><span class="bmpp-bannerText"
       >:&#x2002;</span><!-- /ko --><!-- ko ifnot: $index() === 0 --><span
       class="bmpp-bannerPropname" data-bind="textLowercaseFirstChar: name"
       ></span><span class="bmpp-bannerText">:&#x2002;</span><!-- /ko --><span
-      data-bind="text: banner" class="bmpp-bannerPropvalue"></span><span
+      data-bind="html: banner" class="bmpp-bannerPropvalue"></span><span
       class="bmpp-bannerText" data-bind="text: $index() &lt; $parent.node.
       chosenUnitProperties().length - 1 ? ';&#x2002;' : '.'"></span
     ></div>
+
+  <!-- /ko -->
+
+`;
+
+const chosenUnitTemplate = `
+  <div>
+    <!-- ko with: activeChannel -->
+    <button class="ui button bmpp-channelSlug"
+      data-bind="css: channel.color, text: channel.id,
+        popup: tooltip, popupOpts: channelPopupOpts">
+    </button>
     <!-- /ko -->
+
+    ${ unitTypeTemplate }
+
+    ${ unitPropsTemplate }
 
     <div style="position: absolute; bottom: 0.8em">
       <span data-bind="click: goEditUnitType" class="bmpp-editUrl">
         Изменить тип единицы
       </span>
-      <span data-bind="click: goEditUnitProperties" class="bmpp-editUrl"
-        style="margin-left: 1em">
+      <span data-bind="click: $root.queryPaneView.editNodeProperties"
+        class="bmpp-editUrl" style="margin-left: 1em">
         <span data-bind="text: isAnyUnitPropertySet() ? 'Изменить' : 'Задать'">
         </span> свойства единицы
       </span>
     </div>
 
-    <div data-bind="click: node.seppuku.bind(node),
-                     visible: node.depth() === 0 && node.unitType()"
-      style="position: absolute; right: 1.5em; bottom: 1.1em; color: #a00;
+    <div data-bind="click: function () {
+                             node.seppuku();
+                             $root.resOpts.reset();
+                           },
+                    visible: node.depth() === 0 && node.unitType()"
+      style="position: absolute; right: 1.5em; top: 1.5em; color: #a00;
       border-bottom-color: #a00; line-height: 1.3em;"
       class="bmpp-editUrl">
       Очистить запрос
@@ -222,9 +240,6 @@ class viewModel {
         goEditUnitType = function () {
           node.isEditStateForUnitType(true);
         },
-        goEditUnitProperties = function () {
-          params.editNodeProperties(node);
-        },
         iHaveChosenUnitType = function () {
           node.unitType(this);
           node.isEditStateForUnitType(false);
@@ -269,7 +284,6 @@ class viewModel {
     this.activeChannel = activeChannel;
     this.queryPartsNonReadiness = queryPartsNonReadiness;
     this.goEditUnitType = goEditUnitType;
-    this.goEditUnitProperties = goEditUnitProperties;
     this.iHaveChosenUnitType = iHaveChosenUnitType;
     this.isAnyUnitPropertySet = isAnyUnitPropertySet;
   }
@@ -278,7 +292,5 @@ class viewModel {
   }
 }
 
-export default {
-  viewModel: viewModel,
-  template: template
-};
+export default { viewModel: viewModel, template: template };
+export { unitTypeTemplate, unitPropsTemplate };

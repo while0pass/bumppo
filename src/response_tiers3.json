@@ -1,0 +1,856 @@
+{
+  "C-mGestureChain": [
+    {
+      "value": "C-mGeCn02",
+      "time": {
+        "start": 224250,
+        "end": 232960
+      }
+    },
+    {
+      "value": "C-mGeCn03",
+      "time": {
+        "start": 234030,
+        "end": 244600
+      }
+    }
+  ],
+  "C-vLine": [
+    {
+      "value": "C-vE008",
+      "time": {
+        "start": 230649,
+        "end": 232020
+      }
+    },
+    {
+      "value": "C-vE009",
+      "time": {
+        "start": 232020,
+        "end": 235340
+      }
+    },
+    {
+      "value": "C-vN004",
+      "time": {
+        "start": 235340,
+        "end": 235670
+      }
+    }
+  ],
+  "C-vSType": [
+    {
+      "parent": "C-vW0037",
+      "value": "Word"
+    },
+    {
+      "parent": "C-vW0038",
+      "value": "Word"
+    },
+    {
+      "parent": "C-vFd0002",
+      "value": "Filled"
+    },
+    {
+      "parent": "C-vW0039",
+      "value": "Word"
+    },
+    {
+      "parent": "C-vW0040",
+      "value": "Word"
+    },
+    {
+      "parent": "C-vW0041",
+      "value": "Word"
+    },
+    {
+      "parent": "C-vFd0003",
+      "value": "Filled"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "Word"
+    },
+    {
+      "parent": "C-vHp0003",
+      "value": "HPause"
+    }
+  ],
+  "C-vCollatForm": [
+    {
+      "parent": "C-vCol003",
+      "value": "{creaky}"
+    }
+  ],
+  "C-mGeTags": [
+    {
+      "parent": "C-mGe011",
+      "value": "Multi-S"
+    },
+    {
+      "parent": "C-mGe014",
+      "value": "Lt R Overlap"
+    }
+  ],
+  "C-mGeFunction": [
+    {
+      "parent": "C-mGe011",
+      "value": "Depictive"
+    },
+    {
+      "parent": "C-mGe012",
+      "value": "Depictive"
+    },
+    {
+      "parent": "C-mGe013",
+      "value": "Depictive"
+    },
+    {
+      "parent": "C-mGe014",
+      "value": "Depictive"
+    }
+  ],
+  "R-oInterlocutor": [
+    {
+      "parent": "R-oF0224",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0225",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0226",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0227",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0228",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0229",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0230",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0231",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0232",
+      "value": "C"
+    },
+    {
+      "parent": "R-oF0233",
+      "value": "C"
+    }
+  ],
+  "C-vMainAccents": [
+    {
+      "parent": "C-vE008",
+      "value": "R"
+    },
+    {
+      "parent": "C-vE009",
+      "value": "R"
+    }
+  ],
+  "C-mLtMtType": [
+    {
+      "parent": "C-mLtMt016",
+      "value": "P"
+    },
+    {
+      "parent": "C-mLtMt017",
+      "value": "S"
+    },
+    {
+      "parent": "C-mLtMt018",
+      "value": "P"
+    },
+    {
+      "parent": "C-mLtMt019",
+      "value": "S"
+    },
+    {
+      "parent": "C-mLtMt020",
+      "value": "S"
+    },
+    {
+      "parent": "C-mLtMt021",
+      "value": "R"
+    }
+  ],
+  "C-mRtMtType": [
+    {
+      "parent": "C-mRtMt023",
+      "value": "P"
+    },
+    {
+      "parent": "C-mRtMt024",
+      "value": "S"
+    },
+    {
+      "parent": "C-mRtMt025",
+      "value": "P"
+    },
+    {
+      "parent": "C-mRtMt026",
+      "value": "S"
+    },
+    {
+      "parent": "C-mRtMt027",
+      "value": "S"
+    },
+    {
+      "parent": "C-mRtMt028",
+      "value": "P"
+    }
+  ],
+  "C-vAccents": [
+    {
+      "parent": "C-vW0037",
+      "value": "R"
+    },
+    {
+      "parent": "C-vW0038",
+      "value": "F"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "R"
+    }
+  ],
+  "C-vNearPause": [
+    {
+      "parent": "C-vW0037",
+      "value": "None"
+    },
+    {
+      "parent": "C-vW0038",
+      "value": "Before"
+    },
+    {
+      "parent": "C-vFd0002",
+      "value": "After"
+    },
+    {
+      "parent": "C-vW0039",
+      "value": "None"
+    },
+    {
+      "parent": "C-vW0040",
+      "value": "None"
+    },
+    {
+      "parent": "C-vW0041",
+      "value": "None"
+    },
+    {
+      "parent": "C-vFd0003",
+      "value": "None"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "None"
+    },
+    {
+      "parent": "C-vHp0003",
+      "value": "None"
+    }
+  ],
+  "C-mRtMovement": [
+    {
+      "value": "C-mRtMt023",
+      "time": {
+        "start": 231880,
+        "end": 232110
+      }
+    },
+    {
+      "value": "C-mRtMt024",
+      "time": {
+        "start": 232110,
+        "end": 232960
+      }
+    },
+    {
+      "value": "C-mRtMt025",
+      "time": {
+        "start": 234030,
+        "end": 234310
+      }
+    },
+    {
+      "value": "C-mRtMt026",
+      "time": {
+        "start": 234310,
+        "end": 234700
+      }
+    },
+    {
+      "value": "C-mRtMt027",
+      "time": {
+        "start": 234700,
+        "end": 235280
+      }
+    },
+    {
+      "value": "C-mRtMt028",
+      "time": {
+        "start": 235280,
+        "end": 235770
+      }
+    }
+  ],
+  "R-oFixation": [
+    {
+      "value": "R-oF0224",
+      "time": {
+        "start": 231963,
+        "end": 232183
+      }
+    },
+    {
+      "value": "R-oF0225",
+      "time": {
+        "start": 232223,
+        "end": 232523
+      }
+    },
+    {
+      "value": "R-oF0226",
+      "time": {
+        "start": 232663,
+        "end": 233843
+      }
+    },
+    {
+      "value": "R-oF0227",
+      "time": {
+        "start": 233860,
+        "end": 233939
+      }
+    },
+    {
+      "value": "R-oF0228",
+      "time": {
+        "start": 233960,
+        "end": 234160
+      }
+    },
+    {
+      "value": "R-oF0229",
+      "time": {
+        "start": 234320,
+        "end": 234520
+      }
+    },
+    {
+      "value": "R-oF0230",
+      "time": {
+        "start": 234540,
+        "end": 234720
+      }
+    },
+    {
+      "value": "R-oF0231",
+      "time": {
+        "start": 234740,
+        "end": 234920
+      }
+    },
+    {
+      "value": "R-oF0232",
+      "time": {
+        "start": 235080,
+        "end": 235280
+      }
+    },
+    {
+      "value": "R-oF0233",
+      "time": {
+        "start": 235340,
+        "end": 235420
+      }
+    }
+  ],
+  "C-mRtStType": [
+    {
+      "parent": "C-mRtSt005",
+      "value": "Rest"
+    }
+  ],
+  "C-mGeHandedness": [
+    {
+      "parent": "C-mGe011",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "C-mGe012",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "C-mGe013",
+      "value": "Bh-sym"
+    },
+    {
+      "parent": "C-mGe014",
+      "value": "Rt"
+    }
+  ],
+  "C-mLtStillness": [
+    {
+      "value": "C-mLtSt007",
+      "time": {
+        "start": 232960,
+        "end": 234080
+      }
+    }
+  ],
+  "C-vSegm": [
+    {
+      "value": "C-vW0037",
+      "time": {
+        "start": 231620,
+        "end": 232020
+      }
+    },
+    {
+      "value": "C-vW0038",
+      "time": {
+        "start": 232020,
+        "end": 232685
+      }
+    },
+    {
+      "value": "C-vFd0002",
+      "time": {
+        "start": 232863,
+        "end": 233492
+      }
+    },
+    {
+      "value": "C-vW0039",
+      "time": {
+        "start": 233492,
+        "end": 233820
+      }
+    },
+    {
+      "value": "C-vW0040",
+      "time": {
+        "start": 233820,
+        "end": 234220
+      }
+    },
+    {
+      "value": "C-vW0041",
+      "time": {
+        "start": 234220,
+        "end": 234470
+      }
+    },
+    {
+      "value": "C-vFd0003",
+      "time": {
+        "start": 234470,
+        "end": 234830
+      }
+    },
+    {
+      "value": "C-vW0042",
+      "time": {
+        "start": 234830,
+        "end": 235340
+      }
+    },
+    {
+      "value": "C-vHp0003",
+      "time": {
+        "start": 235340,
+        "end": 235670
+      }
+    }
+  ],
+  "C-vMainAccent": [
+    {
+      "parent": "C-vW0037",
+      "value": "Main"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "Main"
+    }
+  ],
+  "C-vTempo": [
+    {
+      "parent": "C-vW0037",
+      "value": "Neutral"
+    },
+    {
+      "parent": "C-vW0038",
+      "value": "Neutral"
+    },
+    {
+      "parent": "C-vW0039",
+      "value": "Neutral"
+    },
+    {
+      "parent": "C-vW0040",
+      "value": "Neutral"
+    },
+    {
+      "parent": "C-vW0041",
+      "value": "Neutral"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "Neutral"
+    }
+  ],
+  "C-mRtStillness": [
+    {
+      "value": "C-mRtSt005",
+      "time": {
+        "start": 232960,
+        "end": 234030
+      }
+    }
+  ],
+  "C-vInOutEDU": [
+    {
+      "parent": "C-vFd0002",
+      "value": "In"
+    },
+    {
+      "parent": "C-vFd0003",
+      "value": "In"
+    },
+    {
+      "parent": "C-vHp0003",
+      "value": "Out"
+    }
+  ],
+  "C-vIllocPhase": [
+    {
+      "parent": "C-vE008",
+      "value": "Comma"
+    },
+    {
+      "parent": "C-vE009",
+      "value": "Comma"
+    }
+  ],
+  "C-mGesture": [
+    {
+      "value": "C-mGe011",
+      "time": {
+        "start": 231880,
+        "end": 232960
+      }
+    },
+    {
+      "value": "C-mGe012",
+      "time": {
+        "start": 234030,
+        "end": 234700
+      }
+    },
+    {
+      "value": "C-mGe013",
+      "time": {
+        "start": 234700,
+        "end": 235280
+      }
+    },
+    {
+      "value": "C-mGe014",
+      "time": {
+        "start": 235280,
+        "end": 236140
+      }
+    }
+  ],
+  "C-vLineType": [
+    {
+      "parent": "C-vE008",
+      "value": "EDU"
+    },
+    {
+      "parent": "C-vE009",
+      "value": "EDU"
+    },
+    {
+      "parent": "C-vN004",
+      "value": "NonVerbal"
+    }
+  ],
+  "R-oLocus": [
+    {
+      "parent": "R-oF0224",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0225",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0226",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0227",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0228",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0229",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0230",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0231",
+      "value": "Face"
+    },
+    {
+      "parent": "R-oF0232",
+      "value": "Hands"
+    },
+    {
+      "parent": "R-oF0233",
+      "value": "Face"
+    }
+  ],
+  "C-vPauseHTML": [
+    {
+      "parent": "C-vPs0009",
+      "value": "(0.18)"
+    }
+  ],
+  "C-vSForm": [
+    {
+      "parent": "C-vW0037",
+      "value": "наверх"
+    },
+    {
+      "parent": "C-vW0038",
+      "value": "собирает"
+    },
+    {
+      "parent": "C-vFd0002",
+      "value": "(ə)"
+    },
+    {
+      "parent": "C-vW0039",
+      "value": "груши"
+    },
+    {
+      "parent": "C-vW0040",
+      "value": "себе"
+    },
+    {
+      "parent": "C-vW0041",
+      "value": "в"
+    },
+    {
+      "parent": "C-vFd0003",
+      "value": "(ˀ)"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "фартук"
+    },
+    {
+      "parent": "C-vHp0003",
+      "value": "(ɥ)"
+    }
+  ],
+  "C-mMovementChain": [
+    {
+      "value": "C-mMtCn004",
+      "time": {
+        "start": 228600,
+        "end": 232960
+      }
+    },
+    {
+      "value": "C-mMtCn005",
+      "time": {
+        "start": 234030,
+        "end": 240330
+      }
+    }
+  ],
+  "C-mLtStType": [
+    {
+      "parent": "C-mLtSt007",
+      "value": "Rest"
+    }
+  ],
+  "C-vPause": [
+    {
+      "value": "C-vPs0009",
+      "time": {
+        "start": 232685,
+        "end": 232863
+      }
+    }
+  ],
+  "C-mPrPhase": [
+    {
+      "value": "Transition",
+      "time": {
+        "start": 227440,
+        "end": 232960
+      }
+    },
+    {
+      "value": "Transition",
+      "time": {
+        "start": 234030,
+        "end": 244600
+      }
+    }
+  ],
+  "C-vSegmHTML": [
+    {
+      "parent": "C-vW0037",
+      "value": "/нав<u>е</u>рх"
+    },
+    {
+      "parent": "C-vW0038",
+      "value": "\\собирает"
+    },
+    {
+      "parent": "C-vFd0002",
+      "value": "(ə 0.63)"
+    },
+    {
+      "parent": "C-vW0039",
+      "value": "груши"
+    },
+    {
+      "parent": "C-vW0040",
+      "value": "себе"
+    },
+    {
+      "parent": "C-vW0041",
+      "value": "в"
+    },
+    {
+      "parent": "C-vFd0003",
+      "value": "(ˀ 0.36)"
+    },
+    {
+      "parent": "C-vW0042",
+      "value": "/ф<u>а</u>ртук"
+    },
+    {
+      "parent": "C-vHp0003",
+      "value": "(ɥ 0.33)"
+    }
+  ],
+  "C-mLtMovement": [
+    {
+      "value": "C-mLtMt016",
+      "time": {
+        "start": 231880,
+        "end": 232110
+      }
+    },
+    {
+      "value": "C-mLtMt017",
+      "time": {
+        "start": 232110,
+        "end": 232960
+      }
+    },
+    {
+      "value": "C-mLtMt018",
+      "time": {
+        "start": 234080,
+        "end": 234310
+      }
+    },
+    {
+      "value": "C-mLtMt019",
+      "time": {
+        "start": 234310,
+        "end": 234700
+      }
+    },
+    {
+      "value": "C-mLtMt020",
+      "time": {
+        "start": 234700,
+        "end": 235280
+      }
+    },
+    {
+      "value": "C-mLtMt021",
+      "time": {
+        "start": 235280,
+        "end": 236140
+      }
+    }
+  ],
+  "C-vCollat": [
+    {
+      "value": "C-vCol003",
+      "time": {
+        "start": 232863,
+        "end": 233492
+      }
+    }
+  ],
+  "C-vLineHTML": [
+    {
+      "parent": "C-vE008",
+      "value": "То_есть он (ˀ 0.14) (0.08) возлезает /нав<u>е</u>рх,"
+    },
+    {
+      "parent": "C-vE009",
+      "value": "\\собирает (0.18) (ə 0.63) груши себе в (ˀ 0.36) /ф<u>а</u>ртук,"
+    },
+    {
+      "parent": "C-vN004",
+      "value": "(ɥ 0.33)"
+    }
+  ],
+  "C-vPauseInOutEDU": [
+    {
+      "parent": "C-vPs0009",
+      "value": "In"
+    }
+  ],
+  "C-mPosture": [
+    {
+      "value": "C-mPr004",
+      "time": {
+        "start": 227440,
+        "end": 232960
+      }
+    },
+    {
+      "value": "C-mPr005",
+      "time": {
+        "start": 232960,
+        "end": 244600
+      }
+    }
+  ]
+}

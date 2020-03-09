@@ -1,0 +1,20 @@
+<!-- ko foreach: resOpts -->
+<div class="ui segment" data-bind="with: $data">
+
+  <div class="ui top attached large label">
+    <header class="bmpp-propertyHeader" data-bind="text: name,
+      click: onHeaderClick,
+      css: { clickable: isHeaderClickable }">
+    </header>
+    <!-- ko if: help -->
+      <i class="disabled question circle outline icon bmpp-nearLabelIcon"
+        data-bind="popup: help"></i>
+    <!-- /ko -->
+  </div>
+
+  <div class="ui hidden divider"></div>
+
+  <bmpp-value-list params="valueList: valueList"></bmpp-value-list>
+
+</div>
+<!-- /ko -->

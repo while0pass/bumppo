@@ -3,13 +3,20 @@ import ko from 'knockout';
 import Plyr from 'plyr';
 
 import cinematheque from '../video_data.js';
+import { getTimeTag } from './timeline.js';
 
-const plyrOpts = {
-  debug: !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
-  controls: [],
-  clickToPlay: false,
-  fullscreen: { enabled: false, fallback: false, iosNative: false },
+var plyrOpts = {
+  clickToPlay: true,
+  controls: ['play', 'current-time', 'mute', 'volume', 'fullscreen', 'settings'],
+  debug: false && !$_CONFIG.BUMPPO_ENV_IS_PRODUCTION, // eslint-disable-line no-undef
+  invertTime: false,
+  fullscreen: { enabled: true, fallback: true, iosNative: false },
+  ratio: '16:9',
+  settings: ['speed'],
+  speed: { selected: 1, options: [0.5, 0.75, 1] },
 };
+
+//const performance = window.performance || window.Date;
 
 
 class Film {
@@ -19,6 +26,7 @@ class Film {
     this.filmId = this.getFilmId(filmData);
     this.element = this.createElement(cinema, this.elementId, this.filmId);
     this.film = this.createFilm(cinema, this.element);
+    this.episode = { begin: 0, end: 86400 };
   }
   getElementId(cinema, filmData) {
     return cinema.screen.attr('id') + filmData.recordId + filmData.filmType;
@@ -27,188 +35,373 @@ class Film {
     return cinematheque[filmData.recordId][filmData.filmType];
   }
   createElement(cinema, elementId, filmId) {
-    const ytParams = 'modestbranding=1&showinfo=0&playsinline=1&enablejsapi=1',
+    const self = this,
           element = jQuery(`
 
-  <div id="${ elementId }" style="position: absolute;">
-    <iframe src="https://www.youtube.com/embed/${ filmId }?${ ytParams }"
-      crossorigin></iframe>
+  <div id="${ elementId }" style="position: absolute; display: flex">
+    <video>
+      <source src="${ filmId }"></source>
+    </video>
   </div>
+
           `);
 
-    jQuery(document.body).append(element);
+    jQuery(cinema.screen).append(element);
+    element.on('mouseenter', () => {
+      self.isMouseWithin = true;
+    });
+    element.on('mouseleave', () => {
+      self.isMouseWithin = false;
+      self.film && self.film.toggleControls(false);
+    });
     return element;
   }
   activateIFrame() {
-    let element = this.element,
-        screen = this.cinema.screen;
-    element.offset(screen.offset());
-    element.width(screen.width());
-    element.height(screen.height());
-    element.css({ zIndex: 900 });
+    this.element.css({ zIndex: 900 });
   }
   deactivateIFrame() {
-    if (window[';)'].debugVideo) {
-      this.element.css({ zIndex: 'auto' });
-    } else {
-      this.element.css({ zIndex: -1000 });
+    this.element.css({ zIndex: -1000 });
+  }
+  getPlyrOpts(cinema) {
+    if (plyrOpts.listeners === undefined) {
+      plyrOpts.listeners = {
+        play: function () {
+          const film = cinema.getLastFilm()[0];
+          if (!film) return;
+          if (film.film.playing) {
+            cinema._isFilmPausedByUser = true;
+          } else if (film.film.paused && cinema._isFilmPausedByUser) {
+            cinema._isFilmPausedByUser = false;
+          } else {
+            const prepareInsteadOfShow = true;
+            cinema.play(prepareInsteadOfShow);
+          }
+        }
+      };
     }
+    return plyrOpts;
   }
   createFilm(cinema, element) {
-    let film = new Plyr(element, plyrOpts);
+    let self = this,
+        plyrOpts = this.getPlyrOpts(cinema),
+        film = new Plyr(element.find('video'), plyrOpts),
+        showLoader = () => { cinema.loader.show(); },
+        hideLoader = () => { cinema.loader.hide(); },
+        animationFrame = null,
+        lastEnd = 0,
+        placeCursor = () => {
+          let time = film.currentTime;
+          cinema.placeCursor(time);
+          if (time - self.episode.end > 0 || self.episode.begin - time > 1e-3) {
+            lastEnd = self.episode.end;
+            film.pause();
+            self.episode.begin = 0;
+            self.episode.end = film.duration;
+            return;
+          }
+          animationFrame = window.requestAnimationFrame(placeCursor);
+        },
+        onPlay = () => {
+          cinema.loader.hide();
+          placeCursor();
+        },
+        onPause = () => {
+          cinema.loader.hide();
+          while (animationFrame) {
+            window.cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+          }
+          // Поправляем курсор, если он немного проскочил отметку паузы
+          if (lastEnd > 0) {
+            let delta = film.currentTime - lastEnd;
+            if (delta > 0 && delta < 0.5) {
+              film.currentTime = lastEnd;
+              cinema.placeCursor(lastEnd);
+            }
+            lastEnd = 0;
+          }
+        };
+    film.toggleControls(false);
+    showLoader();
     film.filmObject = this;
     film.cinema = cinema;
-    // NOTE: На плеере не стоит создавать дополнительный атрибут с element,
-    // т.к. получить доступ к элементу можно через film.elements.container
-
-    film.on('ready', event => {
-      let film = event.detail.plyr;
-      film.muted = true;
-      film.rewind(0);
-      film.play();
+    film.on('stalled', showLoader);
+    film.on('seeking', showLoader);
+    film.on('waiting', showLoader);
+    film.on('seeked', hideLoader);
+    film.on('playing', onPlay);
+    film.on('pause', onPause);
+    film.on('controlsshown', () => {
+      self.isMouseWithin || film.toggleControls(false);
     });
-    film.on('pause', () => {
-      film.filmObject.deactivateIFrame();
-      cinema.curtain.show();
-      cinema.loader.hide();
-    });
-    film.on('seeking', () => {
-      film.filmObject.deactivateIFrame();
-      cinema.curtain.show();
-      cinema.loader.show();
-    });
-    film.on('seeked', event => {
-      let film = event.detail.plyr;
-      if (!film.$hidden) {
-        film.filmObject.activateIFrame();
-        cinema.loader.hide();
-        cinema.curtain.hide();
-      }
-    });
-
     return film;
   }
 }
 
+const PLAY_CSS_CLASS = 'play',
+      PAUSE_CSS_CLASS = 'pause';
+
+const playTypes = {
+  PLAY_SELECTION: Symbol('play selection'),
+  PLAY_PRE_SELECTION: Symbol('play pre selection'),
+  PLAY_POST_SELECTION: Symbol('play post selection'),
+  PLAY_VISIBLE: Symbol('play visible'),
+};
+
 class Cinema {
-  constructor() {
+  constructor(timeline) {
     this.films = {};
     this.filmTypes = [
-      { id: 'N-eyf', disabled: true },
-      { id: 'N-vi', disabled: false },
-      { id: 'N-ey', disabled: false },
-      { id: 'C-vi', disabled: false },
-      { id: 'R-vi', disabled: false },
-      { id: 'R-ey', disabled: false },
-      { id: 'W-vi', disabled: false },
+      { id: 'N-vi', disabled: false, title: 'Индивидуальное видео Рассказчика' },
+      { id: 'N-ey', disabled: false, title: 'Видео с айтрекера Рассказчика' },
+      { id: 'C-vi', disabled: false, title: 'Индивидуальное видео Комментатора' },
+      { id: 'R-vi', disabled: false, title: 'Индивидуальное видео Пересказчика' },
+      { id: 'R-ey', disabled: false, title: 'Видео с айтрекера Пересказчика' },
+      { id: 'W-vi', disabled: false, title: 'Видео общего плана' },
     ];
     this.activeRecordId = ko.observable(null);
     this.activeFilmType = ko.observable(null);
     this.activeDataItem = ko.observable(null);
-    this.createHider();
+    this.canPlayOrPause = ko.observable(PLAY_CSS_CLASS);
+    this.playType = ko.observable(playTypes.PLAY_SELECTION);
+    this.playTypes = playTypes;
+    this.timeline = timeline;
+    this.cursorStruct = this.createCursorStruct();
   }
   get screen() {
-    return jQuery('#bmpp-videoPlayer');
-  }
-  get curtain() {
-    let element = jQuery(this.screen).find('.bmpp-videoCurtain');
-    if (window[';)'].debugVideo) {
-      element.hide();
-      return jQuery();
-    } else {
-      return element;
-    }
+    if (!this._screen) this._screen = jQuery('#bmpp-videoPlayer');
+    return this._screen;
   }
   get loader() {
-    return jQuery(this.screen).find('.bmpp-videoLoader');
+    if (!this._loader) this._loader = jQuery('#bmpp-videoLoader');
+    return this._loader;
   }
-  createHider() {
-    // Создаем шторку, за которой будут прятаться iframe'ы видео
-    // во всех разделах кроме раздела с результатами
-    jQuery(document.body).append(`<div style="position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0; background-color: #fff;
-      z-index: -800;"></div>`);
+  hideCurtain() {
+    let element = jQuery(this.screen).find('.bmpp-videoCurtain');
+    element.css('z-index', 0);
   }
   clearActiveState() {
     this.activeRecordId(null);
     this.activeFilmType(null);
     this.activeDataItem(null);
   }
+  createCursorStruct() {
+    let struct = {
+      width: 0,
+      start: 0,
+      duration: 1,
+      //lastTime: performance.now(),
+    };
+    ko.computed(function () {
+      let layersStruct = this.timeline.layersStruct(),
+          width = this.timeline.canvasWidth && this.timeline.canvasWidth() || 0;
+      struct.width = width;
+      struct.start = layersStruct.time.start;
+      struct.duration = layersStruct.duration;
+    }, this);
+    return struct;
+  }
+  placeCursor(currentTimeInSeconds) {
+    // Ограничимся 25 кадрами в сек.
+    //let lastTime = this.cursorStruct.lastTime,
+    //    thisTime = performance.now();
+    //if (thisTime - lastTime < 40) return;
+    //this.cursorStruct.lastTime = thisTime;
+
+    let cursor = document.getElementById('bmpp-cursor'),
+        timeTag = document.getElementById('bmpp-currentTime');
+    // NOTE: Нет смысла брать элемент DOM для курсора в createCursorStruct,
+    // т.к. на тот момент элемента ещё в DOM не будет.
+
+    let { start, width, duration } = this.cursorStruct,
+        ms = currentTimeInSeconds * 1000,
+        position = width
+          ? String((ms - start) / duration * 100) + '%'
+          : -100;
+    cursor.setAttribute('x1', position);
+    cursor.setAttribute('x2', position);
+    if (timeTag !== null) timeTag.innerHTML = getTimeTag(ms, 1);
+  }
+  _play(film, isCreated, begin, end) {
+    const cinema = this;
+    film.episode.begin = begin;
+    film.episode.end = end;
+    film = film.film;
+    const HAVE_METADATA = 1,
+          HAVE_ENOUGH_DATA = 4;
+    if (film.media.readyState < HAVE_METADATA) {
+      film.once('loadedmetadata', function () {
+        film.currentTime = begin;
+        func();
+      });
+    } else func();
+    function func() {
+      film.currentTime = begin;
+      if (isCreated || film.media.readyState < HAVE_ENOUGH_DATA
+      || film.notYetPlayed) {
+        film.once('canplay', function () {
+          film.play();
+        });
+      } else {
+        film.play();
+      }
+      delete film.notYetPlayed;
+      cinema._isFilmPausedByUser = false;
+      cinema.hideCurtain();
+    }
+  }
+  play(prepareInsteadOfShow=false) {
+    var xStart, xEnd,
+        method = prepareInsteadOfShow ? 'prepareEpisode' : 'showEpisode',
+        winStart = this.timeline.getWindowStart(),
+        winEnd = this.timeline.getWindowEnd(),
+        [selStart, selEnd] = this.timeline.selectionEdges();
+    switch (this.playType()) {
+    case playTypes.PLAY_SELECTION:
+      [xStart, xEnd] = [selStart || winStart, selEnd || winEnd];
+      break;
+    case playTypes.PLAY_PRE_SELECTION:
+      [xStart, xEnd] = [winStart, selStart || winEnd];
+      break;
+    case playTypes.PLAY_POST_SELECTION:
+      [xStart, xEnd] = [selEnd || winStart, winEnd];
+      break;
+    case playTypes.PLAY_VISIBLE:
+      [xStart, xEnd] = [winStart, winEnd];
+    }
+    this[method](xStart, xEnd);
+  }
+  playOrPause() {
+    let [film, isCreated] = this.getLastFilm();
+    if (film) {
+      if (film.film.playing && !isCreated && !film.notYetPlayed) {
+        this._isFilmPausedByUser = true;
+        film.film.pause();
+      } else if (film.film.paused && this._isFilmPausedByUser
+        && !isCreated && !film.notYetPlayed) {
+        this._isFilmPausedByUser = false;
+        film.film.play();
+      } else {
+        this.play();
+      }
+    }
+  }
   showFilm(recordId, filmType, dataItem) {
+    const cinema = this;
     if (!dataItem || recordId === null || !filmType) return;
-    this.activeRecordId(recordId);
-    this.activeFilmType(filmType);
-    this.activeDataItem(dataItem);
-    let begin = (dataItem.before? dataItem.before: dataItem.match).time.begin,
-        end = (dataItem.after? dataItem.after: dataItem.match).time.end,
-        film = this.getFilm(recordId, filmType).film;
-    const cinema = this,
-          logoHideTime = 0.8,
-          logoFirstHideTime = 2.5,
-          pauseFunction = event => {
-            let p = event.detail.plyr;
-            if (!p._playCount === 1) return;
-            if (p.currentTime >= end - 1e-2) {
-              p.muted = false;
-              p.off('timeupdate', p._pauseFunction);
-              delete p._pauseFunction;
-              p.pause();
-            } else if (p.currentTime >= begin - 1e-1) {
-              delete p.$hidden;
-              p.filmObject.activateIFrame();
-              p.muted = false;
-              cinema.loader.hide();
-              cinema.curtain.hide();
-            }
-          };
-    cinema.curtain.show();
-    cinema.loader.show();
+    cinema.pauseAll();
+    cinema.activeRecordId(recordId);
+    cinema.activeFilmType(filmType);
+    cinema.activeDataItem(dataItem);
+    let begin = dataItem.match.time.begin,
+        end = dataItem.match.time.end,
+        [film, isCreated] = cinema.getFilm(recordId, filmType);
     begin /= 1000;
     end /= 1000;
-    film.$hidden = true;
-    if (film._playCount && film._playCount === 1) {
-      film.currentTime = begin - logoFirstHideTime;
-      film._playCount = 2;
-    } else if (film._playCount && film._playCount > 1) {
-      film.currentTime = begin - logoHideTime;
-      film._playCount = 3;
+    cinema._play(film, isCreated, begin, end);
+  }
+  showAlternativeFilm(recordId, filmType, dataItem) {
+    const cinema = this;
+    if (!dataItem || recordId === null || !filmType) return;
+    cinema.pauseAll();
+    cinema.activeRecordId(recordId);
+    cinema.activeFilmType(filmType);
+    cinema.activeDataItem(dataItem);
+    cinema.play();
+  }
+  prepareEpisode(begin, end) {
+    if (this._isFilmPausedByUser) {
+      this._isFilmPausedByUser = false;
+      return;
+    }
+    let [film, isCreated] = this.getLastFilm();
+    if (film) {
+      begin /= 1000;
+      end /= 1000;
+      let isBeginChanged = Math.abs(film.episode.begin - begin) > 1e-3,
+          isEndChanged = Math.abs(film.episode.end - end) > 1e-3;
+      if (isBeginChanged) film.episode.begin = begin;
+      if (isEndChanged) film.episode.end = end;
+      film = film.film;
+      if (isCreated) {
+        film.once('loadedmetadata', function () {
+          film.currentTime = begin;
+        });
+      } else {
+        if (isBeginChanged) {
+          film.currentTime = begin;
+        }
+      }
+    }
+  }
+  showEpisode(begin, end) {
+    const [film, isCreated] = this.getLastFilm();
+    if (film) {
+      begin /= 1000;
+      end /= 1000;
+      this._play(film, isCreated, begin, end);
+    }
+  }
+  seek(ms) {
+    const film = this.getLastFilm()[0],
+          s = ms / 1000;
+    if (film) film.film.currentTime = s;
+    this.placeCursor(s);
+  }
+  getLastFilm() {
+    const recordId = this.activeRecordId(),
+          filmType = this.activeFilmType();
+    if (recordId && filmType) {
+      return this.getFilm(recordId, filmType);
     } else {
-      film._playCount = 1;
-      setTimeout(function () {
-        cinema.showFilm(recordId, filmType, dataItem);
-      }, 4000);
+      const film = null, isCreated = null;
+      return [film, isCreated];
     }
-    if (film._pauseFunction !== undefined) {
-      film.off('timeupdate', film._pauseFunction);
-    }
-    film._pauseFunction = pauseFunction;
-    film.on('timeupdate', film._pauseFunction);
-    film.muted = true;
-    film.play();
+  }
+  preloadFilm(recordId, filmType, timePointInMs) {
+    const [film, isCreated] = this.getFilm(recordId, filmType);
+    if (isCreated) film.notYetPlayed = true;
+    else this.seek(timePointInMs);
   }
   getFilm(recordId, filmType) {
-    var key = recordId + filmType,
-        film = key in this.films ?
-          this.films[key] :
-          new Film(this, { recordId: recordId, filmType: filmType });
+    const key = recordId + filmType,
+          isAvailable = key in this.films,
+          isCreated = !isAvailable,
+          film = isAvailable ? this.films[key] :
+            new Film(this, { recordId: recordId, filmType: filmType });
     this.films[key] = film;
     this.hideAllBut(key);
-    return film;
+    if (isCreated) {
+      let cinema = this;
+      film.film.on('play', () => {
+        cinema.canPlayOrPause(PAUSE_CSS_CLASS);
+      });
+      film.film.on('pause', () => {
+        cinema.canPlayOrPause(PLAY_CSS_CLASS);
+      });
+    }
+    return [film, isCreated];
   }
   pauseAll() {
     let films = this.films;
-    Object.keys(films).forEach(key => films[key].film.pause());
+    Object.keys(films).forEach(key => {
+      films[key].film.pause();
+    });
+  }
+  deactivateAll() {
+    let films = this.films;
+    Object.keys(films).forEach(key => {
+      films[key].film.pause();
+      films[key].deactivateIFrame();
+    });
   }
   hideAllBut(showKey) {
     const films = this.films;
     Object.keys(films).forEach(key => {
-      if (showKey === key) {
-        films[key][showKey === key ? 'activateIFrame' : 'deactivateIFrame']();
-      }
+      let method = showKey === key ? 'activateIFrame' : 'deactivateIFrame';
+      films[key][method]();
     });
   }
 }
 
-var cinema = new Cinema();
-
-export default cinema;
+export default Cinema;

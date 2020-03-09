@@ -1,0 +1,456 @@
+{
+  "version": "1.0",
+  "results": [
+    [
+      {
+        "show_tiers": {
+          "C-vLineHTML": "\\собирает (0.18) (ə 0.63) груши себе в (ˀ 0.36) /ф<u>а</u>ртук,"
+        },
+        "value": "C-vE009",
+        "c_1": {
+          "id": "C-vE009",
+          "value": "C-vE009",
+          "time": {
+            "begin": 232020,
+            "end": 235340
+          }
+        },
+        "tier": "C-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0233",
+          "value": "R-oF0233",
+          "time": {
+            "end": 235420
+          }
+        },
+        "c_1p0": {
+          "tier": "C_vLineType",
+          "id": "C-vE009",
+          "value": "EDU",
+          "time": {
+            "begin": 235340,
+            "end": 235340
+          }
+        },
+        "time": {
+          "begin": 232020,
+          "end": 235340
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vLineHTML": "% ближе \\всег<u>о</u> к ним˗м."
+        },
+        "value": "N-vE204",
+        "c_1": {
+          "id": "N-vE204",
+          "value": "N-vE204",
+          "time": {
+            "begin": 448486,
+            "end": 449608
+          }
+        },
+        "tier": "N-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0583",
+          "value": "R-oF0583",
+          "time": {
+            "end": 449768
+          }
+        },
+        "c_1p0": {
+          "tier": "N_vLineType",
+          "id": "N-vE204",
+          "value": "EDU",
+          "time": {
+            "begin": 449608,
+            "end": 449608
+          }
+        },
+        "time": {
+          "begin": 448486,
+          "end": 449608
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "А /коз<u>а</u><sup>ˀ</sup>,"
+        },
+        "value": "R-vE036",
+        "c_1": {
+          "id": "R-vE036",
+          "value": "R-vE036",
+          "time": {
+            "begin": 601167,
+            "end": 601975
+          }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "N_oFixation",
+          "id": "N-oF0697",
+          "value": "N-oF0697",
+          "time": {
+            "end": 604435
+          }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE036",
+          "value": "EDU",
+          "time": {
+            "begin": 601975,
+            "end": 601975
+          }
+        },
+        "time": {
+          "begin": 601167,
+          "end": 601975
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "они находят (ə 0.35) е= || (ˀ 0.21) (ɯ 0.34) /шл<u>я</u>пу мальчика,"
+        },
+        "value": "R-vE188",
+        "c_1": {
+          "id": "R-vE188",
+          "value": "R-vE188",
+          "time": {
+            "begin": 990558,
+            "end": 993192
+          }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "N_oFixation",
+          "id": "N-oF1106",
+          "value": "N-oF1106",
+          "time": {
+            "end": 993592
+          }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE188",
+          "value": "EDU",
+          "time": {
+            "begin": 993192,
+            "end": 993192
+          }
+        },
+        "time": {
+          "begin": 990558,
+          "end": 993192
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "По зь= || \\з˗землян<u>о</u>й¿"
+        },
+        "value": "R-vE115",
+        "c_1": {
+          "id": "R-vE115",
+          "value": "R-vE115",
+          "time": {
+            "begin": 610344,
+            "end": 611142
+          }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0704",
+          "value": "R-oF0704",
+          "time": {
+            "end": 611422
+          }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE115",
+          "value": "EDU",
+          "time": {
+            "begin": 611142,
+            "end": 611142
+          }
+        },
+        "time": {
+          "begin": 610344,
+          "end": 611142
+        },
+        "record_id": "23",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "\\зач<u>е</u>м она там?"
+        },
+        "value": "R-vE142",
+        "c_1": {
+          "id": "R-vE142",
+          "value": "R-vE142",
+          "time": { "begin": 733435, "end": 734258 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0839",
+          "value": "R-oF0839",
+          "time": { "end": 734638 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE142",
+          "value": "EDU",
+          "time": { "begin": 734258, "end": 734258 }
+        },
+        "time": { "begin": 733435, "end": 734258 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "C-vLineHTML": "<sup>ˀ</sup>Он ему за /шляпу как бы —"
+        },
+        "value": "C-vE183",
+        "c_1": {
+          "id": "C-vE183",
+          "value": "C-vE183",
+          "time": { "begin": 864798, "end": 866402 }
+        },
+        "tier": "C-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF1013",
+          "value": "R-oF1013",
+          "time": { "end": 866462 }
+        },
+        "c_1p0": {
+          "tier": "C_vLineType",
+          "id": "C-vE183",
+          "value": "EDU",
+          "time": { "begin": 866402, "end": 866402 }
+        },
+        "time": { "begin": 864798, "end": 866402 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "и смотрит на˗а (1.60) \\/↓корз<u>и</u>ны,"
+        },
+        "value": "R-vE204",
+        "c_1": {
+          "id": "R-vE204",
+          "value": "R-vE204",
+          "time": { "begin": 886685, "end": 890135 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF1047",
+          "value": "R-oF1047",
+          "time": { "end": 891335 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE204",
+          "value": "EDU",
+          "time": { "begin": 890135, "end": 890135 }
+        },
+        "time": { "begin": 886685, "end": 890135 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "он ведёт /коз<u>у</u>,"
+        },
+        "value": "R-vE331",
+        "c_1": {
+          "id": "R-vE331",
+          "value": "R-vE331",
+          "time": { "begin": 1205747, "end": 1206910 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF1550",
+          "value": "R-oF1550",
+          "time": { "end": 1207150 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE331",
+          "value": "EDU",
+          "time": { "begin": 1206910, "end": 1206910 }
+        },
+        "time": { "begin": 1205747, "end": 1206910 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTML": "/<sup>ə</sup><u>Е</u>й,"
+        },
+        "value": "R-vE455",
+        "c_1": {
+          "id": "R-vE455",
+          "value": "R-vE455",
+          "time": { "begin": 1398632, "end": 1399160 }
+        },
+        "tier": "R-vLine",
+        "c_2": {
+          "tier": "N_oFixation",
+          "id": "N-oF2129",
+          "value": "N-oF2129",
+          "time": { "end": 1399420 }
+        },
+        "c_1p0": {
+          "tier": "R_vLineType",
+          "id": "R-vE455",
+          "value": "EDU",
+          "time": { "begin": 1399160, "end": 1399160 }
+        },
+        "time": { "begin": 1398632, "end": 1399160 },
+        "record_id": "04",
+        "is_main": true
+      }
+    ],
+
+
+
+    [
+      {
+        "show_tiers": {
+          "C-vLineHTMLTranslit": "\\sobiraet (0.18) (ə 0.63) grushi sebe v (ˀ 0.36) /f<u>a</u>rtuk,",
+          "C-vLineTranslation": "he gathers pears in his apron"
+        },
+        "value": "C-vE009",
+        "c_1": {
+          "id": "C-vE009",
+          "value": "C-vE009",
+          "time": {
+            "begin": 232020,
+            "end": 235340
+          }
+        },
+        "tier": "C-vLine",
+        "c_2": {
+          "tier": "R_oFixation",
+          "id": "R-oF0233",
+          "value": "R-oF0233",
+          "time": {
+            "end": 235420
+          }
+        },
+        "c_1p0": {
+          "tier": "C_vLineType",
+          "id": "C-vE009",
+          "value": "EDU",
+          "time": {
+            "begin": 235340,
+            "end": 235340
+          }
+        },
+        "time": {
+          "begin": 232020,
+          "end": 235340
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "N-vLineHTMLTranslit": "% blizhe \\vseg<u>о</u> k nim-m."
+        },
+        "value": "N-vE204",
+        "tier": "N-vLine",
+        "time": {
+          "begin": 448486,
+          "end": 449608
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTMLTranslit": "A /koz<u>а</u><sup>ˀ</sup>,"
+        },
+        "value": "R-vE036",
+        "tier": "R-vLine",
+        "time": {
+          "begin": 601167,
+          "end": 601975
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vLineHTMLTranslit": "oni naxodjat (ə 0.35) е= || (ˀ 0.21) (ɯ 0.34) /shlj<u>a</u>pu mal'chika,",
+          "R-vLineTranslation": "they find the boy's hat"
+        },
+        "value": "R-vE188",
+        "tier": "R-vLine",
+        "time": {
+          "begin": 990558,
+          "end": 993192
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ],
+    [
+      {
+        "show_tiers": {
+          "R-vSegmHTMLTranslit": "koz-u",
+          "R-vSegmGlossing": "goat-SG.ACC"
+        },
+        "value": "R-vW12345",
+        "tier": "R-vSegm",
+        "time": {
+          "begin": 990558,
+          "end": 993192
+        },
+        "record_id": "22",
+        "is_main": true
+      }
+    ]
+  ]
+}

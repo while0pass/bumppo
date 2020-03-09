@@ -7,7 +7,7 @@ const template = `
     <input type="checkbox" class="hidden"
       data-bind="checked: ko.unwrap(disabled) ? false : value,
         attr: { tabindex: tabindex }">
-    <label data-bind="text: label"></label>
+    <label data-bind="html: label"></label>
   </div>
 
 `;
