@@ -633,6 +633,7 @@ $layerHeight: 2rem;
   width: 3em;
   height: 3em;
   animation: segment-spin .6s linear;
+  will-change: transform;
   animation-name: segment-spin;
   animation-duration: .6s;
   animation-timing-function: linear;
