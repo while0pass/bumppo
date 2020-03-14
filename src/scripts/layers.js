@@ -11,7 +11,7 @@ const tierMapForPrimaryResults = {
   '{ p_participants }-vLine': [
     '{ p_participants }-vLineHTML', // RU
     //'{ p_participants }-vLineHTMLTranslit', // EN
-    //'{ p_participants }-vLineTranslate', // EN
+    //'{ p_participants }-vLineTranslation', // EN
   ],
   '{ p_participants }-vSegm': [
     '{ p_participants }-vSegmHTML', // RU
@@ -40,7 +40,7 @@ const LAYER_TEMPLATES_HIERARCHY = [
         '{ p_participants }-vLineType',
         '{ p_participants }-vLineHTML', // RU
         //'{ p_participants }-vLineHTMLTranslit', // EN
-        //'{ p_participants }-vLineTranslate', // EN
+        //'{ p_participants }-vLineTranslation', // EN
         '{ p_participants }-vLineVerbatim',
         '{ p_participants }-vIllocPhase',
         '{ p_participants }-vCombIllocPhase',
