@@ -34,6 +34,7 @@ $videoHeight: 193px;
 
 * {
   user-select: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .bmpp-uiLayout {
@@ -331,6 +332,7 @@ $layersPanelButtonsHeight: 2rem;
       position: relative;
 
       overflow-y: scroll; /* ##overflowy## */
+      scrollbar-color: transparent transparent;
       @mixin scrollbar #fff;
     }
 
