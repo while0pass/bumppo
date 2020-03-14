@@ -183,7 +183,8 @@ export class TreeNode {
   }
   getParticipants() {
     let x = this.unitProperties.unitPropertiesMap();
-    return x[p_participants.id].value();
+    if (p_participants.id in x) return x[p_participants.id].value();
+    return [];
   }
 }
 
