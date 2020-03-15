@@ -230,22 +230,17 @@ class Cinema {
     const HAVE_METADATA = 1,
           HAVE_ENOUGH_DATA = 4;
     if (film.media.readyState < HAVE_METADATA) {
-      film.once('loadedmetadata', function () {
-        film.currentTime = begin;
-        func();
-      });
+      film.once('loadedmetadata', func);
     } else func();
     function func() {
+      film.notYetPlayed = false;
       film.currentTime = begin;
       if (isCreated || film.media.readyState < HAVE_ENOUGH_DATA
       || film.notYetPlayed) {
-        film.once('canplay', function () {
-          film.play();
-        });
+        film.once('canplay', function () { film.play(); });
       } else {
         film.play();
       }
-      delete film.notYetPlayed;
       cinema._isFilmPausedByUser = false;
       cinema.hideCurtain();
     }
@@ -272,17 +267,18 @@ class Cinema {
     this[method](xStart, xEnd);
   }
   playOrPause() {
-    let [film, isCreated] = this.getLastFilm();
+    const cinema = this;
+    let [film, isCreated] = cinema.getLastFilm();
     if (film) {
       if (film.film.playing && !isCreated && !film.notYetPlayed) {
-        this._isFilmPausedByUser = true;
+        cinema._isFilmPausedByUser = true;
         film.film.pause();
-      } else if (film.film.paused && this._isFilmPausedByUser
-        && !isCreated && !film.notYetPlayed) {
-        this._isFilmPausedByUser = false;
+      } else if (film.film.paused && cinema._isFilmPausedByUser
+      && !isCreated && !film.notYetPlayed) {
+        cinema._isFilmPausedByUser = false;
         film.film.play();
       } else {
-        this.play();
+        cinema.play();
       }
     }
   }
@@ -373,20 +369,14 @@ class Cinema {
     this.hideAllBut(key);
     if (isCreated) {
       let cinema = this;
-      film.film.on('play', () => {
-        cinema.canPlayOrPause(PAUSE_CSS_CLASS);
-      });
-      film.film.on('pause', () => {
-        cinema.canPlayOrPause(PLAY_CSS_CLASS);
-      });
+      film.film.on('play', () => cinema.canPlayOrPause(PAUSE_CSS_CLASS));
+      film.film.on('pause', () => cinema.canPlayOrPause(PLAY_CSS_CLASS));
     }
     return [film, isCreated];
   }
   pauseAll() {
     let films = this.films;
-    Object.keys(films).forEach(key => {
-      films[key].film.pause();
-    });
+    Object.keys(films).forEach(key => films[key].film.pause());
   }
   deactivateAll() {
     let films = this.films;
