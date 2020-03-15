@@ -233,7 +233,8 @@ class Cinema {
       film.once('loadedmetadata', func);
     } else func();
     function func() {
-      film.notYetPlayed = false;
+      film.filmObject.notYetPlayed = false;
+      cinema._isFilmPausedByUser = false;
       film.currentTime = begin;
       if (isCreated || film.media.readyState < HAVE_ENOUGH_DATA
       || film.notYetPlayed) {
@@ -241,7 +242,6 @@ class Cinema {
       } else {
         film.play();
       }
-      cinema._isFilmPausedByUser = false;
       cinema.hideCurtain();
     }
   }
@@ -267,8 +267,8 @@ class Cinema {
     this[method](xStart, xEnd);
   }
   playOrPause() {
-    const cinema = this;
-    let [film, isCreated] = cinema.getLastFilm();
+    const cinema = this,
+          [film, isCreated] = cinema.getLastFilm();
     if (film) {
       if (film.film.playing && !isCreated && !film.notYetPlayed) {
         cinema._isFilmPausedByUser = true;

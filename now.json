@@ -1,7 +1,6 @@
 {
     "scope": "multidiscourse",
     "version": 2,
-    "alias": ["bumppo"],
     "builds": [
       { "src": "build/**", "use": "@now/static" }
     ],
