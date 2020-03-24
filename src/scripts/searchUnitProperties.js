@@ -744,7 +744,12 @@ function beautifyNumber(number) {
 }
 
 function injectNumber(template, value) {
-  return template.replace(/##/g, beautifyNumber(value));
+  return template.replace(/##/, beautifyNumber(value)); // NOTE: В регулярном
+  // выражении тут нельзя использовать флаг ``g``, так как шаблон подстановки
+  // (##) может встречаться в одном шаблоне несколько раз (как, например,
+  // в fromToBanner) для обозначения разных переменных, как если бы они были
+  // позиционными аргументами функции. Иначе во всех случаях одномоментно будет
+  // подставлено значение первой переменной.
 }
 
 function injectNodeNumbers(template, node1, node2) {
