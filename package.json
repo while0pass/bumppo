@@ -17,7 +17,7 @@
   "dependencies": {
     "@juggle/resize-observer": "^3.0.2",
     "debug": "^4.1.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery.initialize": "^1.3.0",
     "knockout": "^3.5.1",
     "plyr": "^3.5.6",
